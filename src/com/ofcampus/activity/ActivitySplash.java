@@ -13,6 +13,7 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.Util;
 import com.ofcampus.R;
 import com.ofcampus.model.InstituteDetails;
+import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.InstituteParser;
 import com.ofcampus.parser.InstituteParser.InstituteParserInterface;
 
@@ -28,7 +29,16 @@ public class ActivitySplash extends Activity {
 		setContentView(R.layout.activity_splash);
 
 		context=ActivitySplash.this;
-		fatchInstituteData();
+		checkIsUserAlreadyLogedin();
+	}
+	
+	private void checkIsUserAlreadyLogedin(){
+		UserDetails mUserDetails =UserDetails.getLoggedInUser(context);
+		if (mUserDetails!=null && mUserDetails.getAuthtoken()!=null && !mUserDetails.getAuthtoken().equals("")) {
+			moveToHomeScreen();
+		}else {
+			fatchInstituteData();
+		}
 	}
 
 	/**
@@ -74,6 +84,12 @@ public class ActivitySplash extends Activity {
 	
 	private void moveToNextScreen(){
 		startActivity(new Intent(ActivitySplash.this,ActivityInstituteList.class));
+		overridePendingTransition(0, 0);
+		finish();
+	}
+	
+	private void moveToHomeScreen(){
+		startActivity(new Intent(ActivitySplash.this,ActivityHome.class));
 		overridePendingTransition(0, 0);
 		finish();
 	}

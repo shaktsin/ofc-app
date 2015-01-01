@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.ofcampus.R;
 
 /**
- * Created by @author DIBAKAR
+ * Created by hp1 on 28-12-2014.
  */
 public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.ViewHolder> {
 
@@ -65,17 +65,13 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 
 
 
-   public SlideMenuAdapter(String Titles[],int Icons[],String Name,String Email, int Profile){ // MyAdapter Constructor with titles and icons parameter
+    public SlideMenuAdapter(String Titles[],int Icons[],String Name,String Email, int Profile){ // SlideMenuAdapter Constructor with titles and icons parameter
         // titles, icons, name, email, profile pic are passed from the main activity as we
         mNavTitles = Titles;                //have seen earlier
         mIcons = Icons;
         name = Name;
         email = Email;
-        profile = Profile;                     //here we assign those passed values to the values we declared here
-        //in adapter
-
-
-
+        profile = Profile;                     //here we assign those passed values to the values we declared here in adapter
     }
 
 
