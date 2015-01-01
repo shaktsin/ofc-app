@@ -3,6 +3,7 @@ package com.ofcampus.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,22 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
     private int profile;        //int Resource for header view profile picture
     private String email;       //String Resource for header view email
 
+    
+    
+    
+    
+    public SlideMenuAdapter(String Titles[],int Icons[],String Name,String Email, int Profile){ // SlideMenuAdapter Constructor with titles and icons parameter
+        // titles, icons, name, email, profile pic are passed from the main activity as we
+        mNavTitles = Titles;                //have seen earlier
+        mIcons = Icons;
+        name = Name;
+        email = Email;
+        profile = Profile;                     //here we assign those passed values to the values we declared here in adapter
+    }
+    
+    
+    
+    
 
     // Creating a ViewHolder which extends the RecyclerView View Holder
     // ViewHolder are used to to store the inflated views in order to recycle them
@@ -41,7 +58,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 
         public ViewHolder(View itemView,int ViewType) {                 // Creating ViewHolder Constructor with View and viewType As a parameter
             super(itemView);
-//            itemView.setOnClickListener(this);
+
 
             // Here we set the appropriate view in accordance with the the view type as passed when the holder object is created
 
@@ -49,29 +66,13 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
                 textView = (TextView) itemView.findViewById(R.id.rowText); // Creating TextView object with the id of textView from item_row.xml
                 imageView = (ImageView) itemView.findViewById(R.id.rowIcon);// Creating ImageView object with the id of ImageView from item_row.xml
                 Holderid = 1;                                               // setting holder id as 1 as the object being populated are of type item row
-            }
-            else{
-
-
+            }else{
                 Name = (TextView) itemView.findViewById(R.id.name);         // Creating Text View object from header.xml for name
                 email = (TextView) itemView.findViewById(R.id.email);       // Creating Text View object from header.xml for email
                 profile = (ImageView) itemView.findViewById(R.id.circleView);// Creating Image view object from header.xml for profile pic
                 Holderid = 0;                                                // Setting holder id = 0 as the object being populated are of type header view
             }
         }
-
-
-    }
-
-
-
-    public SlideMenuAdapter(String Titles[],int Icons[],String Name,String Email, int Profile){ // SlideMenuAdapter Constructor with titles and icons parameter
-        // titles, icons, name, email, profile pic are passed from the main activity as we
-        mNavTitles = Titles;                //have seen earlier
-        mIcons = Icons;
-        name = Name;
-        email = Email;
-        profile = Profile;                     //here we assign those passed values to the values we declared here in adapter
     }
 
 
@@ -116,8 +117,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
             // position by 1 and pass it to the holder while setting the text and image
             holder.textView.setText(mNavTitles[position - 1]); // Setting the Text with the array of our Titles
             holder.imageView.setImageResource(mIcons[position -1]);// Settimg the image with array of our icons
-        }
-        else{
+        } else{
 
             holder.profile.setImageResource(profile);           // Similarly we set the resources for header view
             holder.Name.setText(name);
@@ -145,4 +145,18 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
         return position == 0;
     }
 
+    public static viewCLickEvent viewclickevent;
+    
+    public viewCLickEvent getViewclickevent() {
+		return viewclickevent;
+	}
+
+	public void setViewclickevent(viewCLickEvent viewclickevent) {
+		this.viewclickevent = viewclickevent;
+	}
+
+	public interface viewCLickEvent{
+		public void OnViewItemClick();
+    }
+    
 }
