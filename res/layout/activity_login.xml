@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_color" >
+
+    <TextView
+        android:id="@+id/login_textlogo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="@string/login_scr_logo_"
+        android:textColor="@android:color/white"
+        android:textSize="35sp"
+        android:textStyle="bold|italic" />
+
+    <LinearLayout
+        android:id="@+id/LoginBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <EditText
+            android:id="@+id/login_edt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/editbox_rect"
+            android:drawableLeft="@drawable/email_icon"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:hint="@string/login_scr_hint_email"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/theme_color" />
+
+        <EditText
+            android:id="@+id/login_edt_passw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/editbox_rect"
+            android:drawableLeft="@drawable/key_icon"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:hint="@string/login_scr_hint_Pass"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/theme_color" />
+
+        <TextView
+            android:id="@+id/login_btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_rec"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/login_scr_btn_login"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/theme_color" />
+
+        <TextView
+            android:id="@+id/login_txt_forsignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="@string/login_scr_txt_donthaveaccount"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</RelativeLayout>
