@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">OfCampus</string>
+    <string name="build_vers_">Build version 1.0.0</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="internetconnection_msg">Please check your internet connection.</string>
+
+    <!-- Login Screen -->
+    <string name="login_scr_logo_">Of Campus</string>
+    <string name="login_scr_hint_email">Enter email address</string>
+    <string name="login_scr_hint_Pass">Enter password</string>
+    <string name="login_scr_btn_login">Login</string>
+    <string name="login_scr_btn_gpllogin">Sign in with Google+</string>
+    <string name="login_scr_txt_donthaveaccount">Don\'t have an account?click here</string>
+    <string name="login_scr_email_msg">Enter an email address.</string>
+    <string name="login_scr_error_email_msg">Enter an valid email address.</string>
+    <string name="login_scr_edtpass_msg">Enter a password.</string>
+    <string name="login_scr_parse_success">Successfully login.</string>
+    <string name="login_scr_parse_error">Login Error.</string>
+
+    <!-- Registration Screen -->
+    <string name="registration_txt_hint_firstname">First Name</string>
+    <string name="registration_txt_hint_lasttname">Last Name</string>
+    <string name="registration_txt_hint_accname">Account Name</string>
+    <string name="registration_txt_hint_email">Email Address</string>
+    <string name="registration_txt_hint_password">Password</string>
+    <string name="registration_txt_hint_repassword">Confirm Password</string>
+    <string name="registration_txt_hint_signup">Sign up</string>
+
+    <!-- error message -->
+    <string name="registration_txt_error_firstname">Enter first name.</string>
+    <string name="registration_txt_error_lasttname">Enter last name.</string>
+    <string name="registration_txt_error_accname">Enter account name.</string>
+    <string name="registration_txt_error_email">Enter email address.</string>
+    <string name="registration_txt_error_password">Enter password.</string>
+    <string name="registration_txt_error_repassword">Enter confirm password.</string>
+    <string name="registration_txt_error_notmatched">Confirm password and password not matched.</string>
+
+     <!-- Institute List Screen -->
+     <string name="Institute_list_choose">Choose your Institute</string>
+</resources>

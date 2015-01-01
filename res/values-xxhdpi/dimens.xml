@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="registration_scn_image_bghit">170dp</dimen>
+    <dimen name="registration_scn_image_hight">80dp</dimen>
+
+</resources>
