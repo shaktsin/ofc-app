@@ -47,6 +47,8 @@ public class Util {
 	public static int servicesyncInterval = 180000;
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
 	
+	public static String TITLES[] = {"My Profile","My Posts","Important Mail","Settings","Logout"};
+	public static int ICONS[] = {R.drawable.ic_profile,R.drawable.ic_mypost,R.drawable.ic_impmail,R.drawable.ic_settings,R.drawable.ic_logout};
 	
 	public static enum userType{
 		Normal,Gmail,Facebook
