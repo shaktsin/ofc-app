@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/actiontool_bar" >
+    </include>
+
+    <LinearLayout
+        android:id="@+id/activity_jodetails_relmain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/joblist_bg_color"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp" >
+
+                <ImageView
+                    android:id="@+id/myprofile_view_profilepic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_profilepic" />
+
+                <ProgressBar
+                    android:id="@+id/myprofile_view_pgbar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/myprofile_view_graborder"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/darker_gray" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp" >
+
+                    <TextView
+                        android:id="@+id/myprofile_view_txt_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|left"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:singleLine="true"
+                        android:text="Susi"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/myprofile_view_txt_class"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/myprofile_view_txt_name"
+                        android:layout_gravity="center_vertical|left"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:singleLine="true"
+                        android:text="class 2014"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/myprofile_view_txthint_currentemploye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/MyProfile_txt_CurrentEmployer"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_contain" />
+
+            <TextView
+                android:id="@+id/myprofile_view_txt_currentemploye"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/myprofile_view_txthint_currentemploye"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="3dp"
+                android:text="Of Campus"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/joblitview_contain" />
+
+            <TextView
+                android:id="@+id/myprofile_view_txthint_prvemploy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/myprofile_view_txt_currentemploye"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/MyProfile_txt_PreviousEmployers"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_contain" />
+
+            <TextView
+                android:id="@+id/myprofile_view_txt_prvemploy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/myprofile_view_txthint_prvemploy"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="3dp"
+                android:text="Morgan Stanley, Oracle, Aemelior Associates"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/joblitview_contain" />
+
+            <TextView
+                android:id="@+id/myprofile_view_txthint_professionalIntrest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/myprofile_view_txt_prvemploy"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/MyProfile_txt_ProfessionalInterests"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_contain" />
+
+            <TextView
+                android:id="@+id/myprofile_view_txt_professionalIntrest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/myprofile_view_txthint_professionalIntrest"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="3dp"
+                android:text="Entrepreneurship, Finance, Consulting"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/joblitview_contain" />
+
+            <TextView
+                android:id="@+id/myprofile_view_txthint_Interests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/myprofile_view_txt_professionalIntrest"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/MyProfile_txt_ProfessionalInterests"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_contain" />
+
+            <TextView
+                android:id="@+id/myprofile_view_txt_Interests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/myprofile_view_txthint_Interests"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="3dp"
+                android:text="Reading, Music, Trekking, Cricket"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/joblitview_contain" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/myprofile_view_graborder"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/white" >
+
+                <ImageView
+                    android:id="@+id/myprofile_view_img_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_phone" />
+
+                <ImageView
+                    android:id="@+id/myprofile_view_img_whatsapp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_whatsapp" />
+
+                <ImageView
+                    android:id="@+id/myprofile_view_img_gmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_gmailicon" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

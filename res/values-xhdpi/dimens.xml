@@ -4,4 +4,14 @@
     <dimen name="registration_scn_image_bghit">170dp</dimen>
     <dimen name="registration_scn_image_hight">80dp</dimen>
 
+    <!-- JOBLITVIEW -->
+    <dimen name="joblitview_picwd">50dp</dimen>
+    <dimen name="joblitview_name">14sp</dimen>
+    <dimen name="joblitview_postdate">12sp</dimen>
+    <dimen name="joblitview_Subject">18sp</dimen>
+    <dimen name="joblitview_contain">14sp</dimen>
+    
+    <!-- MY PROFILE -->
+    <dimen name="myprofile_view_graborder">60dp</dimen>
+
 </resources>

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/joblist_bg_color" >
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/actiontool_bar" >
+    </include>
+
+    <ScrollView
+        android:id="@+id/activity_createjob_relmain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:fadingEdge="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_industry"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/craetejob_txt_industry"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_Subject" />
+
+                <Spinner
+                    android:id="@+id/activity_createjob_spn_industry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/activity_createjob_txt_industry"
+                    android:background="@drawable/dropdown"
+                    android:fadingEdge="none" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_role"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/craetejob_txt_Role"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_Subject" />
+
+                <Spinner
+                    android:id="@+id/activity_createjob_spn_role"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/activity_createjob_txt_role"
+                    android:background="@drawable/dropdown"
+                    android:fadingEdge="none" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_Experience"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/craetejob_txt_experience"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_Subject" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/activity_createjob_txt_Experience"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/activity_createjob_edit_Experienceto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/editbox_rect"
+                        android:gravity="center_vertical|left"
+                        android:hint="To"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/joblitview_Subject" />
+
+                    <EditText
+                        android:id="@+id/activity_createjob_edit_Experiencefrom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/editbox_rect"
+                        android:gravity="center_vertical|left"
+                        android:hint="From"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/joblitview_Subject" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_salaryrange"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/craetejob_txt_sal_range"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_Subject" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/activity_createjob_txt_salaryrange"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/activity_createjob_edit_salaryrangeto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/editbox_rect"
+                        android:gravity="center_vertical|left"
+                        android:hint="Salary To"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/joblitview_Subject" />
+
+                    <EditText
+                        android:id="@+id/activity_createjob_edit_salaryrangefrom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/editbox_rect"
+                        android:gravity="center_vertical|left"
+                        android:hint="Salary From"
+                        android:inputType="number"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/joblitview_Subject" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_location"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/craetejob_txt_location"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_Subject" />
+
+                <Spinner
+                    android:id="@+id/activity_createjob_spn_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/activity_createjob_txt_location"
+                    android:background="@drawable/dropdown"
+                    android:fadingEdge="none" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_jobheadline"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/craetejob_txt_jobheadline"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_Subject" />
+
+                <EditText
+                    android:id="@+id/activity_createjob_edit_jobheadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/activity_createjob_txt_jobheadline"
+                    android:background="@drawable/editbox_rect"
+                    android:gravity="center_vertical|left"
+                    android:hint="@string/craetejob_txt_jobheadline"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/joblitview_Subject" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_jobdetails"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/craetejob_txt_jobdetails"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_Subject" />
+
+                <EditText
+                    android:id="@+id/activity_createjob_edit_jobdetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/activity_createjob_txt_jobdetails"
+                    android:background="@drawable/editbox_rect"
+                    android:gravity="top|left"
+                    android:hint="@string/craetejob_txt_jobdetails"
+                    android:lines="3"
+                    android:maxLines="3"
+                    android:padding="8dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/joblitview_Subject" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_reply"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/craetejob_txt_Reply_via"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_Subject" />
+
+                <RelativeLayout
+                    android:id="@+id/activity_createjob_rel_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_createjob_txt_reply"
+                    android:layout_marginTop="10dp" >
+
+                    <TextView
+                        android:id="@+id/activity_createjob_txt_email"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/radiobtn"
+                        android:drawablePadding="5dp"
+                        android:text="@string/craetejob_txt_Email"
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/joblitview_Subject" />
+
+                    <EditText
+                        android:id="@+id/activity_createjob_edit_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/activity_createjob_txt_email"
+                        android:background="@drawable/editbox_rect"
+                        android:gravity="center_vertical|left"
+                        android:hint="@string/craetejob_txt_jobdetails"
+                        android:inputType="textEmailAddress"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/joblitview_Subject" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/activity_createjob_rel_phno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_createjob_rel_email"
+                    android:layout_marginTop="10dp" >
+
+                    <TextView
+                        android:id="@+id/activity_createjob_txt_phno"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/radiobtn"
+                        android:drawablePadding="5dp"
+                        android:text="@string/craetejob_txt_PhoneNo"
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/joblitview_Subject" />
+
+                    <EditText
+                        android:id="@+id/activity_createjob_edit_phno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/activity_createjob_txt_phno"
+                        android:background="@drawable/editbox_rect"
+                        android:gravity="center_vertical|left"
+                        android:hint="@string/craetejob_txt_jobdetails"
+                        android:inputType="textEmailAddress"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/joblitview_Subject" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/activity_createjob_rel_whatsapp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_createjob_rel_phno"
+                    android:layout_marginTop="10dp" >
+
+                    <TextView
+                        android:id="@+id/activity_createjob_txt_whatsapp"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/radiobtn"
+                        android:drawablePadding="5dp"
+                        android:text="@string/craetejob_txt_Whatsapp"
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/joblitview_Subject" />
+
+                    <EditText
+                        android:id="@+id/activity_createjob_edit_whatsapp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/activity_createjob_txt_whatsapp"
+                        android:background="@drawable/editbox_rect"
+                        android:gravity="center_vertical|left"
+                        android:hint="@string/craetejob_txt_jobdetails"
+                        android:inputType="textEmailAddress"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/joblitview_Subject" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="25dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_uploadjob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/button_rec"
+                    android:padding="12dp"
+                    android:text="@string/craetejob_txt_Upload"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_Subject"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="35dp" >
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

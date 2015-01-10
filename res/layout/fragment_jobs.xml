@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent" >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/activity_home_footer_pg" >
+
+        <ListView
+            android:id="@+id/activity_home_joblist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent" >
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/activity_home_footer_pg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:visibility="gone" >
+
+        <com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate
+                android:id="@+id/progressBarCircularIndetermininate"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="6dp"
+                android:layout_centerInParent="true"
+                android:background="#1E88E5" />
+    </RelativeLayout>
+
+</RelativeLayout>

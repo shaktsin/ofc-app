@@ -31,7 +31,7 @@ public class LoginParser {
 
 	/*Response JSON key value*/
 	private String responsecode="";
-	
+	private String responseDetails="";
 	
 	public void parse(Context context, String email, String password) { 
 		this.mContext = context;
@@ -84,6 +84,11 @@ public class LoginParser {
 						mDetails.setName(Util.getJsonValue(userObj, NAME));
 						mDetails.setEmail(Util.getJsonValue(userObj, EMAIL));
 						mDetails.setAuthtoken(Util.getJsonValue(userObj, AUTHTOKEN));
+					}else if(responsecode!=null && responsecode.equals("500")){
+						JSONObject userObj = mObject.getJSONObject(RESULTS);
+						if (userObj!=null) {
+							responseDetails=userObj.getJSONArray("messages").get(0).toString();
+						}
 					}
 					
 				}
@@ -115,7 +120,7 @@ public class LoginParser {
 					Util.ShowToast(mContext, "Login error.");
 				}
 			}else if (responsecode.equals("500")){
-				Util.ShowToast(mContext, "Please check your email and password.");
+				Util.ShowToast(mContext, responseDetails);
 			}else {
 				Util.ShowToast(mContext, "Login error.");
 			}

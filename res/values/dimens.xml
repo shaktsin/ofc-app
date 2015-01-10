@@ -10,4 +10,7 @@
     <dimen name="TextDimTop">16dp</dimen>
     <dimen name="tool_bar_top_padding">16dp</dimen>
 
+    <!-- JOB Home -->
+    <dimen name="circle_rad">25dp</dimen>
+
 </resources>

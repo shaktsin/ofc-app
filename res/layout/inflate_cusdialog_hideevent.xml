@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/joblist_bg_color" >
+
+        <TextView
+            android:id="@+id/iflate_custdialog_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/theme_color"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="OfCampus"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/iflate_custdialog_hide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iflate_custdialog_header"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/editbox_rect"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Hide this Post"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/iflate_custdialog_important"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iflate_custdialog_hide"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/editbox_rect"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Mark as Important"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/iflate_custdialog_spam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iflate_custdialog_important"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/editbox_rect"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Mark as Spam"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@+id/iflate_custdialog_spam" >
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -31,6 +31,7 @@
             android:layout_height="fill_parent"
             android:layout_below="@+id/institute_Header"
             android:fadingEdge="none"
+            android:divider="@null"
             android:scrollbarThumbVertical="@drawable/scrollbar_custom" >
         </ListView>
     </RelativeLayout>

@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="primary">#1F497D</color>
+    <color name="primary_dark">#1F497D</color>
     <color name="ColorPrimary">#FF5722</color>
     <color name="ColorPrimaryDark">#E64A19</color>
+
+    <!-- Theme -->
     <color name="theme_color">#1F497D</color>
     <color name="gplusbtncolor">#e23737</color>
+    <color name="joblist_bg_color">#d0dae6</color>
+
+    <!-- TabSlider -->
+
+    <color name="background_tab_pressed">#1F497D</color>
+    <color name="color_topbar">#8aae44</color>
+    <color name="color_editboxcolor">#adda55</color>
+    <color name="color_background">#1F497D</color>
+
+    <!-- Pull to refresh color -->
+    <color name="pull_blue_bright">#ff00ddff</color>
+    <color name="pull_green_light">#ff99cc00</color>
+    <color name="pull_orange_light">#ffffbb33</color>
+    <color name="pull_red_light">#ffff4444</color>
 
 </resources>

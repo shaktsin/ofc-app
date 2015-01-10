@@ -1,45 +1,91 @@
 package com.ofcampus.activity;
 
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnCloseListener;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.JobsFragment.JobsFrgInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
+import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
+import com.ofcampus.component.PagerSlidingTabStrip;
+import com.ofcampus.model.JobDetails;
+import com.ofcampus.model.JobList;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.CountSyncParser;
+import com.ofcampus.parser.JobListParserNew;
+import com.ofcampus.parser.JobListParserNew.JobListParserNewInterface;
 
-public class ActivityHome extends ActionBarActivity {
+public class ActivityHome extends ActionBarActivity implements OnClickListener,viewCLickEvent,OnPageChangeListener,JobsFrgInterface{
 
-    //First We Declare Titles And Icons For Our Navigation Drawer List View
-    //This Icons And Titles Are holded in an Array as you can see
-
-    //Similarly we Create a String Resource for the name and email in the header view
-    //And we also create a int resource for profile picture in the header view
+	
 
 	private String NAME = "";
 	private String EMAIL = "";
+	private String tocken = "";
 	private int PROFILE = R.drawable.ic_profilepic;
 
-    private Toolbar toolbar;                              // Declaring the Toolbar Object
+    private Toolbar toolbar;                            
 
-    private RecyclerView mRecyclerView;                           // Declaring RecyclerView
-    private RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
-    private RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
-    private DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
-    private ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle
-
+    private RecyclerView mRecyclerView;                         
+    private SlideMenuAdapter mAdapter;                   
+    private RecyclerView.LayoutManager mLayoutManager;            
+    private DrawerLayout Drawer;                                
+    private SearchView searchView = null;
+    private ImageView img_composejob;
+    
+    private ActionBarDrawerToggle mDrawerToggle;               
     private Context mContext;
 
+    
+    /*Pager section*/
+    private PagerSlidingTabStrip tabs;
+	private ViewPager pager;
+	private MyPagerAdapter adapter;
+	private JobsFragment mJobsFragment;
+	private ClassifiedsFragment mClassifiedsFragment;
+	private MeetupsFragment mMeetupsFragment;
+
+	private TextView txt_countjob,txt_countclass ,txt_countmetup;
+	
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,82 +94,557 @@ public class ActivityHome extends ActionBarActivity {
         mContext=ActivityHome.this;
         loadProfileData();
         initilizActionBarDrawer();
+        initilizePagerview();
     }
 
+    @Override
+	protected void onDestroy() {
+		super.onDestroy();
+		try {
+			stopservice();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		try {
+			stopservice();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		try {
+			stopservice();
+			startService();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    	MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_main, menu);
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		if (searchItem != null) {
+			searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+		}
+		
+		if (searchView != null) {
+			searchView.setIconifiedByDefault(true);
+			searchView.setQueryHint("Search job");
+			searchView.setOnQueryTextListener(new OnQueryTextListener() {
+				
+				@Override
+				public boolean onQueryTextSubmit(String s) {
+					searchView.clearFocus();
+				    Util.ShowToast(mContext, "TextSubmit : " + s);
+					return true;
+				}
+				
+				@Override
+				public boolean onQueryTextChange(String arg0) {
+					return false;
+				}
+			});
+
+			searchView.setOnSearchClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					closeDraware();
+					img_composejob.setVisibility(View.GONE);
+				}
+			});
+			
+			MenuItemCompat.setOnActionExpandListener(searchItem, new OnActionExpandListener() {
+			    @Override
+			    public boolean onMenuItemActionCollapse(MenuItem item) {
+			    	img_composejob.setVisibility(View.VISIBLE);
+			        return true;  
+			    }
+
+			    @Override
+			    public boolean onMenuItemActionExpand(MenuItem item) {
+			        return true; 
+			    }
+			});
+			
+			searchView.setOnCloseListener(new OnCloseListener() {
+				
+				@Override
+				public boolean onClose() {
+					img_composejob.setVisibility(View.VISIBLE);
+					return false;
+				}
+			});
+		}
+		return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-
+        if (id == R.id.action_search) {
+            return true;
+        }else if (id == R.id.action_filter) {
+        	return true;
+		}
         return super.onOptionsItemSelected(item);
     }
     
     
-    private void initilizActionBarDrawer(){
-        
-        /* Assinging the toolbar object ot the view
-        and setting the the Action bar to our toolbar
-         */
-            toolbar = (Toolbar) findViewById(R.id.tool_bar);
-            toolbar.setTitle("OfCampus");
-            setSupportActionBar(toolbar);
+    @Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.activity_home_img_composejob:
+			startActivity(new Intent(ActivityHome.this,ActivityCreateJob.class));
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
 
-            mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
+		default:
+			break;
+		}
+	}
+    
+	@Override
+	public void OnViewItemClick(int position) {
+		switch (position) {
 
-            mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
+		case 1:
+			closeDraware();
+			startActivity(new Intent(ActivityHome.this,ActivityMyProfile.class));
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		case 2:
+			closeDraware();
+			startActivity(new Intent(ActivityHome.this,ActivityMyPost.class));
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		case 3:
+			closeDraware();
+			startActivity(new Intent(ActivityHome.this,ActivityImportantmail.class));
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		case 4:
+			closeDraware();
+			startActivity(new Intent(ActivityHome.this,ActivitySettings.class));
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			break;
+		case 5:
+			closeDraware();
+			showLogutDialog();
+			break;
 
-            mAdapter = new SlideMenuAdapter(Util.TITLES,Util.ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
-            // And passing the titles,icons,header view name, header view email,
-            // and header view profile picture
+		default:
+			break;
+		}
+	}
+    
+	/**
+	 * Pager Page Selected.
+	 */
+	@Override
+	public void onPageSelected(int position) {
+		switch (position) {
+		case 0:
+			
+			break;
+		case 1:
+			
+			break;
+		case 2:
+			
+			break;
 
-            mRecyclerView.setAdapter(mAdapter);                              // Setting the adapter to RecyclerView
+		default:
+			break;
+		}
+	}
+	
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		
+	}
+	
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+		
+	}
+	
+	/**
+	 * For Job Fragment Pull to refresh calling.
+	 */
+	@Override
+	public void pulltorefreshcall(String jobID) {
+		JobListParserNew mParserNew=new JobListParserNew();
+		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
+			
+			@Override
+			public void OnSuccess(JobList mJobList) {
+				if (mJobList != null) {
+					ArrayList<JobDetails> jobs = mJobList.getJobs();
+					if (jobs != null && jobs.size() >= 1) {
+						try {
+							if(txt_countjob.getVisibility()==View.VISIBLE){
+								int cout=Integer.parseInt(txt_countjob.getText().toString());
+								if(jobs.size()==cout){
+									txt_countjob.setVisibility(View.GONE);
+								}else if(cout>=1 && cout>jobs.size()){
+									txt_countjob.setVisibility(View.VISIBLE);
+									txt_countjob.setText((cout-jobs.size())+"");
+								}
+							}
+						} catch (Exception e) {
+							Log.e("pulltorefreshcall success", e.toString());
+							e.printStackTrace();
+						}
+						mJobsFragment.refreshSwipeDataInAdapter(jobs);
+					}else {
+						Util.ShowToast(mContext, "No more job updated.");
+						mJobsFragment.refreshComplete();
+					}
+				}
+			}
 
-            mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
+			@Override
+			public void OnError() {
+				mJobsFragment.refreshComplete();
+			}
+		});
+		mParserNew.parse(mContext, mParserNew.getBody(jobID, 1+""), tocken,false);
+	}
+	
+	/**
+	 * For Job Fragment Pull to refresh calling.
+	 */
+	
+	@Override
+	public void loadcall(String jobID) {
+		JobListParserNew mParserNew=new JobListParserNew();
+		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
+			
+			@Override
+			public void OnSuccess(JobList mJobList) {
+				if (mJobList != null) {
+					ArrayList<JobDetails> jobs = mJobList.getJobs();
+					if (jobs != null && jobs.size() >= 1) {
+						mJobsFragment.refreshLoadMoreDataInAdapter(jobs);
+					}else {
+						Util.ShowToast(mContext, "No more job available.");
+						mJobsFragment.refreshComplete();
+					}
+				}
+			}
 
-            mRecyclerView.setLayoutManager(mLayoutManager);                 // Setting the layout Manager
+			@Override
+			public void OnError() {
+				mJobsFragment.refreshComplete();
+			}
+		});
+		mParserNew.parse(mContext, mParserNew.getBody(jobID, 2+""), tocken,false);
+	}
+	
+	
+	
+	
+	
+	private void initilizActionBarDrawer() {
+		toolbar = (Toolbar) findViewById(R.id.tool_bar);
+		toolbar.setTitle("OfCampus");
+		setSupportActionBar(toolbar);
 
+		mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
+		mRecyclerView.setHasFixedSize(true);
+		img_composejob = (ImageView)findViewById(R.id.activity_home_img_composejob);
+		img_composejob.setOnClickListener(this);
+		
+		mAdapter = new SlideMenuAdapter(ActivityHome.this,Util.TITLES, Util.ICONS, NAME, EMAIL,PROFILE);
+		mAdapter.setViewclickevent(this);
+		mRecyclerView.setAdapter(mAdapter);
+		mLayoutManager = new LinearLayoutManager(this);
+		mRecyclerView.setLayoutManager(mLayoutManager);
 
-            Drawer = (DrawerLayout) findViewById(R.id.DrawerLayout);        // Drawer object Assigned to the view
-            mDrawerToggle = new ActionBarDrawerToggle(this,Drawer,toolbar,R.string.openDrawer,R.string.closeDrawer){
+		Drawer = (DrawerLayout) findViewById(R.id.DrawerLayout);
+		mDrawerToggle = new ActionBarDrawerToggle(this, Drawer, toolbar,
+				R.string.openDrawer, R.string.closeDrawer) {
 
-                @Override
-                public void onDrawerOpened(View drawerView) {
-                    super.onDrawerOpened(drawerView);
-                    // code here will execute once the drawer is opened( As I dont want anything happened whe drawer is
-                    // open I am not going to put anything here)
-                }
+			@Override
+			public void onDrawerOpened(View drawerView) {
+				super.onDrawerOpened(drawerView);
 
-                @Override
-                public void onDrawerClosed(View drawerView) {
-                    super.onDrawerClosed(drawerView);
-                    // Code here will execute once drawer is closed
-                }
+			}
 
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				super.onDrawerClosed(drawerView);
+			}
 
-
-            }; // Drawer Toggle Object Made
-            Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
-            mDrawerToggle.syncState();    // Finally we set the drawer toggle sync State
-    }
+		};
+		Drawer.setDrawerListener(mDrawerToggle);
+		mDrawerToggle.syncState();
+	}
     
     private void loadProfileData(){
     	UserDetails mUserDetails = UserDetails.getLoggedInUser(mContext);
     	EMAIL = mUserDetails.getEmail();
     	NAME = mUserDetails.getName();
+    	tocken = mUserDetails.getAuthtoken();
     }
+    
+    private void initilizePagerview(){
+    	
+    	txt_countjob = (TextView) findViewById(R.id.activity_home_jobcount);
+    	txt_countclass = (TextView) findViewById(R.id.activity_home_classcount);
+    	txt_countmetup = (TextView) findViewById(R.id.activity_home_meetcount);
+    	
+    	tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+		pager = (ViewPager) findViewById(R.id.pager);
+		adapter = new MyPagerAdapter(getSupportFragmentManager());
+		pager.setAdapter(adapter);
+		final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
+		pager.setPageMargin(pageMargin);
+		tabs.setViewPager(pager);
+		pager.setOffscreenPageLimit(3);
+		tabs.setOnPageChangeListener(this);
+		
+		loadJobList();
+    }
+    
+    private void closeDraware(){
+    	if (Drawer.isDrawerOpen(GravityCompat.START)) {
+			Drawer.closeDrawers();
+		}
+    }
+    
+    
+    
+    public void loadJobList() {
+
+		if (!Util.hasConnection(mContext)) {
+			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+
+		JobListParserNew mParserNew=new JobListParserNew();
+		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
+			
+			@Override
+			public void OnSuccess(JobList mJobList) {
+				if (mJobList != null) {
+					ArrayList<JobDetails> jobs = mJobList.getJobs();
+					if (jobs != null && jobs.size() >= 1) {
+						mJobsFragment.refreshDataInAdapter(jobs);
+					}
+				}
+			}
+
+			@Override
+			public void OnError() {
+
+			}
+		});
+		mParserNew.parse(mContext, mParserNew.getBody(), tocken,true);
+	}
+    
+    
+    
+    private void showLogutDialog(){
+    	AlertDialog.Builder alert=new AlertDialog.Builder(mContext);
+    	alert.setTitle("Logout");
+    	alert.setMessage("Do you want to logout?");
+    	alert.setPositiveButton("No", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		alert.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Util.ShowToast(mContext,"Successfully logout.");
+				dialog.dismiss();
+			}
+		});
+		
+		
+
+
+		alert.create();
+		alert.show();
+    }
+    
+    public class MyPagerAdapter extends FragmentStatePagerAdapter {
+
+		private final String[] TITLES = { "Jobs", "Classifieds","Meetups"};
+
+		public MyPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return TITLES[position];
+		}
+
+		@Override
+		public int getCount() {
+			return TITLES.length;
+		}
+
+		@Override
+		public Parcelable saveState() {
+			return null;
+		}
+//
+//		@Override
+//		public boolean isViewFromObject(View view, Object object) {
+//			return view.equals(object);
+//		}
+//
+//		@Override
+//		public void restoreState(Parcelable state, ClassLoader loader) {
+//		}
+//
+//		@Override
+//		public void startUpdate(View container) {
+//
+//		}
+//
+		@Override
+		public int getItemPosition(Object object) {
+			return POSITION_NONE;
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			switch (position) {
+			case 0:
+				mJobsFragment = JobsFragment.newInstance(position,ActivityHome.this);
+				mJobsFragment.setJobsfrginterface(ActivityHome.this);
+				return mJobsFragment;
+			case 1:
+				mClassifiedsFragment = ClassifiedsFragment.newInstance(position,ActivityHome.this);
+				return mClassifiedsFragment;
+			case 2:
+				mMeetupsFragment = MeetupsFragment.newInstance(position,ActivityHome.this);
+				return mMeetupsFragment;
+			}
+			return null;
+			
+		}
+	}
+    
+    /**********************************************   Sync service ***********************************************************/
+    
+	private Timer timer;
+	private MyTask mTask;
+	private String[] count;
+	
+	public void stopservice() {
+		try {
+			if (timer != null) {
+				timer.cancel();
+				timer.purge();
+				timer = null;
+			}
+			if (mTask != null) {
+				mTask.cancel();
+				mTask = null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void startService() {
+		try {
+			if (timer != null) {
+				timer.cancel();
+				timer.purge();
+				timer = null;
+				timer = new Timer();
+				mTask = new MyTask();
+				timer.scheduleAtFixedRate(mTask, 0, Util.servicesyncInterval);
+			}
+			if (timer == null) {
+				timer = new Timer();
+				mTask = new MyTask();
+				timer.scheduleAtFixedRate(mTask, 0, Util.servicesyncInterval);
+			}
+		} catch (Exception e) {
+			Log.i("TaskTimerNullcheck", "TaskTimerNullcheck_excep");
+			e.printStackTrace();
+		}
+	}
+
+	private class MyTask extends TimerTask {
+		@Override
+		public void run() {
+			try {
+				CountSyncParser countSyncParser=new CountSyncParser();
+				count = countSyncParser.parse(mContext, countSyncParser.getBody(mJobsFragment.firsttJobID), tocken);
+				handler.sendEmptyMessage(0);
+			} catch (Exception e) {
+				e.getMessage();
+			}
+		}
+	}
+
+	private Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			try {
+				if (count!=null) {
+					String jobcount = count[0] ;
+					String classcount = count[1] ;
+					String meetupcount = count[2] ;
+					if (jobcount!=null && !jobcount.equals("") && !jobcount.equals("0")) {
+						txt_countjob.setVisibility(View.VISIBLE);
+						txt_countjob.setText(jobcount);
+					}else {
+						txt_countjob.setVisibility(View.GONE);
+					}
+					if (classcount!=null && !classcount.equals("") && !classcount.equals("0")) {
+						txt_countclass.setVisibility(View.VISIBLE);
+						txt_countclass.setText(classcount);
+					}else {
+						txt_countclass.setVisibility(View.GONE);
+					}
+					if (meetupcount!=null && !meetupcount.equals("") && !meetupcount.equals("0")) {
+						txt_countmetup.setVisibility(View.VISIBLE);
+						txt_countmetup.setText(meetupcount);
+					}else {
+						txt_countmetup.setVisibility(View.GONE);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	};
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

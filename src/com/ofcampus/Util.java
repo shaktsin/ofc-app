@@ -17,6 +17,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.entity.StringEntity;
@@ -29,7 +30,9 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
@@ -44,7 +47,7 @@ public class Util {
 	public static int connectTimeout=10000;
 	public static int socketTimeout=30000;
 	public static int delaytime = 2000;
-	public static int servicesyncInterval = 180000;
+	public static int servicesyncInterval = 30*1000;
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
 	
 	public static String TITLES[] = {"My Profile","My Posts","Important Mail","Settings","Logout"};
@@ -52,6 +55,10 @@ public class Util {
 	
 	public static enum userType{
 		Normal,Gmail,Facebook
+	}
+	
+	public static enum jobListCallFor{
+		Normal,refresh
 	}
 	
 	public static String getLoginUrl() {
@@ -62,10 +69,42 @@ public class Util {
 		return baseUrl+"user/signUp";
 	}
 	
-	
 	public static String getInstituteUrl() {
 		return baseUrl+"institute/all";
 	}
+	
+	public static String getJobListUrl() {
+		return baseUrl+"jobs/list";
+	}
+	
+	public static String getPrepareUrl() {
+		return baseUrl+"jobs/prepare";
+	}
+	
+	public static String getcreateJobUrl() {
+		return baseUrl+"jobs/create";
+	}
+	
+	public static String getJobDetailsUrl(String jobID) {
+		return baseUrl+"jobs/"+jobID;
+	}
+
+	public static String getJobSyncCountUrl() {
+		return baseUrl+"post/post/sync";
+	}
+	
+	public static String getJobHidetUrl() {
+		return baseUrl+"post/react";
+	}
+	
+	public static String getMyPostJobUrl() {
+		return baseUrl+"post/myposts";
+	}
+	
+	public static String getImportantmailUrl() {
+		return baseUrl+"post/imp";
+	}
+	
 	
 	
 	/**
@@ -178,6 +217,51 @@ public class Util {
 			return responData;
 		}
 	 
+	 /**
+		 * Name Value pair request.
+		 */
+		 public static String[] GetRequest(List<NameValuePair> postData,String url) {
+				String res = "";
+				String[] responData = { "", "" };
+				try {
+					HttpGet httpget = new HttpGet(url); 
+					httpget.setHeader("Content-Type","application/x-www-form-urlencoded");
+					httpget.setHeader(postData.get(0).getName(),postData.get(0).getValue());
+					HttpClient httpclient = new DefaultHttpClient();
+					httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+					httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+					HttpResponse httpResponse = httpclient.execute(httpget);
+					// httpResponse.getStatusLine();
+					// HttpEntity entity = httpResponse.getEntity();
+
+					res = EntityUtils.toString(httpResponse.getEntity());
+					responData[0] = "200";
+					responData[1] = res;
+					
+				} catch (ConnectTimeoutException e) {
+					responData[0] = "205";
+					e.printStackTrace();
+				} catch (SocketTimeoutException e) {
+					responData[0] = "205";
+					e.printStackTrace();
+				} catch (UnsupportedEncodingException e) {
+					responData[0] = "205";
+					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					responData[0] = "205";
+					e.printStackTrace();
+				} catch (ParseException e) {
+					responData[0] = "205";
+					e.printStackTrace();
+				} catch (IOException e) {
+					responData[0] = "205";
+					e.printStackTrace();
+				}
+				return responData;
+			}
+		 
+		 
+		 
 	// HTTP GET request
 	public static String[] sendGet(String url) throws Exception {
 		String Response = "";
@@ -253,6 +337,38 @@ public class Util {
 	      return responData;
 	  }
 	 
+	 public static  String[] POST_JOB(String url, JSONObject jsonObject,String auth){
+	      InputStream inputStream = null;
+	      String result = "";
+	      String[] responData = { "", "" };
+	      try {
+	          HttpClient httpclient = new DefaultHttpClient();
+	          httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+	          httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+	          HttpPost httpPost = new HttpPost(url);
+	          String json = "";
+	          json = jsonObject.toString();
+	          StringEntity se = new StringEntity(json);
+	          httpPost.setEntity(se); 
+	          httpPost.setHeader("Authorization", auth);
+	          httpPost.setHeader("Content-type", "application/json");
+	          HttpResponse httpResponse = httpclient.execute(httpPost);
+	          inputStream = httpResponse.getEntity().getContent();
+	          if(inputStream != null)
+	              result = convertInputStreamToString(inputStream);
+	          else
+	              result = "Did not work!";
+	          responData[0] = "200";
+	          responData[1] = result;
+
+	      } catch (Exception e) {
+	    	  responData[0] = "205";
+	          Log.d("InputStream", e.getLocalizedMessage());
+	      }
+	      return responData;
+	  }
+	 
+	 
 	  private static String convertInputStreamToString(InputStream inputStream) throws IOException{
 	      BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
 	      String line = "";
@@ -276,5 +392,17 @@ public class Util {
 			e.printStackTrace();
 		}
 		return value;
+	}
+	
+	public static void shareIntent(Context mContext){
+		try {
+			 Intent intent = new Intent(Intent.ACTION_SEND);
+			 intent.setType("text/plain");
+			 intent.putExtra(Intent.EXTRA_SUBJECT, mContext.getResources().getString(R.string.share_subject));
+			 intent.putExtra(Intent.EXTRA_TEXT, mContext.getResources().getString(R.string.share_content));
+			 mContext.startActivity(Intent.createChooser(intent, "Share using"));
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }

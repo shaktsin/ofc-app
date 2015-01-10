@@ -10,6 +10,14 @@
     <string name="openDrawer">openDrawer</string>
     <string name="closeDrawer">closeDrawer</string>
 
+    <!-- Share Text -->
+    <string name="share_subject">Android App.</string>
+    <string name="share_content">Android App for job.</string>
+
+    <!-- Menu Search -->
+    <string name="Search">Search</string>
+    <string name="Filter">Filter</string>
+
     <!-- Login Screen -->
     <string name="login_scr_logo_">Of Campus</string>
     <string name="login_scr_hint_email">Enter email address</string>
@@ -43,5 +51,30 @@
 
     <!-- Institute List Screen -->
     <string name="Institute_list_choose">Choose your Institute</string>
+
+    <!-- Job List View -->
+    <string name="Job_List_View_reply">Reply</string>
+    <string name="Job_List_View_share">Share</string>
+    <string name="Job_List_View_comment">Comment</string>
+
+    <!-- Craete Jobs -->
+    <string name="craetejob_txt_industry">Industry</string>
+    <string name="craetejob_txt_Role">Role</string>
+    <string name="craetejob_txt_experience">Experience</string>
+    <string name="craetejob_txt_sal_range">Salary Range</string>
+    <string name="craetejob_txt_location">Location</string>
+    <string name="craetejob_txt_jobheadline">Job Headline</string>
+    <string name="craetejob_txt_jobdetails">Job Details</string>
+    <string name="craetejob_txt_Reply_via">Reply via</string>
+    <string name="craetejob_txt_Email">Email</string>
+    <string name="craetejob_txt_PhoneNo">Phone No.</string>
+    <string name="craetejob_txt_Whatsapp">Whatsapp</string>
+    <string name="craetejob_txt_Upload">Upload JD</string>
+
+    <!-- MyProfile -->
+    <string name="MyProfile_txt_CurrentEmployer">Current Employer</string>
+    <string name="MyProfile_txt_PreviousEmployers">Previous Employers</string>
+    <string name="MyProfile_txt_ProfessionalInterests">Professional Interests</string>
+    <string name="MyProfile_txt_Interests">Interests</string>
 
 </resources>
