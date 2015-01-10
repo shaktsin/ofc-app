@@ -102,9 +102,17 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 	}
 	
 	
-	@Override public void arrowClieckEvent(JobDetails mJobDetails){
+	@Override 
+	public void arrowClieckEvent(JobDetails mJobDetails){
 		HideCallingDialog(mJobDetails);
 	}
+	
+	@Override 
+	public void impClieckEvent(JobDetails mJobDetails){
+		HideCalling(mJobDetails,2);	
+	}
+	
+	
 	
 	@Override public void onRefresh() {
 		if (jobsfrginterface!=null) {
@@ -226,13 +234,21 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 			}
 		});
 		
-		((TextView) dialog.findViewById(R.id.iflate_custdialog_important)).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				HideCalling(mJobDetails,2);		
+//		((TextView) dialog.findViewById(R.id.iflate_custdialog_important)).setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				HideCalling(mJobDetails,2);		
+//				dialog.dismiss();
+//			}
+//		});
+		
+		((TextView) dialog.findViewById(R.id.iflate_custdialog_cancel)).setOnClickListener(new OnClickListener() {
+		@Override
+		public void onClick(View v) {
 				dialog.dismiss();
 			}
 		});
+		
 		
 		((TextView) dialog.findViewById(R.id.iflate_custdialog_spam)).setOnClickListener(new OnClickListener() {
 			@Override
@@ -241,7 +257,7 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 				dialog.dismiss();
 			}
 		});
-
+		dialog.setCancelable(false);
 		dialog.show();
 	}
 	

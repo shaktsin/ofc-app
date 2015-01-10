@@ -207,7 +207,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		switch (v.getId()) {
 		case R.id.activity_home_img_composejob:
 			startActivity(new Intent(ActivityHome.this,ActivityCreateJob.class));
-			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			overridePendingTransition(0,0);
 			break;
 
 		default:
@@ -222,22 +222,22 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		case 1:
 			closeDraware();
 			startActivity(new Intent(ActivityHome.this,ActivityMyProfile.class));
-			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			overridePendingTransition(0,0);
 			break;
 		case 2:
 			closeDraware();
 			startActivity(new Intent(ActivityHome.this,ActivityMyPost.class));
-			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			overridePendingTransition(0,0);
 			break;
 		case 3:
 			closeDraware();
 			startActivity(new Intent(ActivityHome.this,ActivityImportantmail.class));
-			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			overridePendingTransition(0,0);
 			break;
 		case 4:
 			closeDraware();
 			startActivity(new Intent(ActivityHome.this,ActivitySettings.class));
-			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+			overridePendingTransition(0,0);
 			break;
 		case 5:
 			closeDraware();

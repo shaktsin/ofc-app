@@ -59,11 +59,12 @@
                 android:id="@+id/joblistview_img_imp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/joblistview_img_arrow"
                 android:layout_centerVertical="true"
-                android:visibility="gone"
+                android:layout_toLeftOf="@+id/joblistview_img_arrow"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_important" />
+                android:padding="5dp"
+                android:src="@drawable/important_selector"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/joblistview_img_arrow"

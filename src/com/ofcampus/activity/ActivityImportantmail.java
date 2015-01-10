@@ -41,7 +41,7 @@ public class ActivityImportantmail  extends ActionBarActivity implements Importa
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		overridePendingTransition(0,0);
 		finish();
 	}
 	

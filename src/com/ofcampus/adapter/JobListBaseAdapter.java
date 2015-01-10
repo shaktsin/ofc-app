@@ -136,11 +136,12 @@ public class JobListBaseAdapter extends BaseAdapter{
 			mHolder.txt_postdate.setText("Posted on "+mJobDetails.getPostedon());
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			mHolder.txt_contain.setText(mJobDetails.getContent());
+			mHolder.img_important.setVisibility(View.VISIBLE);
 			
 			if (mJobDetails.getImportant()==1) {
-				mHolder.img_important.setVisibility(View.VISIBLE);
+				mHolder.img_important.setSelected(true);
 			}else {
-				mHolder.img_important.setVisibility(View.GONE);
+				mHolder.img_important.setSelected(false);
 			}
 
 			convertView.setOnClickListener(new OnClickListener() {
@@ -181,6 +182,15 @@ public class JobListBaseAdapter extends BaseAdapter{
 				}
 			});
 			
+			mHolder.img_important.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (joblistinterface != null) {
+						joblistinterface.impClieckEvent(mJobDetails);
+					}
+				}
+			});
 			
 			mHolder.img_arrow.setOnClickListener(new OnClickListener() {
 
@@ -223,6 +233,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		public void convertViewOnClick(JobDetails mJobDetails); 
 		public void firstIDAndlastID(String fstID, String lstID); 
 		public void arrowClieckEvent(JobDetails mJobDetails);  
+		public void impClieckEvent(JobDetails mJobDetails);  
 	}
 
 }
