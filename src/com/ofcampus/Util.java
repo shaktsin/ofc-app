@@ -394,12 +394,12 @@ public class Util {
 		return value;
 	}
 	
-	public static void shareIntent(Context mContext){
+	public static void shareIntent(Context mContext,String subject,String content){
 		try {
 			 Intent intent = new Intent(Intent.ACTION_SEND);
 			 intent.setType("text/plain");
-			 intent.putExtra(Intent.EXTRA_SUBJECT, mContext.getResources().getString(R.string.share_subject));
-			 intent.putExtra(Intent.EXTRA_TEXT, mContext.getResources().getString(R.string.share_content));
+			 intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+			 intent.putExtra(Intent.EXTRA_TEXT, content);
 			 mContext.startActivity(Intent.createChooser(intent, "Share using"));
 		} catch (NotFoundException e) {
 			e.printStackTrace();

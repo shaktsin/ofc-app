@@ -167,7 +167,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					Util.shareIntent(mContext);
+					Util.shareIntent(mContext,mJobDetails.getSubject(),mJobDetails.getContent());
 				}
 			});
 
