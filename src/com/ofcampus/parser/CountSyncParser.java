@@ -1,11 +1,20 @@
 package com.ofcampus.parser;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 
 import com.ofcampus.Util;
+import com.ofcampus.databasehelper.JOBListTable;
+import com.ofcampus.model.CityDetails;
+import com.ofcampus.model.IndustryDetails;
+import com.ofcampus.model.IndustryRoleDetails;
+import com.ofcampus.model.JobDetails;
+import com.ofcampus.model.JobList;
 
 public class CountSyncParser {
 private Context mContext;
@@ -17,25 +26,36 @@ private Context mContext;
 	private String EXCEPTION="exception";
 	private String MESSAGES="messages";
 	
-	/*Sync List Key*/
-	private String JOBCOUNT="jobCount";
-	private String CLASSCOUNT="classCount";
-	private String MEETCOUNT="meetCount";
+	/*Job List Key*/
+	private String JOBCREATERESPONSELIST="jobCreateResponseList";
+	private String POSTID="postId";
+	private String SUBJECT="subject";
+	private String ISB_JOBS="ISB JOBS";
+	private String CONTENT="content";
+	private String POSTEDON="postedOn";
+	private String USERDTO="userDto";
+	private String ID="id";
+	private String NAME="name";
+	private String IMAGE="image";
+	private String REPLYDTO="replyDto";
+	private String SHAREDTO="shareDto";
+	private String IMPORTANT="important";
 	
 	
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public String[] parse(Context context, JSONObject postData,String authorization) { 
+	public ArrayList<JobDetails> parse(Context context, JSONObject postData,String authorization) { 
 		
 		this.mContext = context;
 		String authenticationJson;
 		boolean isTimeOut=false;
-		String[] counts={"","",""};
+		JobList mJobList;
+		ArrayList<JobDetails> jobs = null;
 		
 		try {
-			String[] responsedata =  Util.POST_JOB(Util.getJobSyncCountUrl(), postData, authorization);
+			String[] responsedata =  Util.POST_JOB(Util.getJobListUrl(), postData, authorization);
 			authenticationJson = responsedata[1];
 			isTimeOut = (responsedata[0].equals("205"))?true:false;
 			
@@ -47,31 +67,89 @@ private Context mContext;
 					if (Obj!=null && !Obj.equals("")) {
 						String expt= Util.getJsonValue(Obj, EXCEPTION);
 						if (expt.equals("false")) {
-							counts[0]=Util.getJsonValue(Obj, JOBCOUNT);
-							counts[1]=Util.getJsonValue(Obj, CLASSCOUNT);
-							counts[2]=Util.getJsonValue(Obj, MEETCOUNT);
+							mJobList =parseJSONData(Obj);
+							jobs =mJobList.getJobs();
+							if (jobs!=null && jobs.size()>=1) {
+								JOBListTable.getInstance(mContext).inserJobData(mJobList.getJobs());
+							}
 						}
 					}
-				}else if(responsecode!=null && responsecode.equals("500")){
+				}else if(responsecode!=null && (responsecode.equals("500") || responsecode.equals("401"))){
 					JSONObject userObj = mObject.getJSONObject(RESULTS);
 					if (userObj!=null) {
 						responseDetails=userObj.getJSONArray("messages").get(0).toString();
 					}
 				}
-				
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return counts; 
+		return jobs; 
 	}
 	
 	
 	
 	
+	public JobList parseJSONData(JSONObject obj){
+
+		JobList mJobList=new JobList();
+		
+		try {
+			JSONObject jsonobject=null;
+			
+			JSONArray jobjsonarray=obj.getJSONArray(JOBCREATERESPONSELIST) ;
+			
+			if (jobjsonarray != null && jobjsonarray.length() >= 1) {
+				
+				ArrayList<JobDetails> jobarray = new ArrayList<JobDetails>();
+				
+				for (int i = 0; i < jobjsonarray.length(); i++) {
+					JobDetails mJobDetails=new JobDetails();
+					jsonobject = jobjsonarray.getJSONObject(i);
+					
+					mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID)); 
+					mJobDetails.setSubject(Util.getJsonValue(jsonobject, SUBJECT));
+					mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));
+					mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
+					mJobDetails.setPostedon(Util.getJsonValue(jsonobject, POSTEDON));
+					mJobDetails.setImportant((Util.getJsonValue(jsonobject, IMPORTANT).equals("true"))?1:0);
+					JSONObject userJSONobj=jsonobject.getJSONObject(USERDTO);
+					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
+					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
+					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
+					
+					mJobDetails.setReplydto(Util.getJsonValue(jsonobject, REPLYDTO));
+					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
+					mJobDetails.setISSyncData(""+1); 
+
+					jobarray.add(mJobDetails);
+					mJobDetails=null;
+				}
+				mJobList.setJobs(jobarray);
+			}
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return mJobList;
+		
+	}
 	
 	
-	
+	public JSONObject getBody(String postId, String operation) {
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+			jsObj.put("postId", postId);
+			jsObj.put("operation", operation);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
+	}
 	
 	
 

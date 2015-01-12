@@ -26,6 +26,17 @@ public class JobDetails {
 	private String salaryTo = "";
 	private String salaryFrom = "";
 	
+	/*For Sync*/
+	private String ISSyncData = "0";
+	
+	public String getISSyncData() {
+		return ISSyncData;
+	}
+
+	public void setISSyncData(String iSSyncData) {
+		ISSyncData = iSSyncData;
+	}
+
 	public String getPostid() {
 		return postid;
 	}

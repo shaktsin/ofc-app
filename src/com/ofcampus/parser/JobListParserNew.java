@@ -12,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
+import com.ofcampus.Util.JobDataReturnFor;
+import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.CityDetails;
 import com.ofcampus.model.IndustryDetails;
 import com.ofcampus.model.IndustryRoleDetails;
@@ -124,6 +126,15 @@ private Context mContext;
 							String expt= Util.getJsonValue(Obj, EXCEPTION);
 							if (expt.equals("false")) {
 								mJobList = parseJSONData(Obj);
+								ArrayList<JobDetails> arrayJobInDB =JOBListTable.getInstance(context).fatchJobData(JobDataReturnFor.Normal);
+								if (arrayJobInDB==null) {
+									JOBListTable.getInstance(mContext).inserJobData(mJobList.getJobs());
+								}else if(arrayJobInDB!=null && arrayJobInDB.size() < 12) {
+									int size=12 - arrayJobInDB.size();
+									if (mJobList.getJobs()!=null && mJobList.getJobs().size()>=1) {
+										JOBListTable.getInstance(mContext).inserJobData(mJobList.getJobs() ,size);
+									}
+								}
 							}
 						}
 					}else if(responsecode!=null && (responsecode.equals("500") || responsecode.equals("401"))){
@@ -173,7 +184,7 @@ private Context mContext;
 	
 	
 	
-	private JobList parseJSONData(JSONObject obj){
+	public JobList parseJSONData(JSONObject obj){
 
 		JobList mJobList=new JobList();
 		

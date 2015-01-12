@@ -9,6 +9,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,10 +43,12 @@ import android.widget.TextView;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.Util.JobDataReturnFor;
 import com.ofcampus.activity.JobsFragment.JobsFrgInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
+import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.JobList;
 import com.ofcampus.model.UserDetails;
@@ -285,44 +288,34 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	 */
 	@Override
 	public void pulltorefreshcall(String jobID) {
-		JobListParserNew mParserNew=new JobListParserNew();
-		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
-			
-			@Override
-			public void OnSuccess(JobList mJobList) {
-				if (mJobList != null) {
-					ArrayList<JobDetails> jobs = mJobList.getJobs();
-					if (jobs != null && jobs.size() >= 1) {
-						try {
-							if(txt_countjob.getVisibility()==View.VISIBLE){
-								int cout=Integer.parseInt(txt_countjob.getText().toString());
-								if(jobs.size()==cout){
-									txt_countjob.setVisibility(View.GONE);
-								}else if(cout>=1 && cout>jobs.size()){
-									txt_countjob.setVisibility(View.VISIBLE);
-									txt_countjob.setText((cout-jobs.size())+"");
-								}
-							}
-						} catch (Exception e) {
-							Log.e("pulltorefreshcall success", e.toString());
-							e.printStackTrace();
+		try {
+			ArrayList<JobDetails> jobs = JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.syncdata);
+			if (jobs != null && jobs.size() >= 1) {
+				try {
+					if (txt_countjob.getVisibility() == View.VISIBLE) {
+						int cout = Integer.parseInt(txt_countjob.getText().toString());
+						if (jobs.size() == cout) {
+							txt_countjob.setVisibility(View.GONE);
+						} else if (cout >= 1 && cout > jobs.size()) {
+							txt_countjob.setVisibility(View.VISIBLE);
+							txt_countjob.setText((cout - jobs.size()) + "");
 						}
-						mJobsFragment.refreshSwipeDataInAdapter(jobs);
-					}else {
-						Util.ShowToast(mContext, "No more job updated.");
-						mJobsFragment.refreshComplete();
 					}
+				} catch (Exception e) {
+					Log.e("pulltorefreshcall success", e.toString());
+					e.printStackTrace();
 				}
-			}
-
-			@Override
-			public void OnError() {
+				mJobsFragment.refreshSwipeDataInAdapter(jobs);
+				JOBListTable.getInstance(mContext).deleteoutDatedPost(jobs.size());
+			} else {
+				Util.ShowToast(mContext, "No more job updated.");
 				mJobsFragment.refreshComplete();
 			}
-		});
-		mParserNew.parse(mContext, mParserNew.getBody(jobID, 1+""), tocken,false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	/**
 	 * For Job Fragment Pull to refresh calling.
 	 */
@@ -416,7 +409,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		pager.setOffscreenPageLimit(3);
 		tabs.setOnPageChangeListener(this);
 		
-		loadJobList();
+		new loadExistDataFromDB().execute();
     }
     
     private void closeDraware(){
@@ -549,7 +542,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     
 	private Timer timer;
 	private MyTask mTask;
-	private String[] count;
+	private String[] count={"","",""};
 	
 	public void stopservice() {
 		try {
@@ -592,9 +585,29 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		@Override
 		public void run() {
 			try {
-				CountSyncParser countSyncParser=new CountSyncParser();
-				count = countSyncParser.parse(mContext, countSyncParser.getBody(mJobsFragment.firsttJobID), tocken);
-				handler.sendEmptyMessage(0);
+				
+				if (Util.hasConnection(mContext)) {
+					ArrayList<JobDetails> arrJOb = JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.syncdata); 
+					if (arrJOb!=null && arrJOb.size()>=1) {
+						count[0]=""+arrJOb.size();
+						count[1]="";
+						count[2]="";
+					}else {
+						CountSyncParser countSyncParser=new CountSyncParser();
+						arrJOb = countSyncParser.parse(mContext, countSyncParser.getBody(mJobsFragment.firsttJobID, 1+""), tocken);
+						if (arrJOb!=null && arrJOb.size()>=1) {
+							count[0]=""+arrJOb.size();
+							count[1]="";
+							count[2]="";
+						}else {
+							count[0]="";
+							count[1]="";
+							count[2]="";
+						}
+					}
+					handler.sendEmptyMessage(0);
+				}
+				
 			} catch (Exception e) {
 				e.getMessage();
 			}
@@ -636,9 +649,34 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	};
 
     
-    
-    
-    
+	private class loadExistDataFromDB extends AsyncTask<Void, Void, Void> {
+
+		private ArrayList<JobDetails> arrayJob;
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			
+			arrayJob = JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.Normal);
+			
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			
+			if (arrayJob!=null && arrayJob.size()>=1) {
+				mJobsFragment.refreshDataInAdapter(arrayJob);
+			}else {
+				loadJobList();
+			}
+		}
+
+	}
     
     
     

@@ -1856,14 +1856,14 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f06001f;
         public static final int action_bar_title=0x7f06001e;
         public static final int action_context_bar=0x7f060032;
-        public static final int action_filter=0x7f0600b9;
+        public static final int action_filter=0x7f0600bb;
         public static final int action_menu_divider=0x7f06001a;
         public static final int action_menu_presenter=0x7f06001b;
         public static final int action_mode_bar=0x7f06002e;
         public static final int action_mode_bar_stub=0x7f06002d;
         public static final int action_mode_close_button=0x7f060020;
-        public static final int action_search=0x7f0600b8;
-        public static final int action_tick=0x7f0600b7;
+        public static final int action_search=0x7f0600ba;
+        public static final int action_tick=0x7f0600b9;
         public static final int activity_chooser_view_content=0x7f060021;
         public static final int activity_createjob_edit_Experiencefrom=0x7f060047;
         public static final int activity_createjob_edit_Experienceto=0x7f060046;
@@ -1918,6 +1918,7 @@ containing a value of this type.
         public static final int end=0x7f060014;
         public static final int expand_activities_button=0x7f060022;
         public static final int expanded_menu=0x7f060028;
+        public static final int hidepost=0x7f0600b7;
         public static final int home=0x7f060015;
         public static final int homeAsUp=0x7f060007;
         public static final int icon=0x7f060026;
@@ -2019,6 +2020,7 @@ containing a value of this type.
         public static final int showCustom=0x7f060009;
         public static final int showHome=0x7f060006;
         public static final int showTitle=0x7f060008;
+        public static final int spampost=0x7f0600b8;
         public static final int split_action_bar=0x7f060019;
         public static final int submit_area=0x7f06003c;
         public static final int swipe_container=0x7f060099;
@@ -2105,28 +2107,33 @@ containing a value of this type.
         public static final int support_simple_spinner_dropdown_item=0x7f03002c;
     }
     public static final class menu {
-        public static final int menu_createjob=0x7f0d0000;
-        public static final int menu_main=0x7f0d0001;
+        public static final int job_optionmenu=0x7f0d0000;
+        public static final int menu_createjob=0x7f0d0001;
+        public static final int menu_main=0x7f0d0002;
     }
     public static final class string {
-        public static final int Filter=0x7f0b001b;
+        public static final int DataBaseName=0x7f0b0013;
+        /**  DataBase Name And Version 
+         */
+        public static final int DataBaseName_Version=0x7f0b0012;
+        public static final int Filter=0x7f0b001d;
         /**  Institute List Screen 
          */
-        public static final int Institute_list_choose=0x7f0b0035;
-        public static final int Job_List_View_comment=0x7f0b0038;
+        public static final int Institute_list_choose=0x7f0b0037;
+        public static final int Job_List_View_comment=0x7f0b003a;
         /**  Job List View 
          */
-        public static final int Job_List_View_reply=0x7f0b0036;
-        public static final int Job_List_View_share=0x7f0b0037;
+        public static final int Job_List_View_reply=0x7f0b0038;
+        public static final int Job_List_View_share=0x7f0b0039;
         /**  MyProfile 
          */
-        public static final int MyProfile_txt_CurrentEmployer=0x7f0b0045;
-        public static final int MyProfile_txt_Interests=0x7f0b0048;
-        public static final int MyProfile_txt_PreviousEmployers=0x7f0b0046;
-        public static final int MyProfile_txt_ProfessionalInterests=0x7f0b0047;
+        public static final int MyProfile_txt_CurrentEmployer=0x7f0b0047;
+        public static final int MyProfile_txt_Interests=0x7f0b004a;
+        public static final int MyProfile_txt_PreviousEmployers=0x7f0b0048;
+        public static final int MyProfile_txt_ProfessionalInterests=0x7f0b0049;
         /**  Menu Search 
          */
-        public static final int Search=0x7f0b001a;
+        public static final int Search=0x7f0b001c;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0b0001;
@@ -2183,63 +2190,65 @@ containing a value of this type.
         /**  Content description for the Toolbar icon used to collapse an expanded action mode. [CHAR LIMIT=NONE] 
          */
         public static final int abc_toolbar_collapse_description=0x7f0b0004;
-        public static final int action_settings=0x7f0b0015;
+        public static final int action_settings=0x7f0b0017;
         public static final int app_name=0x7f0b0010;
         public static final int build_vers_=0x7f0b0011;
-        public static final int closeDrawer=0x7f0b0017;
-        public static final int craetejob_txt_Email=0x7f0b0041;
-        public static final int craetejob_txt_PhoneNo=0x7f0b0042;
-        public static final int craetejob_txt_Reply_via=0x7f0b0040;
-        public static final int craetejob_txt_Role=0x7f0b003a;
-        public static final int craetejob_txt_Upload=0x7f0b0044;
-        public static final int craetejob_txt_Whatsapp=0x7f0b0043;
-        public static final int craetejob_txt_experience=0x7f0b003b;
+        public static final int closeDrawer=0x7f0b0019;
+        public static final int craetejob_txt_Email=0x7f0b0043;
+        public static final int craetejob_txt_PhoneNo=0x7f0b0044;
+        public static final int craetejob_txt_Reply_via=0x7f0b0042;
+        public static final int craetejob_txt_Role=0x7f0b003c;
+        public static final int craetejob_txt_Upload=0x7f0b0046;
+        public static final int craetejob_txt_Whatsapp=0x7f0b0045;
+        public static final int craetejob_txt_experience=0x7f0b003d;
         /**  Craete Jobs 
          */
-        public static final int craetejob_txt_industry=0x7f0b0039;
-        public static final int craetejob_txt_jobdetails=0x7f0b003f;
-        public static final int craetejob_txt_jobheadline=0x7f0b003e;
-        public static final int craetejob_txt_location=0x7f0b003d;
-        public static final int craetejob_txt_sal_range=0x7f0b003c;
-        public static final int hello_world=0x7f0b0012;
-        public static final int internetconnection_msg=0x7f0b0014;
-        public static final int login_scr_btn_gpllogin=0x7f0b0020;
-        public static final int login_scr_btn_login=0x7f0b001f;
-        public static final int login_scr_edtpass_msg=0x7f0b0024;
-        public static final int login_scr_email_msg=0x7f0b0022;
-        public static final int login_scr_error_email_msg=0x7f0b0023;
-        public static final int login_scr_hint_Pass=0x7f0b001e;
-        public static final int login_scr_hint_email=0x7f0b001d;
+        public static final int craetejob_txt_industry=0x7f0b003b;
+        public static final int craetejob_txt_jobdetails=0x7f0b0041;
+        public static final int craetejob_txt_jobheadline=0x7f0b0040;
+        public static final int craetejob_txt_location=0x7f0b003f;
+        public static final int craetejob_txt_sal_range=0x7f0b003e;
+        /**  DataBase Name And Version End 
+         */
+        public static final int hello_world=0x7f0b0014;
+        public static final int internetconnection_msg=0x7f0b0016;
+        public static final int login_scr_btn_gpllogin=0x7f0b0022;
+        public static final int login_scr_btn_login=0x7f0b0021;
+        public static final int login_scr_edtpass_msg=0x7f0b0026;
+        public static final int login_scr_email_msg=0x7f0b0024;
+        public static final int login_scr_error_email_msg=0x7f0b0025;
+        public static final int login_scr_hint_Pass=0x7f0b0020;
+        public static final int login_scr_hint_email=0x7f0b001f;
         /**  Login Screen 
          */
-        public static final int login_scr_logo_=0x7f0b001c;
-        public static final int login_scr_parse_error=0x7f0b0026;
-        public static final int login_scr_parse_success=0x7f0b0025;
-        public static final int login_scr_txt_donthaveaccount=0x7f0b0021;
-        public static final int menu_settings=0x7f0b0013;
-        public static final int openDrawer=0x7f0b0016;
-        public static final int registration_txt_error_accname=0x7f0b0030;
-        public static final int registration_txt_error_email=0x7f0b0031;
+        public static final int login_scr_logo_=0x7f0b001e;
+        public static final int login_scr_parse_error=0x7f0b0028;
+        public static final int login_scr_parse_success=0x7f0b0027;
+        public static final int login_scr_txt_donthaveaccount=0x7f0b0023;
+        public static final int menu_settings=0x7f0b0015;
+        public static final int openDrawer=0x7f0b0018;
+        public static final int registration_txt_error_accname=0x7f0b0032;
+        public static final int registration_txt_error_email=0x7f0b0033;
         /**  error message 
          */
-        public static final int registration_txt_error_firstname=0x7f0b002e;
-        public static final int registration_txt_error_lasttname=0x7f0b002f;
-        public static final int registration_txt_error_notmatched=0x7f0b0034;
-        public static final int registration_txt_error_password=0x7f0b0032;
-        public static final int registration_txt_error_repassword=0x7f0b0033;
-        public static final int registration_txt_hint_accname=0x7f0b0029;
-        public static final int registration_txt_hint_email=0x7f0b002a;
+        public static final int registration_txt_error_firstname=0x7f0b0030;
+        public static final int registration_txt_error_lasttname=0x7f0b0031;
+        public static final int registration_txt_error_notmatched=0x7f0b0036;
+        public static final int registration_txt_error_password=0x7f0b0034;
+        public static final int registration_txt_error_repassword=0x7f0b0035;
+        public static final int registration_txt_hint_accname=0x7f0b002b;
+        public static final int registration_txt_hint_email=0x7f0b002c;
         /**  Registration Screen 
          */
-        public static final int registration_txt_hint_firstname=0x7f0b0027;
-        public static final int registration_txt_hint_lasttname=0x7f0b0028;
-        public static final int registration_txt_hint_password=0x7f0b002b;
-        public static final int registration_txt_hint_repassword=0x7f0b002c;
-        public static final int registration_txt_hint_signup=0x7f0b002d;
-        public static final int share_content=0x7f0b0019;
+        public static final int registration_txt_hint_firstname=0x7f0b0029;
+        public static final int registration_txt_hint_lasttname=0x7f0b002a;
+        public static final int registration_txt_hint_password=0x7f0b002d;
+        public static final int registration_txt_hint_repassword=0x7f0b002e;
+        public static final int registration_txt_hint_signup=0x7f0b002f;
+        public static final int share_content=0x7f0b001b;
         /**  Share Text 
          */
-        public static final int share_subject=0x7f0b0018;
+        public static final int share_subject=0x7f0b001a;
     }
     public static final class style {
         /**  Base application theme. 

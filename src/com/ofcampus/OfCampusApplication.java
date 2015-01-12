@@ -2,11 +2,17 @@ package com.ofcampus;
 
 import java.util.ArrayList;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.res.Configuration;
+
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.ofcampus.databasehelper.OfCampusDBHelper;
 import com.ofcampus.model.InstituteDetails;
 import com.ofcampus.model.JobDetails;
-
-import android.app.Application;
-import android.content.res.Configuration;
 
 public class OfCampusApplication extends Application {
 
@@ -14,10 +20,14 @@ public class OfCampusApplication extends Application {
 	public String instituteid="";
 	public JobDetails jobdetails;
 	
+	public OfCampusDBHelper DB_HELPER;
+	
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		initilizeDB();
+		initImageLoader(getApplicationContext());
 	}
 
 	@Override
@@ -27,7 +37,51 @@ public class OfCampusApplication extends Application {
 
 	@Override
 	public void onTerminate() {
+		closeDB();
 		super.onTerminate();
+	}
+	
+	/**
+	 * Related to Data Base.
+	 */
+	private void initilizeDB() {
+		if (DB_HELPER == null) {
+			DB_HELPER = new OfCampusDBHelper(OfCampusApplication.this);
+		}
+		try {
+			DB_HELPER.getWritableDatabase();
+			DB_HELPER.openDataBase();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void closeDB() {
+		try {
+			DB_HELPER.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Initialize Image Loader.
+	 */
+	public static void initImageLoader(Context context) {
+		// This configuration tuning is custom. You can tune every option, you
+		// may tune some of them,
+		// or you can create default configuration by
+		// ImageLoaderConfiguration.createDefault(this);
+		// method.
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				context).threadPriority(Thread.NORM_PRIORITY - 2)
+				.denyCacheImageMultipleSizesInMemory()
+				.discCacheFileNameGenerator(new Md5FileNameGenerator())
+				.tasksProcessingOrder(QueueProcessingType.LIFO)
+				.writeDebugLogs() // Remove for release app
+				.build();
+		// Initialize ImageLoader with configuration.
+		ImageLoader.getInstance().init(config);
 	}
 
 }

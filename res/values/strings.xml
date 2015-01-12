@@ -3,6 +3,13 @@
 
     <string name="app_name">OfCampus</string>
     <string name="build_vers_">Build version 1.0.0</string>
+
+    <!-- DataBase Name And Version -->
+    <string name="DataBaseName_Version">1</string>
+    <string name="DataBaseName">OfCampus</string>
+
+    <!-- DataBase Name And Version End -->
+
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="internetconnection_msg">Please check your internet connection.</string>

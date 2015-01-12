@@ -3,7 +3,9 @@ package com.ofcampus.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -168,7 +170,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					Util.shareIntent(mContext,mJobDetails.getSubject(),mJobDetails.getContent());
+//					Util.shareIntent(mContext,mJobDetails.getSubject(),mJobDetails.getContent());
+					Util.onShareClick(mContext,v,mJobDetails.getSubject(),mJobDetails.getContent()) ;
 				}
 			});
 
@@ -196,8 +199,31 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					if (joblistinterface != null) {
-						joblistinterface.arrowClieckEvent(mJobDetails);
+					try {
+						PopupMenu popup = new PopupMenu(mContext, v);
+						popup.getMenuInflater().inflate(R.menu.job_optionmenu, popup.getMenu());
+						popup.show();
+						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+							@Override
+							public boolean onMenuItemClick(MenuItem item) {
+
+								switch (item.getItemId()) {
+								case R.id.hidepost:
+									Util.ShowToast(mContext, "Hide PostCall"); 
+									break;
+								case R.id.spampost:
+									Util.ShowToast(mContext, "Spam PostCall"); 
+									break;
+
+								default:
+									break;
+								}
+
+								return true;
+							}
+						});
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			});

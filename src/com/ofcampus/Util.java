@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,13 +30,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.LabeledIntent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -59,6 +66,11 @@ public class Util {
 	
 	public static enum jobListCallFor{
 		Normal,refresh
+	}
+	
+	
+	public static enum JobDataReturnFor{
+		Normal,syncdata
 	}
 	
 	public static String getLoginUrl() {
@@ -404,5 +416,47 @@ public class Util {
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	
+	public static void onShareClick(Context mcContext, View v, String subject,String content) {
+
+		try {
+			List<String> PackageName = getShareApplication();
+			List<Intent> targetedShareIntents = new ArrayList<Intent>();
+			Intent share = new Intent(android.content.Intent.ACTION_SEND);
+			share.setType("text/plain");
+			List<ResolveInfo> resInfo = mcContext.getPackageManager().queryIntentActivities(share, 0);
+			if (!resInfo.isEmpty()) {
+				for (ResolveInfo info : resInfo) {
+					Intent targetedShare = new Intent(android.content.Intent.ACTION_SEND);
+					targetedShare.setType("text/plain"); // put here your mime// type
+					if (PackageName.contains(info.activityInfo.packageName.toLowerCase())) {
+						targetedShare.putExtra(Intent.EXTRA_SUBJECT, subject);
+						targetedShare.putExtra(Intent.EXTRA_TEXT, content);
+						targetedShare.setPackage(info.activityInfo.packageName.toLowerCase());
+						targetedShareIntents.add(targetedShare);
+					}
+				}
+				Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0), "Share using...");
+				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,targetedShareIntents.toArray(new Parcelable[] {}));
+				mcContext.startActivity(chooserIntent);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static List<String> getShareApplication() {
+		List<String> mList = new ArrayList<String>();
+		mList.add("com.facebook.katana");
+		mList.add("com.twitter.android");
+		mList.add("com.google.android.gm");
+		mList.add("com.whatsapp");
+		mList.add("com.android.mms");
+		return mList;
+
 	}
 }
