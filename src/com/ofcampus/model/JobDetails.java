@@ -4,9 +4,9 @@ public class JobDetails {
 
 	private String postid = "";
 	private String subject = "";
-	public int important =0;
+	public int important = 0;
 	private String isb_jobs = "";
-	
+
 	private String content = "";
 	private String postedon = "";
 	private String userdto = "";
@@ -15,20 +15,19 @@ public class JobDetails {
 	private String image = "";
 	private String replydto = "";
 	private String sharedto = "";
-	
-	
+
 	private String replyEmail = "";
 	private String replyPhone = "";
 	private String replyWatsApp = "";
-	
+
 	private String to = "";
 	private String from = "";
 	private String salaryTo = "";
 	private String salaryFrom = "";
-	
-	/*For Sync*/
+
+	/* For Sync */
 	private String ISSyncData = "0";
-	
+
 	public String getISSyncData() {
 		return ISSyncData;
 	}
@@ -124,13 +123,37 @@ public class JobDetails {
 	public void setSharedto(String sharedto) {
 		this.sharedto = sharedto;
 	}
-	
+
 	public int getImportant() {
 		return important;
 	}
 
 	public void setImportant(int important) {
 		this.important = important;
+	}
+
+	public String getReplyEmail() {
+		return replyEmail;
+	}
+
+	public void setReplyEmail(String replyEmail) {
+		this.replyEmail = replyEmail;
+	}
+
+	public String getReplyPhone() {
+		return replyPhone;
+	}
+
+	public void setReplyPhone(String replyPhone) {
+		this.replyPhone = replyPhone;
+	}
+
+	public String getReplyWatsApp() {
+		return replyWatsApp;
+	}
+
+	public void setReplyWatsApp(String replyWatsApp) {
+		this.replyWatsApp = replyWatsApp;
 	}
 
 }

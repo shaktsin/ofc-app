@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -46,7 +47,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 				.showImageOnLoading(R.drawable.ic_profilepic)
 				.showImageForEmptyUri(R.drawable.ic_profilepic)
 				.showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true)
-				.cacheInMemory(true).considerExifParams(true).build();
+				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 	}
 
@@ -57,6 +58,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 		TextView textView;
 		ImageView imageView;
 		ImageView profile;
+		RelativeLayout rel_row;
 		TextView Name;
 		TextView email;
 
@@ -64,6 +66,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 			super(itemView);
 
 			if (ViewType == TYPE_ITEM) {
+				rel_row = (RelativeLayout) itemView.findViewById(R.id.slideritem_row);
 				textView = (TextView) itemView.findViewById(R.id.rowText);
 				imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
 				Holderid = 1;
@@ -101,17 +104,8 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 			holder.textView.setText(mNavTitles[position - 1]);
 			holder.imageView.setImageResource(mIcons[position - 1]);
 			
-			holder.textView.setOnClickListener(new OnClickListener() {
+			holder.rel_row.setOnClickListener(new OnClickListener() {
 				
-				@Override
-				public void onClick(View v) {
-					if (viewclickevent!=null) {
-						viewclickevent.OnViewItemClick(position);
-					}
-				}
-			});
-			holder.imageView.setOnClickListener(new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					if (viewclickevent!=null) {

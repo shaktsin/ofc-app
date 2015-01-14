@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
 
 public class JobListBaseAdapter extends BaseAdapter{
@@ -38,7 +39,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 				.showImageOnLoading(R.drawable.ic_profilepic)
 				.showImageForEmptyUri(R.drawable.ic_profilepic)
 				.showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true)
-				.cacheInMemory(true).considerExifParams(true).build();
+				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		
 		
@@ -133,7 +134,10 @@ public class JobListBaseAdapter extends BaseAdapter{
 		final JobDetails mJobDetails = jobs.get(position);
 		
 		if (mJobDetails!=null) {
-			imageLoader.displayImage(mJobDetails.getImage(), mHolder.profilepic, options);
+			String url=mJobDetails.getImage();
+			if (url!=null && !url.equals("") && !url.equals("null")) {
+				imageLoader.displayImage(url, mHolder.profilepic, options);
+			}
 			mHolder.txt_name.setText(mJobDetails.getName());
 			mHolder.txt_postdate.setText("Posted on "+mJobDetails.getPostedon());
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
@@ -161,7 +165,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 				@Override
 				public void onClick(View v) {
 					if (joblistinterface != null) {
-//						joblistinterface.convertViewOnClick();
+						joblistinterface.replyClickEvent(mJobDetails);
 					}
 				}
 			});
@@ -209,10 +213,14 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 								switch (item.getItemId()) {
 								case R.id.hidepost:
-									Util.ShowToast(mContext, "Hide PostCall"); 
+									if (joblistinterface != null) {
+										joblistinterface.arrowHideClieckEvent(mJobDetails);
+									}
 									break;
 								case R.id.spampost:
-									Util.ShowToast(mContext, "Spam PostCall"); 
+									if (joblistinterface != null) {
+										joblistinterface.arrowSpamClieckEvent(mJobDetails);
+									}
 									break;
 
 								default:
@@ -232,7 +240,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 	}
 	
 	private class ViewHolder{
-		ImageView profilepic,img_arrow,img_important;
+		ImageView profilepic;
+		ImageView img_arrow,img_important;
 		TextView txt_name,txt_postdate,txt_subject,txt_contain;
 		TextView btn_reply,btn_share,btn_comment;
 	}
@@ -258,8 +267,10 @@ public class JobListBaseAdapter extends BaseAdapter{
 	public interface jobListInterface{
 		public void convertViewOnClick(JobDetails mJobDetails); 
 		public void firstIDAndlastID(String fstID, String lstID); 
-		public void arrowClieckEvent(JobDetails mJobDetails);  
+		public void arrowHideClieckEvent(JobDetails mJobDetails);  
+		public void arrowSpamClieckEvent(JobDetails mJobDetails);  
 		public void impClieckEvent(JobDetails mJobDetails);  
+		public void replyClickEvent(JobDetails mJobDetails);  
 	}
 
 }

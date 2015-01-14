@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
 
 public class MyPostListAdapter  extends BaseAdapter{
@@ -37,7 +38,7 @@ public class MyPostListAdapter  extends BaseAdapter{
 				.showImageOnLoading(R.drawable.ic_profilepic)
 				.showImageForEmptyUri(R.drawable.ic_profilepic)
 				.showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true)
-				.cacheInMemory(true).considerExifParams(true).build();
+				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		
 		
@@ -160,7 +161,8 @@ public class MyPostListAdapter  extends BaseAdapter{
 	}
 	
 	private class ViewHolder{
-		ImageView profilepic,img_arrow,img_important;
+		ImageView profilepic;
+		ImageView img_arrow,img_important;
 		TextView txt_name,txt_postdate,txt_subject,txt_contain;
 		TextView btn_reply,btn_share,btn_comment;
 	}

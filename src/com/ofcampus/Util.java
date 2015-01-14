@@ -30,14 +30,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.LabeledIntent;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -54,7 +50,10 @@ public class Util {
 	public static int connectTimeout=10000;
 	public static int socketTimeout=30000;
 	public static int delaytime = 2000;
-	public static int servicesyncInterval = 30*1000;
+	
+	public static long delay = 5*1000; 
+	public static long period = 30*1000; 
+	
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
 	
 	public static String TITLES[] = {"My Profile","My Posts","Important Mail","Settings","Logout"};
@@ -397,6 +396,7 @@ public class Util {
 		try {
 			if (jsObject.has(Key)) {
 				value = jsObject.getString(Key);
+				value = value.equalsIgnoreCase("null")?"":value;
 			} else {
 				value = "";
 			}
@@ -457,6 +457,27 @@ public class Util {
 		mList.add("com.whatsapp");
 		mList.add("com.android.mms");
 		return mList;
-
+	}
+	
+	
+	/**
+	 * Reply Text via Email.
+	 * @param mcContext
+	 * @param SUBJECT
+	 * @param TEXT
+	 * @param to
+	 */
+	private void replyViaEmailCalling(Context mcContext,String SUBJECT,String TEXT,String to) {
+		try {
+			Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+			sendIntent.setType("plain/text");
+			sendIntent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+			sendIntent.putExtra(Intent.EXTRA_CC, new String[]{to});
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT, "My Incident Report");
+			sendIntent.putExtra(Intent.EXTRA_TEXT, TEXT);
+			mcContext.startActivity(sendIntent);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

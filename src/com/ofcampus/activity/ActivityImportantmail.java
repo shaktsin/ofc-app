@@ -3,6 +3,7 @@ package com.ofcampus.activity;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,8 +11,12 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.ofcampus.R;
+import com.ofcampus.Util;
+import com.ofcampus.Util.JobDataReturnFor;
 import com.ofcampus.adapter.ImportantMailListAdapter;
 import com.ofcampus.adapter.ImportantMailListAdapter.ImportantMailListAdapterInterface;
+import com.ofcampus.databasehelper.ImportantJobTable;
+import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.ImportantMailParser;
@@ -73,23 +78,60 @@ public class ActivityImportantmail  extends ActionBarActivity implements Importa
 	}
 	
 	private void loadMyPostData(){
-		ImportantMailParser mImportantMailParser=new ImportantMailParser();
-		mImportantMailParser.setImportantmailparserinterface(new ImportantMailParserInterface() {
-			
-			@Override
-			public void OnSuccess(ArrayList<JobDetails> mJobList) {
-				if (mJobList!=null && mJobList.size()>=1) {
-					mImportantMailListAdapter.refreshData(mJobList);
-				}
-			}
-			
-			@Override
-			public void OnError() {
-				
-			}
-		});
-		mImportantMailParser.parse(context, mImportantMailParser.getBody(), UserDetails.getLoggedInUser(context).getAuthtoken());
 		
+		if (Util.hasConnection(context)) {
+			ImportantMailParser mImportantMailParser=new ImportantMailParser();
+			mImportantMailParser.setImportantmailparserinterface(new ImportantMailParserInterface() {
+				
+				@Override
+				public void OnSuccess(ArrayList<JobDetails> mJobList) {
+					if (mJobList!=null && mJobList.size()>=1) {
+						mImportantMailListAdapter.refreshData(mJobList);
+					}
+				}
+				
+				@Override
+				public void OnError() {
+					
+				}
+			});
+			mImportantMailParser.parse(context, mImportantMailParser.getBody(), UserDetails.getLoggedInUser(context).getAuthtoken());
+		}else {
+			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			new loadOffLineData().execute();
+		}
+
+		
+		
+	}
+	
+	
+	
+	private class loadOffLineData extends AsyncTask<Void, Void, Void> {
+
+		private ArrayList<JobDetails> arrayJob;
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			
+			arrayJob = ImportantJobTable.getInstance(context).fatchImpJobData();
+			
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			
+			if (arrayJob!=null && arrayJob.size()>=1) {
+				mImportantMailListAdapter.refreshData(arrayJob);
+			}
+		}
+
 	}
 
 	

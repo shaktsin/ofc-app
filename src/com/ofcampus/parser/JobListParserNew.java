@@ -42,6 +42,11 @@ private Context mContext;
 	private String NAME="name";
 	private String IMAGE="image";
 	private String REPLYDTO="replyDto";
+	
+	private String REPLYEMAIL="replyEmail";
+	private String REPLYPHONE="replyPhone";
+	private String REPLYWATSAPP="replyWatsApp";
+	
 	private String SHAREDTO="shareDto";
 	private String IMPORTANT="important";
 	
@@ -215,7 +220,12 @@ private Context mContext;
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
 					
+
 					mJobDetails.setReplydto(Util.getJsonValue(jsonobject, REPLYDTO));
+					mJobDetails.setReplyEmail(Util.getJsonValue(userJSONobj, REPLYEMAIL));
+					mJobDetails.setReplyPhone(Util.getJsonValue(userJSONobj, REPLYPHONE));
+					mJobDetails.setReplyWatsApp(Util.getJsonValue(userJSONobj, REPLYWATSAPP)); 
+					
 					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
 
 					jobarray.add(mJobDetails);

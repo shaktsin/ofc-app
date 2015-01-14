@@ -347,7 +347,10 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	}
 	
 	
-	
+	@Override
+	public void firstLoadCall() {
+		new loadExistDataFromDB().execute();
+	}
 	
 	
 	private void initilizActionBarDrawer() {
@@ -408,8 +411,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		tabs.setViewPager(pager);
 		pager.setOffscreenPageLimit(3);
 		tabs.setOnPageChangeListener(this);
-		
-		new loadExistDataFromDB().execute();
     }
     
     private void closeDraware(){
@@ -568,12 +569,12 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 				timer = null;
 				timer = new Timer();
 				mTask = new MyTask();
-				timer.scheduleAtFixedRate(mTask, 0, Util.servicesyncInterval);
+				timer.scheduleAtFixedRate(mTask, Util.delay, Util.period);
 			}
 			if (timer == null) {
 				timer = new Timer();
 				mTask = new MyTask();
-				timer.scheduleAtFixedRate(mTask, 0, Util.servicesyncInterval);
+				timer.scheduleAtFixedRate(mTask, Util.delay, Util.period);
 			}
 		} catch (Exception e) {
 			Log.i("TaskTimerNullcheck", "TaskTimerNullcheck_excep");
@@ -593,17 +594,20 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 						count[1]="";
 						count[2]="";
 					}else {
-						CountSyncParser countSyncParser=new CountSyncParser();
-						arrJOb = countSyncParser.parse(mContext, countSyncParser.getBody(mJobsFragment.firsttJobID, 1+""), tocken);
-						if (arrJOb!=null && arrJOb.size()>=1) {
-							count[0]=""+arrJOb.size();
-							count[1]="";
-							count[2]="";
-						}else {
-							count[0]="";
-							count[1]="";
-							count[2]="";
+						if (mJobsFragment.firsttJobID!=null && !mJobsFragment.firsttJobID.equals("")) {
+							CountSyncParser countSyncParser=new CountSyncParser();
+							arrJOb = countSyncParser.parse(mContext, countSyncParser.getBody(mJobsFragment.firsttJobID, 1+""), tocken);
+							if (arrJOb!=null && arrJOb.size()>=1) {
+								count[0]=""+arrJOb.size();
+								count[1]="";
+								count[2]="";
+							}else {
+								count[0]="";
+								count[1]="";
+								count[2]="";
+							}
 						}
+						
 					}
 					handler.sendEmptyMessage(0);
 				}
@@ -660,7 +664,12 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		@Override
 		protected Void doInBackground(Void... params) {
 			
-			arrayJob = JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.Normal);
+			try {
+				arrayJob = JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.Normal);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.e("Fatching Data from DB", e.getMessage().toString());
+			}
 			
 			return null;
 		}
@@ -669,20 +678,18 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 			
-			if (arrayJob!=null && arrayJob.size()>=1) {
-				mJobsFragment.refreshDataInAdapter(arrayJob);
-			}else {
-				loadJobList();
+			try {
+				if (arrayJob!=null && arrayJob.size()>=1) {
+					mJobsFragment.refreshDataInAdapter(arrayJob);
+				}else {
+					loadJobList();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.e("Load Data in list", e.getMessage().toString());
 			}
 		}
 
 	}
-    
-    
-    
-    
-    
-    
-    
     
 }

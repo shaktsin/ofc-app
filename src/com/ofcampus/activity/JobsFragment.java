@@ -28,6 +28,8 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.JobListBaseAdapter;
 import com.ofcampus.adapter.JobListBaseAdapter.jobListInterface;
+import com.ofcampus.databasehelper.ImportantJobTable;
+import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.PostJobHideMarkedParser;
@@ -44,7 +46,7 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
     private String tocken = "";
     
     /***For Load more****/
-    private int minimumofsets = 11,mLastFirstVisibleItem = 0;
+    private int minimumofsets = 5,mLastFirstVisibleItem = 0;
     private boolean loadingMore = false;
     
 	/**/
@@ -103,8 +105,13 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 	
 	
 	@Override 
-	public void arrowClieckEvent(JobDetails mJobDetails){
-		HideCallingDialog(mJobDetails);
+	public void arrowHideClieckEvent(JobDetails mJobDetails){
+		HideCalling(mJobDetails,1);
+	}
+	
+	@Override 
+	public void arrowSpamClieckEvent(JobDetails mJobDetails){
+		HideCalling(mJobDetails,1);
 	}
 	
 	@Override 
@@ -112,9 +119,13 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 		HideCalling(mJobDetails,2);	
 	}
 	
+	@Override 
+	public void replyClickEvent(JobDetails mJobDetails){
+		ReplyDialog(mJobDetails);
+	}
 	
-	
-	@Override public void onRefresh() {
+	@Override 
+	public void onRefresh() {
 		if (jobsfrginterface!=null) {
 			jobsfrginterface.pulltorefreshcall(firsttJobID);
 		}
@@ -125,6 +136,9 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 	private void loadProfileData() {
 		UserDetails mUserDetails = UserDetails.getLoggedInUser(context);
 		tocken = mUserDetails.getAuthtoken();
+		if (jobsfrginterface!=null) {
+			jobsfrginterface.firstLoadCall();
+		}
 	}
 	
 	private void initilizView(View view) {
@@ -220,44 +234,34 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 	 * @param mJobDetails 
 	 */
 	
-	private void HideCallingDialog(final JobDetails mJobDetails){
+	private void ReplyDialog(final JobDetails mJobDetails){
 		
 		final Dialog dialog = new Dialog(context);
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.inflate_cusdialog_hideevent);
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-		((TextView) dialog.findViewById(R.id.iflate_custdialog_hide)).setOnClickListener(new OnClickListener() {
+		
+		((TextView) dialog.findViewById(R.id.iflate_custdialog_email)).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				HideCalling(mJobDetails,1);		
 				dialog.dismiss();
 			}
 		});
 		
-//		((TextView) dialog.findViewById(R.id.iflate_custdialog_important)).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				HideCalling(mJobDetails,2);		
-//				dialog.dismiss();
-//			}
-//		});
+		((TextView) dialog.findViewById(R.id.iflate_custdialog_ph)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
 		
-		((TextView) dialog.findViewById(R.id.iflate_custdialog_cancel)).setOnClickListener(new OnClickListener() {
+		((TextView) dialog.findViewById(R.id.iflate_custdialog_whatsapp)).setOnClickListener(new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 				dialog.dismiss();
 			}
 		});
-		
-		
-		((TextView) dialog.findViewById(R.id.iflate_custdialog_spam)).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				HideCalling(mJobDetails,3);		
-				dialog.dismiss();
-			}
-		});
-		dialog.setCancelable(false);
+		dialog.setCancelable(true);
 		dialog.show();
 	}
 	
@@ -273,8 +277,14 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 			@Override
 			public void OnSuccess() {
 				if (state==1 || state==3) {
+					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mJobListAdapter.hideJob(mJobDetails);
 				}else if (state==2 ) {
+					ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
+					mJobDetails.important=1;
+					arr.add(mJobDetails);
+					JOBListTable.getInstance(context).inserJobData(arr);
+					ImportantJobTable.getInstance(context).inserJobData(mJobDetails);
 					mJobListAdapter.importantJob(mJobDetails);
 				}
 			}
@@ -305,6 +315,8 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 		public void pulltorefreshcall(String jobID);
 
 		public void loadcall(String jobID);
+		
+		public void firstLoadCall();
 	}
 	
 }
