@@ -24,6 +24,12 @@ public class JOBListTable {
 	public static String POSTUSERNAME="name";
 	public static String POSTUSERIMAGE="image";
 	public static String ISSYNCDATA="issyncdata";
+	public static String IMPORTANT="important";
+	
+	public static String POSTUSEREMAILID="replyemail";
+	public static String POSTUSERPHNO="replyphone";
+	public static String POSTUSERWHATSAPPNO="replywatsapp";
+	
 	
 	
 	 private static OfCampusDBHelper dbHelper = null;
@@ -51,10 +57,7 @@ public class JOBListTable {
 		try {
 			sampleDB = dbHelper.getDB();
 			sampleDB.beginTransaction();
-			String sql = "Insert or Replace into " + TABLENAME + " (" + POSTID
-					+ "," + SUBJECT + "," + CONTENT + "," + POSTEDON + ","
-					+ POSTUSERID + "," + POSTUSERNAME + "," + POSTUSERIMAGE
-					+ "," + ISSYNCDATA + ") values(?,?,?,?,?,?,?,?)";
+			String sql = "Insert or Replace into " + TABLENAME + " values(?,?,?,?,?,?,?,?,?,?,?,?);";
 			SQLiteStatement insert = sampleDB.compileStatement(sql);
 
 			if (Jobs.size() > size) {
@@ -69,6 +72,12 @@ public class JOBListTable {
 					insert.bindString(6, mJob.getName());
 					insert.bindString(7, mJob.getImage());
 					insert.bindString(8, mJob.getISSyncData());
+					insert.bindLong(9, mJob.getImportant());
+					
+					insert.bindString(10, mJob.getReplyEmail());
+					insert.bindString(11, mJob.getReplyPhone());
+					insert.bindString(12, mJob.getReplyWatsApp());
+					
 					insert.execute();
 				}
 				sampleDB.setTransactionSuccessful();
@@ -84,6 +93,12 @@ public class JOBListTable {
 					insert.bindString(6, mJob.getName());
 					insert.bindString(7, mJob.getImage());
 					insert.bindString(8, mJob.getISSyncData());
+					insert.bindLong(9, mJob.getImportant());
+					
+					insert.bindString(10, mJob.getReplyEmail());
+					insert.bindString(11, mJob.getReplyPhone());
+					insert.bindString(12, mJob.getReplyWatsApp());
+					
 					insert.execute();
 				}
 				sampleDB.setTransactionSuccessful();
@@ -103,10 +118,7 @@ public class JOBListTable {
 		try {
 			sampleDB = dbHelper.getDB();
 			sampleDB.beginTransaction();
-			String sql = "Insert or Replace into " + TABLENAME + " (" + POSTID
-					+ "," + SUBJECT + "," + CONTENT + "," + POSTEDON + ","
-					+ POSTUSERID + "," + POSTUSERNAME + "," + POSTUSERIMAGE
-					+ "," + ISSYNCDATA + ") values(?,?,?,?,?,?,?,?)";
+			String sql = "Insert or Replace into " + TABLENAME + " values(?,?,?,?,?,?,?,?,?,?,?,?);";
 			SQLiteStatement insert = sampleDB.compileStatement(sql);
 
 			for (int i = 0; i < Jobs.size(); i++) {
@@ -120,6 +132,12 @@ public class JOBListTable {
 				insert.bindString(6, mJob.getName());
 				insert.bindString(7, mJob.getImage());
 				insert.bindString(8, mJob.getISSyncData());
+				insert.bindLong(9, mJob.getImportant());
+				
+				insert.bindString(10, mJob.getReplyEmail());
+				insert.bindString(11, mJob.getReplyPhone());
+				insert.bindString(12, mJob.getReplyWatsApp());
+				
 				insert.execute();
 			}
 			sampleDB.setTransactionSuccessful();
@@ -136,9 +154,9 @@ public class JOBListTable {
 		ArrayList<JobDetails> jobs = null;
 		String sql = "";
 		if (mJobDataReturnFor==JobDataReturnFor.syncdata) {
-			sql = "select * from joblist where issyncdata like 1 order by postid desc";
+			sql = "select * from joblist where issyncdata='1' order by postid desc";
 		}else{
-			sql = "select * from joblist where issyncdata not like 1 order by postid desc";
+			sql = "select * from joblist where issyncdata!='1' order by postid desc";
 		}
 		Cursor mCursor=null;
 		try {
@@ -168,6 +186,12 @@ public class JOBListTable {
 				mDetails.setName(mCursor.getString(mCursor.getColumnIndex(POSTUSERNAME)));
 				mDetails.setImage(mCursor.getString(mCursor.getColumnIndex(POSTUSERIMAGE)));
 				mDetails.setISSyncData(mCursor.getString(mCursor.getColumnIndex(ISSYNCDATA)));
+				mDetails.setImportant(mCursor.getInt(mCursor.getColumnIndex(IMPORTANT)));
+				
+				mDetails.setReplyEmail(mCursor.getString(mCursor.getColumnIndex(POSTUSEREMAILID)));
+				mDetails.setReplyPhone(mCursor.getString(mCursor.getColumnIndex(POSTUSERPHNO)));
+				mDetails.setReplyWatsApp(mCursor.getString(mCursor.getColumnIndex(POSTUSERWHATSAPPNO)));
+				
 				jobs.add(mDetails);
 			} while (mCursor.moveToNext());
 		}
@@ -180,7 +204,7 @@ public class JOBListTable {
 		try {
 			sql = "delete from joblist where (postId < (((select min(postId) from joblist) +'"+count+"')))";
 			success = dbHelper.getDB().rawQuery(sql, null).moveToFirst();
-			sql = "update joblist set issyncdata='0' where issyncdata like 1";
+			sql = "update joblist set issyncdata='0' where issyncdata='1'";
 			success = dbHelper.getDB().rawQuery(sql, null).moveToFirst();
 					
 		} catch (Exception e) {
@@ -189,6 +213,19 @@ public class JOBListTable {
 		return success;
 	}
 	
+	public boolean deleteSpamJOb(JobDetails mJobDetails) {
+		long success = -1;
+		try {
+			success = dbHelper.getDB().delete(TABLENAME, POSTID+"=?", new String[]{""+mJobDetails.getPostid()});
+			if (success > 0) {
+				return true;
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 	private void curcorClose(Cursor cursor){
 		try {

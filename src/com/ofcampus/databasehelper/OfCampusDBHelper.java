@@ -33,6 +33,7 @@ public class OfCampusDBHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		try {
 			db.execSQL(sqlForCreateJobTAble());
+			db.execSQL(sqlForCreateImpJobTAble());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -42,6 +43,7 @@ public class OfCampusDBHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		try {
 			db.execSQL("DROP TABLE IF EXIST " + JOBListTable.TABLENAME);
+			db.execSQL("DROP TABLE IF EXIST " + ImportantJobTable.TABLENAME);
 			onCreate(db);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -75,8 +77,31 @@ public class OfCampusDBHelper extends SQLiteOpenHelper {
 				+ JOBListTable.POSTUSERID + " TEXT NOT NULL,"
 				+ JOBListTable.POSTUSERNAME + " TEXT NOT NULL,"
 				+ JOBListTable.POSTUSERIMAGE + " TEXT NOT NULL,"
+				+ JOBListTable.ISSYNCDATA + " TEXT NOT NULL,"
+				+ JOBListTable.IMPORTANT + " TEXT NOT NULL,"
 				
-				+ JOBListTable.ISSYNCDATA + " TEXT NOT NULL);";
+				+ JOBListTable.POSTUSEREMAILID + " TEXT NOT NULL,"
+				+ JOBListTable.POSTUSERPHNO + " TEXT NOT NULL,"
+				+ JOBListTable.POSTUSERWHATSAPPNO + " INTEGER NOT NULL);";
+		return sql;
+	}
+	
+	private String sqlForCreateImpJobTAble() {
+		String sql = "CREATE TABLE " + ImportantJobTable.TABLENAME + " ("
+				+ JOBListTable.POSTID + " INTEGER PRIMARY KEY  NOT NULL ,"
+				+ JOBListTable.SUBJECT + " TEXT NOT NULL,"
+				+ JOBListTable.CONTENT + " TEXT NOT NULL,"
+				+ JOBListTable.POSTEDON + " TEXT NOT NULL," 
+
+				+ JOBListTable.POSTUSERID + " TEXT NOT NULL,"
+				+ JOBListTable.POSTUSERNAME + " TEXT NOT NULL,"
+				+ JOBListTable.POSTUSERIMAGE + " TEXT NOT NULL,"
+				+ JOBListTable.ISSYNCDATA + " TEXT NOT NULL,"
+				+ JOBListTable.IMPORTANT + " TEXT NOT NULL,"
+				
+				+ JOBListTable.POSTUSEREMAILID + " TEXT NOT NULL,"
+				+ JOBListTable.POSTUSERPHNO + " TEXT NOT NULL,"
+				+ JOBListTable.POSTUSERWHATSAPPNO + " INTEGER NOT NULL);";
 		return sql;
 	}
 }
