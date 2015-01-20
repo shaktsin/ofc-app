@@ -321,30 +321,41 @@ public class Util {
 	      InputStream inputStream = null;
 	      String result = "";
 	      String[] responData = { "", "" };
-	      try {
-	          HttpClient httpclient = new DefaultHttpClient();
-	          httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-	          httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
-	          HttpPost httpPost = new HttpPost(url);
-	          String json = "";
-	          json = jsonObject.toString();
-	          StringEntity se = new StringEntity(json);
-	          httpPost.setEntity(se); 
-	          httpPost.setHeader("Accept", "application/json");
-	          httpPost.setHeader("Content-type", "application/json");
-	          HttpResponse httpResponse = httpclient.execute(httpPost);
-	          inputStream = httpResponse.getEntity().getContent();
-	          if(inputStream != null)
-	              result = convertInputStreamToString(inputStream);
-	          else
-	              result = "Did not work!";
-	          responData[0] = "200";
-	          responData[1] = result;
+	
+	          try {
+				HttpClient httpclient = new DefaultHttpClient();
+				  httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+				  httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+				  HttpPost httpPost = new HttpPost(url);
+				  String json = "";
+				  json = jsonObject.toString();
+				  StringEntity se = new StringEntity(json);
+				  httpPost.setEntity(se); 
+				  httpPost.setHeader("Accept", "application/json");
+				  httpPost.setHeader("Content-type", "application/json");
+				  HttpResponse httpResponse = httpclient.execute(httpPost);
+				  inputStream = httpResponse.getEntity().getContent();
+				  if(inputStream != null)
+				      result = convertInputStreamToString(inputStream);
+				  else
+				      result = "Did not work!";
+				  responData[0] = "200";
+				  responData[1] = result;
+			} catch (UnsupportedEncodingException e) {
+				 responData[0] = "205";
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				 responData[0] = "205";
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				 responData[0] = "205";
+				e.printStackTrace();
+			} catch (IOException e) {
+				 responData[0] = "205";
+				e.printStackTrace();
+			}
 
-	      } catch (Exception e) {
-	    	  responData[0] = "205";
-	          Log.d("InputStream", e.getLocalizedMessage());
-	      }
+
 	      return responData;
 	  }
 	 
@@ -352,30 +363,42 @@ public class Util {
 	      InputStream inputStream = null;
 	      String result = "";
 	      String[] responData = { "", "" };
-	      try {
-	          HttpClient httpclient = new DefaultHttpClient();
-	          httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-	          httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
-	          HttpPost httpPost = new HttpPost(url);
-	          String json = "";
-	          json = jsonObject.toString();
-	          StringEntity se = new StringEntity(json);
-	          httpPost.setEntity(se); 
-	          httpPost.setHeader("Authorization", auth);
-	          httpPost.setHeader("Content-type", "application/json");
-	          HttpResponse httpResponse = httpclient.execute(httpPost);
-	          inputStream = httpResponse.getEntity().getContent();
-	          if(inputStream != null)
-	              result = convertInputStreamToString(inputStream);
-	          else
-	              result = "Did not work!";
-	          responData[0] = "200";
-	          responData[1] = result;
+	   
+	      
+	          try {
+				HttpClient httpclient = new DefaultHttpClient();
+				  httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+				  httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+				  HttpPost httpPost = new HttpPost(url);
+				  String json = "";
+				  json = jsonObject.toString();
+				  StringEntity se = new StringEntity(json);
+				  httpPost.setEntity(se); 
+				  httpPost.setHeader("Authorization", auth);
+				  httpPost.setHeader("Content-type", "application/json");
+				  HttpResponse httpResponse = httpclient.execute(httpPost);
+				  inputStream = httpResponse.getEntity().getContent();
+				  if(inputStream != null)
+				      result = convertInputStreamToString(inputStream);
+				  else
+				      result = "Did not work!";
+				  responData[0] = "200";
+				  responData[1] = result;
+			} catch (UnsupportedEncodingException e) {
+				 responData[0] = "205";
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				 responData[0] = "205";
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				 responData[0] = "205";
+				e.printStackTrace();
+			} catch (IOException e) {
+				 responData[0] = "205";
+				e.printStackTrace();
+			}
 
-	      } catch (Exception e) {
-	    	  responData[0] = "205";
-	          Log.d("InputStream", e.getLocalizedMessage());
-	      }
+	      
 	      return responData;
 	  }
 	 

@@ -10,9 +10,6 @@ import android.content.Context;
 
 import com.ofcampus.Util;
 import com.ofcampus.databasehelper.JOBListTable;
-import com.ofcampus.model.CityDetails;
-import com.ofcampus.model.IndustryDetails;
-import com.ofcampus.model.IndustryRoleDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.JobList;
 
@@ -34,10 +31,16 @@ private Context mContext;
 	private String CONTENT="content";
 	private String POSTEDON="postedOn";
 	private String USERDTO="userDto";
+	
 	private String ID="id";
 	private String NAME="name";
 	private String IMAGE="image";
 	private String REPLYDTO="replyDto";
+	
+	private String REPLYEMAIL="replyEmail";
+	private String REPLYPHONE="replyPhone";
+	private String REPLYWATSAPP="replyWatsApp";
+	
 	private String SHAREDTO="shareDto";
 	private String IMPORTANT="important";
 	
@@ -118,7 +121,11 @@ private Context mContext;
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
 					
-					mJobDetails.setReplydto(Util.getJsonValue(jsonobject, REPLYDTO));
+					JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
+					
+					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
+					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
+					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
 					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
 					mJobDetails.setISSyncData(""+1); 
 

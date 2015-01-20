@@ -184,7 +184,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 				@Override
 				public void onClick(View v) {
 					if (joblistinterface != null) {
-//						joblistinterface.convertViewOnClick();
+						joblistinterface.commentClickEvent(mJobDetails);
 					}
 				}
 			});
@@ -271,6 +271,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		public void arrowSpamClieckEvent(JobDetails mJobDetails);  
 		public void impClieckEvent(JobDetails mJobDetails);  
 		public void replyClickEvent(JobDetails mJobDetails);  
+		public void commentClickEvent(JobDetails mJobDetails);  
 	}
 
 }

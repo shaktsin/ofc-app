@@ -35,13 +35,31 @@
             android:gravity="center"
             android:padding="8dp"
             android:text="Reply via Emial"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/iflate_custdialog_whatsapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iflate_custdialog_email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_whatsapp"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Reply via whatsapp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/iflate_custdialog_ph"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iflate_custdialog_email"
+            android:layout_below="@+id/iflate_custdialog_whatsapp"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -52,28 +70,12 @@
             android:padding="8dp"
             android:text="Reply via Ph"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/iflate_custdialog_whatsapp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iflate_custdialog_ph"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="8dp"
-            android:drawableLeft="@drawable/ic_whatsapp"
-            android:drawablePadding="5dp"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="Reply via whatsapp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:visibility="gone" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="10dp"
-            android:layout_below="@+id/iflate_custdialog_whatsapp" >
+            android:layout_below="@+id/iflate_custdialog_ph" >
         </RelativeLayout>
     </RelativeLayout>
 

@@ -220,11 +220,11 @@ private Context mContext;
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
 					
-
-					mJobDetails.setReplydto(Util.getJsonValue(jsonobject, REPLYDTO));
-					mJobDetails.setReplyEmail(Util.getJsonValue(userJSONobj, REPLYEMAIL));
-					mJobDetails.setReplyPhone(Util.getJsonValue(userJSONobj, REPLYPHONE));
-					mJobDetails.setReplyWatsApp(Util.getJsonValue(userJSONobj, REPLYWATSAPP)); 
+					JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
+					
+					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
+					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
+					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
 					
 					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
 
