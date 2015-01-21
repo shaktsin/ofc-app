@@ -1,5 +1,7 @@
 package com.ofcampus.activity;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -7,38 +9,36 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.adapter.CommentRecycleAdapter;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
-import com.ofcampus.parser.JobDetailsParser;
-import com.ofcampus.parser.JobDetailsParser.JobDetailsParserInterface;
+import com.ofcampus.parser.CommentParser;
+import com.ofcampus.parser.CommentParser.CommentParserInterface;
+import com.ofcampus.parser.CommentPostParser;
+import com.ofcampus.parser.CommentPostParser.CommentPostParserInterface;
 
 public class ActivityComment extends ActionBarActivity implements OnClickListener{
 
-	private ImageView profilepic;
-	private TextView txt_name,txt_postdate,txt_subject,txt_contain;
-	private String from ;
-	private String JObID;
+    private ListView commentListView;
+	private CommentRecycleAdapter mCommentRecycleAdapter;
 	private JobDetails mJobDetails;
 	private UserDetails mUserDetails;
+	private String JObID="";
+	private EditText edt_comment;
 	private Context mContext;
 	
-	private ImageLoader imageLoader=ImageLoader.getInstance();
-	private DisplayImageOptions options;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_joddetails);
+		setContentView(R.layout.activity_comment);
 
 		mContext=ActivityComment.this;
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -72,14 +72,9 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.jobdetailsview_txt_reply:
-
-			break;
-		case R.id.jobdetailsview_txt_share:
-
-			break;
-		case R.id.jobdetailsview_txt_comment:
-
+		case R.id.activity_comment_btnsend:
+			commentPostProcess();
+			Util.HideKeyBoard(mContext, v);
 			break;
 
 		default:
@@ -89,72 +84,85 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 	
 	
 	private void initilize() {
-		profilepic=(ImageView)findViewById(R.id.jobdetailsview_img_pic);
-		txt_name=(TextView)findViewById(R.id.jobdetailsview_txt_name);
-		txt_postdate=(TextView)findViewById(R.id.jobdetailsview_txt_postdate);
-		txt_subject=(TextView)findViewById(R.id.jobdetailsview_txt_subject);
-		txt_contain=(TextView)findViewById(R.id.jobdetailsview_txt_contain);
-		((TextView) findViewById(R.id.jobdetailsview_txt_reply)).setOnClickListener(this);
-		((TextView) findViewById(R.id.jobdetailsview_txt_share)).setOnClickListener(this);
-		((TextView) findViewById(R.id.jobdetailsview_txt_comment)).setOnClickListener(this);
-		
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_profilepic)
-				.showImageForEmptyUri(R.drawable.ic_profilepic)
-				.showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true)
-				.cacheInMemory(true).considerExifParams(true).build();
-		imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
+		((ImageView)findViewById(R.id.activity_comment_btnsend)).setOnClickListener(this);
+		edt_comment=(EditText)findViewById(R.id.activity_comment_edt_cmnt);
+		commentListView=(ListView)findViewById(R.id.activity_comment_comntlist);
+		mCommentRecycleAdapter=new CommentRecycleAdapter(mContext, new ArrayList<JobDetails>());
+		commentListView.setAdapter(mCommentRecycleAdapter);
 	}
 	
 	private void loadData() {
 
 		mUserDetails = UserDetails.getLoggedInUser(mContext);
-
-		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;
-		((OfCampusApplication) getApplication()).jobdetails = null;
-		
+		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;		
 		JObID=mJobDetails.getPostid();
 		
+		ArrayList<JobDetails> arrayList=new ArrayList<JobDetails>();
+		if (mJobDetails!=null) {
+			arrayList.add(mJobDetails);
+			mCommentRecycleAdapter.refreshView(arrayList);
+		}
 		
 
 		if (!Util.hasConnection(mContext)) {
-			Util.ShowToast(mContext,
-					getResources().getString(R.string.internetconnection_msg));
+			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
 			onBackPressed();
 			return;
 		}
 
-		JobDetailsParser mDetailsParser = new JobDetailsParser();
-		mDetailsParser.setJobdetailsparserinterface(new JobDetailsParserInterface() {
-
+		CommentParser mCommentParser = new CommentParser();
+		mCommentParser.setCommentparserinterface(new CommentParserInterface() {
+			
 			@Override
-			public void OnSuccess(JobDetails mJobDetails) {
-				((RelativeLayout) findViewById(R.id.jobdetailsview_main)).setVisibility(View.VISIBLE);
-				txt_contain.setText(mJobDetails.getContent());
+			public void OnSuccess(ArrayList<JobDetails> arrayJobsComment) {
+				if (arrayJobsComment!=null && arrayJobsComment.size()>=1) {
+					mCommentRecycleAdapter.refreshView(arrayJobsComment);
+				}
+				
 			}
-
+			
 			@Override
 			public void OnError() {
-				onBackPressed();
+				
 			}
 		});
-		mDetailsParser.parse(mContext, JObID, mUserDetails.getAuthtoken());
-		((ImageView) findViewById(R.id.jobdetailsview_img_arrow)).setVisibility(View.GONE);
-		((RelativeLayout) findViewById(R.id.jobdetailsview_main)).setVisibility(View.VISIBLE);
-		setDataInView(mJobDetails);
-
+		mCommentParser.parse(mContext, JObID, mUserDetails.getAuthtoken());
 	}
 	
 	
-	private void setDataInView(JobDetails mJobDetails){
-		if (mJobDetails!=null) {
-			imageLoader.displayImage(mJobDetails.getImage(), profilepic, options);
-			txt_name.setText(mJobDetails.getName());
-			txt_postdate.setText("Posted on "+mJobDetails.getPostedon());
-			txt_subject.setText(mJobDetails.getSubject());
-			txt_contain.setText(mJobDetails.getContent());
-		}else {
-			onBackPressed();
+	private void commentPostProcess(){
+		String comment=edt_comment.getText().toString();
+		
+		if (comment!=null && comment.length()==0) {
+			Util.ShowToast(mContext,"Enter comment and then click on send button.");
 		}
+		
+		
+		if (!Util.hasConnection(mContext)) {
+			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
+			onBackPressed();
+			return;
+		}
+		
+		CommentPostParser mCommentPostParser=new CommentPostParser();
+		mCommentPostParser.setCommentpostparserinterface(new CommentPostParserInterface() {
+			
+			@Override
+			public void OnSuccess(JobDetails mJobDetails) {
+				if (mJobDetails!=null) {
+					mCommentRecycleAdapter.refreshView(mJobDetails);
+					edt_comment.setText("");
+					Util.ShowToast(mContext, "Comment Posted successfully."); 
+				}
+			}
+			
+			@Override
+			public void OnError() {
+				
+			}
+		});
+		
+		mCommentPostParser.parse(mContext, mCommentPostParser.getBody("4", JObID,comment), mUserDetails.getAuthtoken());
+
 	}
 }

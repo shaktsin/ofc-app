@@ -116,6 +116,10 @@ public class Util {
 		return baseUrl+"post/imp";
 	}
 	
+	public static String getCommentPostUrl() {
+		return baseUrl+"post/comment";
+	}
+	
 	
 	
 	/**
