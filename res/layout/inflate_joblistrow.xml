@@ -101,6 +101,7 @@
             android:textSize="@dimen/joblitview_contain" />
 
         <LinearLayout
+            android:id="@+id/joblistview_linear_buttonsection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/joblistview_txt_contain"

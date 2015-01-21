@@ -10,182 +10,14 @@
         layout="@layout/actiontool_bar" >
     </include>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:id="@+id/jobdetailsview_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/joblist_row_rect"
-            android:visibility="visible" >
-
-            <RelativeLayout
-                android:id="@+id/jobdetailsview_relpicname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/jobdetailsview_img_pic"
-                    android:layout_width="@dimen/joblitview_picwd"
-                    android:layout_height="@dimen/joblitview_picwd"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="6dp"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_profilepic" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/jobdetailsview_img_arrow"
-                    android:layout_toRightOf="@+id/jobdetailsview_img_pic" >
-
-                    <TextView
-                        android:id="@+id/jobdetailsview_txt_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/joblitview_name" />
-
-                    <TextView
-                        android:id="@+id/jobdetailsview_txt_postdate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/jobdetailsview_txt_name"
-                        android:layout_marginTop="5dp"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/theme_color"
-                        android:textSize="@dimen/joblitview_postdate" />
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/jobdetailsview_img_arrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="6dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_downarrow" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/jobdetailsview_txt_subject"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/jobdetailsview_relpicname"
-                android:layout_marginTop="5dp"
-                android:maxLines="2"
-                android:text=""
-                android:textColor="@color/theme_color"
-                android:textSize="@dimen/joblitview_Subject"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/jobdetailsview_txt_contain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/jobdetailsview_txt_subject"
-                android:layout_marginTop="5dp"
-                android:maxLines="4"
-                android:text=""
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/joblitview_contain" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/jobdetailsview_txt_contain"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal" >
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/joblist_button_rect" >
-
-                    <TextView
-                        android:id="@+id/jobdetailsview_txt_reply"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/ic_reply"
-                        android:drawablePadding="4dp"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="@string/Job_List_View_reply"
-                        android:textColor="@color/theme_color"
-                        android:textSize="@dimen/joblitview_postdate" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/layerlist" >
-
-                    <TextView
-                        android:id="@+id/jobdetailsview_txt_share"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/ic_share"
-                        android:drawablePadding="4dp"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="@string/Job_List_View_share"
-                        android:textColor="@color/theme_color"
-                        android:textSize="@dimen/joblitview_postdate" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/joblist_button_rect" >
-
-                    <TextView
-                        android:id="@+id/jobdetailsview_txt_comment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/ic_comment"
-                        android:drawablePadding="4dp"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="@string/Job_List_View_comment"
-                        android:textColor="@color/theme_color"
-                        android:textSize="@dimen/joblitview_postdate" />
-                </RelativeLayout>
-            </LinearLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="10dp" >
-        </RelativeLayout>
-    </LinearLayout>
-
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
         <ListView
-            android:id="@+id/activity_comment_cmntlist"
+            android:id="@+id/activity_comment_comntlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/activity_comment_rel_comnt"
             android:cacheColorHint="@android:color/transparent"
             android:divider="@null"
             android:fadingEdge="none"
@@ -206,12 +38,11 @@
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
                 android:layout_toLeftOf="@+id/activity_comment_btnsend"
-                android:background="@drawable/editbox_rect"
+                android:background="@android:color/white"
                 android:gravity="center_vertical|left"
                 android:hint="Enter comment here."
-                android:inputType="number"
+                android:maxLines="3"
                 android:padding="8dp"
-                android:singleLine="true"
                 android:text=""
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/joblitview_Subject" />
