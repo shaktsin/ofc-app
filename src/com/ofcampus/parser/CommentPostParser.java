@@ -151,7 +151,7 @@ public class CommentPostParser {
 			mJobDetails  =new JobDetails();
 			mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID)); 
 			mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
-			
+			mJobDetails.setPostedon(Util.getJsonValue(jsonobject, COMMENTEDON));
 			JSONObject userJSONobj=jsonobject.getJSONObject(USERDTO);
 			mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
 			mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
@@ -168,7 +168,7 @@ public class CommentPostParser {
 	public JSONObject getBody(String actionId , String postId,String comment) {
 		JSONObject jsObj = new JSONObject();
 		try {
-			jsObj.put("postReactionId", actionId);
+//			jsObj.put("postReactionId", actionId);
 			jsObj.put("postId", postId);
 			jsObj.put("plateFormId", "0");
 			jsObj.put("appName", "ofCampus");

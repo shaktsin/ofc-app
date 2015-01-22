@@ -41,7 +41,9 @@ public class CommentParser {
 	
 	/**CommentList Key*/
 	private String COMMENTLISTRESPONSE="commentListResponse";
-
+	private String COMMENTRESPONSELIST="commentResponseList";
+	private String COMMENTEDON="commentedOn";
+	
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
@@ -175,22 +177,31 @@ public class CommentParser {
 			arrayJobsComment.add(mJobDetails);
 			
 			try {
-				JSONArray commentArrJsonArray=jsonobject.getJSONArray(COMMENTLISTRESPONSE);
-				
-				if (commentArrJsonArray!=null && commentArrJsonArray.length()>=1) {
-					for (int i = 0; i < commentArrJsonArray.length(); i++) {
-						
-						JobDetails jobComment=new JobDetails();
-						jobComment.setPostid(Util.getJsonValue(jsonobject, POSTID)); 
-						jobComment.setContent(Util.getJsonValue(jsonobject, CONTENT));
-						
-						JSONObject jobCommentuserJSONobj=jsonobject.getJSONObject(USERDTO);
-						jobComment.setId(Util.getJsonValue(jobCommentuserJSONobj, ID));
-						jobComment.setName(Util.getJsonValue(jobCommentuserJSONobj, NAME));
-						jobComment.setImage(Util.getJsonValue(jobCommentuserJSONobj, IMAGE));
-						arrayJobsComment.add(jobComment);
-					}
+				JSONObject commentJsonObj=jsonobject.getJSONObject(COMMENTLISTRESPONSE);
+				JSONArray commentArrJsonArray = null; 
+				if (commentJsonObj!=null) {
+					commentArrJsonArray = commentJsonObj.getJSONArray(COMMENTRESPONSELIST);
+					 
+					 if (commentArrJsonArray!=null && commentArrJsonArray.length()>=1) {
+							for (int i = 0; i < commentArrJsonArray.length(); i++) {
+								
+								JSONObject commenObj=commentArrJsonArray.getJSONObject(i);
+								
+								JobDetails jobComment=new JobDetails();
+								jobComment.setPostid(Util.getJsonValue(commenObj, POSTID)); 
+								jobComment.setContent(Util.getJsonValue(commenObj, CONTENT));
+								jobComment.setPostedon(Util.getJsonValue(commenObj, COMMENTEDON));
+								JSONObject jobCommentuserJSONobj=commenObj.getJSONObject(USERDTO);
+								jobComment.setId(Util.getJsonValue(jobCommentuserJSONobj, ID));
+								jobComment.setName(Util.getJsonValue(jobCommentuserJSONobj, NAME));
+								jobComment.setImage(Util.getJsonValue(jobCommentuserJSONobj, IMAGE));
+								arrayJobsComment.add(jobComment);
+							}
+						}
+					 
 				}
+				
+				
 				
 			} catch (JSONException e) {
 				e.printStackTrace();

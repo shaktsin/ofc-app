@@ -86,12 +86,15 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			mHolder.txt_jobdetails=(TextView)convertView.findViewById(R.id.joblistview_txt_contain);
 			mHolder.linear_buttonsection=(LinearLayout)convertView.findViewById(R.id.joblistview_linear_buttonsection); 
 					
+			mHolder.txt_load=(TextView)convertView.findViewById(R.id.joblistview_txt_loadAllComment); 
+			
+			
 			mHolder.rel_details=(RelativeLayout)convertView.findViewById(R.id.inflate_joblistview_rel); 
 			mHolder.rel_comment=(RelativeLayout)convertView.findViewById(R.id.inflate_comment_rel); 
 			
 			mHolder.img_commentprfpic=(ImageView)convertView.findViewById(R.id.inflate_comment_img_pic);
 			mHolder.txt_commentname=(TextView)convertView.findViewById(R.id.inflate_comment_txt_name);
-			mHolder.txt_commentdate=(TextView)convertView.findViewById(R.id.inflate_comment_txt_name);
+			mHolder.txt_commentdate=(TextView)convertView.findViewById(R.id.inflate_comment_txt_postdate);
 			mHolder.txt_commenteddetails=(TextView)convertView.findViewById(R.id.inflate_comment_txt_contain);
 			
 			convertView.setTag(mHolder);
@@ -116,6 +119,9 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				mHolder.txt_jobdetails.setText(mJobDetails.getContent());
 				mHolder.img_arrow.setVisibility(View.GONE);
 			}
+			if (arraJobComment.size()>12) {
+				mHolder.txt_load.setVisibility(View.VISIBLE);
+			}
 		}else {
 			mHolder.rel_details.setVisibility(View.GONE);
 			mHolder.rel_comment.setVisibility(View.VISIBLE);
@@ -135,7 +141,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 	
 	private class ViewHolder {
 		public ImageView img_prfpic, img_arrow,img_commentprfpic;
-		public TextView txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails;
+		public TextView txt_load , txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails;
 		public LinearLayout linear_buttonsection;
 		public RelativeLayout rel_details,rel_comment;
 	}

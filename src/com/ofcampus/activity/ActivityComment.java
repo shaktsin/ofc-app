@@ -117,6 +117,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 			public void OnSuccess(ArrayList<JobDetails> arrayJobsComment) {
 				if (arrayJobsComment!=null && arrayJobsComment.size()>=1) {
 					mCommentRecycleAdapter.refreshView(arrayJobsComment);
+//					commentListView.setSelection(commentListView.getAdapter().getCount()-1);
 				}
 				
 			}
@@ -135,6 +136,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		
 		if (comment!=null && comment.length()==0) {
 			Util.ShowToast(mContext,"Enter comment and then click on send button.");
+			return;
 		}
 		
 		
@@ -153,6 +155,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 					mCommentRecycleAdapter.refreshView(mJobDetails);
 					edt_comment.setText("");
 					Util.ShowToast(mContext, "Comment Posted successfully."); 
+					commentListView.setSelection(commentListView.getAdapter().getCount()-1);
 				}
 			}
 			
