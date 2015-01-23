@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/joblist_row_rect"
-            android:visibility="gone" >
+            android:visibility="visible" >
 
             <RelativeLayout
                 android:id="@+id/joblistview_relpicname"
@@ -175,22 +175,52 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/joblistview_txt_loadAllComment"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/joblistview_linear_buttonsection"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="5dp"
-                android:drawableLeft="@drawable/ic_loadall"
-                android:drawablePadding="4dp"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:text="@string/Job_List_loadmore_comment"
-                android:textColor="@color/theme_color"
-                android:textSize="@dimen/joblitview_name"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                android:layout_below="@+id/joblistview_linear_buttonsection" >
+
+                <RelativeLayout
+                    android:id="@+id/rel_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" >
+
+                    <com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate
+                        android:id="@+id/reloaddata"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="3dp"
+                        android:background="#1E88E5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/reloaddata"
+                        android:text="Loaded old comments"
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/joblitview_name"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/joblistview_txt_loadAllComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="5dp"
+                    android:drawableLeft="@drawable/ic_loadall"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@string/Job_List_loadmore_comment"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/joblitview_name"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
