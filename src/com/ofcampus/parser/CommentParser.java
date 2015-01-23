@@ -43,13 +43,15 @@ public class CommentParser {
 	private String COMMENTLISTRESPONSE="commentListResponse";
 	private String COMMENTRESPONSELIST="commentResponseList";
 	private String COMMENTEDON="commentedOn";
+	private String COMMENTID="commentId";
+	private String TOTALRESULTS="totalResults";
 	
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
 	
 	
-	
+	private int totalCommentCount=0;
 	
 	
 	public void parse(Context context,String id,String auth) {  
@@ -136,7 +138,7 @@ public class CommentParser {
 			}else if (responsecode.equals("200")) {
 				if (arrayJobsComment!=null) {
 					if (commentparserinterface!=null) {
-						commentparserinterface.OnSuccess(arrayJobsComment); 
+						commentparserinterface.OnSuccess(arrayJobsComment,totalCommentCount); 
 					}
 				}else {
 					Util.ShowToast(mContext, "Job details parser error.");
@@ -183,12 +185,18 @@ public class CommentParser {
 					commentArrJsonArray = commentJsonObj.getJSONArray(COMMENTRESPONSELIST);
 					 
 					 if (commentArrJsonArray!=null && commentArrJsonArray.length()>=1) {
+						 
+						String totalCount =  Util.getJsonValue(commentJsonObj, TOTALRESULTS);
+						totalCommentCount=(totalCount!=null && !totalCount.equals(""))?Integer.parseInt(totalCount):0;
+						
+						
 							for (int i = 0; i < commentArrJsonArray.length(); i++) {
 								
 								JSONObject commenObj=commentArrJsonArray.getJSONObject(i);
 								
 								JobDetails jobComment=new JobDetails();
 								jobComment.setPostid(Util.getJsonValue(commenObj, POSTID)); 
+								jobComment.setCommentID(Util.getJsonValue(commenObj, COMMENTID));
 								jobComment.setContent(Util.getJsonValue(commenObj, CONTENT));
 								jobComment.setPostedon(Util.getJsonValue(commenObj, COMMENTEDON));
 								JSONObject jobCommentuserJSONobj=commenObj.getJSONObject(USERDTO);
@@ -233,7 +241,7 @@ public class CommentParser {
 	}
 
 	public interface CommentParserInterface {
-		public void OnSuccess(ArrayList<JobDetails> arrayJobsComment); 
+		public void OnSuccess(ArrayList<JobDetails> arrayJobsComment, int totalCommentCount);  
 
 		public void OnError();
 	}

@@ -20,10 +20,15 @@ public class JobDetails {
 	private String replyPhone = "";
 	private String replyWatsApp = "";
 
+	private String commentID = "";
+
 	private String to = "";
 	private String from = "";
 	private String salaryTo = "";
 	private String salaryFrom = "";
+	
+	
+	public int showProgress = 0;
 
 	/* For Sync */
 	private String ISSyncData = "0";
@@ -156,4 +161,11 @@ public class JobDetails {
 		this.replyWatsApp = replyWatsApp;
 	}
 
+	public String getCommentID() {
+		return commentID;
+	}
+
+	public void setCommentID(String commentID) {
+		this.commentID = commentID;
+	}
 }

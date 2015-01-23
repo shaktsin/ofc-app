@@ -17,14 +17,17 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.CommentRecycleAdapter;
+import com.ofcampus.adapter.CommentRecycleAdapter.commentItemClickListner;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.CommentAllParser;
+import com.ofcampus.parser.CommentAllParser.CommentAllParserInterface;
 import com.ofcampus.parser.CommentParser;
 import com.ofcampus.parser.CommentParser.CommentParserInterface;
 import com.ofcampus.parser.CommentPostParser;
 import com.ofcampus.parser.CommentPostParser.CommentPostParserInterface;
 
-public class ActivityComment extends ActionBarActivity implements OnClickListener{
+public class ActivityComment extends ActionBarActivity implements OnClickListener,commentItemClickListner{
 
     private ListView commentListView;
 	private CommentRecycleAdapter mCommentRecycleAdapter;
@@ -82,12 +85,19 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		}
 	}
 	
+	@Override
+	public void loadoldData(String commentId) {
+		reloadOldData(commentId);
+	}
+	
+	
 	
 	private void initilize() {
 		((ImageView)findViewById(R.id.activity_comment_btnsend)).setOnClickListener(this);
 		edt_comment=(EditText)findViewById(R.id.activity_comment_edt_cmnt);
 		commentListView=(ListView)findViewById(R.id.activity_comment_comntlist);
 		mCommentRecycleAdapter=new CommentRecycleAdapter(mContext, new ArrayList<JobDetails>());
+		mCommentRecycleAdapter.setCommentitemclicklistner(this);
 		commentListView.setAdapter(mCommentRecycleAdapter);
 	}
 	
@@ -100,7 +110,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		ArrayList<JobDetails> arrayList=new ArrayList<JobDetails>();
 		if (mJobDetails!=null) {
 			arrayList.add(mJobDetails);
-			mCommentRecycleAdapter.refreshView(arrayList);
+			mCommentRecycleAdapter.refreshView(arrayList,0);
 		}
 		
 
@@ -114,10 +124,9 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		mCommentParser.setCommentparserinterface(new CommentParserInterface() {
 			
 			@Override
-			public void OnSuccess(ArrayList<JobDetails> arrayJobsComment) {
+			public void OnSuccess(ArrayList<JobDetails> arrayJobsComment,int totalCommentCount) {
 				if (arrayJobsComment!=null && arrayJobsComment.size()>=1) {
-					mCommentRecycleAdapter.refreshView(arrayJobsComment);
-//					commentListView.setSelection(commentListView.getAdapter().getCount()-1);
+					mCommentRecycleAdapter.refreshView(arrayJobsComment,totalCommentCount);
 				}
 				
 			}
@@ -167,5 +176,36 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		
 		mCommentPostParser.parse(mContext, mCommentPostParser.getBody("4", JObID,comment), mUserDetails.getAuthtoken());
 
+	}
+
+	private void reloadOldData(String commentID){
+		if (commentID!=null && commentID.equals("")) {
+			mCommentRecycleAdapter.loadOldCommentError();
+			return;
+		}
+		
+		if (!Util.hasConnection(mContext)) {
+			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
+			onBackPressed();
+			return;
+		}
+		
+		
+		CommentAllParser mAllParser=new CommentAllParser();
+		mAllParser.setCommentallparserinterface(new CommentAllParserInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<JobDetails> arrayJobsComment) {
+				if (arrayJobsComment!=null && arrayJobsComment.size()>=1) {
+					mCommentRecycleAdapter.loadOldCommentView(arrayJobsComment);
+				}
+			}
+			
+			@Override
+			public void OnError() {
+				mCommentRecycleAdapter.loadOldCommentError();
+			}
+		});
+		mAllParser.parse(mContext,mAllParser.getBody("", JObID, commentID), mUserDetails.getAuthtoken());
 	}
 }

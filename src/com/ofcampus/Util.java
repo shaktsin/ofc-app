@@ -120,6 +120,10 @@ public class Util {
 		return baseUrl+"post/comment";
 	}
 	
+	public static String getOldCommentsUrl() {
+		return baseUrl+"post/comment/all";
+	}
+	
 	
 	
 	/**
