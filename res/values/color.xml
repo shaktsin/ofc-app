@@ -23,5 +23,8 @@
     <color name="pull_green_light">#ff99cc00</color>
     <color name="pull_orange_light">#ffffbb33</color>
     <color name="pull_red_light">#ffff4444</color>
+    
+    
+    <color name="gray_transparant">#753f3f3f</color>
 
 </resources>

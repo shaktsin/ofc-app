@@ -209,8 +209,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_home_img_composejob:
-			startActivity(new Intent(ActivityHome.this,ActivityCreateJob.class));
-//			startActivity(new Intent(ActivityHome.this,ActivityCreateJobNew.class));
+//			startActivity(new Intent(ActivityHome.this,ActivityCreateJob.class));
+			startActivity(new Intent(ActivityHome.this,ActivityCreateJobNew.class));
 			overridePendingTransition(0,0);
 			break;
 

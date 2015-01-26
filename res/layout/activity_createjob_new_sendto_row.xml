@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/activity_createjob_new_txt_send"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/checkbox_selection"
+        android:drawablePadding="8dp"
+        android:padding="15dp"
+        android:text="@string/craetejob_txt_Email"
+        android:textColor="@color/theme_color"
+        android:textSize="@dimen/joblitview_Subject" />
+
+</RelativeLayout>

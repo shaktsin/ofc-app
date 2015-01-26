@@ -148,6 +148,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				if (url!=null && !url.equals("") && !url.equals("null")) {
 					imageLoader.displayImage(url, mHolder.img_prfpic, options);
 				}
+				mHolder.txt_name.setText(mJobDetails.getName());
 //				mHolder.txt_name.setText(mJobDetails.getName()+" ("+CommentCount+")");
 				mHolder.txt_date.setText("Posted on "+mJobDetails.getPostedon());
 				mHolder.txt_subject.setText(mJobDetails.getSubject());

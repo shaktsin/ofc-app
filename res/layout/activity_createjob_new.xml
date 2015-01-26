@@ -2,23 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/joblist_bg_color" >
+    android:background="@color/joblist_bg_color"
+    android:orientation="vertical" >
 
     <include
         android:id="@+id/tool_bar"
         layout="@layout/actiontool_bar" >
     </include>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/activity_createjob_bottombarmenu"
         android:layout_below="@+id/tool_bar"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:orientation="vertical" >
 
-        <EditText
+        <TextView
             android:id="@+id/activity_createjob_edit_to"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,11 +29,10 @@
             android:drawableRight="@drawable/ic_downarrow"
             android:gravity="center_vertical|left"
             android:hint="To : Every One"
-            android:inputType="number"
             android:padding="12dp"
             android:singleLine="true"
             android:text=""
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/joblitview_Subject"
             android:textStyle="bold" />
 
@@ -39,34 +40,96 @@
             android:id="@+id/activity_createjob_edit_jobtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_createjob_edit_to"
             android:layout_marginTop="6dp"
             android:background="@drawable/comment_edtbox"
             android:gravity="center_vertical|left"
             android:hint="Job Title"
-            android:inputType="number"
             android:padding="12dp"
             android:singleLine="true"
             android:text=""
             android:textColor="@android:color/black"
             android:textSize="@dimen/joblitview_Subject"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
         <EditText
             android:id="@+id/activity_createjob_edit_jobdescrip"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="6dp"
+            android:layout_below="@+id/activity_createjob_edit_jobtitle"
             android:layout_marginBottom="6dp"
+            android:layout_marginTop="6dp"
             android:background="@drawable/comment_edtbox"
             android:gravity="top|left"
             android:hint="Job Description"
-            android:inputType="number"
             android:padding="12dp"
-            android:singleLine="true"
             android:text=""
             android:textColor="@android:color/black"
             android:textSize="@dimen/joblitview_Subject"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:textStyle="normal" />
+
+        <include
+            android:id="@+id/rel_tolist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/activity_createjob_edit_to"
+            layout="@layout/activity_createjob_tosendlist"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/rel_detailadd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/activity_createjob_bottombarmenu"
+        android:layout_below="@+id/tool_bar"
+        layout="@layout/activity_createjob_additionopt"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/rel_reply"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/activity_createjob_bottombarmenu"
+        android:layout_below="@+id/tool_bar"
+        layout="@layout/activity_createjob_replyview"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/activity_createjob_bottombarmenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/theme_color" >
+
+        <ImageView
+            android:id="@+id/activity_createjob_attached"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:src="@drawable/ic_attached" />
+
+        <ImageView
+            android:id="@+id/activity_createjob_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/activity_createjob_attached"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:src="@drawable/ic_edit" />
+
+        <ImageView
+            android:id="@+id/activity_createjob_rply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/activity_createjob_edit"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:src="@drawable/ic_rploption" />
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -39,7 +39,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -56,8 +55,11 @@ public class Util {
 
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
 
-	public static String TITLES[] = { "My Profile", "My Posts",
-			"Important Mail", "Settings", "Logout" };
+	public static String TITLES[] = { "My Profile", "My Posts","Important Mail", "Settings", "Logout" };
+	
+	
+	public static String sendto[] = { "Everyone", "Class of 2014","General Management Club", "Finance Club", "Hyderabad Chapter" };
+	
 	public static String TOOLTITLE[] = { "Comment", "Details" };
 
 	public static int ICONS[] = { R.drawable.ic_profile, R.drawable.ic_mypost,

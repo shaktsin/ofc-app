@@ -8,6 +8,10 @@
     <string name="DataBaseName_Version">1</string>
     <string name="DataBaseName">OfCampus</string>
 
+    <!-- Seek Bar -->
+    <string name="demo_min_label">Min</string>
+    <string name="demo_max_label">Max</string>
+
     <!-- DataBase Name And Version End -->
 
     <string name="hello_world">Hello world!</string>

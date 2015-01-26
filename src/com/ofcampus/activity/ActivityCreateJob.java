@@ -78,7 +78,7 @@ public class ActivityCreateJob  extends ActionBarActivity implements OnClickList
 	}
 	
 	 @Override
-	    public boolean onCreateOptionsMenu(Menu menu) {
+	   public boolean onCreateOptionsMenu(Menu menu) {
 	    	MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.menu_createjob, menu);
 			return super.onCreateOptionsMenu(menu);
