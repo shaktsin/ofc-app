@@ -18,10 +18,10 @@
             android:id="@+id/activity_comment_comntlist"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@+id/activity_comment_rel_comnt"
             android:cacheColorHint="@android:color/transparent"
             android:divider="@null"
             android:fadingEdge="none"
-            android:layout_above="@+id/activity_comment_rel_comnt"
             android:listSelector="@android:color/transparent" >
         </ListView>
 
@@ -30,31 +30,46 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/darker_gray" >
+            android:background="@android:color/white"
+            android:visibility="gone" >
 
-            <EditText
-                android:id="@+id/activity_comment_edt_cmnt"
+            <RelativeLayout
+                android:id="@+id/activity_comment_edt_upline"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/theme_color" >
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dp"
-                android:layout_toLeftOf="@+id/activity_comment_btnsend"
-                android:background="@android:color/white"
-                android:gravity="center_vertical|left"
-                android:hint="Enter comment here."
-                android:maxLines="3"
-                android:padding="8dp"
-                android:text=""
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/joblitview_Subject" />
+                android:layout_below="@+id/activity_comment_edt_upline" >
 
-            <ImageView
-                android:id="@+id/activity_comment_btnsend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_send" />
+                <EditText
+                    android:id="@+id/activity_comment_edt_cmnt"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:layout_toLeftOf="@+id/activity_comment_btnsend"
+                    android:background="@android:color/white"
+                    android:gravity="center_vertical|left"
+                    android:hint="Write a comment here.."
+                    android:maxLines="3"
+                    android:padding="8dp"
+                    android:text=""
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/Comment_Comment" />
+
+                <ImageView
+                    android:id="@+id/activity_comment_btnsend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_send" />
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 

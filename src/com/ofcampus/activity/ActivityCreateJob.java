@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -446,13 +447,13 @@ public class ActivityCreateJob  extends ActionBarActivity implements OnClickList
 				@Override
 				public void OnSuccess(JobDetails mJobDetails) {
 					if (mJobDetails!=null) {
-						((OfCampusApplication)getApplication()).jobdetails=mJobDetails;
-						Intent mIntent=new Intent(mContext,ActivityJobDetails.class);
+						((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+						Intent mIntent = new Intent(mContext,ActivityComment.class);
 						Bundle mBundle=new Bundle();
-						mBundle.putString("From", "CreateJob");
-						mBundle.putString("JobID", "");
+						mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
 						mIntent.putExtras(mBundle);
 						startActivity(mIntent);
+						((Activity) mContext).overridePendingTransition(0, 0); 
 						onBackPressed();
 					}
 					

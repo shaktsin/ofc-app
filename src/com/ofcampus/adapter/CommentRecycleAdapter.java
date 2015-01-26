@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.R;
+import com.ofcampus.Util;
 import com.ofcampus.model.JobDetails;
 
 public class CommentRecycleAdapter extends BaseAdapter{
@@ -113,6 +114,9 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			mHolder.txt_date=(TextView)convertView.findViewById(R.id.joblistview_txt_postdate);
 			mHolder.txt_subject=(TextView)convertView.findViewById(R.id.joblistview_txt_subject);
 			mHolder.txt_jobdetails=(TextView)convertView.findViewById(R.id.joblistview_txt_contain);
+			mHolder.txt_btn_comment=(TextView)convertView.findViewById(R.id.joblistview_txt_comment);
+			mHolder.txt_btn_share=(TextView)convertView.findViewById(R.id.joblistview_txt_share);
+			
 			mHolder.linear_buttonsection=(LinearLayout)convertView.findViewById(R.id.joblistview_linear_buttonsection); 
 					
 			mHolder.txt_load=(TextView)convertView.findViewById(R.id.joblistview_txt_loadAllComment); 
@@ -138,17 +142,37 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		if (position==0) {
 			mHolder.rel_details.setVisibility(View.VISIBLE);
 			mHolder.rel_comment.setVisibility(View.GONE);
-			mHolder.linear_buttonsection.setVisibility(View.GONE);
+			mHolder.linear_buttonsection.setVisibility(View.VISIBLE);
 			if (mJobDetails!=null) {
 				String url=mJobDetails.getImage();
 				if (url!=null && !url.equals("") && !url.equals("null")) {
 					imageLoader.displayImage(url, mHolder.img_prfpic, options);
 				}
-				mHolder.txt_name.setText(mJobDetails.getName()+" ("+CommentCount+")");
+//				mHolder.txt_name.setText(mJobDetails.getName()+" ("+CommentCount+")");
 				mHolder.txt_date.setText("Posted on "+mJobDetails.getPostedon());
 				mHolder.txt_subject.setText(mJobDetails.getSubject());
 				mHolder.txt_jobdetails.setText(mJobDetails.getContent());
 				mHolder.img_arrow.setVisibility(View.GONE);
+				
+				mHolder.txt_btn_comment.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if (commentitemclicklistner!=null) {
+							commentitemclicklistner.commentbuttonCliek(); 
+						}
+					}
+				});
+				
+				mHolder.txt_btn_share.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Util.onShareClick(mContext,v,mJobDetails.getSubject(),mJobDetails.getContent()) ;
+					}
+				});
+				
+				
 			}
 			if (CommentCount > totalCommentCount) {
 				if (mJobDetails.showProgress==1) {
@@ -195,6 +219,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 	private class ViewHolder {
 		public ImageView img_prfpic, img_arrow,img_commentprfpic;
 		public TextView txt_load , txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails;
+		public TextView txt_btn_comment,txt_btn_share;
 		public LinearLayout linear_buttonsection;
 		public RelativeLayout rel_details,rel_comment,rel_progress;
 	}
@@ -212,5 +237,6 @@ public class CommentRecycleAdapter extends BaseAdapter{
 
 	public interface commentItemClickListner {
 		public void loadoldData(String commentId);
+		public void commentbuttonCliek();
 	}
 }

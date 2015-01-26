@@ -8,15 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        android:layout_marginTop="10dp" >
+        android:layout_marginRight="6dp" >
 
         <RelativeLayout
             android:id="@+id/inflate_joblistview_rel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@drawable/joblist_row_rect"
-            android:visibility="visible" >
+            android:visibility="gone" >
 
             <RelativeLayout
                 android:id="@+id/joblistview_relpicname"
@@ -47,7 +47,7 @@
                         android:singleLine="true"
                         android:text=""
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/joblitview_name" />
+                        android:textSize="@dimen/Comment_username" />
 
                     <TextView
                         android:id="@+id/joblistview_txt_postdate"
@@ -58,7 +58,7 @@
                         android:singleLine="true"
                         android:text=""
                         android:textColor="@color/theme_color"
-                        android:textSize="@dimen/joblitview_postdate" />
+                        android:textSize="@dimen/Comment_postdate" />
                 </RelativeLayout>
 
                 <ImageView
@@ -92,7 +92,7 @@
                 android:maxLines="2"
                 android:text=""
                 android:textColor="@color/theme_color"
-                android:textSize="@dimen/joblitview_Subject"
+                android:textSize="@dimen/Comment_Header"
                 android:textStyle="bold" />
 
             <TextView
@@ -104,7 +104,7 @@
                 android:maxLines="4"
                 android:text=""
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/joblitview_contain" />
+                android:textSize="@dimen/Comment_Comment" />
 
             <LinearLayout
                 android:id="@+id/joblistview_linear_buttonsection"
@@ -199,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@+id/reloaddata"
-                        android:text="Loaded old comments"
+                        android:text="@string/Job_List_loadmore_commentss"
                         android:textColor="@color/theme_color"
                         android:textSize="@dimen/joblitview_name"
                         android:textStyle="bold" />
@@ -228,61 +228,58 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/joblist_row_rect"
-            android:visibility="gone" >
+            android:visibility="visible" >
+
+            <ImageView
+                android:id="@+id/inflate_comment_img_pic"
+                android:layout_width="@dimen/joblitview_picwd"
+                android:layout_height="@dimen/joblitview_picwd"
+                android:layout_alignParentTop="true"
+                android:layout_margin="6dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_profilepic" />
 
             <RelativeLayout
-                android:id="@+id/inflate_comment_relpicname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/inflate_comment_img_pic"
-                    android:layout_width="@dimen/joblitview_picwd"
-                    android:layout_height="@dimen/joblitview_picwd"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="6dp"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_profilepic" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/inflate_comment_img_pic" >
-
-                    <TextView
-                        android:id="@+id/inflate_comment_txt_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/joblitview_name" />
-
-                    <TextView
-                        android:id="@+id/inflate_comment_txt_postdate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/inflate_comment_txt_name"
-                        android:layout_marginTop="5dp"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/theme_color"
-                        android:textSize="@dimen/joblitview_postdate" />
-                </RelativeLayout>
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/inflate_comment_txt_contain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/inflate_comment_relpicname"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
-                android:maxLines="4"
-                android:text=""
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/joblitview_contain" />
+                android:layout_toRightOf="@+id/inflate_comment_img_pic" >
+
+                <TextView
+                    android:id="@+id/inflate_comment_txt_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="dasdasd"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/Comment_username"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/inflate_comment_txt_contain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/inflate_comment_txt_name"
+                    android:layout_marginTop="2dp"
+                    android:maxLines="4"
+                    android:text="dsada"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/Comment_Comment" />
+
+                <TextView
+                    android:id="@+id/inflate_comment_txt_postdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/inflate_comment_txt_contain"
+                    android:layout_marginTop="2dp"
+                    android:singleLine="true"
+                    android:text="sadasdads"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/Comment_postdate" />
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 

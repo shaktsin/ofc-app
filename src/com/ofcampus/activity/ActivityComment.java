@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
@@ -35,17 +36,23 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 	private UserDetails mUserDetails;
 	private String JObID="";
 	private EditText edt_comment;
+	private RelativeLayout rel_comnt;
 	private Context mContext;
 	
+	private String toolHeaderTitle="";
+	private boolean isFromDetails=false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_comment);
 
+	
+		
+		loadBundleValue();
 		mContext=ActivityComment.this;
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("Comment");
+		toolbar.setTitle(toolHeaderTitle);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -90,10 +97,31 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		reloadOldData(commentId);
 	}
 	
+	@Override
+	public void commentbuttonCliek() {
+		if (!isFromDetails) { 
+			return;
+		}
+		if (rel_comnt.getVisibility()==View.GONE) {
+			rel_comnt.setVisibility(View.VISIBLE);
+			edt_comment.setFocusable(true);
+		}
+		
+	}
+	
+	private void loadBundleValue(){
+		try {
+			toolHeaderTitle = getIntent().getExtras().getString("key_dlorcmt");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		isFromDetails=toolHeaderTitle.equals(Util.TOOLTITLE[1])?true:false;
+	}
 	
 	
 	private void initilize() {
 		((ImageView)findViewById(R.id.activity_comment_btnsend)).setOnClickListener(this);
+		rel_comnt=(RelativeLayout)findViewById(R.id.activity_comment_rel_comnt);
 		edt_comment=(EditText)findViewById(R.id.activity_comment_edt_cmnt);
 		commentListView=(ListView)findViewById(R.id.activity_comment_comntlist);
 		mCommentRecycleAdapter=new CommentRecycleAdapter(mContext, new ArrayList<JobDetails>());
@@ -106,6 +134,8 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		mUserDetails = UserDetails.getLoggedInUser(mContext);
 		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;		
 		JObID=mJobDetails.getPostid();
+		
+		rel_comnt.setVisibility(isFromDetails?View.GONE:View.VISIBLE);
 		
 		ArrayList<JobDetails> arrayList=new ArrayList<JobDetails>();
 		if (mJobDetails!=null) {

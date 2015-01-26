@@ -63,7 +63,8 @@
     <string name="Job_List_View_reply">Reply</string>
     <string name="Job_List_View_share">Share</string>
     <string name="Job_List_View_comment">Comment</string>
-    <string name="Job_List_loadmore_comment">Load all comment</string>
+    <string name="Job_List_loadmore_comment">load previous comment</string>
+    <string name="Job_List_loadmore_commentss">load comments..</string>
 
     <!-- Craete Jobs -->
     <string name="craetejob_txt_industry">Industry</string>

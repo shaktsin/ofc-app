@@ -46,112 +46,114 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 public class Util {
-	
-	public static int connectTimeout=10000;
-	public static int socketTimeout=30000;
+
+	public static int connectTimeout = 10000;
+	public static int socketTimeout = 30000;
 	public static int delaytime = 2000;
-	
-	public static long delay = 5*1000; 
-	public static long period = 30*1000; 
-	
+
+	public static long delay = 5 * 1000;
+	public static long period = 30 * 1000;
+
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
-	
-	public static String TITLES[] = {"My Profile","My Posts","Important Mail","Settings","Logout"};
-	public static int ICONS[] = {R.drawable.ic_profile,R.drawable.ic_mypost,R.drawable.ic_impmail,R.drawable.ic_settings,R.drawable.ic_logout};
-	
-	public static enum userType{
-		Normal,Gmail,Facebook
+
+	public static String TITLES[] = { "My Profile", "My Posts",
+			"Important Mail", "Settings", "Logout" };
+	public static String TOOLTITLE[] = { "Comment", "Details" };
+
+	public static int ICONS[] = { R.drawable.ic_profile, R.drawable.ic_mypost,
+			R.drawable.ic_impmail, R.drawable.ic_settings, R.drawable.ic_logout };
+
+	public static enum userType {
+		Normal, Gmail, Facebook
 	}
-	
-	public static enum jobListCallFor{
-		Normal,refresh
+
+	public static enum jobListCallFor {
+		Normal, refresh
 	}
-	
-	
-	public static enum JobDataReturnFor{
-		Normal,syncdata
+
+	public static enum JobDataReturnFor {
+		Normal, syncdata
 	}
-	
+
 	public static String getLoginUrl() {
-		return baseUrl+"user/login";
+		return baseUrl + "user/login";
 	}
-	
+
 	public static String getSignUp() {
-		return baseUrl+"user/signUp";
+		return baseUrl + "user/signUp";
 	}
-	
+
 	public static String getInstituteUrl() {
-		return baseUrl+"institute/all";
+		return baseUrl + "institute/all";
 	}
-	
+
 	public static String getJobListUrl() {
-		return baseUrl+"jobs/list";
+		return baseUrl + "jobs/list";
 	}
-	
+
 	public static String getPrepareUrl() {
-		return baseUrl+"jobs/prepare";
+		return baseUrl + "jobs/prepare";
 	}
-	
+
 	public static String getcreateJobUrl() {
-		return baseUrl+"jobs/create";
+		return baseUrl + "jobs/create";
 	}
-	
+
 	public static String getJobDetailsUrl(String jobID) {
-		return baseUrl+"jobs/"+jobID;
+		return baseUrl + "jobs/" + jobID;
 	}
 
 	public static String getJobSyncCountUrl() {
-		return baseUrl+"post/post/sync";
+		return baseUrl + "post/post/sync";
 	}
-	
+
 	public static String getJobHidetUrl() {
-		return baseUrl+"post/react";
+		return baseUrl + "post/react";
 	}
-	
+
 	public static String getMyPostJobUrl() {
-		return baseUrl+"post/myposts";
+		return baseUrl + "post/myposts";
 	}
-	
+
 	public static String getImportantmailUrl() {
-		return baseUrl+"post/imp";
+		return baseUrl + "post/imp";
 	}
-	
+
 	public static String getCommentPostUrl() {
-		return baseUrl+"post/comment";
+		return baseUrl + "post/comment";
 	}
-	
+
 	public static String getOldCommentsUrl() {
-		return baseUrl+"post/comment/all";
+		return baseUrl + "post/comment/all";
 	}
-	
-	
-	
+
 	/**
 	 * Show Alert Toast message.
 	 */
-	public static void ShowToast(Context context,String msg){
+	public static void ShowToast(Context context, String msg) {
 		Toast mToast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
 		mToast.setGravity(Gravity.CENTER, 0, 0);
 		mToast.show();
 	}
-	
+
 	public static SharedPreferences getPrefs(Context context) {
 		return context.getSharedPreferences("OfCampus", Activity.MODE_PRIVATE);
 	}
 
-	
 	/**
 	 * Check device Internet connection.
 	 */
 	public static boolean hasConnection(Context context) {
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
-						Context.CONNECTIVITY_SERVICE);
-		NetworkInfo wifiNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo wifiNetwork = cm
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		if (wifiNetwork != null && wifiNetwork.isConnected()) {
 			return true;
 		}
 
-		NetworkInfo mobileNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		NetworkInfo mobileNetwork = cm
+				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 		if (mobileNetwork != null && mobileNetwork.isConnected()) {
 			return true;
 		}
@@ -162,12 +164,13 @@ public class Util {
 		}
 		return false;
 	}
-	
-	public static void HideKeyBoard(Context context,View v){
-		InputMethodManager imm = (InputMethodManager)context.getSystemService( Context.INPUT_METHOD_SERVICE);
+
+	public static void HideKeyBoard(Context context, View v) {
+		InputMethodManager imm = (InputMethodManager) context
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 	}
-	
+
 	public final static boolean isValidEmail(String email) {
 		if (email == null) {
 			return false;
@@ -175,6 +178,7 @@ public class Util {
 			return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 		}
 	}
+
 	public final static boolean isValidEmail_again(String email) {
 		String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -183,104 +187,107 @@ public class Util {
 		return matcher.matches();
 	}
 
-
-	public static String Gender(String gender){
+	public static String Gender(String gender) {
 		if (gender.equalsIgnoreCase("male")) {
 			return "0";
-		}else {
+		} else {
 			return "1";
 		}
 	}
-	
-	
+
 	/**
 	 * Name Value pair request.
 	 */
-	 public static String[] PostRequest(List<NameValuePair> postData,String url) {
-			String res = "";
-			String[] responData = { "", "" };
-			try {
-				HttpPost httppost = new HttpPost(url);
-				httppost.setHeader("Content-Type","application/x-www-form-urlencoded");
-				httppost.setEntity(new UrlEncodedFormEntity(postData, HTTP.UTF_8));
-				HttpClient httpclient = new DefaultHttpClient();
-				httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-				httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
-				HttpResponse httpResponse = httpclient.execute(httppost);
-				// httpResponse.getStatusLine();
-				// HttpEntity entity = httpResponse.getEntity();
+	public static String[] PostRequest(List<NameValuePair> postData, String url) {
+		String res = "";
+		String[] responData = { "", "" };
+		try {
+			HttpPost httppost = new HttpPost(url);
+			httppost.setHeader("Content-Type",
+					"application/x-www-form-urlencoded");
+			httppost.setEntity(new UrlEncodedFormEntity(postData, HTTP.UTF_8));
+			HttpClient httpclient = new DefaultHttpClient();
+			httpclient.getParams().setParameter(
+					CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(
+					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			HttpResponse httpResponse = httpclient.execute(httppost);
+			// httpResponse.getStatusLine();
+			// HttpEntity entity = httpResponse.getEntity();
 
-				res = EntityUtils.toString(httpResponse.getEntity());
-				responData[0] = "200";
-				responData[1] = res;
-				
-			} catch (ConnectTimeoutException e) {
-				responData[0] = "205";
-				e.printStackTrace();
-			} catch (SocketTimeoutException e) {
-				responData[0] = "205";
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				responData[0] = "205";
-				e.printStackTrace();
-			} catch (ClientProtocolException e) {
-				responData[0] = "205";
-				e.printStackTrace();
-			} catch (ParseException e) {
-				responData[0] = "205";
-				e.printStackTrace();
-			} catch (IOException e) {
-				responData[0] = "205";
-				e.printStackTrace();
-			}
-			return responData;
+			res = EntityUtils.toString(httpResponse.getEntity());
+			responData[0] = "200";
+			responData[1] = res;
+
+		} catch (ConnectTimeoutException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (SocketTimeoutException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (ParseException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IOException e) {
+			responData[0] = "205";
+			e.printStackTrace();
 		}
-	 
-	 /**
-		 * Name Value pair request.
-		 */
-		 public static String[] GetRequest(List<NameValuePair> postData,String url) {
-				String res = "";
-				String[] responData = { "", "" };
-				try {
-					HttpGet httpget = new HttpGet(url); 
-					httpget.setHeader("Content-Type","application/x-www-form-urlencoded");
-					httpget.setHeader(postData.get(0).getName(),postData.get(0).getValue());
-					HttpClient httpclient = new DefaultHttpClient();
-					httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-					httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
-					HttpResponse httpResponse = httpclient.execute(httpget);
-					// httpResponse.getStatusLine();
-					// HttpEntity entity = httpResponse.getEntity();
+		return responData;
+	}
 
-					res = EntityUtils.toString(httpResponse.getEntity());
-					responData[0] = "200";
-					responData[1] = res;
-					
-				} catch (ConnectTimeoutException e) {
-					responData[0] = "205";
-					e.printStackTrace();
-				} catch (SocketTimeoutException e) {
-					responData[0] = "205";
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					responData[0] = "205";
-					e.printStackTrace();
-				} catch (ClientProtocolException e) {
-					responData[0] = "205";
-					e.printStackTrace();
-				} catch (ParseException e) {
-					responData[0] = "205";
-					e.printStackTrace();
-				} catch (IOException e) {
-					responData[0] = "205";
-					e.printStackTrace();
-				}
-				return responData;
-			}
-		 
-		 
-		 
+	/**
+	 * Name Value pair request.
+	 */
+	public static String[] GetRequest(List<NameValuePair> postData, String url) {
+		String res = "";
+		String[] responData = { "", "" };
+		try {
+			HttpGet httpget = new HttpGet(url);
+			httpget.setHeader("Content-Type",
+					"application/x-www-form-urlencoded");
+			httpget.setHeader(postData.get(0).getName(), postData.get(0)
+					.getValue());
+			HttpClient httpclient = new DefaultHttpClient();
+			httpclient.getParams().setParameter(
+					CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(
+					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			HttpResponse httpResponse = httpclient.execute(httpget);
+			// httpResponse.getStatusLine();
+			// HttpEntity entity = httpResponse.getEntity();
+
+			res = EntityUtils.toString(httpResponse.getEntity());
+			responData[0] = "200";
+			responData[1] = res;
+
+		} catch (ConnectTimeoutException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (SocketTimeoutException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (ParseException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IOException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		}
+		return responData;
+	}
+
 	// HTTP GET request
 	public static String[] sendGet(String url) throws Exception {
 		String Response = "";
@@ -323,111 +330,113 @@ public class Util {
 
 		return responData;
 	}
-		
-	
-	 public static  String[] POST(String url, JSONObject jsonObject){
-	      InputStream inputStream = null;
-	      String result = "";
-	      String[] responData = { "", "" };
-	
-	          try {
-				HttpClient httpclient = new DefaultHttpClient();
-				  httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-				  httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
-				  HttpPost httpPost = new HttpPost(url);
-				  String json = "";
-				  json = jsonObject.toString();
-				  StringEntity se = new StringEntity(json);
-				  httpPost.setEntity(se); 
-				  httpPost.setHeader("Accept", "application/json");
-				  httpPost.setHeader("Content-type", "application/json");
-				  HttpResponse httpResponse = httpclient.execute(httpPost);
-				  inputStream = httpResponse.getEntity().getContent();
-				  if(inputStream != null)
-				      result = convertInputStreamToString(inputStream);
-				  else
-				      result = "Did not work!";
-				  responData[0] = "200";
-				  responData[1] = result;
-			} catch (UnsupportedEncodingException e) {
-				 responData[0] = "205";
-				e.printStackTrace();
-			} catch (ClientProtocolException e) {
-				 responData[0] = "205";
-				e.printStackTrace();
-			} catch (IllegalStateException e) {
-				 responData[0] = "205";
-				e.printStackTrace();
-			} catch (IOException e) {
-				 responData[0] = "205";
-				e.printStackTrace();
-			}
 
+	public static String[] POST(String url, JSONObject jsonObject) {
+		InputStream inputStream = null;
+		String result = "";
+		String[] responData = { "", "" };
 
-	      return responData;
-	  }
-	 
-	 public static  String[] POST_JOB(String url, JSONObject jsonObject,String auth){
-	      InputStream inputStream = null;
-	      String result = "";
-	      String[] responData = { "", "" };
-	   
-	      
-	          try {
-				HttpClient httpclient = new DefaultHttpClient();
-				  httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-				  httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
-				  HttpPost httpPost = new HttpPost(url);
-				  String json = "";
-				  json = jsonObject.toString();
-				  StringEntity se = new StringEntity(json);
-				  httpPost.setEntity(se); 
-				  httpPost.setHeader("Authorization", auth);
-				  httpPost.setHeader("Content-type", "application/json");
-				  HttpResponse httpResponse = httpclient.execute(httpPost);
-				  inputStream = httpResponse.getEntity().getContent();
-				  if(inputStream != null)
-				      result = convertInputStreamToString(inputStream);
-				  else
-				      result = "Did not work!";
-				  responData[0] = "200";
-				  responData[1] = result;
-			} catch (UnsupportedEncodingException e) {
-				 responData[0] = "205";
-				e.printStackTrace();
-			} catch (ClientProtocolException e) {
-				 responData[0] = "205";
-				e.printStackTrace();
-			} catch (IllegalStateException e) {
-				 responData[0] = "205";
-				e.printStackTrace();
-			} catch (IOException e) {
-				 responData[0] = "205";
-				e.printStackTrace();
-			}
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+			httpclient.getParams().setParameter(
+					CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(
+					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			HttpPost httpPost = new HttpPost(url);
+			String json = "";
+			json = jsonObject.toString();
+			StringEntity se = new StringEntity(json);
+			httpPost.setEntity(se);
+			httpPost.setHeader("Accept", "application/json");
+			httpPost.setHeader("Content-type", "application/json");
+			HttpResponse httpResponse = httpclient.execute(httpPost);
+			inputStream = httpResponse.getEntity().getContent();
+			if (inputStream != null)
+				result = convertInputStreamToString(inputStream);
+			else
+				result = "Did not work!";
+			responData[0] = "200";
+			responData[1] = result;
+		} catch (UnsupportedEncodingException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IOException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		}
 
-	      
-	      return responData;
-	  }
-	 
-	 
-	  private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-	      BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-	      String line = "";
-	      String result = "";
-	      while((line = bufferedReader.readLine()) != null)
-	          result += line;
-	      inputStream.close();
-	      return result;
+		return responData;
+	}
 
-	  }   
-	 
+	public static String[] POST_JOB(String url, JSONObject jsonObject,
+			String auth) {
+		InputStream inputStream = null;
+		String result = "";
+		String[] responData = { "", "" };
+
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+			httpclient.getParams().setParameter(
+					CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(
+					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			HttpPost httpPost = new HttpPost(url);
+			String json = "";
+			json = jsonObject.toString();
+			StringEntity se = new StringEntity(json);
+			httpPost.setEntity(se);
+			httpPost.setHeader("Authorization", auth);
+			httpPost.setHeader("Content-type", "application/json");
+			HttpResponse httpResponse = httpclient.execute(httpPost);
+			inputStream = httpResponse.getEntity().getContent();
+			if (inputStream != null)
+				result = convertInputStreamToString(inputStream);
+			else
+				result = "Did not work!";
+			responData[0] = "200";
+			responData[1] = result;
+		} catch (UnsupportedEncodingException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IOException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		}
+
+		return responData;
+	}
+
+	private static String convertInputStreamToString(InputStream inputStream)
+			throws IOException {
+		BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(inputStream));
+		String line = "";
+		String result = "";
+		while ((line = bufferedReader.readLine()) != null)
+			result += line;
+		inputStream.close();
+		return result;
+
+	}
+
 	public static String getJsonValue(JSONObject jsObject, String Key) {
 		String value = "";
 		try {
 			if (jsObject.has(Key)) {
 				value = jsObject.getString(Key);
-				value = value.equalsIgnoreCase("null")?"":value;
+				value = value.equalsIgnoreCase("null") ? "" : value;
 			} else {
 				value = "";
 			}
@@ -436,42 +445,49 @@ public class Util {
 		}
 		return value;
 	}
-	
-	public static void shareIntent(Context mContext,String subject,String content){
+
+	public static void shareIntent(Context mContext, String subject,
+			String content) {
 		try {
-			 Intent intent = new Intent(Intent.ACTION_SEND);
-			 intent.setType("text/plain");
-			 intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-			 intent.putExtra(Intent.EXTRA_TEXT, content);
-			 mContext.startActivity(Intent.createChooser(intent, "Share using"));
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("text/plain");
+			intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+			intent.putExtra(Intent.EXTRA_TEXT, content);
+			mContext.startActivity(Intent.createChooser(intent, "Share using"));
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	public static void onShareClick(Context mcContext, View v, String subject,String content) {
+
+	public static void onShareClick(Context mcContext, View v, String subject,
+			String content) {
 
 		try {
 			List<String> PackageName = getShareApplication();
 			List<Intent> targetedShareIntents = new ArrayList<Intent>();
 			Intent share = new Intent(android.content.Intent.ACTION_SEND);
 			share.setType("text/plain");
-			List<ResolveInfo> resInfo = mcContext.getPackageManager().queryIntentActivities(share, 0);
+			List<ResolveInfo> resInfo = mcContext.getPackageManager()
+					.queryIntentActivities(share, 0);
 			if (!resInfo.isEmpty()) {
 				for (ResolveInfo info : resInfo) {
-					Intent targetedShare = new Intent(android.content.Intent.ACTION_SEND);
-					targetedShare.setType("text/plain"); // put here your mime// type
-					if (PackageName.contains(info.activityInfo.packageName.toLowerCase())) {
+					Intent targetedShare = new Intent(
+							android.content.Intent.ACTION_SEND);
+					targetedShare.setType("text/plain"); // put here your mime//
+															// type
+					if (PackageName.contains(info.activityInfo.packageName
+							.toLowerCase())) {
 						targetedShare.putExtra(Intent.EXTRA_SUBJECT, subject);
 						targetedShare.putExtra(Intent.EXTRA_TEXT, content);
-						targetedShare.setPackage(info.activityInfo.packageName.toLowerCase());
+						targetedShare.setPackage(info.activityInfo.packageName
+								.toLowerCase());
 						targetedShareIntents.add(targetedShare);
 					}
 				}
-				Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0), "Share using...");
-				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,targetedShareIntents.toArray(new Parcelable[] {}));
+				Intent chooserIntent = Intent.createChooser(
+						targetedShareIntents.remove(0), "Share using...");
+				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
+						targetedShareIntents.toArray(new Parcelable[] {}));
 				mcContext.startActivity(chooserIntent);
 			}
 		} catch (Exception e) {
@@ -489,21 +505,23 @@ public class Util {
 		mList.add("com.android.mms");
 		return mList;
 	}
-	
-	
+
 	/**
 	 * Reply Text via Email.
+	 * 
 	 * @param mcContext
 	 * @param SUBJECT
 	 * @param TEXT
 	 * @param to
 	 */
-	private void replyViaEmailCalling(Context mcContext,String SUBJECT,String TEXT,String to) {
+	private void replyViaEmailCalling(Context mcContext, String SUBJECT,
+			String TEXT, String to) {
 		try {
 			Intent sendIntent = new Intent(Intent.ACTION_VIEW);
 			sendIntent.setType("plain/text");
-			sendIntent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
-			sendIntent.putExtra(Intent.EXTRA_CC, new String[]{to});
+			sendIntent.setClassName("com.google.android.gm",
+					"com.google.android.gm.ComposeActivityGmail");
+			sendIntent.putExtra(Intent.EXTRA_CC, new String[] { to });
 			sendIntent.putExtra(Intent.EXTRA_SUBJECT, "My Incident Report");
 			sendIntent.putExtra(Intent.EXTRA_TEXT, TEXT);
 			mcContext.startActivity(sendIntent);

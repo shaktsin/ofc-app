@@ -90,10 +90,9 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 	public void convertViewOnClick(JobDetails mJobDetails) {
 		
 		((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
-		Intent mIntent=new Intent(context,ActivityJobDetails.class);
+		Intent mIntent = new Intent(context,ActivityComment.class);
 		Bundle mBundle=new Bundle();
-		mBundle.putString("From", "JobList");
-		mBundle.putString("JobID", mJobDetails.getPostid());
+		mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
 		mIntent.putExtras(mBundle);
 		startActivity(mIntent);
 		((Activity) context).overridePendingTransition(0, 0); 
@@ -129,7 +128,11 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 	@Override 
 	public void commentClickEvent(JobDetails mJobDetails) {
 		((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
-		startActivity(new Intent(context,ActivityComment.class));
+		Intent mIntent = new Intent(context,ActivityComment.class);
+		Bundle mBundle=new Bundle();
+		mBundle.putString("key_dlorcmt", Util.TOOLTITLE[0]);
+		mIntent.putExtras(mBundle);
+		startActivity(mIntent);
 		((Activity) context).overridePendingTransition(0, 0); 
 	}
 	
