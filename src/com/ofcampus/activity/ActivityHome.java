@@ -55,6 +55,7 @@ import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.CountSyncParser;
 import com.ofcampus.parser.JobListParserNew;
 import com.ofcampus.parser.JobListParserNew.JobListParserNewInterface;
+import com.ofcampus.ui.FilterDialog;
 
 public class ActivityHome extends ActionBarActivity implements OnClickListener,viewCLickEvent,OnPageChangeListener,JobsFrgInterface{
 
@@ -199,6 +200,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
         if (id == R.id.action_search) {
             return true;
         }else if (id == R.id.action_filter) {
+        	FilterDialog mDialog=new FilterDialog(mContext);
+        	mDialog.showDialog();
         	return true;
 		}
         return super.onOptionsItemSelected(item);
