@@ -2,7 +2,9 @@ package com.ofcampus.adapter;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,6 +20,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.ActivityHome;
+import com.ofcampus.activity.ActivityMyProfile;
 import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
 
@@ -116,7 +120,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		if (convertView==null) {
 			mHolder=new ViewHolder();
 			convertView=inflater.inflate(R.layout.inflate_joblistrow, null);
-			mHolder.profilepic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
+			mHolder.profilepic=(CircleImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
 			mHolder.img_important=(ImageView)convertView.findViewById(R.id.joblistview_img_imp);
 			mHolder.txt_name=(TextView)convertView.findViewById(R.id.joblistview_txt_name);
@@ -150,7 +154,16 @@ public class JobListBaseAdapter extends BaseAdapter{
 				mHolder.img_important.setSelected(false);
 			}
 
-			convertView.setOnClickListener(new OnClickListener() {
+			mHolder.profilepic.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					mContext.startActivity(new Intent(mContext,ActivityMyProfile.class));
+					((Activity) mContext).overridePendingTransition(0,0);
+				}
+			});
+			
+			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -239,7 +252,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 	}
 	
 	private class ViewHolder{
-		ImageView profilepic;
+		CircleImageView profilepic;
 		ImageView img_arrow,img_important;
 		TextView txt_name,txt_postdate,txt_subject,txt_contain;
 		TextView btn_reply,btn_share,btn_comment;

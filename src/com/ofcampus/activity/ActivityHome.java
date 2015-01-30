@@ -470,14 +470,14 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				Util.ShowToast(mContext,"Successfully logout.");
 				dialog.dismiss();
+				Util.ShowToast(mContext,"Successfully logout.");
+				UserDetails.logoutUser(mContext);
+				startActivity(new Intent(ActivityHome.this,ActivitySplash.class));
+				overridePendingTransition(0,0);
+				finish();
 			}
 		});
-		
-		
-
-
 		alert.create();
 		alert.show();
     }

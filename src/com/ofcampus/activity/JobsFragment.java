@@ -83,8 +83,6 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 		loadProfileData();
 		return view;
 	}
-
-	
 	
 	@Override
 	public void convertViewOnClick(JobDetails mJobDetails) {

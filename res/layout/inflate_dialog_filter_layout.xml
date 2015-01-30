@@ -16,6 +16,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/filter_lay_linear_lower"
         android:layout_below="@+id/tool_bar"
+        android:layout_marginTop="@dimen/tool_bar_top_padding"
         android:background="@color/joblist_bg_color"
         android:orientation="horizontal" >
 

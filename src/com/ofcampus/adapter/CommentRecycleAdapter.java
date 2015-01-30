@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
 
 public class CommentRecycleAdapter extends BaseAdapter{
@@ -108,7 +109,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			
 			convertView=inflater.inflate(R.layout.inflate_commentlist_row, parent,false);
 			
-			mHolder.img_prfpic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
+			mHolder.img_prfpic=(CircleImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
 			mHolder.txt_name=(TextView)convertView.findViewById(R.id.joblistview_txt_name);
 			mHolder.txt_date=(TextView)convertView.findViewById(R.id.joblistview_txt_postdate);
@@ -127,7 +128,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			mHolder.rel_details=(RelativeLayout)convertView.findViewById(R.id.inflate_joblistview_rel); 
 			mHolder.rel_comment=(RelativeLayout)convertView.findViewById(R.id.inflate_comment_rel); 
 			
-			mHolder.img_commentprfpic=(ImageView)convertView.findViewById(R.id.inflate_comment_img_pic);
+			mHolder.img_commentprfpic=(CircleImageView)convertView.findViewById(R.id.inflate_comment_img_pic);
 			mHolder.txt_commentname=(TextView)convertView.findViewById(R.id.inflate_comment_txt_name);
 			mHolder.txt_commentdate=(TextView)convertView.findViewById(R.id.inflate_comment_txt_postdate);
 			mHolder.txt_commenteddetails=(TextView)convertView.findViewById(R.id.inflate_comment_txt_contain);
@@ -218,7 +219,9 @@ public class CommentRecycleAdapter extends BaseAdapter{
 	}
 	
 	private class ViewHolder {
-		public ImageView img_prfpic, img_arrow,img_commentprfpic;
+		public CircleImageView img_prfpic,img_commentprfpic;
+		public ImageView  img_arrow;
+		
 		public TextView txt_load , txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails;
 		public TextView txt_btn_comment,txt_btn_share;
 		public LinearLayout linear_buttonsection;

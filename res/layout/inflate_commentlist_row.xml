@@ -23,14 +23,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <ImageView
+                <com.ofcampus.component.CircleImageView
                     android:id="@+id/joblistview_img_pic"
                     android:layout_width="@dimen/joblitview_picwd"
                     android:layout_height="@dimen/joblitview_picwd"
                     android:layout_centerVertical="true"
-                    android:layout_margin="6dp"
+                    android:layout_margin="2dp"
                     android:contentDescription="@string/app_name"
-                    android:scaleType="centerInside"
                     android:src="@drawable/ic_profilepic" />
 
                 <RelativeLayout
@@ -230,14 +229,13 @@
             android:background="@drawable/joblist_row_rect"
             android:visibility="visible" >
 
-            <ImageView
+            <com.ofcampus.component.CircleImageView
                 android:id="@+id/inflate_comment_img_pic"
                 android:layout_width="@dimen/joblitview_picwd"
                 android:layout_height="@dimen/joblitview_picwd"
                 android:layout_alignParentTop="true"
-                android:layout_margin="6dp"
+                android:layout_margin="2dp"
                 android:contentDescription="@string/app_name"
-                android:scaleType="centerInside"
                 android:src="@drawable/ic_profilepic" />
 
             <RelativeLayout

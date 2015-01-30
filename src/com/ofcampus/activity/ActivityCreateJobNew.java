@@ -24,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
+import com.gc.materialdesign.views.CheckBox;
+import com.gc.materialdesign.views.CheckBox.OnCheckListener;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.SpinnerCityAdapter;
@@ -482,6 +484,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 				mViewHolder=new ViewHolder();
 				convertView=inflater.inflate(R.layout.activity_createjob_new_sendto_row, null);
 				mViewHolder.txt_send=(TextView)convertView.findViewById(R.id.activity_createjob_new_txt_send);
+				mViewHolder.chk_box=(CheckBox)convertView.findViewById(R.id.checkBox);
 				convertView.setTag(mViewHolder);
 			}else {
 				mViewHolder = (ViewHolder) convertView.getTag();
@@ -490,14 +493,13 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 			final DataSet mDataSet = arrData.get(position);
 			
 			mViewHolder.txt_send.setText(mDataSet.name);
-			mViewHolder.txt_send.setSelected((mDataSet.isSelected==1)?true:false);
+			mViewHolder.chk_box.setChecked((mDataSet.isSelected==1)?true:false);
 			
-			convertView.setOnClickListener(new OnClickListener() {
+			mViewHolder.chk_box.setOncheckListener(new OnCheckListener() {
 				
 				@Override
-				public void onClick(View v) {
-					
-					mDataSet.isSelected=((mDataSet.isSelected==1)?0:1);
+				public void onCheck(boolean check) {
+					mDataSet.isSelected = ((check) ? 1 : 0);
 					try {
 						String to="";
 						edit_to.setText("");
@@ -515,7 +517,6 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					notifyDataSetChanged();
 				}
 			});
 			
@@ -524,6 +525,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		
 		class ViewHolder{
 			TextView txt_send;
+			CheckBox chk_box;
 		}
 	}
 	
