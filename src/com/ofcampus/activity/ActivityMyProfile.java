@@ -88,7 +88,7 @@ public class ActivityMyProfile extends ActionBarActivity {
 	private void loadProfileData(){
 		mDetails=UserDetails.getLoggedInUser(context);
 		txt_name.setText(mDetails.getName());
-		imageLoader.displayImage("https://s3-ap-southeast-1.amazonaws.com/ofcampus/post/134/image/5_fit.jpg",profilepic, options,new ImageLoadingListener() {
+		imageLoader.displayImage("https://s3-ap-southeast-1.amazonaws.com/ofcampus/profile/3_profile_susi.png",profilepic, options,new ImageLoadingListener() {
 			
 			@Override
 			public void onLoadingStarted(String arg0, View arg1) {
