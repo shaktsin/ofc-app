@@ -2,11 +2,19 @@ package com.ofcampus.activity;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +23,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,10 +32,14 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.gc.materialdesign.views.CheckBox;
 import com.gc.materialdesign.views.CheckBox.OnCheckListener;
+import com.meetme.android.horizontallistview.HorizontalListView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.SpinnerCityAdapter;
@@ -33,16 +47,21 @@ import com.ofcampus.adapter.SpinnerIndustryAdapter;
 import com.ofcampus.adapter.SpinnerIndustryRoleAdapter;
 import com.ofcampus.customseekbar.RangeSeekBar;
 import com.ofcampus.customseekbar.RangeSeekBar.OnRangeSeekBarChangeListener;
+import com.ofcampus.model.Circle;
 import com.ofcampus.model.CityDetails;
 import com.ofcampus.model.IndustryDetails;
 import com.ofcampus.model.IndustryRoleDetails;
+import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.PrepareListForJobCreating;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.JobPostParser;
+import com.ofcampus.parser.JobPostParser.JobPostParserInterface;
 import com.ofcampus.parser.PrepareForCreatingJobParser;
 import com.ofcampus.parser.PrepareForCreatingJobParser.PrepareParserInterface;
 
 public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClickListener,OnItemSelectedListener{
 
+	public int GALLERY_REQUEST = 1;
 	private Context context;
 	private UserDetails mDetails;
 	private Spinner industry,role,location;
@@ -53,6 +72,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 	
 	private ArrayList<IndustryDetails> industries;
 	private ArrayList<CityDetails> arrcity;
+	private ArrayList<Circle> circlelist ;
 	
 	private SpinnerCityAdapter mSpinnerCityAdapter;
 	private SpinnerIndustryAdapter mSpinnerIndustryAdapter;
@@ -61,11 +81,20 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 	private int industryid=-1,rolid=-1,cityid=-1;
 	private ArrayList<RelativeLayout> arrayRelative=new ArrayList<RelativeLayout>();
 	
-	private ArrayList<DataSet> arrData;
 	private ListView sendtolist;
-	
+	private SendToBaseAdapter mSendToBaseAdapter;
 	@SuppressWarnings("rawtypes")
 	private RangeSeekBar exp_seekBar,salary_seekBar;
+	
+	
+	private ImageLoader imageLoader=ImageLoader.getInstance();
+	private DisplayImageOptions options;
+	private HorizontalListView mHlvCustomList;
+	private CustomArrayAdapter mCustomArrayAdapter;
+	
+	
+	
+	private ArrayList<PicDataSet> picdatasets=new ArrayList<PicDataSet>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +141,8 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 			if (!Util.hasConnection(context)) {
 				Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg)); 
 			}else {
-//				postJobEvent();
+				resetViewAll();
+				postJobEvent();
 			}
 			return true;
 		}
@@ -147,6 +177,10 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 				return;
 			}
 			loadForntView(2);
+			break;
+		case R.id.activity_createjob_attached:
+			resetViewAll();
+			mHlvCustomList.setVisibility((mHlvCustomList.getVisibility()==View.VISIBLE)?View.GONE:View.VISIBLE);
 			break;
 
 		default:
@@ -203,6 +237,20 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 	
 	@SuppressWarnings("rawtypes")
 	private void initialize() {
+		
+		
+		options = new DisplayImageOptions.Builder()
+		.showImageOnLoading(R.drawable.ic_profilepic)
+		.showImageForEmptyUri(R.drawable.ic_profilepic)
+		.showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true)
+		.cacheOnDisk(true).considerExifParams(true).build();
+		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+
+		mHlvCustomList = (HorizontalListView) findViewById(R.id.hlvCustomList);
+		mCustomArrayAdapter=new CustomArrayAdapter(context, getpicArray(null));
+		mHlvCustomList.setAdapter(mCustomArrayAdapter);
+		
+		
 		exp_seekBar=(RangeSeekBar)findViewById(R.id.activity_createjob_expseekbar);
 		salary_seekBar=(RangeSeekBar)findViewById(R.id.activity_createjob_salaryseekbar);
 		
@@ -229,7 +277,8 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		((ImageView)findViewById(R.id.activity_createjob_rply)).setOnClickListener(this);
 		
 		sendtolist=(ListView)findViewById(R.id.activity_createjob_new_sendtolist);
-		sendtolist.setAdapter(new SendToBaseAdapter(context, createDataSetForSendTo()));
+		mSendToBaseAdapter = new SendToBaseAdapter(context, new ArrayList<Circle>());
+		sendtolist.setAdapter(mSendToBaseAdapter);
 		
 		((RelativeLayout)findViewById(R.id.rel_rplview_main)).setOnClickListener(this);
 		((RelativeLayout)findViewById(R.id.rel_additional_main)).setOnClickListener(this);
@@ -267,6 +316,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		for (RelativeLayout rel: arrayRelative) {
 			rel.setVisibility(View.GONE);
 		}
+		mHlvCustomList.setVisibility(View.GONE);
 	}
 	
 	private boolean anyviewVisible(){
@@ -279,19 +329,23 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		return isvisible;
 	}
 	
+	
+	private String exp_min="",exp_max="",salary_min="",salary_max="";
+	
+	
 	@SuppressWarnings("unchecked")
 	private void seekBarDataLoad(){
 		salary_seekBar.setRangeValues(1, 100);
 		exp_seekBar.setRangeValues(0.5f, 15.0f);
 		
-		txt_valueexp.setText(1 + "Yrs"+" - "+100+"Yrs");
-		txt_valuesal.setText(0.5f + "lpa"+" - "+15.0f+"lpa");
+		txt_valueexp.setText(0.5f + "Yrs"+" - "+15.0f+"Yrs");
+		txt_valuesal.setText( 1+ "lpa"+" - "+100+"lpa");
 		 
 		exp_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Float>() {
 		        @Override
 		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Float minValue, Float maxValue) {
-		                // handle changed range values
-	                Log.i("", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
+
+	                exp_min=(int)Math.round(minValue)+"";exp_max=(int)Math.round(maxValue)+"";
 	                txt_valueexp.setText(minValue + "Yrs"+" - "+maxValue+"Yrs");
 		        }
 		});
@@ -299,8 +353,8 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		salary_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
 	        @Override
 	        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-	                // handle changed range values
-                Log.i("", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
+	        	
+	        	salary_min=minValue+"";salary_max=maxValue+"";
                 txt_valuesal.setText(minValue + "lpa"+" - "+maxValue+"lpa");
 	        }
 		});
@@ -341,6 +395,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 
 		arrcity =mPrepareListForJobCreating.getCitys();
 		industries = mPrepareListForJobCreating.getIndustrys();
+		circlelist = mPrepareListForJobCreating.getCirclelist();
 		
 		String eml=mPrepareListForJobCreating.getReplyEmail();
 		edt_email.setText((eml!=null && !eml.equals("null") && !eml.equals(""))?eml:"");
@@ -352,6 +407,9 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		
 		industrydropedLoaddata(industries);
 		citydropedLoaddata(arrcity);
+		if (circlelist!=null && circlelist.size()>=1) {
+			mSendToBaseAdapter.refreshView(circlelist);
+		}
 	}
 	
 	
@@ -430,40 +488,28 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 	
 	
 	/******************Send to Adapter*********************/
-	
-	
-	private ArrayList<DataSet> createDataSetForSendTo(){
-		String[] arrayData=Util.sendto;
-		
-		arrData=new ArrayList<DataSet>();
-		for (String name : arrayData) {
-			DataSet mDataSet=new DataSet();
-			mDataSet.isSelected=0;
-			mDataSet.name = name;
-			arrData.add(mDataSet);
-		}
-		return arrData;
-	}
-	
-	class DataSet{
-		public String name;
-		public int isSelected;
-	}
+
+
 	private class SendToBaseAdapter extends BaseAdapter {
 		
-		private ArrayList<DataSet> arrData;
+		private ArrayList<Circle> circleList;  
 		private LayoutInflater inflater;
 		private Context mContext;
 		
-		public SendToBaseAdapter(Context context,ArrayList<DataSet> Datas){
+		public SendToBaseAdapter(Context context,ArrayList<Circle> circleList_){
 			this.mContext=context;
-			this.arrData=Datas;
+			this.circleList=circleList_;
 			this.inflater=LayoutInflater.from(mContext);
+		}
+		
+		public void refreshView(ArrayList<Circle> circleList_){
+			this.circleList=circleList_;
+			notifyDataSetChanged();
 		}
 		
 		@Override
 		public int getCount() {
-			return arrData.size();
+			return circleList.size();
 		}
 
 		@Override
@@ -490,22 +536,22 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 				mViewHolder = (ViewHolder) convertView.getTag();
 			}
 			
-			final DataSet mDataSet = arrData.get(position);
+			final Circle mCircle = circleList.get(position); 
 			
-			mViewHolder.txt_send.setText(mDataSet.name);
-			mViewHolder.chk_box.setChecked((mDataSet.isSelected==1)?true:false);
+			mViewHolder.txt_send.setText(mCircle.getCirclename());
+			mViewHolder.chk_box.setChecked((mCircle.isTick==1)?true:false);
 			
 			mViewHolder.chk_box.setOncheckListener(new OnCheckListener() {
 				
 				@Override
 				public void onCheck(boolean check) {
-					mDataSet.isSelected = ((check) ? 1 : 0);
+					mCircle.isTick = ((check) ? 1 : 0);
 					try {
 						String to="";
 						edit_to.setText("");
-						for (DataSet data : arrData) {
-							if (data.isSelected==1) {
-								to=to+","+data.name;
+						for (Circle data : circleList) {
+							if (data.isTick==1) {
+								to=to+","+data.getCirclename();
 							}
 						}
 						if (to.equals("")) {
@@ -529,5 +575,349 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		}
 	}
 	
+	
+	
+	/** An array adapter that knows how to render views when given CustomData classes */
+	
+	
+	private ArrayList<PicDataSet> getpicArray(PicDataSet mPicDataSet){
+		ArrayList<PicDataSet> mList =new ArrayList<PicDataSet>();
+		if (mPicDataSet==null) {
+			mList.add(new PicDataSet());
+		}
+		return mList;
+	}
+	
+	
+	
+	
+	
+	public class CustomArrayAdapter extends ArrayAdapter<PicDataSet> {
+	   
 
+		private LayoutInflater mInflater;
+	    private ArrayList<PicDataSet> PicDataSets;
+	    public CustomArrayAdapter(Context context,ArrayList<PicDataSet> PicDataSets_) {
+	        super(context, R.layout.inflate_createjob_pic, PicDataSets_);
+	        this.PicDataSets=PicDataSets_;
+	        mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    }
+
+	    @Override
+		public int getCount() {
+			return PicDataSets.size();
+		}
+	    
+	    
+	    public void addImage(ArrayList<PicDataSet> picdatasets_){
+//	    	picdatasets_.addAll(PicDataSets);
+//	    	this.PicDataSets = picdatasets_;
+//	    	picdatasets=this.PicDataSets;
+//	    	notifyDataSetChanged();
+	    	this.PicDataSets.addAll(picdatasets_);
+	    	picdatasets=this.PicDataSets;
+	    	notifyDataSetChanged();
+	    }
+	    
+	    @Override
+	    public View getView(int position, View convertView, ViewGroup parent) {
+	        Holder holder;
+
+	        if (convertView == null) {
+	            convertView = mInflater.inflate(R.layout.inflate_createjob_pic, parent, false);
+	            holder = new Holder();
+	            holder.pic = (ImageView) convertView.findViewById(R.id.infalte_createjob_pi);
+	            convertView.setTag(holder);
+	        } else {
+	            holder = (Holder) convertView.getTag();
+	        }
+
+	        PicDataSet mDataSet = PicDataSets.get(position);
+	        String path=mDataSet.path;
+			if (path.equals("")) {
+				holder.pic.setImageResource(R.drawable.ic_plus);
+				holder.pic.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						galleryCalling();
+					}
+				});
+			}else {
+				imageLoader.displayImage("file://"+path, holder.pic, options);
+			}
+
+	        return convertView;
+	    }
+
+	    /** View holder for the views we need access to */
+	    private  class Holder {
+	        public ImageView pic;
+	    }
+	}
+
+	class PicDataSet{
+		String path="";
+	}
+	
+	private void galleryCalling(){
+		Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		startActivityForResult(i, GALLERY_REQUEST);
+	}
+	
+	//
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && null != data) {
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+			Cursor lCursor = getContentResolver().query(selectedImage,
+					filePathColumn, null, null, null);
+			lCursor.moveToFirst();
+
+			int lColumnIndex = lCursor.getColumnIndex(filePathColumn[0]);
+			String lpicturePath = lCursor.getString(lColumnIndex);
+			
+			PicDataSet mPicDataSet=new PicDataSet();
+			mPicDataSet.path=lpicturePath;
+			ArrayList<PicDataSet> arrData= new ArrayList<PicDataSet>();
+			arrData.add(mPicDataSet);
+			mCustomArrayAdapter.addImage(arrData);
+		}
+
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private void postJobEvent(){
+		String industry="";
+		String industryrole="";
+		String location="";
+		
+		String email_=edt_email.getText().toString().trim();
+		String ph_=edt_phno.getText().toString().trim();
+		String whats_=edt_whatsapp.getText().toString().trim();
+		
+		String experiencto=exp_min;
+		String experiencfrom=exp_max;
+		String salaryto=salary_min;
+		String salaryfrom=salary_max;
+		String headline=jobheadline.getText().toString();
+		String headlinedetails=jobdetails.getText().toString();
+		
+		if (industryid==-1) {
+			Util.ShowToast(context, "Please select Industry.");
+			return;
+		}else {
+			industry=industries.get(industryid).getIndustry_id();
+		}
+		
+		if (rolid==-1) {
+			Util.ShowToast(context, "Please select Role.");
+			return;
+		}else {
+			industryrole=industries.get(industryid).getIndustryRoles().get(rolid).getIndustryroles_id();
+		}
+		
+		
+		if (experiencto.equals("")) {
+			Util.ShowToast(context, "Please fill the Experience to.");
+			return;
+		}
+		
+		if (experiencfrom.equals("")) {
+			Util.ShowToast(context, "Please fill the Experience from.");
+			return;
+		}
+		
+//		if(!(Integer.parseInt(experiencfrom)>=Integer.parseInt(experiencto))){
+//			Util.ShowToast(context, "Experienc from value should be greater then the Experienc to value");
+//			return;
+//		}
+		
+		
+		if (salaryto.equals("")) {
+			Util.ShowToast(context, "Please fill the salary to.");
+			return;
+		}
+		
+		if (salaryfrom.equals("")) {
+			Util.ShowToast(context, "Please fill the salary from.");
+			return;
+		}
+		
+//		if(!(Integer.parseInt(salaryfrom)>=Integer.parseInt(salaryto))){
+//			Util.ShowToast(context, "From Salary value should be greater then the To Salary value");
+//			return;
+//		}
+		
+		if (cityid==-1) {
+			Util.ShowToast(context, "Please select city.");
+			return;
+		}else {
+			location=arrcity.get(cityid).getCity_id();
+		}
+		
+		if (headline.equals("")) {
+			Util.ShowToast(context, "Please fill Job Headline.");
+			return;
+		}
+		
+		if (headline.length()>500) {
+			Util.ShowToast(context, "Job Headline exit limit.");
+			return;
+		}
+		
+		if (headlinedetails.equals("")) {
+			Util.ShowToast(context, "Please fill Job Details."); 
+			return;
+		}
+		
+		if (headlinedetails.length() > 65535) {
+			Util.ShowToast(context, "Job Details exit limit.");
+			return;
+		}
+		
+		if (!ph_.equals("") && ph_.length() < 10 && ph_.length() > 13) {
+			Util.ShowToast(context, "Please enter a valid Phone Number.");
+			return;
+		}
+		
+		if (!whats_.equals("") && whats_.length() < 10 && whats_.length() > 13) {
+			Util.ShowToast(context, "Please enter a valid WhatsApp Number.");
+			return;
+		}
+		
+		
+		
+		String id="";
+		for (Circle mCircle : circlelist) {
+			if (mCircle.isTick==1) {
+				id=id+","+mCircle.getCircleid();
+			}
+		}
+		
+		if (id.equals("")) {
+			Util.ShowToast(context, "Please select to.");
+			return;
+		}
+		
+		id=id.substring(1);
+		
+		
+		JSONObject jsObj = getBody(industry,industryrole,location,experiencto,experiencfrom,salaryto,salaryfrom,headline,headlinedetails,email_,ph_,whats_,id+",");
+	
+		ArrayList<String> paths=new ArrayList<String>();
+		if (picdatasets!=null && picdatasets.size()>=1) {
+			for (PicDataSet pic : picdatasets) {
+				if (!pic.path.equals("")) {
+					paths.add(pic.path);
+				}
+				
+			}
+		}
+		
+		
+		
+		if (jsObj != null) {
+			JobPostParser mJobPostParser = new JobPostParser();
+			mJobPostParser.setJobpostparserinterface(new JobPostParserInterface() {
+				
+				@Override
+				public void OnSuccess(JobDetails mJobDetails) {
+					if (mJobDetails!=null) {
+						((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
+						Intent mIntent = new Intent(context,ActivityComment.class);
+						Bundle mBundle=new Bundle();
+						mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
+						mIntent.putExtras(mBundle);
+						startActivity(mIntent);
+						((Activity) context).overridePendingTransition(0, 0); 
+						finish();
+					}
+					
+				}
+				
+				@Override
+				public void OnError() {
+					
+				}
+			});
+			mJobPostParser.parse(context, jsObj, mDetails.getAuthtoken(),paths);
+
+		}
+	
+	}
+
+	
+	
+	private JSONObject getBody(String industry, String industryrole,
+			String location, String experiencto, String experiencfrom,
+			String salaryto, String salaryfrom, String headline,
+			String headlinedetails, String email_, String ph_, String whats_, String Circle_id) { 
+
+		
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("timeSpecified", "true");
+			jsObj.put("to", experiencto);
+			jsObj.put("from", experiencfrom);
+			jsObj.put("salarySpecified", "true");
+			
+			jsObj.put("salaryTo", salaryto);
+			jsObj.put("salaryFrom", salaryfrom);
+			jsObj.put("subject", headline);
+			jsObj.put("content", headlinedetails);
+			
+			jsObj.put("replyEmail", email_);
+			jsObj.put("replyPhone", ph_);
+			jsObj.put("replyWatsApp", whats_);
+			
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+			
+			
+			JSONObject obj=new JSONObject();
+			obj.put("shareEmail", "-1");
+			obj.put("sharePhone", "-1");
+			obj.put("shareWatsApp", "-1");
+			jsObj.put("shareDto", obj);
+			
+			String[] circle=Circle_id.split(",");
+			JSONArray circleArray=new JSONArray();
+			for (int i = 0; i <circle.length; i++) {
+				circleArray.put(i, circle[i]);
+			}
+			
+			JSONArray RolesArray=new JSONArray();
+			for (int i = 0; i <1; i++) {
+				RolesArray.put(i, industryrole);
+			}
+			
+			JSONArray locaArray=new JSONArray();
+			for (int i = 0; i <1; i++) {
+				locaArray.put(i, location);
+			}
+			
+			jsObj.put("circleList", circleArray);
+			jsObj.put("industryRolesIdList", RolesArray);
+			jsObj.put("locationIdList", locaArray);
+			
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
+	}
+	
 }

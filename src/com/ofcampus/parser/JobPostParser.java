@@ -1,5 +1,8 @@
 package com.ofcampus.parser;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,14 +35,18 @@ public class JobPostParser {
 	private String IMAGE="image";
 	private String REPLYDTO="replyDto";
 	private String SHAREDTO="shareDto";
+	private String POSTIMAGES="images";
+	
+	
+	
 
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public void parse(Context context, JSONObject obj,String auth) {  
+	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths) {   
 		this.mContext = context;
-		jobPostAsyncAsync mjobPostAsyncAsync = new jobPostAsyncAsync(mContext,obj,auth); 
+		jobPostAsyncAsync mjobPostAsyncAsync = new jobPostAsyncAsync(mContext,obj,auth,paths); 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mjobPostAsyncAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
@@ -55,12 +62,14 @@ public class JobPostParser {
 		private JobDetails mJobDetails;
 		private ProgressDialog mDialog;
 		private JSONObject obj_=null;
+		private ArrayList<String> paths;
 		private String auth="";
 		
-		public jobPostAsyncAsync(Context mContext, JSONObject obj, String auth_) {
+		public jobPostAsyncAsync(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
 			this.context = mContext;
 			this.obj_ = obj; 
 			this.auth=auth_;
+			this.paths=paths_;
 		}
 
 		@Override
@@ -77,7 +86,7 @@ public class JobPostParser {
 			
 			try {
 				
-				String[] responsedata =	Util.POST_JOB(Util.getcreateJobUrl(), obj_,auth);
+				String[] responsedata =	Util.POST_JOBNEW(Util.getcreateJobUrl(), obj_,auth,paths);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				
@@ -156,6 +165,20 @@ public class JobPostParser {
 			
 			mJobDetails.setReplydto(Util.getJsonValue(jsonobject, REPLYDTO));
 			mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
+			
+			try {
+				JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
+				if (imageJSONArray!=null && imageJSONArray.length()>=1) {
+					ArrayList<String> images=new ArrayList<String>();
+					for (int i = 0; i < imageJSONArray.length(); i++) {
+						images.add(imageJSONArray.get(i).toString());
+					}
+					mJobDetails.setImages(images);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

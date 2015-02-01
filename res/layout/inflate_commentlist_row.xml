@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@drawable/joblist_row_rect"
-            android:visibility="gone" >
+            android:visibility="visible" >
 
             <RelativeLayout
                 android:id="@+id/joblistview_relpicname"
@@ -174,10 +174,22 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <com.meetme.android.horizontallistview.HorizontalListView
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:widget="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/hlvCustomList"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/joblistview_linear_buttonsection"
+                android:layout_margin="3dp"
+                android:divider="@android:color/transparent"
+                android:visibility="gone"
+                widget:dividerWidth="3dp" />
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/joblistview_linear_buttonsection" >
+                android:layout_below="@+id/hlvCustomList" >
 
                 <RelativeLayout
                     android:id="@+id/rel_progress"
@@ -227,7 +239,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/joblist_row_rect"
-            android:visibility="visible" >
+            android:visibility="gone" >
 
             <com.ofcampus.component.CircleImageView
                 android:id="@+id/inflate_comment_img_pic"

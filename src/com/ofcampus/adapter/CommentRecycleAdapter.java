@@ -3,21 +3,28 @@ package com.ofcampus.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.meetme.android.horizontallistview.HorizontalListView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.adapter.JobListBaseAdapter.CustomArrayAdapter;
 import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
 
@@ -118,6 +125,9 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			mHolder.txt_btn_comment=(TextView)convertView.findViewById(R.id.joblistview_txt_comment);
 			mHolder.txt_btn_share=(TextView)convertView.findViewById(R.id.joblistview_txt_share);
 			
+			mHolder.mHlvCustomList=(HorizontalListView)convertView.findViewById(R.id.hlvCustomList);
+			
+			
 			mHolder.linear_buttonsection=(LinearLayout)convertView.findViewById(R.id.joblistview_linear_buttonsection); 
 					
 			mHolder.txt_load=(TextView)convertView.findViewById(R.id.joblistview_txt_loadAllComment); 
@@ -155,6 +165,15 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				mHolder.txt_subject.setText(mJobDetails.getSubject());
 				mHolder.txt_jobdetails.setText(mJobDetails.getContent());
 				mHolder.img_arrow.setVisibility(View.GONE);
+				
+				
+				ArrayList<String> Images = mJobDetails.getImages();
+				
+				if (Images!=null && Images.size()>=1) {
+					mHolder.mHlvCustomList.setVisibility(View.VISIBLE);
+					mHolder.mHlvCustomList.setAdapter(new CustomArrayAdapter(mContext, Images));
+				}
+				
 				
 				mHolder.txt_btn_comment.setOnClickListener(new OnClickListener() {
 					
@@ -224,6 +243,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		
 		public TextView txt_load , txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails;
 		public TextView txt_btn_comment,txt_btn_share;
+		public HorizontalListView mHlvCustomList;
 		public LinearLayout linear_buttonsection;
 		public RelativeLayout rel_details,rel_comment,rel_progress;
 	}
@@ -242,5 +262,81 @@ public class CommentRecycleAdapter extends BaseAdapter{
 	public interface commentItemClickListner {
 		public void loadoldData(String commentId);
 		public void commentbuttonCliek();
+	}
+	
+	
+	
+	
+/****************************************************/
+	
+	public class CustomArrayAdapter extends ArrayAdapter<String> {
+		   
+
+		private LayoutInflater mInflater;
+	    private ArrayList<String> PicDataSets;
+	    public CustomArrayAdapter(Context context,ArrayList<String> PicDataSets_) {
+	        super(context, R.layout.inflate_createjob_pic, PicDataSets_);
+	        this.PicDataSets=PicDataSets_;
+	        mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    }
+
+	    @Override
+		public int getCount() {
+			return PicDataSets.size();
+		}
+	    
+	    @Override
+	    public View getView(int position, View convertView, ViewGroup parent) {
+	        Holder holder;
+
+	        if (convertView == null) {
+	            convertView = mInflater.inflate(R.layout.inflate_createjob_pic, parent, false);
+	            holder = new Holder();
+	            holder.pic = (ImageView) convertView.findViewById(R.id.infalte_createjob_pi);
+	            holder.pgbar = (ProgressBar) convertView.findViewById(R.id.progressBar);
+	            
+	            convertView.setTag(holder);
+	        } else {
+	            holder = (Holder) convertView.getTag();
+	        }
+	        
+	        final ProgressBar pgbar = holder.pgbar;
+	        
+	        String path=PicDataSets.get(position);
+	        imageLoader.displayImage(path, holder.pic, options,new ImageLoadingListener() {
+				
+	        	@Override
+				public void onLoadingStarted(String arg0, View arg1) {
+					pgbar.setVisibility(View.VISIBLE);
+				}
+				
+				@Override
+				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+					pgbar.setVisibility(View.GONE);
+				}
+				
+				@Override
+				public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
+					pgbar.setVisibility(View.GONE);
+				}
+				
+				@Override
+				public void onLoadingCancelled(String arg0, View arg1) {
+					pgbar.setVisibility(View.GONE);
+				}
+			});
+
+	        return convertView;
+	    }
+
+	    /** View holder for the views we need access to */
+	    private  class Holder {
+	        public ImageView pic;
+	        public ProgressBar pgbar; 
+	    }
+	}
+
+	class PicDataSet{
+		String path="";
 	}
 }

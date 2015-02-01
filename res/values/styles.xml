@@ -13,7 +13,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme_Dialog_Translucent">
+    <style name="Theme_Dialog_Translucent" parent="android:Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowEnterAnimation">@anim/dialogopenanim</item>
         <item name="android:windowExitAnimation">@anim/dialogclosedialog</item>

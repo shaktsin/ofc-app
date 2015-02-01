@@ -17,7 +17,7 @@
         android:id="@+id/activity_createjob_new_txt_send"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="1dp"
         android:layout_toRightOf="@+id/checkBox"
         android:padding="15dp"
         android:text="@string/craetejob_txt_Email"

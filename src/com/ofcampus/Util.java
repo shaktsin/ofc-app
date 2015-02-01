@@ -1,6 +1,7 @@
 package com.ofcampus;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +23,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
@@ -403,6 +408,67 @@ public class Util {
 				result = "Did not work!";
 			responData[0] = "200";
 			responData[1] = result;
+		} catch (UnsupportedEncodingException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IOException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		}
+
+		return responData;
+	}
+	
+	
+	
+	public static String[] POST_JOBNEW(String url, JSONObject jsonObject,String auth,ArrayList<String> paths) {
+		InputStream inputStream = null;
+		String result = "";
+		String[] responData = { "", "" };
+
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+			httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			HttpPost httpPost = new HttpPost(url);
+			
+			
+			String json = "";
+			json = jsonObject.toString();
+			
+			httpPost.setHeader("Authorization", auth);
+//			httpPost.setHeader("Content-type", "application/json");
+			
+			
+			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			File lfile = null;
+			reqEntity.addPart("jobs", new StringBody(json));
+			if (paths != null && paths.size() >= 1) {
+				for (String path : paths) {
+					if (path != null) {
+						lfile = new File(path);
+						FileBody lFileBody_ = new FileBody(lfile);
+						reqEntity.addPart("iFile", lFileBody_);
+					}
+				}
+			}
+			
+			httpPost.setEntity(reqEntity);
+			HttpResponse httpResponse = httpclient.execute(httpPost);
+			inputStream = httpResponse.getEntity().getContent();
+			if (inputStream != null)
+				result = convertInputStreamToString(inputStream);
+			else
+				result = "Did not work!";
+			responData[0] = "200";
+			responData[1] = result;
+			
 		} catch (UnsupportedEncodingException e) {
 			responData[0] = "205";
 			e.printStackTrace();

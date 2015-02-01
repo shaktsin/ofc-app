@@ -15,6 +15,7 @@ import com.ofcampus.model.JobDetails;
 public class JOBListTable {
 
 	public static String TABLENAME= "joblist";
+	public static String TABJOBSUBIMAGESPATH= "postimagepath";
 	
 	public static String POSTID="postId";
 	public static String SUBJECT="subject";
@@ -30,7 +31,7 @@ public class JOBListTable {
 	public static String POSTUSERPHNO="replyphone";
 	public static String POSTUSERWHATSAPPNO="replywatsapp";
 	
-	
+	public static String POSTIMAGESPATH="path";
 	
 	 private static OfCampusDBHelper dbHelper = null;
 	 private static JOBListTable mInstance;
@@ -79,6 +80,7 @@ public class JOBListTable {
 					insert.bindString(12, mJob.getReplyWatsApp());
 					
 					insert.execute();
+					inserJobImagePathData(mJob.getImages(), Integer.parseInt(mJob.getPostid()));
 				}
 				sampleDB.setTransactionSuccessful();
 			}else {
@@ -100,6 +102,7 @@ public class JOBListTable {
 					insert.bindString(12, mJob.getReplyWatsApp());
 					
 					insert.execute();
+					inserJobImagePathData(mJob.getImages(), Integer.parseInt(mJob.getPostid()));
 				}
 				sampleDB.setTransactionSuccessful();
 			}
@@ -112,6 +115,29 @@ public class JOBListTable {
 		}
 	}
 	
+	
+	
+	public void inserJobImagePathData(ArrayList<String> pathArray, int jobpostID) { 
+
+		try {
+			String sql = "Insert or Replace into " + TABJOBSUBIMAGESPATH + " values(?,?);";
+			SQLiteStatement insert = sampleDB.compileStatement(sql);
+
+			if (pathArray!=null && pathArray.size()>=1) {
+				for (int i = 0; i < pathArray.size(); i++) {
+					insert.clearBindings();
+					insert.bindLong(1, jobpostID);
+					insert.bindString(2, pathArray.get(i));
+					insert.execute();
+				}
+			}
+			Log.e("TAG", "Done");
+
+		} catch (Exception e) {
+			Log.e("XML:", e.toString());
+		} finally {
+		}
+	}
 	
 	public void inserJobData(ArrayList<JobDetails> Jobs) {
 
@@ -139,6 +165,7 @@ public class JOBListTable {
 				insert.bindString(12, mJob.getReplyWatsApp());
 				
 				insert.execute();
+				inserJobImagePathData(mJob.getImages(), Integer.parseInt(mJob.getPostid()));
 			}
 			sampleDB.setTransactionSuccessful();
 			Log.e("TAG", "Done");
@@ -171,6 +198,27 @@ public class JOBListTable {
 		return jobs;
 	}
 	
+	public ArrayList<String> fatchJobImagePathData(int postID) {
+		ArrayList<String> paths = null;
+		String sql = "";
+			sql = "select * from "+TABJOBSUBIMAGESPATH+" where "+POSTID+"='"+postID+"'";
+		Cursor mCursor=null;
+		try {
+			mCursor = dbHelper.getDB().rawQuery(sql, null);
+			if (mCursor != null && mCursor.getCount() >= 1) {
+				paths=new ArrayList<String>();
+				if (mCursor.moveToFirst()) {
+					do {						
+						paths.add(mCursor.getString(mCursor.getColumnIndex(POSTIMAGESPATH)));
+					} while (mCursor.moveToNext());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		curcorClose(mCursor);
+		return paths;
+	}
 	
 	
 	private ArrayList<JobDetails> GetJobData(Cursor mCursor){
@@ -191,6 +239,7 @@ public class JOBListTable {
 				mDetails.setReplyEmail(mCursor.getString(mCursor.getColumnIndex(POSTUSEREMAILID)));
 				mDetails.setReplyPhone(mCursor.getString(mCursor.getColumnIndex(POSTUSERPHNO)));
 				mDetails.setReplyWatsApp(mCursor.getString(mCursor.getColumnIndex(POSTUSERWHATSAPPNO)));
+				mDetails.setImages(fatchJobImagePathData(Integer.parseInt(mDetails.getPostid())));
 				
 				jobs.add(mDetails);
 			} while (mCursor.moveToNext());

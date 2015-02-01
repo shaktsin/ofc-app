@@ -38,6 +38,7 @@ public class CommentParser {
 	private String IMAGE="image";
 	private String REPLYDTO="replyDto";
 	private String SHAREDTO="shareDto";
+	private String POSTIMAGES="images";
 	
 	/**CommentList Key*/
 	private String COMMENTLISTRESPONSE="commentListResponse";
@@ -175,6 +176,19 @@ public class CommentParser {
 			
 			mJobDetails.setReplydto(Util.getJsonValue(jsonobject, REPLYDTO));
 			mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
+			
+			try {
+				JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
+				if (imageJSONArray!=null && imageJSONArray.length()>=1) {
+					ArrayList<String> images=new ArrayList<String>();
+					for (int i = 0; i < imageJSONArray.length(); i++) {
+						images.add(imageJSONArray.get(i).toString());
+					}
+					mJobDetails.setImages(images);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			arrayJobsComment.add(mJobDetails);
 			

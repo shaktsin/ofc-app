@@ -1,5 +1,7 @@
 package com.ofcampus.model;
 
+import java.util.ArrayList;
+
 public class JobDetails {
 
 	private String postid = "";
@@ -27,7 +29,16 @@ public class JobDetails {
 	private String salaryTo = "";
 	private String salaryFrom = "";
 	
+	private ArrayList<String> images=new ArrayList<String>();
 	
+	public ArrayList<String> getImages() {
+		return images;
+	}
+
+	public void setImages(ArrayList<String> images) {
+		this.images = images;
+	}
+
 	public int showProgress = 0;
 
 	/* For Sync */

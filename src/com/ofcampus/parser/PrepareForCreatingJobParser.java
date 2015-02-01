@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
+import com.ofcampus.model.Circle;
 import com.ofcampus.model.CityDetails;
 import com.ofcampus.model.IndustryDetails;
 import com.ofcampus.model.IndustryRoleDetails;
@@ -54,7 +55,12 @@ public class PrepareForCreatingJobParser {
 	private String REPLYEMAIL="replyEmail";
 	private String REPLYPHONE="replyPhone";
 	private String REPLYWATSAPP="replyWatsApp";
-    
+	
+	
+	private String CIRCLEDTOLIST= "circleDtoList";
+	private String CIRCLE_ID= "id";
+	private String CIRCLE_NAME= "name";
+	private String CIRCLE_SELECTED= "selected";
 
 	
 	public void parse(Context context, String authorization) { 
@@ -184,6 +190,7 @@ public class PrepareForCreatingJobParser {
 			
 			JSONArray industryjsonarray=obj.getJSONArray(INDUSTRYDTOLIST) ;
 			JSONArray cityjsonarray=obj.getJSONArray(CITYDTOLIST) ;
+			JSONArray circlejsonarray=obj.getJSONArray(CIRCLEDTOLIST) ;
 			
 			if (industryjsonarray != null && industryjsonarray.length() >= 1) {
 				
@@ -235,6 +242,25 @@ public class PrepareForCreatingJobParser {
 				}
 				mPrepareListForJobCreating.setCitys(cityarray);
 			}
+			
+			if (circlejsonarray != null && circlejsonarray.length() >= 1) {
+				
+				ArrayList<Circle> circleArray=new ArrayList<Circle>();
+				
+				for (int i = 0; i < circlejsonarray.length(); i++) {
+					Circle mCircle=new Circle();
+					jsonobject = circlejsonarray.getJSONObject(i);
+					
+					mCircle.setCircleid(Util.getJsonValue(jsonobject, CIRCLE_ID));
+					mCircle.setCirclename(Util.getJsonValue(jsonobject, CIRCLE_NAME));
+					mCircle.setCircleselected(Util.getJsonValue(jsonobject, CIRCLE_SELECTED));
+					circleArray.add(mCircle);
+					mCircle=null;
+				}
+				mPrepareListForJobCreating.setCirclelist(circleArray);
+			}
+			
+			
 			
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -49,6 +49,7 @@ private Context mContext;
 	
 	private String SHAREDTO="shareDto";
 	private String IMPORTANT="important";
+	private String POSTIMAGES="images";
 	
 	/*City List Key*/
 	private String CITYDTOLIST="cityDtoList";
@@ -69,8 +70,8 @@ private Context mContext;
 	private String INDUSTRY_ID="id";
 	private String INDUSTRY_NAME="name";
 	private String INDUSTRY_SELECTED="selected";
-	
-	
+
+
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
@@ -227,6 +228,19 @@ private Context mContext;
 					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
 					
 					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
+					
+					try {
+						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
+						if (imageJSONArray!=null && imageJSONArray.length()>=1) {
+							ArrayList<String> images=new ArrayList<String>();
+							for (int k = 0; k < imageJSONArray.length(); k++) {
+								images.add(imageJSONArray.get(k).toString());
+							}
+							mJobDetails.setImages(images);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 					jobarray.add(mJobDetails);
 					mJobDetails=null;
