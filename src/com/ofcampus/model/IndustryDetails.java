@@ -7,6 +7,7 @@ public class IndustryDetails {
 	private String industry_id = "";
 	private String industry_name = "";
 	private String industry_selected = "";
+	public int isSelected=0;
 	private ArrayList<IndustryRoleDetails> IndustryRoles = new ArrayList<IndustryRoleDetails>();
 	
 

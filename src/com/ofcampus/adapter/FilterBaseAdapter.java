@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gc.materialdesign.views.CheckBox;
@@ -58,7 +59,7 @@ public class FilterBaseAdapter extends BaseAdapter {
 			mViewHolder=new ViewHolder();
 			convertView=inflater.inflate(R.layout.activity_createjob_new_sendto_row, null);
 			mViewHolder.txt_send=(TextView)convertView.findViewById(R.id.activity_createjob_new_txt_send);
-			mViewHolder.chk_box=(CheckBox)convertView.findViewById(R.id.checkBox);
+			mViewHolder.chk_box=(ImageView)convertView.findViewById(R.id.checkBox);
 			convertView.setTag(mViewHolder);
 		}else {
 			mViewHolder = (ViewHolder) convertView.getTag();
@@ -67,25 +68,18 @@ public class FilterBaseAdapter extends BaseAdapter {
 		final FilterDataSet mDataSet = arrData.get(position);
 		
 		mViewHolder.txt_send.setText(mDataSet.getName());
-		mViewHolder.chk_box.setChecked((mDataSet.isSelected==1)?true:false);
-		
-		mViewHolder.chk_box.setOncheckListener(new OnCheckListener() {
-			
-			@Override
-			public void onCheck(boolean check) {
-				mDataSet.isSelected = ((check) ? 1 : 0);
-				if (filterbadpinterface!=null) {
-					filterbadpinterface.itemClick(arrData,state);
-				}
-			}
-		});
-		
+		mViewHolder.chk_box.setSelected((mDataSet.isSelected==1)?true:false);
+	
 		convertView.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 
-				
+				mDataSet.isSelected = ((mDataSet.isSelected==0) ? 1 : 0);
+				if (filterbadpinterface!=null) {
+					filterbadpinterface.itemClick(arrData,state);
+				}
+				notifyDataSetChanged();
 			}
 		});
 		
@@ -94,7 +88,7 @@ public class FilterBaseAdapter extends BaseAdapter {
 	
 	class ViewHolder{
 		TextView txt_send;
-		CheckBox chk_box;
+		ImageView chk_box;
 	}
 	
 	public FilterBAdpInterface filterbadpinterface;

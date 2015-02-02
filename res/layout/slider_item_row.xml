@@ -10,6 +10,7 @@
         android:id="@+id/slideritem_row"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:paddingBottom="10dp"
         android:paddingTop="10dp" >
 

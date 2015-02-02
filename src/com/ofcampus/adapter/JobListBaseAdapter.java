@@ -5,30 +5,25 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.meetme.android.horizontallistview.HorizontalListView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityMyProfile;
 import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.ui.AlbumPagerDialog;
 
 public class JobListBaseAdapter extends BaseAdapter{
 
@@ -37,6 +32,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 	private ArrayList<JobDetails> jobs=null;
 	private ImageLoader imageLoader=ImageLoader.getInstance();
 	private DisplayImageOptions options;
+	private DisplayImageOptions options_post;
 	
 	public JobListBaseAdapter(Context context,ArrayList<JobDetails> arrJobs){
 	
@@ -51,7 +47,11 @@ public class JobListBaseAdapter extends BaseAdapter{
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		
-		
+		options_post = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.no_postimage)
+				.showImageForEmptyUri(R.drawable.no_postimage)
+				.showImageOnFail(R.drawable.no_postimage).cacheInMemory(true)
+				.cacheOnDisk(true).considerExifParams(true).build();
 	}
 	
 	public void refreshData(ArrayList<JobDetails> arrJobs){
@@ -135,7 +135,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 			mHolder.btn_reply=(TextView)convertView.findViewById(R.id.joblistview_txt_reply);
 			mHolder.btn_share=(TextView)convertView.findViewById(R.id.joblistview_txt_share);
 			mHolder.btn_comment=(TextView)convertView.findViewById(R.id.joblistview_txt_comment);
-			mHolder.mHlvCustomList=(HorizontalListView)convertView.findViewById(R.id.hlvCustomList);
+			mHolder.img_post=(ImageView)convertView.findViewById(R.id.joblistview_img_post);
 			
 			convertView.setTag(mHolder);
 		}else {
@@ -162,11 +162,20 @@ public class JobListBaseAdapter extends BaseAdapter{
 			}
 
 			
-			ArrayList<String> Images = mJobDetails.getImages();
-			
+			final ArrayList<String> Images = mJobDetails.getImages();
 			if (Images!=null && Images.size()>=1) {
-				mHolder.mHlvCustomList.setVisibility(View.VISIBLE);
-				mHolder.mHlvCustomList.setAdapter(new CustomArrayAdapter(mContext, Images));
+				mHolder.img_post.setVisibility(View.VISIBLE);
+				imageLoader.displayImage(Images.get(0), mHolder.img_post, options_post);
+				mHolder.img_post.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						new AlbumPagerDialog(mContext, Images,0);
+					}
+				});
+				
+			}else {
+				mHolder.img_post.setVisibility(View.GONE);
 			}
 			
 			mHolder.profilepic.setOnClickListener(new OnClickListener() {
@@ -271,7 +280,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		ImageView img_arrow,img_important;
 		TextView txt_name,txt_postdate,txt_subject,txt_contain;
 		TextView btn_reply,btn_share,btn_comment;
-		HorizontalListView mHlvCustomList;
+		ImageView img_post;
 	}
 	
 	public void setIDS(String fstID,String lstID){
@@ -302,79 +311,4 @@ public class JobListBaseAdapter extends BaseAdapter{
 		public void commentClickEvent(JobDetails mJobDetails);  
 	}
 
-	
-	
-	/****************************************************/
-	
-	public class CustomArrayAdapter extends ArrayAdapter<String> {
-		   
-
-		private LayoutInflater mInflater;
-	    private ArrayList<String> PicDataSets;
-	    public CustomArrayAdapter(Context context,ArrayList<String> PicDataSets_) {
-	        super(context, R.layout.inflate_createjob_pic, PicDataSets_);
-	        this.PicDataSets=PicDataSets_;
-	        mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    }
-
-	    @Override
-		public int getCount() {
-			return PicDataSets.size();
-		}
-	    
-	    @Override
-	    public View getView(int position, View convertView, ViewGroup parent) {
-	        Holder holder;
-
-	        if (convertView == null) {
-	            convertView = mInflater.inflate(R.layout.inflate_createjob_pic, parent, false);
-	            holder = new Holder();
-	            holder.pic = (ImageView) convertView.findViewById(R.id.infalte_createjob_pi);
-	            holder.pgbar = (ProgressBar) convertView.findViewById(R.id.progressBar);
-	            
-	            convertView.setTag(holder);
-	        } else {
-	            holder = (Holder) convertView.getTag();
-	        }
-	        
-	        final ProgressBar pgbar = holder.pgbar;
-	        
-	        String path=PicDataSets.get(position);
-	        imageLoader.displayImage(path, holder.pic, options,new ImageLoadingListener() {
-				
-	        	@Override
-				public void onLoadingStarted(String arg0, View arg1) {
-					pgbar.setVisibility(View.VISIBLE);
-				}
-				
-				@Override
-				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
-					pgbar.setVisibility(View.GONE);
-				}
-				
-				@Override
-				public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
-					pgbar.setVisibility(View.GONE);
-				}
-				
-				@Override
-				public void onLoadingCancelled(String arg0, View arg1) {
-					pgbar.setVisibility(View.GONE);
-				}
-			});
-
-	        return convertView;
-	    }
-
-	    /** View holder for the views we need access to */
-	    private  class Holder {
-	        public ImageView pic;
-	        public ProgressBar pgbar; 
-	    }
-	}
-
-	class PicDataSet{
-		String path="";
-	}
-	
 }

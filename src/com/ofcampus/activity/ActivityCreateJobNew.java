@@ -33,8 +33,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.gc.materialdesign.views.CheckBox;
-import com.gc.materialdesign.views.CheckBox.OnCheckListener;
 import com.meetme.android.horizontallistview.HorizontalListView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -179,8 +177,9 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 			loadForntView(2);
 			break;
 		case R.id.activity_createjob_attached:
+			Util.HideKeyBoard(context, v); 
 			resetViewAll();
-			mHlvCustomList.setVisibility((mHlvCustomList.getVisibility()==View.VISIBLE)?View.GONE:View.VISIBLE);
+			mHlvCustomList.setVisibility((mHlvCustomList.getVisibility()==View.VISIBLE)?View.GONE:View.VISIBLE);		
 			break;
 
 		default:
@@ -310,12 +309,16 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 				arrayRelative.get(i).setVisibility(View.GONE);
 			}
 		} 
+		resetList();
 	}
 	
 	private void resetViewAll(){
 		for (RelativeLayout rel: arrayRelative) {
 			rel.setVisibility(View.GONE);
 		}
+	}
+	
+	private void resetList(){
 		mHlvCustomList.setVisibility(View.GONE);
 	}
 	
@@ -530,7 +533,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 				mViewHolder=new ViewHolder();
 				convertView=inflater.inflate(R.layout.activity_createjob_new_sendto_row, null);
 				mViewHolder.txt_send=(TextView)convertView.findViewById(R.id.activity_createjob_new_txt_send);
-				mViewHolder.chk_box=(CheckBox)convertView.findViewById(R.id.checkBox);
+				mViewHolder.chk_box=(ImageView)convertView.findViewById(R.id.checkBox);
 				convertView.setTag(mViewHolder);
 			}else {
 				mViewHolder = (ViewHolder) convertView.getTag();
@@ -539,13 +542,13 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 			final Circle mCircle = circleList.get(position); 
 			
 			mViewHolder.txt_send.setText(mCircle.getCirclename());
-			mViewHolder.chk_box.setChecked((mCircle.isTick==1)?true:false);
+			mViewHolder.chk_box.setSelected((mCircle.isTick==1)?true:false);
 			
-			mViewHolder.chk_box.setOncheckListener(new OnCheckListener() {
+			convertView.setOnClickListener(new OnClickListener() {
 				
 				@Override
-				public void onCheck(boolean check) {
-					mCircle.isTick = ((check) ? 1 : 0);
+				public void onClick(View v) {
+					mCircle.isTick = ((mCircle.isTick==0) ? 1 : 0);
 					try {
 						String to="";
 						edit_to.setText("");
@@ -563,6 +566,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					notifyDataSetChanged();
 				}
 			});
 			
@@ -571,7 +575,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		
 		class ViewHolder{
 			TextView txt_send;
-			CheckBox chk_box;
+			ImageView chk_box;
 		}
 	}
 	
@@ -610,10 +614,6 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 	    
 	    
 	    public void addImage(ArrayList<PicDataSet> picdatasets_){
-//	    	picdatasets_.addAll(PicDataSets);
-//	    	this.PicDataSets = picdatasets_;
-//	    	picdatasets=this.PicDataSets;
-//	    	notifyDataSetChanged();
 	    	this.PicDataSets.addAll(picdatasets_);
 	    	picdatasets=this.PicDataSets;
 	    	notifyDataSetChanged();
@@ -622,7 +622,6 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 	    @Override
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        Holder holder;
-
 	        if (convertView == null) {
 	            convertView = mInflater.inflate(R.layout.inflate_createjob_pic, parent, false);
 	            holder = new Holder();

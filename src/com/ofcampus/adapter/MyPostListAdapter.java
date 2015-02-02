@@ -2,7 +2,10 @@ package com.ofcampus.adapter;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,10 +17,12 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.component.CircleImageView;
+import com.ofcampus.activity.ActivityComment;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.ui.ReplyDialog;
 
 public class MyPostListAdapter  extends BaseAdapter{
 
@@ -111,9 +116,13 @@ public class MyPostListAdapter  extends BaseAdapter{
 				
 				@Override
 				public void onClick(View v) {
-					if (mypostlistadapterinterface!=null) {
-						mypostlistadapterinterface.convertViewOnClick(mJobDetails);
-					}
+					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+					Intent mIntent = new Intent(mContext,ActivityComment.class);
+					Bundle mBundle=new Bundle();
+					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
+					mIntent.putExtras(mBundle);
+					mContext.startActivity(mIntent);
+					((Activity) mContext).overridePendingTransition(0, 0); 
 				}
 			});
 			
@@ -121,9 +130,7 @@ public class MyPostListAdapter  extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					if (mypostlistadapterinterface != null) {
-//						joblistinterface.convertViewOnClick();
-					}
+					new ReplyDialog(mContext, mJobDetails);
 				}
 			});
 
@@ -131,7 +138,6 @@ public class MyPostListAdapter  extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-//					Util.shareIntent(mContext,mJobDetails.getSubject(),mJobDetails.getContent());
 					Util.onShareClick(mContext,v,mJobDetails.getSubject(),mJobDetails.getContent()) ;
 				}
 			});
@@ -140,22 +146,16 @@ public class MyPostListAdapter  extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					if (mypostlistadapterinterface != null) {
-//						joblistinterface.convertViewOnClick();
-					}
+					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+					Intent mIntent = new Intent(mContext,ActivityComment.class);
+					Bundle mBundle=new Bundle();
+					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[0]);
+					mIntent.putExtras(mBundle);
+					mContext.startActivity(mIntent);
+					((Activity) mContext).overridePendingTransition(0, 0); 
 				}
 			});
-			
-			
-//			mHolder.img_arrow.setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View v) {
-//					if (mypostlistadapterinterface != null) {
-//						mypostlistadapterinterface.arrowClieckEvent(mJobDetails);
-//					}
-//				}
-//			});
+
 		}
 		return convertView;
 	}

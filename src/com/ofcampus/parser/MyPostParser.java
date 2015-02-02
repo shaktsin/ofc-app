@@ -39,6 +39,9 @@ public class MyPostParser  {
 	private String REPLYDTO="replyDto";
 	private String SHAREDTO="shareDto";
 
+	private String REPLYEMAIL="replyEmail";
+	private String REPLYPHONE="replyPhone";
+	private String REPLYWATSAPP="replyWatsApp";
 	
 	/*Response JSON key value*/
 	private String responsecode="";
@@ -174,8 +177,12 @@ public class MyPostParser  {
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
 					
-					mJobDetails.setReplydto(Util.getJsonValue(jsonobject, REPLYDTO));
+					JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
 					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
+					
+					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
+					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
+					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
 
 					jobarray.add(mJobDetails);
 					mJobDetails=null;

@@ -1,6 +1,7 @@
 package com.ofcampus.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.gc.materialdesign.views.LayoutRipple;
+import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -61,7 +64,9 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 		RelativeLayout rel_row;
 		TextView Name;
 		TextView email;
-
+		LayoutRipple layoutRipple;
+		
+		
 		public ViewHolder(View itemView, int ViewType) {
 			super(itemView);
 
@@ -69,6 +74,8 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 				rel_row = (RelativeLayout) itemView.findViewById(R.id.slideritem_row);
 				textView = (TextView) itemView.findViewById(R.id.rowText);
 				imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
+				layoutRipple = (LayoutRipple) itemView.findViewById(R.id.slideritem_row);
+				setOriginRiple(layoutRipple);
 				Holderid = 1;
 			} else {
 				Name = (TextView) itemView.findViewById(R.id.name);
@@ -104,7 +111,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 			holder.textView.setText(mNavTitles[position - 1]);
 			holder.imageView.setImageResource(mIcons[position - 1]);
 			
-			holder.rel_row.setOnClickListener(new OnClickListener() {
+			holder.layoutRipple.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -153,4 +160,22 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 		public void OnViewItemClick(int position);
 	}
 
+	
+	private static void setOriginRiple(final LayoutRipple layoutRipple){
+    	
+    	layoutRipple.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				View v = layoutRipple.getChildAt(0);
+		    	layoutRipple.setxRippleOrigin(ViewHelper.getX(v)+v.getWidth()/2);
+		    	layoutRipple.setyRippleOrigin(ViewHelper.getY(v)+v.getHeight()/2);
+		    	
+		    	layoutRipple.setRippleColor(Color.GRAY);
+		    	
+		    	layoutRipple.setRippleSpeed(30);
+			}
+		});
+    	
+    }
 }

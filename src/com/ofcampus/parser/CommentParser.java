@@ -40,6 +40,11 @@ public class CommentParser {
 	private String SHAREDTO="shareDto";
 	private String POSTIMAGES="images";
 	
+	private String REPLYEMAIL="replyEmail";
+	private String REPLYPHONE="replyPhone";
+	private String REPLYWATSAPP="replyWatsApp";
+	
+	
 	/**CommentList Key*/
 	private String COMMENTLISTRESPONSE="commentListResponse";
 	private String COMMENTRESPONSELIST="commentResponseList";
@@ -176,6 +181,12 @@ public class CommentParser {
 			
 			mJobDetails.setReplydto(Util.getJsonValue(jsonobject, REPLYDTO));
 			mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
+			
+			JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
+			
+			mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
+			mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
+			mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
 			
 			try {
 				JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);

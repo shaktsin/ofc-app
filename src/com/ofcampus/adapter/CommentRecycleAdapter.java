@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,17 +19,18 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.meetme.android.horizontallistview.HorizontalListView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
+import com.ofcampus.R.id;
 import com.ofcampus.Util;
-import com.ofcampus.adapter.JobListBaseAdapter.CustomArrayAdapter;
 import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.ui.AlbumPagerDialog;
+import com.ofcampus.ui.ReplyDialog;
 
 public class CommentRecycleAdapter extends BaseAdapter{
 
@@ -108,13 +112,13 @@ public class CommentRecycleAdapter extends BaseAdapter{
 
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		
 		ViewHolder mHolder;
 		if (convertView==null) {
 			mHolder=new ViewHolder();
 			
-			convertView=inflater.inflate(R.layout.inflate_commentlist_row, parent,false);
+			convertView=inflater.inflate(R.layout.inflate_commentlist_row_new, parent,false);
 			
 			mHolder.img_prfpic=(CircleImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
@@ -122,19 +126,29 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			mHolder.txt_date=(TextView)convertView.findViewById(R.id.joblistview_txt_postdate);
 			mHolder.txt_subject=(TextView)convertView.findViewById(R.id.joblistview_txt_subject);
 			mHolder.txt_jobdetails=(TextView)convertView.findViewById(R.id.joblistview_txt_contain);
+			
+			mHolder.txt_btn_reply=(TextView)convertView.findViewById(R.id.joblistview_txt_reply);
 			mHolder.txt_btn_comment=(TextView)convertView.findViewById(R.id.joblistview_txt_comment);
 			mHolder.txt_btn_share=(TextView)convertView.findViewById(R.id.joblistview_txt_share);
 			
-			mHolder.mHlvCustomList=(HorizontalListView)convertView.findViewById(R.id.hlvCustomList);
 			
+			
+			/**New view Appear*/
+			
+			mHolder.proxytxt_subject=(TextView)convertView.findViewById(R.id.proxyview_txt_subject);
+			mHolder.proxytxt_jobdetails=(TextView)convertView.findViewById(R.id.proxyview_txt_contain);
+			
+			
+			mHolder.rel_pagerview=(RelativeLayout)convertView.findViewById(R.id.inc_up_pager);
+			mHolder.inc_proxyview=(LinearLayout)convertView.findViewById(R.id.inc_proxyview); 
+			mHolder.viewPager=(ViewPager)convertView.findViewById(R.id.jobdetails_album_pager);
+			
+			/**End of this view**/
 			
 			mHolder.linear_buttonsection=(LinearLayout)convertView.findViewById(R.id.joblistview_linear_buttonsection); 
 					
 			mHolder.txt_load=(TextView)convertView.findViewById(R.id.joblistview_txt_loadAllComment); 
-			
-			
 			mHolder.rel_progress=(RelativeLayout)convertView.findViewById(R.id.rel_progress); 
-			
 			mHolder.rel_details=(RelativeLayout)convertView.findViewById(R.id.inflate_joblistview_rel); 
 			mHolder.rel_comment=(RelativeLayout)convertView.findViewById(R.id.inflate_comment_rel); 
 			
@@ -170,8 +184,20 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				ArrayList<String> Images = mJobDetails.getImages();
 				
 				if (Images!=null && Images.size()>=1) {
-					mHolder.mHlvCustomList.setVisibility(View.VISIBLE);
-					mHolder.mHlvCustomList.setAdapter(new CustomArrayAdapter(mContext, Images));
+					
+					mHolder.proxytxt_subject.setText(mJobDetails.getSubject());
+					mHolder.proxytxt_jobdetails.setText(mJobDetails.getContent());
+					
+					mHolder.rel_pagerview.setVisibility(View.VISIBLE);
+					mHolder.inc_proxyview.setVisibility(View.VISIBLE);
+					mHolder.viewPager.setVisibility(View.VISIBLE);
+					
+					mHolder.viewPager.setAdapter(new AlbumPager(mContext, Images));
+					
+				}else {
+					mHolder.rel_pagerview.setVisibility(View.GONE);
+					mHolder.inc_proxyview.setVisibility(View.GONE);
+					mHolder.viewPager.setVisibility(View.GONE);
 				}
 				
 				
@@ -189,12 +215,19 @@ public class CommentRecycleAdapter extends BaseAdapter{
 					
 					@Override
 					public void onClick(View v) {
-						Util.onShareClick(mContext,v,mJobDetails.getSubject(),mJobDetails.getContent()) ;
+						Util.onShareClick(mContext,v,arraJobComment.get(position).getSubject(),arraJobComment.get(position).getContent()) ;
 					}
 				});
 				
-				
+				mHolder.txt_btn_reply.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						new ReplyDialog(mContext, arraJobComment.get(position));
+					}
+				});
 			}
+			
 			if (CommentCount > totalCommentCount) {
 				if (mJobDetails.showProgress==1) {
 					mHolder.rel_progress.setVisibility(View.VISIBLE);
@@ -241,11 +274,12 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		public CircleImageView img_prfpic,img_commentprfpic;
 		public ImageView  img_arrow;
 		
-		public TextView txt_load , txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails;
-		public TextView txt_btn_comment,txt_btn_share;
-		public HorizontalListView mHlvCustomList;
-		public LinearLayout linear_buttonsection;
-		public RelativeLayout rel_details,rel_comment,rel_progress;
+		public TextView txt_load , txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails,proxytxt_subject, proxytxt_jobdetails;
+		public TextView txt_btn_comment,txt_btn_share,txt_btn_reply;
+		public LinearLayout linear_buttonsection,inc_proxyview;
+		public RelativeLayout rel_details,rel_comment,rel_progress,rel_pagerview;
+		
+		public ViewPager viewPager;
 	}
 	
 	public commentItemClickListner commentitemclicklistner;
@@ -269,74 +303,114 @@ public class CommentRecycleAdapter extends BaseAdapter{
 	
 /****************************************************/
 	
-	public class CustomArrayAdapter extends ArrayAdapter<String> {
-		   
+	private class AlbumPager extends PagerAdapter {
 
-		private LayoutInflater mInflater;
-	    private ArrayList<String> PicDataSets;
-	    public CustomArrayAdapter(Context context,ArrayList<String> PicDataSets_) {
-	        super(context, R.layout.inflate_createjob_pic, PicDataSets_);
-	        this.PicDataSets=PicDataSets_;
-	        mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    }
+		private ArrayList<String> arrPhotos;
+		private LayoutInflater inflater;
+		private Context context_;
+		private ImageLoader imageLoader = ImageLoader.getInstance();
+		private DisplayImageOptions options;
+		private float width=0.0f;
+		
+		public AlbumPager(Context context, ArrayList<String> arrPhotos_) {
+			this.arrPhotos = arrPhotos_;
+			this.context_ = context;
+			inflater = LayoutInflater.from(context_);
 
-	    @Override
-		public int getCount() {
-			return PicDataSets.size();
+			options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.no_postimage)
+					.showImageForEmptyUri(R.drawable.no_postimage)
+					.showImageOnFail(R.drawable.no_postimage)
+					.cacheInMemory(true).cacheOnDisk(true)
+					.considerExifParams(true).build();
+			imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+			width =context_.getResources().getDisplayMetrics().widthPixels;
+			width =width - (width*9)/100;
+
 		}
-	    
-	    @Override
-	    public View getView(int position, View convertView, ViewGroup parent) {
-	        Holder holder;
 
-	        if (convertView == null) {
-	            convertView = mInflater.inflate(R.layout.inflate_createjob_pic, parent, false);
-	            holder = new Holder();
-	            holder.pic = (ImageView) convertView.findViewById(R.id.infalte_createjob_pi);
-	            holder.pgbar = (ProgressBar) convertView.findViewById(R.id.progressBar);
-	            
-	            convertView.setTag(holder);
-	        } else {
-	            holder = (Holder) convertView.getTag();
-	        }
-	        
-	        final ProgressBar pgbar = holder.pgbar;
-	        
-	        String path=PicDataSets.get(position);
-	        imageLoader.displayImage(path, holder.pic, options,new ImageLoadingListener() {
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			container.removeView((View) object);
+		}
+
+		@Override
+		public int getCount() {
+			return arrPhotos.size();
+		}
+
+		public float getPageWidth(int position)
+	    {
+			if (arrPhotos.size()>=2) {
+				return 0.9f;
+			}else {
+				return 1f;
+			}
+			
+	    }
+		
+		@Override
+		public Object instantiateItem(ViewGroup view, final int position) {
+			View imageLayout = inflater.inflate(R.layout.inflate_jobdetails_pager_view,view, false);
+			assert imageLayout != null;
+			ImageView imageView = (ImageView) imageLayout.findViewById(R.id.iflate_img_pager);
+			final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.iflate_pg);
+		
+			
+			
+			ViewGroup.LayoutParams pram=new LayoutParams((int)(width),ViewGroup.LayoutParams.MATCH_PARENT);
+			
+			imageLayout.setLayoutParams(pram);
+			
+			final String mPhotos = arrPhotos.get(position);
+			imageLoader.displayImage(mPhotos, imageView, options,new ImageLoadingListener() {
 				
-	        	@Override
+				@Override
 				public void onLoadingStarted(String arg0, View arg1) {
-					pgbar.setVisibility(View.VISIBLE);
+					spinner.setVisibility(View.VISIBLE);
 				}
 				
 				@Override
 				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
-					pgbar.setVisibility(View.GONE);
+					spinner.setVisibility(View.GONE);
 				}
 				
 				@Override
 				public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
-					pgbar.setVisibility(View.GONE);
+					spinner.setVisibility(View.GONE);
 				}
 				
 				@Override
 				public void onLoadingCancelled(String arg0, View arg1) {
-					pgbar.setVisibility(View.GONE);
+					spinner.setVisibility(View.GONE);
 				}
 			});
+			
+			
+			
+			imageLayout.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					new AlbumPagerDialog(mContext, arrPhotos,position);
+				}
+			});
+			view.addView(imageLayout, 0);
+			return imageLayout;
+		}
 
-	        return convertView;
-	    }
+		@Override
+		public boolean isViewFromObject(View view, Object object) {
+			return view.equals(object);
+		}
 
-	    /** View holder for the views we need access to */
-	    private  class Holder {
-	        public ImageView pic;
-	        public ProgressBar pgbar; 
-	    }
-	}
+		@Override
+		public void restoreState(Parcelable state, ClassLoader loader) {
+		}
 
-	class PicDataSet{
-		String path="";
+		@Override
+		public Parcelable saveState() {
+			return null;
+		}
 	}
 }

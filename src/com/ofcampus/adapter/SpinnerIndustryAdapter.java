@@ -8,15 +8,21 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.ofcampus.R;
+import com.ofcampus.model.Circle;
 import com.ofcampus.model.IndustryDetails;
 
 public class SpinnerIndustryAdapter  implements SpinnerAdapter {
 
 	 private Context context;
+	 private LayoutInflater inflater;
+	 
 	    /**
 	     * The internal data (the ArrayList with the Objects).
 	     */
@@ -25,6 +31,7 @@ public class SpinnerIndustryAdapter  implements SpinnerAdapter {
 	    public SpinnerIndustryAdapter(Context context, ArrayList<IndustryDetails> data){
 	        this.context = context;
 	        this.data = data;
+	        this.inflater=LayoutInflater.from(context);
 	    }
 	    
 	    public void refreshView(ArrayList<IndustryDetails> DATA_) {
@@ -96,7 +103,6 @@ public class SpinnerIndustryAdapter  implements SpinnerAdapter {
 	        return textView;
 	    }
 
-
 	    @Override
 	    public void registerDataSetObserver(DataSetObserver observer) {
 
@@ -106,6 +112,9 @@ public class SpinnerIndustryAdapter  implements SpinnerAdapter {
 	    public void unregisterDataSetObserver(DataSetObserver observer) {
 
 	    }
-
+	    class ViewHolder{
+			TextView txt_send;
+			ImageView chk_box;
+		}
 	
 }

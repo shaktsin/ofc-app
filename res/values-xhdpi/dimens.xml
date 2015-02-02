@@ -10,17 +10,17 @@
     <dimen name="joblitview_postdate">12sp</dimen>
     <dimen name="joblitview_Subject">18sp</dimen>
     <dimen name="joblitview_contain">14sp</dimen>
-    
-    
-     <!-- Comment -->
+
+    <!-- Comment -->
     <dimen name="Comment_username">14sp</dimen>
     <dimen name="Comment_postdate">10sp</dimen>
     <dimen name="Comment_Header">18sp</dimen>
     <dimen name="Comment_Comment">14sp</dimen>
-    
-    
-    
+
     <!-- MY PROFILE -->
     <dimen name="myprofile_view_graborder">60dp</dimen>
+
+    <!-- Comment Pager -->
+    <dimen name="comment_pager_hight">280dp</dimen>
 
 </resources>
