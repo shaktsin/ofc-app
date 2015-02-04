@@ -14,5 +14,6 @@
     <dimen name="circle_rad">25dp</dimen>
     <!-- Comment Pager -->
     <dimen name="comment_pager_hight">250dp</dimen>
+    <dimen name="comment_pager_Pading">20dp</dimen>
 
 </resources>

@@ -22,5 +22,6 @@
 
     <!-- Comment Pager -->
     <dimen name="comment_pager_hight">280dp</dimen>
+    <dimen name="comment_pager_Pading">40dp</dimen>
 
 </resources>

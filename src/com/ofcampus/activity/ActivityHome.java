@@ -49,10 +49,12 @@ import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
 import com.ofcampus.databasehelper.JOBListTable;
+import com.ofcampus.model.FilterDataSets;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.JobList;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.CountSyncParser;
+import com.ofcampus.parser.FilterJobParser;
 import com.ofcampus.parser.JobListParserNew;
 import com.ofcampus.parser.JobListParserNew.JobListParserNewInterface;
 import com.ofcampus.ui.FilterDialog;
@@ -88,6 +90,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	private MeetupsFragment mMeetupsFragment;
 
 	private TextView txt_countjob,txt_countclass ,txt_countmetup;
+	
+	/**Filter Data***/
+	private  FilterDataSets mFilterDataSets=null;
 	
     
     @Override
@@ -200,8 +205,10 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
         if (id == R.id.action_search) {
             return true;
         }else if (id == R.id.action_filter) {
-        	FilterDialog mDialog=new FilterDialog(mContext);
-        	mDialog.showDialog();
+        	if (mFilterDataSets!=null) {
+        		FilterDialog mDialog=new FilterDialog(mContext,mFilterDataSets);
+            	mDialog.showDialog();
+			}
         	return true;
 		}
         return super.onOptionsItemSelected(item);
@@ -212,7 +219,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_home_img_composejob:
-//			startActivity(new Intent(ActivityHome.this,ActivityCreateJob.class));
 			startActivity(new Intent(ActivityHome.this,ActivityCreateJobNew.class));
 			overridePendingTransition(0,0);
 			break;
@@ -504,21 +510,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		public Parcelable saveState() {
 			return null;
 		}
-//
-//		@Override
-//		public boolean isViewFromObject(View view, Object object) {
-//			return view.equals(object);
-//		}
-//
-//		@Override
-//		public void restoreState(Parcelable state, ClassLoader loader) {
-//		}
-//
-//		@Override
-//		public void startUpdate(View container) {
-//
-//		}
-//
+
 		@Override
 		public int getItemPosition(Object object) {
 			return POSITION_NONE;
@@ -613,6 +605,13 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 						}
 						
 					}
+					
+					try {
+						mFilterDataSets =	new FilterJobParser().parse(mContext, tocken);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
 					handler.sendEmptyMessage(0);
 				}
 				

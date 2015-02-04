@@ -2,6 +2,8 @@ package com.ofcampus.ui;
 
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -21,14 +23,23 @@ import com.ofcampus.adapter.FilterBaseAdapter;
 import com.ofcampus.adapter.FilterBaseAdapter.FilterBAdpInterface;
 import com.ofcampus.customseekbar.RangeSeekBar;
 import com.ofcampus.customseekbar.RangeSeekBar.OnRangeSeekBarChangeListener;
+import com.ofcampus.model.Circle;
+import com.ofcampus.model.CityDetails;
 import com.ofcampus.model.FilterDataSet;
+import com.ofcampus.model.FilterDataSets;
+import com.ofcampus.model.IndustryDetails;
+import com.ofcampus.model.IndustryRoleDetails;
+import com.ofcampus.model.JobList;
+import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.FilterParser;
+import com.ofcampus.parser.FilterParser.FilterParserInterface;
 
 public class FilterDialog implements FilterBAdpInterface{
 	
 	
-	public static String INDUSTRY[] = { "BFSI", "Oil and Gas","Retail", "IT/ITES", "Manufacturing" };
-	public static String ROLE[] = { "Consulting", "Finance","Operations", "Marketing", "Human Resources" };
-	public static String LOCATION[] = { "New Delhi/NCR", "Mumbai","Bangalore", "Hyderabad", "Singapore" };
+//	public static String INDUSTRY[] = { "BFSI", "Oil and Gas","Retail", "IT/ITES", "Manufacturing" };
+//	public static String ROLE[] = { "Consulting", "Finance","Operations", "Marketing", "Human Resources" };
+//	public static String LOCATION[] = { "New Delhi/NCR", "Mumbai","Bangalore", "Hyderabad", "Singapore" };
 	
 	
 
@@ -38,6 +49,11 @@ public class FilterDialog implements FilterBAdpInterface{
 	private TextView txt_valueexp,txt_valuesal,edit_to;
 	private RangeSeekBar exp_seekBar,salary_seekBar;
 	
+	private int selected_salarymax = 100;
+	private int selected_salarymin = 1;
+	private int selected_expmax = 15;
+	private int selected_expmin = 1;
+	
 	private ArrayList<FilterDataSet> arrGeneral=new ArrayList<FilterDataSet>();
 	private ArrayList<FilterDataSet> arrIndustry=new ArrayList<FilterDataSet>();
 	private ArrayList<FilterDataSet> arrRole=new ArrayList<FilterDataSet>();
@@ -46,10 +62,11 @@ public class FilterDialog implements FilterBAdpInterface{
 	private ListView filterlist;
 	private LinearLayout otherOp;
 	private FilterBaseAdapter mAdapter;
-	
+	private FilterDataSets mFilterDataSets;
 	private Context context;
 	
-	public FilterDialog(Context mContext) {
+	public FilterDialog(Context mContext, FilterDataSets mFilterDataSets_) {
+		this.mFilterDataSets=mFilterDataSets_;
 		this.context=mContext;
 		mDialog = new Dialog(mContext, R.style.Theme_Dialog_Translucent);
 		mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -103,9 +120,7 @@ public class FilterDialog implements FilterBAdpInterface{
 			
 			@Override
 			public void onClick(View v) {
-				if (mDialog!=null && mDialog.isShowing()) {
-					mDialog.dismiss();
-				}
+					createFilterAPIJSON();
 			}
 		});
 		
@@ -120,17 +135,29 @@ public class FilterDialog implements FilterBAdpInterface{
 	
 	@SuppressWarnings("unchecked")
 	private void seekBarDataLoad(){
-		salary_seekBar.setRangeValues(1, 100);
-		exp_seekBar.setRangeValues(0.5f, 15.0f);
 		
-		txt_valueexp.setText(1 + "Yrs"+" - "+100+"Yrs");
-		txt_valuesal.setText(0.5f + "lpa"+" - "+15.0f+"lpa");
+//		int salarymax = Integer.parseInt(mFilterDataSets.getSalary_Max());
+//		int salarymin = Integer.parseInt(mFilterDataSets.getSalary_Min());
+//
+//		int expmax = Integer.parseInt(mFilterDataSets.getEXP_Max());
+//		int expmin = Integer.parseInt(mFilterDataSets.getEXP_Min());
+		
+		int salarymax = 100;
+		int salarymin = 1;
+
+		int expmax = 15;
+		int expmin = 1;
+
+		salary_seekBar.setRangeValues(salarymin, salarymax);
+		exp_seekBar.setRangeValues(expmin, expmax);
+
+		txt_valueexp.setText(expmin + "Yrs" + " - " + expmax + "Yrs");
+		txt_valuesal.setText(salarymin + "lpa" + " - " + salarymax + "lpa");
 		 
-		exp_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Float>() {
+		exp_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
 		        @Override
-		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Float minValue, Float maxValue) {
-		                // handle changed range values
-	                Log.i("", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
+		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+	                selected_expmin=minValue;selected_expmax=maxValue;
 	                txt_valueexp.setText(minValue + "Yrs"+" - "+maxValue+"Yrs");
 		        }
 		});
@@ -138,8 +165,7 @@ public class FilterDialog implements FilterBAdpInterface{
 		salary_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
 	        @Override
 	        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-	                // handle changed range values
-                Log.i("", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
+	        	selected_salarymin=minValue;selected_salarymax=maxValue; 
                 txt_valuesal.setText(minValue + "lpa"+" - "+maxValue+"lpa");
 	        }
 		});
@@ -147,42 +173,54 @@ public class FilterDialog implements FilterBAdpInterface{
 
 	private void loadinitialData() {
 	
+		ArrayList<IndustryDetails> arrindustry =	mFilterDataSets.getArrayIndustry();
+		ArrayList<CityDetails> arrCityDetails =	mFilterDataSets.getArrayCity();
+		ArrayList<IndustryRoleDetails> arrRoleDetails=mFilterDataSets.getArrRoleDetails();
+		ArrayList<Circle> arrCircles =	mFilterDataSets.getArraCircles();
+		
 		int i=0;
-		for (String name : Util.sendto) {
-			FilterDataSet mDataSet=new FilterDataSet();
-			mDataSet.setID(""+i);
-			mDataSet.setName(name); 
-			arrGeneral.add(mDataSet);
-			i++;
+		if (arrCircles!=null && arrCircles.size()>=1) {
+			for (Circle mCircle : arrCircles) {
+				FilterDataSet mDataSet=new FilterDataSet();
+				mDataSet.setID(mCircle.getCircleid());
+				mDataSet.setName(mCircle.getCirclename()); 
+				arrGeneral.add(mDataSet);
+				i++;
+			}
 		}
 		
-		i=0;
-		for (String name : INDUSTRY) {
-			FilterDataSet mDataSet=new FilterDataSet();
-			mDataSet.setID(""+i);
-			mDataSet.setName(name); 
-			arrIndustry.add(mDataSet);
-			i++;
+		if (arrindustry!=null && arrindustry.size()>=1) {
+			i=0;
+			for (IndustryDetails mIndustryDetails : arrindustry) {
+				FilterDataSet mDataSet=new FilterDataSet();
+				mDataSet.setID(mIndustryDetails.getIndustry_id());
+				mDataSet.setName(mIndustryDetails.getIndustry_name()); 
+				arrIndustry.add(mDataSet);
+				i++;
+			}
 		}
 		
-		i=0;
-		for (String name : ROLE) {
-			FilterDataSet mDataSet=new FilterDataSet();
-			mDataSet.setID(""+i);
-			mDataSet.setName(name); 
-			arrRole.add(mDataSet);
-			i++;
+		if (arrCityDetails!=null && arrCityDetails.size()>=1) {
+			i=0;
+			for (IndustryRoleDetails mIndustryRoleDetails : arrRoleDetails) {
+				FilterDataSet mDataSet=new FilterDataSet();
+				mDataSet.setID(mIndustryRoleDetails.getIndustryroles_id());
+				mDataSet.setName(mIndustryRoleDetails.getIndustryroles_name()); 
+				arrRole.add(mDataSet);
+				i++;
+			}
+		}
+		if (arrCityDetails!=null) {
+			i=0;
+			for (CityDetails CityDetails : arrCityDetails) {
+				FilterDataSet mDataSet=new FilterDataSet();
+				mDataSet.setID(CityDetails.getCity_id());
+				mDataSet.setName(CityDetails.getCity_name()); 
+				arrLoaction.add(mDataSet);
+				i++;
+			}
 		}
 		
-		
-		i=0;
-		for (String name : LOCATION) {
-			FilterDataSet mDataSet=new FilterDataSet();
-			mDataSet.setID(""+i);
-			mDataSet.setName(name); 
-			arrLoaction.add(mDataSet);
-			i++;
-		}
 		
 	}
 	
@@ -289,6 +327,78 @@ public class FilterDialog implements FilterBAdpInterface{
 			break;
 		default:
 			break;
+		}
+	}
+	
+	
+	
+	private void createFilterAPIJSON(){
+		
+		String locationFilter="";
+		String industryFilterr="";
+		String rolesFilterr="";
+		String salaryFilterr=""+selected_salarymin+"~"+selected_salarymax;
+		String experienceFilterr=""+selected_expmin+"~"+selected_expmax;
+		String token=UserDetails.getLoggedInUser(context).getAuthtoken();
+		
+		
+		for (FilterDataSet filterDataSet : arrIndustry) {
+			if (filterDataSet.isSelected==1) {
+				industryFilterr=industryFilterr+"~"+filterDataSet.getID();
+			}
+		}
+		if (!industryFilterr.equals("")) {
+			industryFilterr=industryFilterr.substring(1);
+		}
+		
+		for (FilterDataSet filterDataSet : arrLoaction) {
+			if (filterDataSet.isSelected==1) {
+				locationFilter=locationFilter+"~"+filterDataSet.getID();
+			}
+		}
+		if (!locationFilter.equals("")) {
+			locationFilter=locationFilter.substring(1);
+		}
+		for (FilterDataSet filterDataSet : arrRole) {
+			if (filterDataSet.isSelected==1) {
+				rolesFilterr=rolesFilterr+"~"+filterDataSet.getID();
+			}
+		}
+		if (!rolesFilterr.equals("")) {
+			rolesFilterr=rolesFilterr.substring(1);
+		}
+		
+		FilterParser mFilterParser=new FilterParser(); 
+		JSONObject postData = mFilterParser.getBody(locationFilter, industryFilterr, rolesFilterr, salaryFilterr, experienceFilterr);
+		
+//		Log.i("postData", postData.toString());
+		
+		
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+		
+		mFilterParser.setFilterparserinterface(new FilterParserInterface() {
+			
+			@Override
+			public void OnSuccess(JobList mJobList) {
+				Log.i("LIstOfJob", mJobList.toString());
+			}
+			
+			@Override
+			public void OnError() {
+				
+			}
+		});
+		mFilterParser.parse(context, postData, token, true);
+	}
+	
+	
+	
+	private void dialogFinish(){
+		if (mDialog!=null && mDialog.isShowing()) {
+			mDialog.dismiss();
 		}
 	}
 }

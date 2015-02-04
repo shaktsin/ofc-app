@@ -134,6 +134,17 @@ public class Util {
 		return baseUrl + "post/comment/all";
 	}
 
+	/*
+	 * Job Filter Data
+	 */
+	public static String getFilterJobUrl() {
+		return baseUrl + "post/filters/all";
+	}
+	public static String getFilterUrl() {
+		return baseUrl + "jobs/list?";
+	}
+
+	
 	/**
 	 * Show Alert Toast message.
 	 */
@@ -296,7 +307,7 @@ public class Util {
 	}
 
 	// HTTP GET request
-	public static String[] sendGet(String url) throws Exception {
+	public static String[] sendGet(String url){
 		String Response = "";
 
 		String[] responData = { "", "" };
@@ -337,7 +348,7 @@ public class Util {
 
 		return responData;
 	}
-
+	
 	public static String[] POST(String url, JSONObject jsonObject) {
 		InputStream inputStream = null;
 		String result = "";

@@ -14,6 +14,7 @@
     <!-- MY PROFILE -->
     <dimen name="myprofile_view_graborder">50dp</dimen>
     <!-- Comment Pager -->
-    <dimen name="comment_pager_hight">350dp</dimen>
+    <dimen name="comment_pager_hight">220dp</dimen>
+    <dimen name="comment_pager_Pading">30dp</dimen>
 
 </resources>

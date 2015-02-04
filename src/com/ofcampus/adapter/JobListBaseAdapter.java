@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -136,6 +138,9 @@ public class JobListBaseAdapter extends BaseAdapter{
 			mHolder.btn_share=(TextView)convertView.findViewById(R.id.joblistview_txt_share);
 			mHolder.btn_comment=(TextView)convertView.findViewById(R.id.joblistview_txt_comment);
 			mHolder.img_post=(ImageView)convertView.findViewById(R.id.joblistview_img_post);
+			mHolder.joblistview_img_post_rel=(CardView)convertView.findViewById(R.id.joblistview_img_post_rel);
+			
+			
 			
 			convertView.setTag(mHolder);
 		}else {
@@ -164,7 +169,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 			
 			final ArrayList<String> Images = mJobDetails.getImages();
 			if (Images!=null && Images.size()>=1) {
-				mHolder.img_post.setVisibility(View.VISIBLE);
+				mHolder.joblistview_img_post_rel.setVisibility(View.VISIBLE);
 				imageLoader.displayImage(Images.get(0), mHolder.img_post, options_post);
 				mHolder.img_post.setOnClickListener(new OnClickListener() {
 					
@@ -175,7 +180,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 				});
 				
 			}else {
-				mHolder.img_post.setVisibility(View.GONE);
+				mHolder.joblistview_img_post_rel.setVisibility(View.GONE);
 			}
 			
 			mHolder.profilepic.setOnClickListener(new OnClickListener() {
@@ -281,6 +286,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		TextView txt_name,txt_postdate,txt_subject,txt_contain;
 		TextView btn_reply,btn_share,btn_comment;
 		ImageView img_post;
+		CardView joblistview_img_post_rel;
 	}
 	
 	public void setIDS(String fstID,String lstID){

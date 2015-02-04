@@ -25,7 +25,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
-import com.ofcampus.R.id;
 import com.ofcampus.Util;
 import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
@@ -42,6 +41,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 	private DisplayImageOptions options;
 	private int totalCommentCount=0;
 	private int CommentCount=0;
+	private int pager_Pading;
 	
 	public CommentRecycleAdapter(Context context,ArrayList<JobDetails> arraJobComment_){
 		this.mContext=context;
@@ -54,7 +54,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				.showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-		
+		pager_Pading = (int) (mContext.getResources().getDimension(R.dimen.comment_pager_Pading) / mContext.getResources().getDisplayMetrics().density);
 	}
 
 	public void refreshView(ArrayList<JobDetails> arraJobComment_, int totalCommentCount) {  
@@ -193,6 +193,9 @@ public class CommentRecycleAdapter extends BaseAdapter{
 					mHolder.viewPager.setVisibility(View.VISIBLE);
 					
 					mHolder.viewPager.setAdapter(new AlbumPager(mContext, Images));
+					mHolder.viewPager.setPadding(pager_Pading, 0, pager_Pading, 0);
+					mHolder.viewPager.setClipToPadding(false);
+					mHolder.viewPager.setPageMargin(pager_Pading/2); 
 					
 				}else {
 					mHolder.rel_pagerview.setVisibility(View.GONE);
@@ -338,16 +341,6 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		public int getCount() {
 			return arrPhotos.size();
 		}
-
-		public float getPageWidth(int position)
-	    {
-			if (arrPhotos.size()>=2) {
-				return 0.9f;
-			}else {
-				return 1f;
-			}
-			
-	    }
 		
 		@Override
 		public Object instantiateItem(ViewGroup view, final int position) {
