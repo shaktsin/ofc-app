@@ -89,5 +89,10 @@
     <string name="MyProfile_txt_PreviousEmployers">Previous Employers</string>
     <string name="MyProfile_txt_ProfessionalInterests">Professional Interests</string>
     <string name="MyProfile_txt_Interests">Interests</string>
+    
+    
+    
+     <!-- MyProfile -->
+    <string name="Filter_msg_chooseoption">Choose at least one option for filter.</string>
 
 </resources>
