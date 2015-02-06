@@ -17,6 +17,7 @@ import com.ofcampus.model.JobDetails;
 public class OfCampusApplication extends Application {
 
 	public ArrayList<InstituteDetails> institutes_;
+	public ArrayList<JobDetails> filterJobs;
 	public String instituteid="";
 	public JobDetails jobdetails;
 	

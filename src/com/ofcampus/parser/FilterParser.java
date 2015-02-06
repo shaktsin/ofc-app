@@ -12,13 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
-import com.ofcampus.Util.JobDataReturnFor;
-import com.ofcampus.databasehelper.JOBListTable;
-import com.ofcampus.model.CityDetails;
-import com.ofcampus.model.IndustryDetails;
-import com.ofcampus.model.IndustryRoleDetails;
 import com.ofcampus.model.JobDetails;
-import com.ofcampus.model.JobList;
 
 public class FilterParser {
 	private Context mContext;
@@ -51,25 +45,7 @@ public class FilterParser {
 	private String IMPORTANT="important";
 	private String POSTIMAGES="images";
 	
-	/*City List Key*/
-	private String CITYDTOLIST="cityDtoList";
-	private String CITY_ID="id";
-	private String CITY_NAME="name";
-	private String CITY_SELECTED="selected";
-	
-	/*industry Roles List Key*/
-	private String industryRolesDtoList="industryRolesDtoList";
-	private String INDUSTRYROLES_ID="id";
-	private String INDUSTRYROLES_NAME="name";
-	private String INDUSTRYROLES_INDUSTRYID="industryId";
-	private String INDUSTRYROLES_INDUSTRYNAME="industryName";
-	private String INDUSTRYROLES_SELECTED="selected";
-	
-	/*industry List Key*/
-	private String industryDtoList="industryDtoList";
-	private String INDUSTRY_ID="id";
-	private String INDUSTRY_NAME="name";
-	private String INDUSTRY_SELECTED="selected";
+
 
 
 	/*Response JSON key value*/
@@ -93,7 +69,7 @@ public class FilterParser {
 		private JSONObject postData; 
 		private boolean isTimeOut=false;
 		private ProgressDialog mDialog;
-		private JobList mJobList;
+		private ArrayList<JobDetails> JobList;
 		private String authToken;
 		private boolean isShowingPG_;
 
@@ -131,16 +107,7 @@ public class FilterParser {
 						if (Obj!=null && !Obj.equals("")) {
 							String expt= Util.getJsonValue(Obj, EXCEPTION);
 							if (expt.equals("false")) {
-								mJobList = parseJSONData(Obj);
-								ArrayList<JobDetails> arrayJobInDB =JOBListTable.getInstance(context).fatchJobData(JobDataReturnFor.Normal);
-								if (arrayJobInDB==null) {
-									JOBListTable.getInstance(mContext).inserJobData(mJobList.getJobs());
-								}else if(arrayJobInDB!=null && arrayJobInDB.size() < 12) {
-									int size=12 - arrayJobInDB.size();
-									if (mJobList.getJobs()!=null && mJobList.getJobs().size()>=1) {
-										JOBListTable.getInstance(mContext).inserJobData(mJobList.getJobs() ,size);
-									}
-								}
+								JobList = parseJSONData(Obj);
 							}
 						}
 					}else if(responsecode!=null && (responsecode.equals("500") || responsecode.equals("401"))){
@@ -170,17 +137,18 @@ public class FilterParser {
 					filterparserinterface.OnError(); 
 				}
 			}else if (responsecode.equals("200")) {
-				if (mJobList!=null) {
+
+				if (JobList!=null && JobList.size()>=1) {
 					if (filterparserinterface!=null) {
-						filterparserinterface.OnSuccess(mJobList); 
+						filterparserinterface.OnSuccess(JobList); 
 					}
 				}else {
-					Util.ShowToast(mContext, "Joblist parse error.");
+					Util.ShowToast(mContext, "NO data availble.");
 				}
 			}else if (responsecode.equals("500") || responsecode.equals("401")){
 				Util.ShowToast(mContext, responseDetails);
 			}else {
-				Util.ShowToast(mContext, "Joblist parse error.");
+				Util.ShowToast(mContext, "Filter Error.");
 			}
 		}
 	}
@@ -190,21 +158,16 @@ public class FilterParser {
 	
 	
 	
-	public JobList parseJSONData(JSONObject obj){
+	public ArrayList<JobDetails> parseJSONData(JSONObject obj){
 
-		JobList mJobList=new JobList();
+		ArrayList<JobDetails> jobarray = new ArrayList<JobDetails>();
 		
 		try {
 			JSONObject jsonobject=null;
 			
 			JSONArray jobjsonarray=obj.getJSONArray(JOBCREATERESPONSELIST) ;
-			JSONArray cityjsonarray=obj.getJSONArray(CITYDTOLIST) ;
-			JSONArray industryrolejsonarray=obj.getJSONArray(industryRolesDtoList) ;
-			JSONArray industryjsonarray=obj.getJSONArray(industryDtoList) ;
 			
 			if (jobjsonarray != null && jobjsonarray.length() >= 1) {
-				
-				ArrayList<JobDetails> jobarray = new ArrayList<JobDetails>();
 				
 				for (int i = 0; i < jobjsonarray.length(); i++) {
 					JobDetails mJobDetails=new JobDetails();
@@ -245,62 +208,6 @@ public class FilterParser {
 					jobarray.add(mJobDetails);
 					mJobDetails=null;
 				}
-				mJobList.setJobs(jobarray);
-			}
-			
-			if (cityjsonarray != null && cityjsonarray.length() >= 1) {
-				
-				ArrayList<CityDetails> cityarray=new ArrayList<CityDetails>();
-				
-				for (int i = 0; i < cityjsonarray.length(); i++) {
-					CityDetails mCityDetails=new CityDetails();
-					jsonobject = cityjsonarray.getJSONObject(i);
-					
-					mCityDetails.setCity_id(Util.getJsonValue(jsonobject, CITY_ID));
-					mCityDetails.setCity_name(Util.getJsonValue(jsonobject, CITY_NAME));
-					mCityDetails.setCity_selected(Util.getJsonValue(jsonobject, CITY_SELECTED));
-					cityarray.add(mCityDetails);
-					mCityDetails=null;
-				}
-				mJobList.setCitys(cityarray);
-			}
-			
-			if (industryrolejsonarray != null && industryrolejsonarray.length() >= 1) {
-				
-				ArrayList<IndustryRoleDetails> industryrolerray=new ArrayList<IndustryRoleDetails>();
-				
-				for (int i = 0; i < industryrolejsonarray.length(); i++) {
-					IndustryRoleDetails mRoleDetails=new IndustryRoleDetails();
-					jsonobject = industryrolejsonarray.getJSONObject(i);
-					
-					mRoleDetails.setIndustryroles_id(Util.getJsonValue(jsonobject, INDUSTRYROLES_ID));
-					mRoleDetails.setIndustryroles_name(Util.getJsonValue(jsonobject, INDUSTRYROLES_NAME));
-					mRoleDetails.setIndustryroles_industryid(Util.getJsonValue(jsonobject, INDUSTRYROLES_INDUSTRYID));
-					mRoleDetails.setIndustryroles_industryname(Util.getJsonValue(jsonobject, INDUSTRYROLES_INDUSTRYNAME));
-					mRoleDetails.setIndustryroles_selected(Util.getJsonValue(jsonobject, INDUSTRYROLES_SELECTED));
-					industryrolerray.add(mRoleDetails);
-					mRoleDetails=null;
-				}
-				mJobList.setIndustryRoles(industryrolerray);
-				
-			}
-			
-			if (industryjsonarray != null && industryjsonarray.length() >= 1) {
-				
-				ArrayList<IndustryDetails> industryarray=new ArrayList<IndustryDetails>();
-				
-				for (int i = 0; i < industryjsonarray.length(); i++) {
-					IndustryDetails mIndustryDetails=new IndustryDetails();
-					jsonobject = industryjsonarray.getJSONObject(i);
-					
-					mIndustryDetails.setIndustry_id(Util.getJsonValue(jsonobject, INDUSTRY_ID));
-					mIndustryDetails.setIndustry_name(Util.getJsonValue(jsonobject, INDUSTRY_NAME));
-					mIndustryDetails.setIndustry_selected(Util.getJsonValue(jsonobject, INDUSTRY_SELECTED));
-					industryarray.add(mIndustryDetails);
-					mIndustryDetails=null;
-					
-				}
-				mJobList.setIndustrys(industryarray); 
 			}
 			
 			
@@ -308,38 +215,17 @@ public class FilterParser {
 			e.printStackTrace();
 		}
 		
-		return mJobList;
+		return jobarray;
 		
 	}
 	
 
-		/*http://localhost:8080/hippo/api/jobs/list?location=1~2&roles=1
-		
-		content-type - application/json
-		Authoriztion 
-		
-		
-		Request - 
-		{
-			"plateFormId":0,
-			"appName":"ofCampus"
-			"locationFilter":,
-			"industryFilter":,
-			"rolesFilter":,
-			"salaryFilter":,
-			"experienceFilter":,
-			"postId":,
-			"operation":,
-			"perPage":,
-			"pageNo":
-		}*/
-	
-
-	public JSONObject getBody(String locationFilter, String industryFilter,String rolesFilter,String salaryFilter,String experienceFilter) {
+	public JSONObject getBody(String circle,String locationFilter, String industryFilter,String rolesFilter,String salaryFilter,String experienceFilter) {
 		JSONObject jsObj = new JSONObject();
 		try {
 			jsObj.put("plateFormId", "0");
 			jsObj.put("appName", "ofCampus");
+			jsObj.put("circleFilter", circle);
 			jsObj.put("locationFilter", locationFilter);
 			jsObj.put("industryFilter", industryFilter);
 			jsObj.put("rolesFilter", rolesFilter);
@@ -368,7 +254,7 @@ public class FilterParser {
 	}
 
 	public interface FilterParserInterface {
-		public void OnSuccess(JobList mJobList);
+		public void OnSuccess(ArrayList<JobDetails> jobList);
 
 		public void OnError();
 	}

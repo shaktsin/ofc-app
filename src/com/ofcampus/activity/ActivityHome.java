@@ -691,6 +691,40 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 				e.printStackTrace();
 				Log.e("Load Data in list", e.getMessage().toString());
 			}
+			loadFilterData();
+		}
+
+	}
+	
+	
+	private void loadFilterData(){
+		if (Util.hasConnection(mContext)) {
+			new loadFilterData().execute();
+		}
+	}
+	
+	private class loadFilterData extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			
+			try {
+				mFilterDataSets =	new FilterJobParser().parse(mContext, tocken);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
 		}
 
 	}

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +23,7 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityComment;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.ReplyDialog;
 
 public class ImportantMailListAdapter extends BaseAdapter{
@@ -31,6 +33,7 @@ public class ImportantMailListAdapter extends BaseAdapter{
 	private ArrayList<JobDetails> jobs=null;
 	private ImageLoader imageLoader=ImageLoader.getInstance();
 	private DisplayImageOptions options;
+	private DisplayImageOptions options_post;
 	
 	public ImportantMailListAdapter(Context context,ArrayList<JobDetails> arrJobs){
 		this.mContext=context; 
@@ -42,6 +45,12 @@ public class ImportantMailListAdapter extends BaseAdapter{
 				.showImageOnLoading(R.drawable.ic_profilepic)
 				.showImageForEmptyUri(R.drawable.ic_profilepic)
 				.showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true)
+				.cacheOnDisk(true).considerExifParams(true).build();
+		
+		options_post = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.no_postimage)
+				.showImageForEmptyUri(R.drawable.no_postimage)
+				.showImageOnFail(R.drawable.no_postimage).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		
@@ -91,6 +100,10 @@ public class ImportantMailListAdapter extends BaseAdapter{
 			mHolder.btn_reply=(TextView)convertView.findViewById(R.id.joblistview_txt_reply);
 			mHolder.btn_share=(TextView)convertView.findViewById(R.id.joblistview_txt_share);
 			mHolder.btn_comment=(TextView)convertView.findViewById(R.id.joblistview_txt_comment);
+			
+			mHolder.img_post=(ImageView)convertView.findViewById(R.id.joblistview_img_post);
+			mHolder.joblistview_img_post_rel=(CardView)convertView.findViewById(R.id.joblistview_img_post_rel);
+			
 			convertView.setTag(mHolder);
 		}else {
 			mHolder=(ViewHolder) convertView.getTag();
@@ -111,7 +124,25 @@ public class ImportantMailListAdapter extends BaseAdapter{
 //				mHolder.img_important.setVisibility(View.GONE);
 //			}
 
-			convertView.setOnClickListener(new OnClickListener() {
+			
+			final ArrayList<String> Images = mJobDetails.getImages();
+			if (Images!=null && Images.size()>=1) {
+				mHolder.joblistview_img_post_rel.setVisibility(View.VISIBLE);
+				imageLoader.displayImage(Images.get(0), mHolder.img_post, options_post);
+				mHolder.img_post.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						new AlbumPagerDialog(mContext, Images,0);
+					}
+				});
+				
+			}else {
+				mHolder.joblistview_img_post_rel.setVisibility(View.GONE);
+			}
+			
+			
+			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -161,9 +192,10 @@ public class ImportantMailListAdapter extends BaseAdapter{
 	
 	private class ViewHolder{
 		ImageView profilepic;
-		ImageView img_arrow,img_important;
+		ImageView img_arrow,img_important,img_post;
 		TextView txt_name,txt_postdate,txt_subject,txt_contain;
 		TextView btn_reply,btn_share,btn_comment;
+		CardView joblistview_img_post_rel;
 	}
 	
 	public void setIDS(String fstID,String lstID){

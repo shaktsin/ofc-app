@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -17,8 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.ActivityFilterJobs;
 import com.ofcampus.adapter.FilterBaseAdapter;
 import com.ofcampus.adapter.FilterBaseAdapter.FilterBAdpInterface;
 import com.ofcampus.customseekbar.RangeSeekBar;
@@ -29,6 +33,7 @@ import com.ofcampus.model.FilterDataSet;
 import com.ofcampus.model.FilterDataSets;
 import com.ofcampus.model.IndustryDetails;
 import com.ofcampus.model.IndustryRoleDetails;
+import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.JobList;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.FilterParser;
@@ -333,7 +338,7 @@ public class FilterDialog implements FilterBAdpInterface{
 	
 	
 	private void createFilterAPIJSON(){
-		
+		String circle="";
 		String locationFilter="";
 		String industryFilterr="";
 		String rolesFilterr="";
@@ -341,6 +346,17 @@ public class FilterDialog implements FilterBAdpInterface{
 		String experienceFilterr=""+selected_expmin+"~"+selected_expmax;
 		String token=UserDetails.getLoggedInUser(context).getAuthtoken();
 		
+		
+		
+		
+		for (FilterDataSet filterDataSet : arrGeneral) {
+			if (filterDataSet.isSelected==1) {
+				circle=circle+"~"+filterDataSet.getID();
+			}
+		}
+		if (!circle.equals("")) {
+			circle=circle.substring(1);
+		}
 		
 		for (FilterDataSet filterDataSet : arrIndustry) {
 			if (filterDataSet.isSelected==1) {
@@ -359,6 +375,7 @@ public class FilterDialog implements FilterBAdpInterface{
 		if (!locationFilter.equals("")) {
 			locationFilter=locationFilter.substring(1);
 		}
+		
 		for (FilterDataSet filterDataSet : arrRole) {
 			if (filterDataSet.isSelected==1) {
 				rolesFilterr=rolesFilterr+"~"+filterDataSet.getID();
@@ -368,8 +385,13 @@ public class FilterDialog implements FilterBAdpInterface{
 			rolesFilterr=rolesFilterr.substring(1);
 		}
 		
+		if (circle.equals("") && locationFilter.equals("") && industryFilterr.equals("") && rolesFilterr.equals("")) {
+			Util.ShowToast(context,context.getResources().getString(R.string.Filter_msg_chooseoption));
+			return;
+		}
+		
 		FilterParser mFilterParser=new FilterParser(); 
-		JSONObject postData = mFilterParser.getBody(locationFilter, industryFilterr, rolesFilterr, salaryFilterr, experienceFilterr);
+		JSONObject postData = mFilterParser.getBody(circle,locationFilter, industryFilterr, rolesFilterr, salaryFilterr, experienceFilterr);
 		
 //		Log.i("postData", postData.toString());
 		
@@ -382,8 +404,13 @@ public class FilterDialog implements FilterBAdpInterface{
 		mFilterParser.setFilterparserinterface(new FilterParserInterface() {
 			
 			@Override
-			public void OnSuccess(JobList mJobList) {
-				Log.i("LIstOfJob", mJobList.toString());
+			public void OnSuccess(ArrayList<JobDetails> jobS) {
+				if (jobS!=null && jobS.size()>=1) {
+					dialogFinish();
+					((OfCampusApplication)context.getApplicationContext()).filterJobs=jobS;
+					context.startActivity(new Intent(context,ActivityFilterJobs.class));
+					((Activity)context).overridePendingTransition(0, 0);
+				}
 			}
 			
 			@Override
