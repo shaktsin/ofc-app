@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -21,53 +22,64 @@
             <RelativeLayout
                 android:id="@+id/joblistview_relpicname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="6dp" >
 
-                <com.ofcampus.component.CircleImageView
+                <ImageView
                     android:id="@+id/joblistview_img_pic"
                     android:layout_width="@dimen/joblitview_picwd"
                     android:layout_height="@dimen/joblitview_picwd"
                     android:layout_centerVertical="true"
-                    android:layout_margin="2dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/joblist_row_rect"
                     android:contentDescription="@string/app_name"
+                    android:padding="2dp"
                     android:src="@drawable/ic_profilepic" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="3dp"
                     android:layout_toLeftOf="@+id/joblistview_img_imp"
                     android:layout_toRightOf="@+id/joblistview_img_pic" >
 
-                    <TextView
+                    <com.ofcampus.ui.CustomTextView
                         android:id="@+id/joblistview_txt_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="left"
                         android:singleLine="true"
                         android:text=""
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/Comment_username" />
+                        android:textColor="@color/job_contain"
+                        android:textSize="@dimen/joblitview_name"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
 
-                    <TextView
+                    <com.ofcampus.ui.CustomTextView
                         android:id="@+id/joblistview_txt_postdate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/joblistview_txt_name"
                         android:layout_marginTop="5dp"
+                        android:gravity="left"
                         android:singleLine="true"
                         android:text=""
-                        android:textColor="@color/theme_color"
-                        android:textSize="@dimen/Comment_postdate" />
+                        android:textColor="@color/primary_dark"
+                        android:textSize="@dimen/joblitview_postdate"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
                 </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/joblistview_img_imp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="2dp"
                     android:layout_toLeftOf="@+id/joblistview_img_arrow"
                     android:contentDescription="@string/app_name"
-                    android:padding="5dp"
                     android:src="@drawable/important_selector"
                     android:visibility="gone" />
 
@@ -76,41 +88,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginLeft="2dp"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_downarrow" />
             </RelativeLayout>
 
-            <TextView
+            <com.ofcampus.ui.CustomTextView
                 android:id="@+id/joblistview_txt_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/joblistview_relpicname"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="9dp"
+                android:layout_marginRight="9dp"
+                android:layout_marginTop="8dp"
+                android:gravity="left"
                 android:maxLines="2"
                 android:text=""
-                android:textColor="@color/theme_color"
-                android:textSize="@dimen/Comment_Header"
-                android:textStyle="bold" />
+                android:textColor="@color/primary_dark"
+                android:textSize="@dimen/joblitview_Subject"
+                android:textStyle="bold"
+                ofcampus:fontName="HelveticaBold.ttf" />
 
-            <TextView
+            <com.ofcampus.ui.CustomTextView
                 android:id="@+id/joblistview_txt_contain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/joblistview_txt_subject"
-                android:layout_marginTop="5dp"
+                android:layout_marginLeft="9dp"
+                android:layout_marginRight="9dp"
+                android:layout_marginTop="3dp"
+                android:gravity="left"
                 android:maxLines="4"
-                android:text="adsdad"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/Comment_Comment" />
+                android:text=""
+                android:textColor="@color/job_contain"
+                android:textSize="@dimen/joblitview_contain"
+                android:textStyle="normal"
+                ofcampus:fontName="Helvetica.otf" />
 
             <include
                 android:id="@+id/inc_proxyview"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/comment_pager_hight"
                 android:layout_below="@+id/joblistview_txt_contain"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 layout="@layout/inflate_jobdetails_pager_item"
                 android:visibility="visible" />
 
@@ -119,68 +139,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/inc_proxyview"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal" >
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/joblistview_txt_reply"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/joblist_button_rect" >
+                    android:background="#E84C3D"
+                    android:contentDescription="@string/app_name"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_reply" />
 
-                    <TextView
-                        android:id="@+id/joblistview_txt_reply"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/ic_reply"
-                        android:drawablePadding="4dp"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="@string/Job_List_View_reply"
-                        android:textColor="@color/theme_color"
-                        android:textSize="@dimen/joblitview_postdate" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/joblistview_txt_share"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/layerlist" >
+                    android:background="#5498C7"
+                    android:contentDescription="@string/app_name"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_share" />
 
-                    <TextView
-                        android:id="@+id/joblistview_txt_share"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/ic_share"
-                        android:drawablePadding="4dp"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="@string/Job_List_View_share"
-                        android:textColor="@color/theme_color"
-                        android:textSize="@dimen/joblitview_postdate" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/joblistview_txt_comment"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/joblist_button_rect" >
-
-                    <TextView
-                        android:id="@+id/joblistview_txt_comment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/ic_comment"
-                        android:drawablePadding="4dp"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="@string/Job_List_View_comment"
-                        android:textColor="@color/theme_color"
-                        android:textSize="@dimen/joblitview_postdate" />
-                </RelativeLayout>
+                    android:background="#18BC9A"
+                    android:contentDescription="@string/app_name"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_comment" />
             </LinearLayout>
 
             <RelativeLayout
@@ -202,7 +192,7 @@
                         android:layout_margin="3dp"
                         android:background="#1E88E5" />
 
-                    <TextView
+                    <com.ofcampus.ui.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -210,10 +200,11 @@
                         android:text="@string/Job_List_loadmore_commentss"
                         android:textColor="@color/theme_color"
                         android:textSize="@dimen/joblitview_name"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        ofcampus:fontName="HelveticaBold.ttf" />
                 </RelativeLayout>
 
-                <TextView
+                <com.ofcampus.ui.CustomTextView
                     android:id="@+id/joblistview_txt_loadAllComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -227,7 +218,8 @@
                     android:textColor="@color/theme_color"
                     android:textSize="@dimen/joblitview_name"
                     android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    ofcampus:fontName="HelveticaBold.ttf" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -237,16 +229,18 @@
             android:id="@+id/inflate_comment_rel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/joblist_row_rect"
+            android:background="@android:color/white"
             android:visibility="gone" >
 
-            <com.ofcampus.component.CircleImageView
+            <ImageView
                 android:id="@+id/inflate_comment_img_pic"
                 android:layout_width="@dimen/joblitview_picwd"
                 android:layout_height="@dimen/joblitview_picwd"
                 android:layout_alignParentTop="true"
                 android:layout_margin="2dp"
+                android:background="@drawable/joblist_row_rect"
                 android:contentDescription="@string/app_name"
+                android:padding="2dp"
                 android:src="@drawable/ic_profilepic" />
 
             <RelativeLayout
@@ -257,37 +251,40 @@
                 android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/inflate_comment_img_pic" >
 
-                <TextView
+                <com.ofcampus.ui.CustomTextView
                     android:id="@+id/inflate_comment_txt_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="dasdasd"
-                    android:textColor="@color/theme_color"
+                    android:text=""
+                    android:textColor="@color/primary_dark"
                     android:textSize="@dimen/Comment_username"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    ofcampus:fontName="HelveticaBold.ttf" />
 
-                <TextView
+                <com.ofcampus.ui.CustomTextView
                     android:id="@+id/inflate_comment_txt_contain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/inflate_comment_txt_name"
                     android:layout_marginTop="2dp"
                     android:maxLines="4"
-                    android:text="dsada"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/Comment_Comment" />
+                    android:text=""
+                    android:textColor="@color/job_contain"
+                    android:textSize="@dimen/Comment_Comment"
+                    ofcampus:fontName="Helvetica.otf" />
 
-                <TextView
+                <com.ofcampus.ui.CustomTextView
                     android:id="@+id/inflate_comment_txt_postdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/inflate_comment_txt_contain"
                     android:layout_marginTop="2dp"
                     android:singleLine="true"
-                    android:text="sadasdads"
-                    android:textColor="@color/theme_color"
-                    android:textSize="@dimen/Comment_postdate" />
+                    android:text=""
+                    android:textColor="@color/primary_dark"
+                    android:textSize="@dimen/Comment_postdate"
+                    ofcampus:fontName="Helvetica.otf" />
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>

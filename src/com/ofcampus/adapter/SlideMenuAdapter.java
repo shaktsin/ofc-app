@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -61,21 +62,18 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 		TextView textView;
 		ImageView imageView;
 		ImageView profile;
-		RelativeLayout rel_row;
+		LinearLayout slideritem_row;
 		TextView Name;
 		TextView email;
-		LayoutRipple layoutRipple;
 		
 		
 		public ViewHolder(View itemView, int ViewType) {
 			super(itemView);
 
 			if (ViewType == TYPE_ITEM) {
-				rel_row = (RelativeLayout) itemView.findViewById(R.id.slideritem_row);
+				slideritem_row = (LinearLayout) itemView.findViewById(R.id.slideritem_row); 
 				textView = (TextView) itemView.findViewById(R.id.rowText);
 				imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
-				layoutRipple = (LayoutRipple) itemView.findViewById(R.id.slideritem_row);
-				setOriginRiple(layoutRipple);
 				Holderid = 1;
 			} else {
 				Name = (TextView) itemView.findViewById(R.id.name);
@@ -111,7 +109,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 			holder.textView.setText(mNavTitles[position - 1]);
 			holder.imageView.setImageResource(mIcons[position - 1]);
 			
-			holder.layoutRipple.setOnClickListener(new OnClickListener() {
+			holder.slideritem_row.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -160,22 +158,5 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 		public void OnViewItemClick(int position);
 	}
 
-	
-	private static void setOriginRiple(final LayoutRipple layoutRipple){
-    	
-    	layoutRipple.post(new Runnable() {
-			
-			@Override
-			public void run() {
-				View v = layoutRipple.getChildAt(0);
-		    	layoutRipple.setxRippleOrigin(ViewHelper.getX(v)+v.getWidth()/2);
-		    	layoutRipple.setyRippleOrigin(ViewHelper.getY(v)+v.getHeight()/2);
-		    	
-		    	layoutRipple.setRippleColor(Color.GRAY);
-		    	
-		    	layoutRipple.setRippleSpeed(30);
-			}
-		});
-    	
-    }
+
 }

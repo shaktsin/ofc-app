@@ -29,6 +29,7 @@ import com.ofcampus.Util;
 import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
+import com.ofcampus.ui.CustomTextView;
 import com.ofcampus.ui.ReplyDialog;
 
 public class CommentRecycleAdapter extends BaseAdapter{
@@ -120,23 +121,23 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			
 			convertView=inflater.inflate(R.layout.inflate_commentlist_row_new, parent,false);
 			
-			mHolder.img_prfpic=(CircleImageView)convertView.findViewById(R.id.joblistview_img_pic);
+			mHolder.img_prfpic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
-			mHolder.txt_name=(TextView)convertView.findViewById(R.id.joblistview_txt_name);
-			mHolder.txt_date=(TextView)convertView.findViewById(R.id.joblistview_txt_postdate);
-			mHolder.txt_subject=(TextView)convertView.findViewById(R.id.joblistview_txt_subject);
-			mHolder.txt_jobdetails=(TextView)convertView.findViewById(R.id.joblistview_txt_contain);
+			mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_name);
+			mHolder.txt_date=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_postdate);
+			mHolder.txt_subject=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_subject);
+			mHolder.txt_jobdetails=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
 			
-			mHolder.txt_btn_reply=(TextView)convertView.findViewById(R.id.joblistview_txt_reply);
-			mHolder.txt_btn_comment=(TextView)convertView.findViewById(R.id.joblistview_txt_comment);
-			mHolder.txt_btn_share=(TextView)convertView.findViewById(R.id.joblistview_txt_share);
+			mHolder.txt_btn_reply=(ImageView)convertView.findViewById(R.id.joblistview_txt_reply);
+			mHolder.txt_btn_comment=(ImageView)convertView.findViewById(R.id.joblistview_txt_comment);
+			mHolder.txt_btn_share=(ImageView)convertView.findViewById(R.id.joblistview_txt_share);
 			
 			
 			
 			/**New view Appear*/
 			
-			mHolder.proxytxt_subject=(TextView)convertView.findViewById(R.id.proxyview_txt_subject);
-			mHolder.proxytxt_jobdetails=(TextView)convertView.findViewById(R.id.proxyview_txt_contain);
+			mHolder.proxytxt_subject=(CustomTextView)convertView.findViewById(R.id.proxyview_txt_subject);
+			mHolder.proxytxt_jobdetails=(CustomTextView)convertView.findViewById(R.id.proxyview_txt_contain);
 			
 			
 			mHolder.rel_pagerview=(RelativeLayout)convertView.findViewById(R.id.inc_up_pager);
@@ -147,15 +148,15 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			
 			mHolder.linear_buttonsection=(LinearLayout)convertView.findViewById(R.id.joblistview_linear_buttonsection); 
 					
-			mHolder.txt_load=(TextView)convertView.findViewById(R.id.joblistview_txt_loadAllComment); 
+			mHolder.txt_load=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_loadAllComment); 
 			mHolder.rel_progress=(RelativeLayout)convertView.findViewById(R.id.rel_progress); 
 			mHolder.rel_details=(RelativeLayout)convertView.findViewById(R.id.inflate_joblistview_rel); 
 			mHolder.rel_comment=(RelativeLayout)convertView.findViewById(R.id.inflate_comment_rel); 
 			
-			mHolder.img_commentprfpic=(CircleImageView)convertView.findViewById(R.id.inflate_comment_img_pic);
-			mHolder.txt_commentname=(TextView)convertView.findViewById(R.id.inflate_comment_txt_name);
-			mHolder.txt_commentdate=(TextView)convertView.findViewById(R.id.inflate_comment_txt_postdate);
-			mHolder.txt_commenteddetails=(TextView)convertView.findViewById(R.id.inflate_comment_txt_contain);
+			mHolder.img_commentprfpic=(ImageView)convertView.findViewById(R.id.inflate_comment_img_pic);
+			mHolder.txt_commentname=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_name);
+			mHolder.txt_commentdate=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_postdate);
+			mHolder.txt_commenteddetails=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_contain);
 			
 			convertView.setTag(mHolder);
 		}else{
@@ -274,11 +275,11 @@ public class CommentRecycleAdapter extends BaseAdapter{
 	}
 	
 	private class ViewHolder {
-		public CircleImageView img_prfpic,img_commentprfpic;
+		public ImageView img_prfpic,img_commentprfpic;
 		public ImageView  img_arrow;
-		
-		public TextView txt_load , txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails,proxytxt_subject, proxytxt_jobdetails;
-		public TextView txt_btn_comment,txt_btn_share,txt_btn_reply;
+		public CustomTextView txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails;
+		public CustomTextView txt_load ,proxytxt_subject, proxytxt_jobdetails;
+		public ImageView txt_btn_comment,txt_btn_share,txt_btn_reply;
 		public LinearLayout linear_buttonsection,inc_proxyview;
 		public RelativeLayout rel_details,rel_comment,rel_progress,rel_pagerview;
 		

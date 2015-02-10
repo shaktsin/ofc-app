@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -24,9 +23,10 @@ import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityComment;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
+import com.ofcampus.ui.CustomTextView;
 import com.ofcampus.ui.ReplyDialog;
 
-public class MyPostListAdapter  extends BaseAdapter{
+public class MyPostListAdapter extends BaseAdapter{
 
 	private Context mContext;
 	private LayoutInflater inflater;
@@ -94,13 +94,13 @@ public class MyPostListAdapter  extends BaseAdapter{
 			mHolder.profilepic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
 			mHolder.img_important=(ImageView)convertView.findViewById(R.id.joblistview_img_imp);
-			mHolder.txt_name=(TextView)convertView.findViewById(R.id.joblistview_txt_name);
-			mHolder.txt_postdate=(TextView)convertView.findViewById(R.id.joblistview_txt_postdate);
-			mHolder.txt_subject=(TextView)convertView.findViewById(R.id.joblistview_txt_subject);
-			mHolder.txt_contain=(TextView)convertView.findViewById(R.id.joblistview_txt_contain);
-			mHolder.btn_reply=(TextView)convertView.findViewById(R.id.joblistview_txt_reply);
-			mHolder.btn_share=(TextView)convertView.findViewById(R.id.joblistview_txt_share);
-			mHolder.btn_comment=(TextView)convertView.findViewById(R.id.joblistview_txt_comment);
+			mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_name);
+			mHolder.txt_postdate=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_postdate);
+			mHolder.txt_subject=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_subject);
+			mHolder.txt_contain=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
+			mHolder.btn_reply=(ImageView)convertView.findViewById(R.id.joblistview_txt_reply);
+			mHolder.btn_share=(ImageView)convertView.findViewById(R.id.joblistview_txt_share);
+			mHolder.btn_comment=(ImageView)convertView.findViewById(R.id.joblistview_txt_comment);
 			
 			mHolder.img_post=(ImageView)convertView.findViewById(R.id.joblistview_img_post);
 			mHolder.joblistview_img_post_rel=(CardView)convertView.findViewById(R.id.joblistview_img_post_rel);
@@ -193,8 +193,8 @@ public class MyPostListAdapter  extends BaseAdapter{
 	private class ViewHolder{
 		ImageView profilepic;
 		ImageView img_arrow,img_important,img_post;
-		TextView txt_name,txt_postdate,txt_subject,txt_contain;
-		TextView btn_reply,btn_share,btn_comment;
+		CustomTextView txt_name,txt_postdate,txt_subject,txt_contain;
+		ImageView btn_reply,btn_share,btn_comment;
 		CardView joblistview_img_post_rel;
 	}
 	

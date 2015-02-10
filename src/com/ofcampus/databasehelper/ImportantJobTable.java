@@ -126,7 +126,19 @@ public class ImportantJobTable {
 		return jobs;
 	}
 	
-	
+	public boolean deleteUnimpJOb(JobDetails mJobDetails) {
+		long success = -1;
+		try {
+			success = dbHelper.getDB().delete(TABLENAME, POSTID+"=?", new String[]{""+mJobDetails.getPostid()});
+			if (success > 0) {
+				return true;
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 	private void curcorClose(Cursor cursor){
 		try {

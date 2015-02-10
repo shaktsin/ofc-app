@@ -14,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -22,9 +21,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityMyProfile;
-import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
+import com.ofcampus.ui.CustomTextView;
 
 public class JobListBaseAdapter extends BaseAdapter{
 
@@ -99,6 +98,16 @@ public class JobListBaseAdapter extends BaseAdapter{
 		notifyDataSetChanged();
 	}
 	
+	public void unimportantJob(JobDetails hideJob){
+		for (JobDetails jobDetails : jobs) {
+			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
+				jobDetails.important=0;
+			}
+		}
+		notifyDataSetChanged();
+	}
+	
+	
 	public ArrayList<JobDetails> getJobData(){
 		return this.jobs;
 	}
@@ -126,16 +135,18 @@ public class JobListBaseAdapter extends BaseAdapter{
 		if (convertView==null) {
 			mHolder=new ViewHolder();
 			convertView=inflater.inflate(R.layout.inflate_joblistrow, null);
-			mHolder.profilepic=(CircleImageView)convertView.findViewById(R.id.joblistview_img_pic);
+			mHolder.profilepic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
 			mHolder.img_important=(ImageView)convertView.findViewById(R.id.joblistview_img_imp);
-			mHolder.txt_name=(TextView)convertView.findViewById(R.id.joblistview_txt_name);
-			mHolder.txt_postdate=(TextView)convertView.findViewById(R.id.joblistview_txt_postdate);
-			mHolder.txt_subject=(TextView)convertView.findViewById(R.id.joblistview_txt_subject);
-			mHolder.txt_contain=(TextView)convertView.findViewById(R.id.joblistview_txt_contain);
-			mHolder.btn_reply=(TextView)convertView.findViewById(R.id.joblistview_txt_reply);
-			mHolder.btn_share=(TextView)convertView.findViewById(R.id.joblistview_txt_share);
-			mHolder.btn_comment=(TextView)convertView.findViewById(R.id.joblistview_txt_comment);
+			mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_name);
+			mHolder.txt_postdate=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_postdate);
+			mHolder.txt_subject=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_subject);
+			mHolder.txt_contain=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
+			
+			mHolder.btn_reply=(ImageView)convertView.findViewById(R.id.joblistview_txt_reply);
+			mHolder.btn_share=(ImageView)convertView.findViewById(R.id.joblistview_txt_share);
+			mHolder.btn_comment=(ImageView)convertView.findViewById(R.id.joblistview_txt_comment);
+			
 			mHolder.img_post=(ImageView)convertView.findViewById(R.id.joblistview_img_post);
 			mHolder.joblistview_img_post_rel=(CardView)convertView.findViewById(R.id.joblistview_img_post_rel);
 			
@@ -234,7 +245,12 @@ public class JobListBaseAdapter extends BaseAdapter{
 				@Override
 				public void onClick(View v) {
 					if (joblistinterface != null) {
-						joblistinterface.impClieckEvent(mJobDetails);
+						if (mJobDetails.getImportant()==0) {
+							joblistinterface.impClieckEvent(mJobDetails);
+						}else {
+							joblistinterface.unimpClieckEvent(mJobDetails);
+						}
+						
 					}
 				}
 			});
@@ -280,10 +296,10 @@ public class JobListBaseAdapter extends BaseAdapter{
 	}
 	
 	private class ViewHolder{
-		CircleImageView profilepic;
+		ImageView profilepic;
 		ImageView img_arrow,img_important;
-		TextView txt_name,txt_postdate,txt_subject,txt_contain;
-		TextView btn_reply,btn_share,btn_comment;
+		CustomTextView txt_name,txt_postdate,txt_subject,txt_contain;
+		ImageView btn_reply,btn_share,btn_comment;
 		ImageView img_post;
 		CardView joblistview_img_post_rel;
 	}
@@ -312,6 +328,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		public void arrowHideClieckEvent(JobDetails mJobDetails);  
 		public void arrowSpamClieckEvent(JobDetails mJobDetails);  
 		public void impClieckEvent(JobDetails mJobDetails);  
+		public void unimpClieckEvent(JobDetails mJobDetails);  
 		public void replyClickEvent(JobDetails mJobDetails);  
 		public void commentClickEvent(JobDetails mJobDetails);  
 	}

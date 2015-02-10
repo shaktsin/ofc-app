@@ -1,53 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="178dp"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
     android:orientation="vertical"
     android:weightSum="1" >
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop"
-        android:src="@drawable/profile_bg" />
+    <RelativeLayout
+        android:id="@+id/slide_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp" >
 
-    <LinearLayout
+        <com.ofcampus.component.CircleImageView
+            android:id="@+id/circleView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="2dp"
+            android:src="@drawable/ic_profilepic" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/shape_circle_bg" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/slide_name"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/slide_image"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_centerHorizontal="true"
             android:text=""
-            android:textColor="#ffffff"
-            android:textSize="14sp"
+            android:textColor="@color/job_name"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="5dp"
-            android:text=""
-            android:textColor="#ffffff"
-            android:textSize="14sp"
+            android:layout_below="@+id/name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            android:text="Class 2014"
+            android:textColor="@color/job_contain"
+            android:textSize="12sp"
             android:textStyle="normal" />
-    </LinearLayout>
+    </RelativeLayout>
 
-    <com.ofcampus.component.CircleImageView
-        android:id="@+id/circleView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="38dp"
-        android:src="@drawable/ic_profilepic" />
+    <RelativeLayout
+        android:id="@+id/slide_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/slide_name"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/ColorPrimary" >
+    </RelativeLayout>
 
 </RelativeLayout>

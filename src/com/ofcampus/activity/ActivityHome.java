@@ -254,6 +254,11 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			break;
 		case 5:
 			closeDraware();
+			startActivity(new Intent(ActivityHome.this,ActivityHidePost.class));
+			overridePendingTransition(0,0);
+			break;
+		case 6:
+			closeDraware();
 			showLogutDialog();
 			break;
 
@@ -682,11 +687,11 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			super.onPostExecute(result);
 			
 			try {
-				if (arrayJob!=null && arrayJob.size()>=1) {
-					mJobsFragment.refreshDataInAdapter(arrayJob);
-				}else {
+//				if (arrayJob!=null && arrayJob.size()>=1) {
+//					mJobsFragment.refreshDataInAdapter(arrayJob);
+//				}else {
 					loadJobList();
-				}
+//				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				Log.e("Load Data in list", e.getMessage().toString());

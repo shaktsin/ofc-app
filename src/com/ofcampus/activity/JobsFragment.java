@@ -3,10 +3,8 @@ package com.ofcampus.activity;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,14 +12,11 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
@@ -34,8 +29,6 @@ import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.PostJobHideMarkedParser;
 import com.ofcampus.parser.PostJobHideMarkedParser.PostJobHideMarkedParserInterface;
-import com.ofcampus.parser.ReplyJobPostParser;
-import com.ofcampus.parser.ReplyJobPostParser.ReplyJobPostParserInterface;
 import com.ofcampus.ui.ReplyDialog;
 
 public class JobsFragment extends Fragment  implements jobListInterface,OnRefreshListener{
@@ -111,12 +104,17 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 	
 	@Override 
 	public void arrowSpamClieckEvent(JobDetails mJobDetails){
-		HideCalling(mJobDetails,1);
+		HideCalling(mJobDetails,3);
 	}
 	
 	@Override 
 	public void impClieckEvent(JobDetails mJobDetails){
 		HideCalling(mJobDetails,2);	
+	}
+	
+	@Override 
+	public void unimpClieckEvent(JobDetails mJobDetails){
+		HideCalling(mJobDetails,11);	
 	}
 	
 	@Override 
@@ -256,6 +254,13 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 					JOBListTable.getInstance(context).inserJobData(arr);
 					ImportantJobTable.getInstance(context).inserJobData(mJobDetails);
 					mJobListAdapter.importantJob(mJobDetails);
+				}else if (state==11 ) {
+					ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
+					mJobDetails.important=0;
+					arr.add(mJobDetails);
+					JOBListTable.getInstance(context).inserJobData(arr);
+					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+					mJobListAdapter.unimportantJob(mJobDetails);
 				}
 			}
 			
@@ -266,14 +271,7 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 		});
 		markedParser.parse(context, markedParser.getBody(state+"", mJobDetails.getPostid()), tocken);  
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	public JobsFrgInterface jobsfrginterface;
 

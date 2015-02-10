@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,13 +16,15 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
+import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.ui.CustomTextView;
 
 public class ActivityMyProfile extends ActionBarActivity {
 
 	private ProgressBar pgbar;
-	private ImageView profilepic;
-	private TextView txt_name;
+	private CircleImageView profilepic;
+	private CustomTextView txt_name,txt_email;
 	private Context context;
 	
 	private UserDetails mDetails;
@@ -68,8 +69,9 @@ public class ActivityMyProfile extends ActionBarActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		profilepic=(ImageView)findViewById(R.id.myprofile_view_profilepic);
-		txt_name=(TextView)findViewById(R.id.myprofile_view_txt_name);
+		profilepic=(CircleImageView)findViewById(R.id.profile_circleView);
+		txt_name=(CustomTextView)findViewById(R.id.profile_name);
+		txt_email=(CustomTextView)findViewById(R.id.profile_email);
 		
 		pgbar=(ProgressBar)findViewById(R.id.myprofile_view_pgbar);
 		
@@ -88,6 +90,8 @@ public class ActivityMyProfile extends ActionBarActivity {
 	private void loadProfileData(){
 		mDetails=UserDetails.getLoggedInUser(context);
 		txt_name.setText(mDetails.getName());
+		txt_email.setText(mDetails.getEmail());
+		
 		imageLoader.displayImage("https://s3-ap-southeast-1.amazonaws.com/ofcampus/profile/3_profile_susi.png",profilepic, options,new ImageLoadingListener() {
 			
 			@Override

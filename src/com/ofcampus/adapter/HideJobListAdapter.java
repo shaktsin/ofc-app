@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,12 +24,13 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityComment;
+import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
 import com.ofcampus.ui.ReplyDialog;
 
-public class ImportantMailListAdapter extends BaseAdapter{
+public class HideJobListAdapter extends BaseAdapter{
 
 	private Context mContext;
 	private LayoutInflater inflater;
@@ -36,33 +39,31 @@ public class ImportantMailListAdapter extends BaseAdapter{
 	private DisplayImageOptions options;
 	private DisplayImageOptions options_post;
 	
-	public ImportantMailListAdapter(Context context,ArrayList<JobDetails> arrJobs){
+	public HideJobListAdapter(Context context,ArrayList<JobDetails> arrJobs){
+	
 		this.mContext=context; 
 		this.jobs=arrJobs; 
 		this.inflater=LayoutInflater.from(context);
-		
 		
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_profilepic)
 				.showImageForEmptyUri(R.drawable.ic_profilepic)
 				.showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
+		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		
 		options_post = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.no_postimage)
 				.showImageForEmptyUri(R.drawable.no_postimage)
 				.showImageOnFail(R.drawable.no_postimage).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
-		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-		
-		
 	}
 	
 	public void refreshData(ArrayList<JobDetails> arrJobs){
 		this.jobs= arrJobs;
-		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size()-1).getPostid());
 		notifyDataSetChanged();
 	}
+
 	
 	public ArrayList<JobDetails> getJobData(){
 		return this.jobs;
@@ -101,7 +102,6 @@ public class ImportantMailListAdapter extends BaseAdapter{
 			mHolder.btn_reply=(ImageView)convertView.findViewById(R.id.joblistview_txt_reply);
 			mHolder.btn_share=(ImageView)convertView.findViewById(R.id.joblistview_txt_share);
 			mHolder.btn_comment=(ImageView)convertView.findViewById(R.id.joblistview_txt_comment);
-			
 			mHolder.img_post=(ImageView)convertView.findViewById(R.id.joblistview_img_post);
 			mHolder.joblistview_img_post_rel=(CardView)convertView.findViewById(R.id.joblistview_img_post_rel);
 			
@@ -113,18 +113,22 @@ public class ImportantMailListAdapter extends BaseAdapter{
 		final JobDetails mJobDetails = jobs.get(position);
 		
 		if (mJobDetails!=null) {
-			imageLoader.displayImage(mJobDetails.getImage(), mHolder.profilepic, options);
+			String url=mJobDetails.getImage();
+			if (url!=null && !url.equals("") && !url.equals("null")) {
+				imageLoader.displayImage(url, mHolder.profilepic, options);
+			}
 			mHolder.txt_name.setText(mJobDetails.getName());
 			mHolder.txt_postdate.setText("Posted on "+mJobDetails.getPostedon());
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			mHolder.txt_contain.setText(mJobDetails.getContent());
+			mHolder.img_important.setVisibility(View.VISIBLE);
 			
-//			if (mJobDetails.getImportant()==1) {
-//				mHolder.img_important.setVisibility(View.VISIBLE);
-//			}else {
-//				mHolder.img_important.setVisibility(View.GONE);
-//			}
-
+			if (mJobDetails.getImportant()==1) {
+				mHolder.img_important.setSelected(true);
+			}else {
+				mHolder.img_important.setSelected(false);
+			}
+			mHolder.img_important.setVisibility(View.GONE);
 			
 			final ArrayList<String> Images = mJobDetails.getImages();
 			if (Images!=null && Images.size()>=1) {
@@ -141,7 +145,6 @@ public class ImportantMailListAdapter extends BaseAdapter{
 			}else {
 				mHolder.joblistview_img_post_rel.setVisibility(View.GONE);
 			}
-			
 			
 			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
 				
@@ -187,38 +190,67 @@ public class ImportantMailListAdapter extends BaseAdapter{
 				}
 			});
 			
+			mHolder.img_arrow.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					try {
+						PopupMenu popup = new PopupMenu(mContext, v);
+						popup.getMenuInflater().inflate(R.menu.popupmenu_unhide, popup.getMenu());
+						popup.show();
+						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+							@Override
+							public boolean onMenuItemClick(MenuItem item) {
+
+								switch (item.getItemId()) {
+								case R.id.hidepost:
+									if (hidejoblistinterface != null) {
+										hidejoblistinterface.arrowUnHideClieckEvent(mJobDetails);
+									}
+									break;
+
+								default:
+									break;
+								}
+
+								return true;
+							}
+						});
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
 		}
 		return convertView;
 	}
 	
 	private class ViewHolder{
 		ImageView profilepic;
-		ImageView img_arrow,img_important,img_post;
+		ImageView img_arrow,img_important;
 		CustomTextView txt_name,txt_postdate,txt_subject,txt_contain;
 		ImageView btn_reply,btn_share,btn_comment;
+		ImageView img_post;
 		CardView joblistview_img_post_rel;
 	}
 	
-	public void setIDS(String fstID,String lstID){
-		if (importantmaillistadapterinterface!=null) {
-			importantmaillistadapterinterface.firstIDAndlastID(fstID,lstID); 
-		}
-	}
 	
 	
-	public ImportantMailListAdapterInterface importantmaillistadapterinterface;
+	
+	public HideJobListInterface hidejoblistinterface;
 
-	public ImportantMailListAdapterInterface getImportantmaillistadapterinterface() {
-		return importantmaillistadapterinterface;
+	public HideJobListInterface getHidejoblistinterface() {
+		return hidejoblistinterface;
 	}
 
-	public void setImportantmaillistadapterinterface(ImportantMailListAdapterInterface importantmaillistadapterinterface) {
-		this.importantmaillistadapterinterface = importantmaillistadapterinterface;
+	public void setHidejoblistinterface(
+			HideJobListInterface hidejoblistinterface) {
+		this.hidejoblistinterface = hidejoblistinterface;
 	}
 
-	public interface ImportantMailListAdapterInterface {
-		public void convertViewOnClick(JobDetails mJobDetails);
+	public interface HideJobListInterface {
+		public void arrowUnHideClieckEvent(JobDetails mJobDetails);
 
-		public void firstIDAndlastID(String fstID, String lstID);
 	}
+
 }

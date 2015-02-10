@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primary">#1F497D</color>
-    <color name="primary_dark">#1F497D</color>
-    <color name="ColorPrimary">#FF5722</color>
-    <color name="ColorPrimaryDark">#E64A19</color>
+    <color name="primary">#35475D</color>
+    <color name="primary_dark">#35475D</color>
+    <color name="ColorPrimary">#35475D</color>
+    <color name="ColorPrimaryDark">#35475D</color>
 
     <!-- Theme -->
     <color name="theme_color">#1F497D</color>
@@ -25,5 +25,11 @@
     <color name="pull_red_light">#ffff4444</color>
     <color name="gray_transparant">#753f3f3f</color>
     <color name="tabselectcolor">#5f5f5f</color>
+
+    <!-- JobList -->
+    <color name="job_subject">#35475D</color>
+    <color name="job_name">#858585</color>
+    <color name="job_Date">#35475D</color>
+    <color name="job_contain">#6F6D6E</color>
 
 </resources>

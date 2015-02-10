@@ -5,14 +5,21 @@
     <dimen name="registration_scn_image_hight">80dp</dimen>
 
     <!-- JOBLITVIEW -->
-    <dimen name="joblitview_picwd">60dp</dimen>
-    <dimen name="joblitview_name">14sp</dimen>
-    <dimen name="joblitview_postdate">12sp</dimen>
-    <dimen name="joblitview_Subject">18sp</dimen>
+    <dimen name="joblitview_picwd">50dp</dimen>
+    <dimen name="joblitview_name">18sp</dimen>
+    <dimen name="joblitview_postdate">14sp</dimen>
+    <dimen name="joblitview_Subject">26sp</dimen>
     <dimen name="joblitview_contain">14sp</dimen>
+
+    <!-- Comment -->
+    <dimen name="Comment_username">14sp</dimen>
+    <dimen name="Comment_postdate">12sp</dimen>
+    <dimen name="Comment_Comment">12sp</dimen>
+    <dimen name="Comment_Header">24sp</dimen>
 
     <!-- MY PROFILE -->
     <dimen name="myprofile_view_graborder">65dp</dimen>
+
     <!-- Comment Pager -->
     <dimen name="comment_pager_hight">280dp</dimen>
     <dimen name="comment_pager_Pading">40dp</dimen>

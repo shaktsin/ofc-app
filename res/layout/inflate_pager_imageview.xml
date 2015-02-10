@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/no_postimage"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitCenter" />
 
     <ProgressBar
         android:id="@+id/iflate_pg"
