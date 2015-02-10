@@ -24,10 +24,18 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
+            <include
+                android:id="@+id/color_line"
+                android:layout_width="fill_parent"
+                android:layout_height="8dp"
+                android:layout_alignParentTop="true"
+                layout="@layout/include_color_line"/>
+
             <RelativeLayout
                 android:id="@+id/profile_rel_imagedetails"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/color_line"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"

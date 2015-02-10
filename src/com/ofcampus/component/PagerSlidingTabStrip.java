@@ -18,8 +18,6 @@ package com.ofcampus.component;
 
 import java.util.Locale;
 
-import com.ofcampus.R;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -42,6 +40,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.ofcampus.R;
 
 public class PagerSlidingTabStrip extends HorizontalScrollView {
 
@@ -72,7 +72,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	private Paint rectPaint;
 	private Paint dividerPaint;
-
+	
+	/*****/
+	private int indicatorColorArray[] = {0xFFE84C3D,0xFF5498C7,0xFF18BC9A};
+	
 	private int indicatorColor = 0xFF1F497D;
 	private int underlineColor = android.R.color.transparent;
 	private int dividerColor = android.R.color.transparent;
@@ -87,8 +90,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private int tabPadding = 1;
 	private int dividerWidth = 1;
 
-	private int tabTextSize = 15;
-	private int tabTextColor = 0xFF5b6987;
+	private int tabTextSize = 18;
+	private int tabTextColor = 0xFF858585;
 	private Typeface tabTypeface = null;
 	private int tabTypefaceStyle = Typeface.NORMAL;
 
@@ -109,6 +112,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	public PagerSlidingTabStrip(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
+		tabTypeface=Typeface.createFromAsset(context.getAssets(), "fonts/" + "Helvetica.otf");
 		setFillViewport(true);
 		setWillNotDraw(false);
 
@@ -271,11 +275,13 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 				tab.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
 				if (i==0){
 					tab.setTypeface(tabTypeface, Typeface.BOLD);
+					tab.setTextColor(indicatorColorArray[currentPosition]);
 				}else {
 					tab.setTypeface(tabTypeface, tabTypefaceStyle);
+					tab.setTextColor(tabTextColor);
 				}
 				
-				tab.setTextColor(tabTextColor);
+//				tab.setTextColor(tabTextColor);
 
 				// setAllCaps() is only available from API 14, so the upper case is made manually if we are on a
 				// pre-ICS-build7
@@ -323,7 +329,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 		// draw indicator line
 
-		rectPaint.setColor(indicatorColor);
+//		rectPaint.setColor(indicatorColor);
+		rectPaint.setColor(indicatorColorArray[currentPosition]);
 
 		// default: line below current tab
 		View currentTab = tabsContainer.getChildAt(currentPosition);
@@ -400,8 +407,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			TextView tab = (TextView) tabsContainer.getChildAt(j);
 			if (j == position) {
 				tab.setTypeface(tabTypeface, Typeface.BOLD);
+				tab.setTextColor(indicatorColorArray[currentPosition]);
 			} else {
 				tab.setTypeface(tabTypeface, tabTypefaceStyle);
+				tab.setTextColor(tabTextColor);
 			}
 		}
 	}

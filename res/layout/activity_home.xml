@@ -23,18 +23,34 @@
             android:layout_height="match_parent"
             android:background="@color/joblist_bg_color" >
 
+            <include
+                android:id="@+id/color_line"
+                android:layout_width="fill_parent"
+                android:layout_height="8dp"
+                android:layout_alignParentTop="true"
+                layout="@layout/include_color_line" />
+
             <com.ofcampus.component.PagerSlidingTabStrip
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="48dip"
-                android:background="@android:color/white" >
+                android:layout_below="@+id/color_line"
+                android:background="#F0F0F0" >
             </com.ofcampus.component.PagerSlidingTabStrip>
+
+            <RelativeLayout
+                android:id="@+id/activity_home_tabbelowline"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tabs"
+                android:background="@android:color/darker_gray" >
+            </RelativeLayout>
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/tabs" />
+                android:layout_below="@+id/activity_home_tabbelowline" />
 
             <ImageView
                 android:id="@+id/activity_home_img_composejob"

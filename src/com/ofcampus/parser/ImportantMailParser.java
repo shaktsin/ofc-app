@@ -43,6 +43,8 @@ public class ImportantMailParser {
 	private String REPLYPHONE="replyPhone";
 	private String REPLYWATSAPP="replyWatsApp";
 	
+	private String POSTIMAGES="images";
+	
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
@@ -183,6 +185,19 @@ public class ImportantMailParser {
 					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
 					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
 					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
+					
+					try {
+						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
+						if (imageJSONArray!=null && imageJSONArray.length()>=1) {
+							ArrayList<String> images=new ArrayList<String>();
+							for (int k = 0; k < imageJSONArray.length(); k++) {
+								images.add(imageJSONArray.get(k).toString());
+							}
+							mJobDetails.setImages(images);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 					jobarray.add(mJobDetails);
 					mJobDetails=null;
