@@ -113,7 +113,7 @@ public class ReplyDialog {
 							break;
 
 						case 5:
-
+							smsIntent(replyto);
 							break;
 
 						case 6:
@@ -155,9 +155,23 @@ public class ReplyDialog {
 	
 	private void callIntent(String no){
 		try {
-			Intent callIntent = new Intent(Intent.ACTION_CALL);
-			callIntent.setData(Uri.parse("tel:"+no));
-			mContext.startActivity(callIntent);
+			if (no!=null && !no.equals("")) {
+				Intent callIntent = new Intent(Intent.ACTION_CALL);
+				callIntent.setData(Uri.parse("tel:"+no));
+				mContext.startActivity(callIntent);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void smsIntent(String no){
+		try {
+			if (no!=null && !no.equals("")) {
+				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", no, null)));
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

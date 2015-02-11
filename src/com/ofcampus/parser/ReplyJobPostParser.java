@@ -23,6 +23,8 @@ public class ReplyJobPostParser {
 	private String EXCEPTION="exception";
 	private String MESSAGES="messages";
 	private String REPLYEMAIL="replyEmail";
+	private String REPLYPHONE="replyPhone";
+	private String REPLYWATSAPP="watsApp";
 	private String SUCCESS="success";
 	
 	/*Response JSON key value*/
@@ -89,6 +91,10 @@ public class ReplyJobPostParser {
 								if (resSuccess!=null && resSuccess.equalsIgnoreCase("true")) {
 									if (state==4) {
 										replyto = Util.getJsonValue(Obj, REPLYEMAIL);
+									}else if (state==6) {
+										replyto = Util.getJsonValue(Obj, REPLYPHONE);
+									}else if (state==5) {
+										replyto = Util.getJsonValue(Obj, REPLYWATSAPP);
 									}
 								}
 							}

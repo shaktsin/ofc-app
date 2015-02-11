@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/joblist_bg_color"
@@ -20,53 +21,59 @@
         android:layout_marginTop="5dp"
         android:orientation="vertical" >
 
-        <TextView
+        <com.ofcampus.ui.CustomTextView
             android:id="@+id/activity_createjob_edit_to"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/comment_edtbox"
+            android:background="@drawable/joblist_row_rect"
             android:drawablePadding="6dp"
             android:drawableRight="@drawable/ic_downarrow"
             android:gravity="center_vertical|left"
             android:hint="To : "
-            android:padding="12dp"
+            android:padding="8dp"
             android:singleLine="true"
             android:text=""
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/primary_dark"
+            android:textColorHint="@color/primary_dark"
             android:textSize="@dimen/joblitview_Subject"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            ofcampus:fontName="Helvetica.otf" />
 
-        <EditText
+        <com.ofcampus.ui.CustomEditText
             android:id="@+id/activity_createjob_edit_jobtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/activity_createjob_edit_to"
             android:layout_marginTop="6dp"
-            android:background="@drawable/comment_edtbox"
+            android:background="@drawable/joblist_row_rect"
             android:gravity="center_vertical|left"
             android:hint="Job Title"
             android:padding="12dp"
             android:singleLine="true"
             android:text=""
-            android:textColor="@android:color/black"
+            android:textColor="@color/primary_dark"
+            android:textColorHint="@color/primary_dark"
             android:textSize="@dimen/joblitview_Subject"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            ofcampus:fontName="Helvetica.otf" />
 
-        <EditText
+        <com.ofcampus.ui.CustomEditText
             android:id="@+id/activity_createjob_edit_jobdescrip"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/activity_createjob_edit_jobtitle"
             android:layout_marginBottom="6dp"
             android:layout_marginTop="6dp"
-            android:background="@drawable/comment_edtbox"
+            android:background="@drawable/joblist_row_rect"
             android:gravity="top|left"
             android:hint="Job Description"
             android:padding="12dp"
             android:text=""
-            android:textColor="@android:color/black"
+            android:textColor="@color/primary_dark"
+            android:textColorHint="@color/primary_dark"
             android:textSize="@dimen/joblitview_Subject"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            ofcampus:fontName="Helvetica.otf" />
 
         <include
             android:id="@+id/rel_tolist"
@@ -139,9 +146,9 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_above="@+id/activity_createjob_bottombarmenu"
+        android:layout_margin="3dp"
         android:divider="@android:color/transparent"
         android:visibility="gone"
-        android:layout_margin="3dp"
         widget:dividerWidth="3dp" />
 
 </RelativeLayout>

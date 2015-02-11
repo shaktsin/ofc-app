@@ -6,9 +6,9 @@
 
     <!-- JOBLITVIEW -->
     <dimen name="joblitview_picwd">50dp</dimen>
-    <dimen name="joblitview_name">18sp</dimen>
+    <dimen name="joblitview_name">16sp</dimen>
     <dimen name="joblitview_postdate">14sp</dimen>
-    <dimen name="joblitview_Subject">26sp</dimen>
+    <dimen name="joblitview_Subject">20sp</dimen>
     <dimen name="joblitview_contain">14sp</dimen>
 
     <!-- Comment -->

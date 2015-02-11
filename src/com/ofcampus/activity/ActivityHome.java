@@ -9,6 +9,8 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -412,10 +414,23 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     }
     
     private void initilizePagerview(){
+    	GradientDrawable bgShape = null;
     	
     	txt_countjob = (TextView) findViewById(R.id.activity_home_jobcount);
+    	bgShape = (GradientDrawable)txt_countjob.getBackground();
+    	bgShape.setColor(Color.parseColor("#E84C3D"));
+    	
     	txt_countclass = (TextView) findViewById(R.id.activity_home_classcount);
+    	bgShape = (GradientDrawable)txt_countclass.getBackground();
+    	bgShape.setColor(Color.parseColor("#5498C7"));
+    	
     	txt_countmetup = (TextView) findViewById(R.id.activity_home_meetcount);
+    	bgShape = (GradientDrawable)txt_countmetup.getBackground();
+    	bgShape.setColor(Color.parseColor("#18BC9A"));
+    	
+    	txt_countjob.setVisibility(View.GONE);
+    	txt_countclass.setVisibility(View.GONE);
+    	txt_countmetup.setVisibility(View.GONE);
     	
     	tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		pager = (ViewPager) findViewById(R.id.pager);

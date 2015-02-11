@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dip" >
+        android:layout_height="48dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -23,11 +23,11 @@
                 android:background="@drawable/ic_count"
                 android:padding="5dp"
                 android:singleLine="true"
-                android:text=""
+                android:text="2"
                 android:gravity="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/joblitview_postdate"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -45,10 +45,10 @@
                 android:background="@drawable/ic_count"
                 android:padding="5dp"
                 android:singleLine="true"
-                android:text=""
+                android:text="2"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/joblitview_postdate"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -66,10 +66,10 @@
                 android:background="@drawable/ic_count"
                 android:padding="5dp"
                 android:singleLine="true"
-                android:text=""
+                android:text="2"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/joblitview_postdate"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </RelativeLayout>
     </LinearLayout>
 
