@@ -3,9 +3,12 @@ package com.ofcampus.activity;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,6 +44,8 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 	
 	private String toolHeaderTitle="";
 	private boolean isFromDetails=false;
+	public boolean fromMYPost_=false;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		fromMYPost_ = ((OfCampusApplication) getApplication()).fromMYPost;
 		
 		initilize();
 		loadData();
@@ -64,8 +70,20 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+		((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=false;
 		overridePendingTransition(0, 0);
 		finish();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		if (fromMYPost_) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.menu_postedit, menu);
+			return super.onCreateOptionsMenu(menu);
+		}else {
+			return false;
+		}
 	}
 	
 	@Override
@@ -74,9 +92,16 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		case android.R.id.home:
 			onBackPressed();
 			return true;
+		case R.id.action_editpost:
+			((OfCampusApplication) getApplication()).jobdetails=mJobDetails;	
+			startActivity(new Intent(ActivityComment.this,ActivityPostEdit.class));
+			overridePendingTransition(0,0);
+//			onBackPressed();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
 	
 	
 	@Override
@@ -156,6 +181,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 			@Override
 			public void OnSuccess(ArrayList<JobDetails> arrayJobsComment,int totalCommentCount) {
 				if (arrayJobsComment!=null && arrayJobsComment.size()>=1) {
+					mJobDetails=arrayJobsComment.get(0);
 					mCommentRecycleAdapter.refreshView(arrayJobsComment,totalCommentCount);
 				}
 				

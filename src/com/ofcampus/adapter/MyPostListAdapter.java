@@ -147,6 +147,7 @@ public class MyPostListAdapter extends BaseAdapter{
 				@Override
 				public void onClick(View v) {
 					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+					((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=true;
 					Intent mIntent = new Intent(mContext,ActivityComment.class);
 					Bundle mBundle=new Bundle();
 					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
@@ -177,6 +178,7 @@ public class MyPostListAdapter extends BaseAdapter{
 				@Override
 				public void onClick(View v) {
 					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+					((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=true;
 					Intent mIntent = new Intent(mContext,ActivityComment.class);
 					Bundle mBundle=new Bundle();
 					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[0]);

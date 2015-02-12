@@ -14,11 +14,20 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_plus" />
 
+    <ImageView
+        android:id="@+id/infalte_createjob_pi_cross"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignRight="@+id/infalte_createjob_pi"
+        android:layout_alignTop="@+id/infalte_createjob_pi"
+        android:src="@drawable/ic_cross"
+        android:visibility="gone" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

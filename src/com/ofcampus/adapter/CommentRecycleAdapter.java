@@ -117,7 +117,12 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		if (convertView==null) {
 			mHolder=new ViewHolder();
 			
-			convertView=inflater.inflate(R.layout.inflate_commentlist_row_new, parent,false);
+			convertView=inflater.inflate(R.layout.inflate_comment_jobdetails, parent,false);
+			mHolder.rel_jobdetails=(RelativeLayout)convertView.findViewById(R.id.view_jobdetails);
+			mHolder.rel_comment=(RelativeLayout)convertView.findViewById(R.id.view_comment);
+			
+			
+			/**JOb Details**/
 			
 			mHolder.img_prfpic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
@@ -126,30 +131,16 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			mHolder.txt_subject=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_subject);
 			mHolder.txt_jobdetails=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
 			
+			mHolder.viewPager=(ViewPager)convertView.findViewById(R.id.jobdetails_album_pager);
+			
 			mHolder.txt_btn_reply=(ImageView)convertView.findViewById(R.id.joblistview_txt_reply);
 			mHolder.txt_btn_comment=(ImageView)convertView.findViewById(R.id.joblistview_txt_comment);
 			mHolder.txt_btn_share=(ImageView)convertView.findViewById(R.id.joblistview_txt_share);
 			
-			
-			
-			/**New view Appear*/
-			
-			mHolder.proxytxt_subject=(CustomTextView)convertView.findViewById(R.id.proxyview_txt_subject);
-			mHolder.proxytxt_jobdetails=(CustomTextView)convertView.findViewById(R.id.proxyview_txt_contain);
-			
-			
-			mHolder.rel_pagerview=(RelativeLayout)convertView.findViewById(R.id.inc_up_pager);
-			mHolder.inc_proxyview=(LinearLayout)convertView.findViewById(R.id.inc_proxyview); 
-			mHolder.viewPager=(ViewPager)convertView.findViewById(R.id.jobdetails_album_pager);
-			
-			/**End of this view**/
-			
-			mHolder.linear_buttonsection=(LinearLayout)convertView.findViewById(R.id.joblistview_linear_buttonsection); 
-					
 			mHolder.txt_load=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_loadAllComment); 
 			mHolder.rel_progress=(RelativeLayout)convertView.findViewById(R.id.rel_progress); 
-			mHolder.rel_details=(RelativeLayout)convertView.findViewById(R.id.inflate_joblistview_rel); 
-			mHolder.rel_comment=(RelativeLayout)convertView.findViewById(R.id.inflate_comment_rel); 
+			
+			/**Comment Section*/
 			
 			mHolder.img_commentprfpic=(ImageView)convertView.findViewById(R.id.inflate_comment_img_pic);
 			mHolder.txt_commentname=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_name);
@@ -164,16 +155,16 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		final JobDetails mJobDetails = arraJobComment.get(position);
 		
 		if (position==0) {
-			mHolder.rel_details.setVisibility(View.VISIBLE);
+	
+			mHolder.rel_jobdetails.setVisibility(View.VISIBLE);
 			mHolder.rel_comment.setVisibility(View.GONE);
-			mHolder.linear_buttonsection.setVisibility(View.VISIBLE);
+			
 			if (mJobDetails!=null) {
 				String url=mJobDetails.getImage();
 				if (url!=null && !url.equals("") && !url.equals("null")) {
 					imageLoader.displayImage(url, mHolder.img_prfpic, options);
 				}
 				mHolder.txt_name.setText(mJobDetails.getName());
-//				mHolder.txt_name.setText(mJobDetails.getName()+" ("+CommentCount+")");
 				mHolder.txt_date.setText("Posted on "+mJobDetails.getPostedon());
 				mHolder.txt_subject.setText(mJobDetails.getSubject());
 				mHolder.txt_jobdetails.setText(mJobDetails.getContent());
@@ -183,22 +174,13 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				ArrayList<String> Images = mJobDetails.getImages();
 				
 				if (Images!=null && Images.size()>=1) {
-					
-					mHolder.proxytxt_subject.setText(mJobDetails.getSubject());
-					mHolder.proxytxt_jobdetails.setText(mJobDetails.getContent());
-					
-					mHolder.rel_pagerview.setVisibility(View.VISIBLE);
-					mHolder.inc_proxyview.setVisibility(View.VISIBLE);
 					mHolder.viewPager.setVisibility(View.VISIBLE);
-					
 					mHolder.viewPager.setAdapter(new AlbumPager(mContext, Images));
 					mHolder.viewPager.setPadding(pager_Pading, 0, pager_Pading, 0);
 					mHolder.viewPager.setClipToPadding(false);
 					mHolder.viewPager.setPageMargin(pager_Pading/2); 
 					
 				}else {
-					mHolder.rel_pagerview.setVisibility(View.GONE);
-					mHolder.inc_proxyview.setVisibility(View.GONE);
 					mHolder.viewPager.setVisibility(View.GONE);
 				}
 				
@@ -256,9 +238,8 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				mHolder.txt_load.setVisibility(View.GONE);
 			}
 		}else {
-			mHolder.rel_details.setVisibility(View.GONE);
+			mHolder.rel_jobdetails.setVisibility(View.GONE);
 			mHolder.rel_comment.setVisibility(View.VISIBLE);
-			
 			
 			String url=mJobDetails.getImage();
 			if (url!=null && !url.equals("") && !url.equals("null")) {
@@ -275,11 +256,9 @@ public class CommentRecycleAdapter extends BaseAdapter{
 	private class ViewHolder {
 		public ImageView img_prfpic,img_commentprfpic;
 		public ImageView  img_arrow;
-		public CustomTextView txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails;
-		public CustomTextView txt_load ,proxytxt_subject, proxytxt_jobdetails;
+		public CustomTextView txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails,txt_load;
 		public ImageView txt_btn_comment,txt_btn_share,txt_btn_reply;
-		public LinearLayout linear_buttonsection,inc_proxyview;
-		public RelativeLayout rel_details,rel_comment,rel_progress,rel_pagerview;
+		public RelativeLayout rel_jobdetails,rel_comment,rel_progress;
 		
 		public ViewPager viewPager;
 	}

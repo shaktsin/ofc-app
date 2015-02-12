@@ -22,7 +22,7 @@ public class OfCampusApplication extends Application {
 	public JobDetails jobdetails;
 	
 	public OfCampusDBHelper DB_HELPER;
-	
+	public boolean fromMYPost=false;
 	
 	@Override
 	public void onCreate() {
