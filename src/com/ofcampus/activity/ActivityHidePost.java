@@ -17,8 +17,8 @@ import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.HideJobListParser;
 import com.ofcampus.parser.HideJobListParser.HideJobListParserInterface;
-import com.ofcampus.parser.PostJobHideMarkedParser;
-import com.ofcampus.parser.PostJobHideMarkedParser.PostJobHideMarkedParserInterface;
+import com.ofcampus.parser.PostUnHideUnImpParser;
+import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 
 public class ActivityHidePost extends ActionBarActivity implements HideJobListInterface{
 	
@@ -105,8 +105,8 @@ public class ActivityHidePost extends ActionBarActivity implements HideJobListIn
 			return;
 		}
 		
-		PostJobHideMarkedParser markedParser=new PostJobHideMarkedParser();
-		markedParser.setPostjobhidemarkedparserinterface(new PostJobHideMarkedParserInterface() {
+		PostUnHideUnImpParser mPostUnHideUnImpParser=new PostUnHideUnImpParser();
+		mPostUnHideUnImpParser.setPostunhideunimpparserinterface(new PostUnHideUnImpParserInterface() {
 			
 			@Override
 			public void OnSuccess() {
@@ -114,10 +114,10 @@ public class ActivityHidePost extends ActionBarActivity implements HideJobListIn
 			}
 			
 			@Override
-			public void OnError() {
-			
+			public void OnError() { 
+				
 			}
 		});
-		markedParser.parse(context, markedParser.getBody(state+"", mJobDetails.getPostid()), Authtoken);  
+		mPostUnHideUnImpParser.parse(context, mPostUnHideUnImpParser.getBody(state+"", mJobDetails.getPostid()), Authtoken);  
 	}
 }

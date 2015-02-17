@@ -229,10 +229,8 @@ public class FilterParser {
 			jsObj.put("locationFilter", locationFilter);
 			jsObj.put("industryFilter", industryFilter);
 			jsObj.put("rolesFilter", rolesFilter);
-//			jsObj.put("salaryFilter", salaryFilter);
-//			jsObj.put("experienceFilter", experienceFilter);
-			jsObj.put("salaryFilter", "");
-			jsObj.put("experienceFilter", "");
+			jsObj.put("salaryFilter", salaryFilter);
+			jsObj.put("experienceFilter", experienceFilter);
 
 		} catch (JSONException e) {
 			e.printStackTrace();

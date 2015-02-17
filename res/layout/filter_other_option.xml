@@ -21,7 +21,7 @@
             android:singleLine="true"
             android:text="@string/craetejob_txt_experience"
             android:textColor="@color/theme_color"
-            android:textSize="@dimen/Comment_Header" />
+            android:textSize="@dimen/joblitview_Subject" />
 
         <TextView
             android:id="@+id/activity_createjob_txt_valueexp"
@@ -63,7 +63,7 @@
             android:singleLine="true"
             android:text="@string/craetejob_txt_sal_range"
             android:textColor="@color/theme_color"
-            android:textSize="@dimen/Comment_Header" />
+            android:textSize="@dimen/joblitview_Subject" />
 
         <TextView
             android:id="@+id/activity_createjob_txt_valuesalary"

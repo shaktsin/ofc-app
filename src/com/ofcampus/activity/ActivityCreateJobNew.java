@@ -341,12 +341,12 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		salary_seekBar.setRangeValues(1, 100);
 		exp_seekBar.setRangeValues(0.5f, 15.0f);
 		
-		txt_valueexp.setText(0.5f + "Yrs"+" - "+15.0f+"Yrs");
-		txt_valuesal.setText( 1+ "lpa"+" - "+100+"lpa");
-		 
-		exp_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Float>() {
+		txt_valueexp.setText(1 + "Yrs" + " - " + 15 + "Yrs");
+		txt_valuesal.setText(1 + "lpa" + " - " + 100 + "lpa");
+
+		exp_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
 		        @Override
-		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Float minValue, Float maxValue) {
+		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
 
 	                exp_min=(int)Math.round(minValue)+"";exp_max=(int)Math.round(maxValue)+"";
 	                txt_valueexp.setText(minValue + "Yrs"+" - "+maxValue+"Yrs");

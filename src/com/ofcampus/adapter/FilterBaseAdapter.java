@@ -11,8 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gc.materialdesign.views.CheckBox;
-import com.gc.materialdesign.views.CheckBox.OnCheckListener;
 import com.ofcampus.R;
 import com.ofcampus.model.FilterDataSet;
 

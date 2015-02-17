@@ -29,6 +29,8 @@ import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.PostJobHideMarkedParser;
 import com.ofcampus.parser.PostJobHideMarkedParser.PostJobHideMarkedParserInterface;
+import com.ofcampus.parser.PostUnHideUnImpParser;
+import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 import com.ofcampus.ui.ReplyDialog;
 
 public class JobsFragment extends Fragment  implements jobListInterface,OnRefreshListener{
@@ -114,7 +116,7 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 	
 	@Override 
 	public void unimpClieckEvent(JobDetails mJobDetails){
-		HideCalling(mJobDetails,11);	
+		UnImptCalling(mJobDetails,11);	
 	}
 	
 	@Override 
@@ -272,6 +274,32 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 		markedParser.parse(context, markedParser.getBody(state+"", mJobDetails.getPostid()), tocken);  
 	}
 
+	private void UnImptCalling(final JobDetails mJobDetails, final int state){   
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+		
+		PostUnHideUnImpParser PostUnHideUnImpParser=new PostUnHideUnImpParser();
+		PostUnHideUnImpParser.setPostunhideunimpparserinterface(new PostUnHideUnImpParserInterface() {
+			
+			@Override
+			public void OnSuccess() {
+				ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
+				mJobDetails.important=0;
+				arr.add(mJobDetails);
+				JOBListTable.getInstance(context).inserJobData(arr);
+				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+				mJobListAdapter.unimportantJob(mJobDetails);
+			}
+			
+			@Override
+			public void OnError() {
+				
+			}
+		});
+		PostUnHideUnImpParser.parse(context, PostUnHideUnImpParser.getBody(state+"", mJobDetails.getPostid()), tocken);  
+	}
 	
 	public JobsFrgInterface jobsfrginterface;
 

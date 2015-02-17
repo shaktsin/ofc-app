@@ -134,6 +134,10 @@ public class Util {
 		return baseUrl + "post/comment/all";
 	}
 
+	public static String getReverseProcePostUrl() {
+		return baseUrl + "post/react/reverse";
+	}
+	
 	/*
 	 * Job Filter Data
 	 */
