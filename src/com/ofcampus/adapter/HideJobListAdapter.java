@@ -69,6 +69,14 @@ public class HideJobListAdapter extends BaseAdapter{
 		return this.jobs;
 	}
 	
+	public void removepostion(int position) {
+		if (this.jobs.size()>=1) {
+			this.jobs.remove(position);
+			notifyDataSetChanged();
+		}
+		
+	}
+
 	
 	@Override
 	public int getCount() {
@@ -86,7 +94,7 @@ public class HideJobListAdapter extends BaseAdapter{
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		
 		ViewHolder mHolder;
 		if (convertView==null) {
@@ -205,7 +213,7 @@ public class HideJobListAdapter extends BaseAdapter{
 								switch (item.getItemId()) {
 								case R.id.hidepost:
 									if (hidejoblistinterface != null) {
-										hidejoblistinterface.arrowUnHideClieckEvent(mJobDetails);
+										hidejoblistinterface.arrowUnHideClieckEvent(mJobDetails,position);
 									}
 									break;
 
@@ -249,7 +257,7 @@ public class HideJobListAdapter extends BaseAdapter{
 	}
 
 	public interface HideJobListInterface {
-		public void arrowUnHideClieckEvent(JobDetails mJobDetails);
+		public void arrowUnHideClieckEvent(JobDetails mJobDetails, int position);
 
 	}
 
