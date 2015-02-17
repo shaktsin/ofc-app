@@ -338,8 +338,9 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 	
 	@SuppressWarnings("unchecked")
 	private void seekBarDataLoad(){
+		
 		salary_seekBar.setRangeValues(1, 100);
-		exp_seekBar.setRangeValues(0.5f, 15.0f);
+		exp_seekBar.setRangeValues(1, 15);
 		
 		txt_valueexp.setText(1 + "Yrs" + " - " + 15 + "Yrs");
 		txt_valuesal.setText(1 + "lpa" + " - " + 100 + "lpa");
@@ -348,7 +349,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 		        @Override
 		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
 
-	                exp_min=(int)Math.round(minValue)+"";exp_max=(int)Math.round(maxValue)+"";
+	                exp_min=minValue+"";exp_max=maxValue+"";
 	                txt_valueexp.setText(minValue + "Yrs"+" - "+maxValue+"Yrs");
 		        }
 		});

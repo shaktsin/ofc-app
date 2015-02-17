@@ -307,7 +307,7 @@ public class FilterDialog implements FilterBAdpInterface{
 			TextView txt = tab.get(i);
 			if (position == i) {
 				txt.setSelected(true);
-				txt.setTextColor(Color.BLACK);
+				txt.setTextColor(Color.parseColor("#35475D"));
 			} else {
 				txt.setSelected(false);
 				txt.setTextColor(Color.WHITE);

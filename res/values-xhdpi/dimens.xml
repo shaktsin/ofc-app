@@ -23,5 +23,8 @@
     <!-- Comment Pager -->
     <dimen name="comment_pager_hight">280dp</dimen>
     <dimen name="comment_pager_Pading">40dp</dimen>
+    
+    <!-- Filter Tab Text Size -->
+    <dimen name="filter_text_size">18sp</dimen>
 
 </resources>

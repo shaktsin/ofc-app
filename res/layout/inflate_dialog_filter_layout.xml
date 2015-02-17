@@ -45,7 +45,7 @@
                     android:gravity="center"
                     android:text="General"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/Comment_Header"
+                    android:textSize="@dimen/filter_text_size"
                     android:textStyle="bold" />
 
                 <TextView
@@ -58,7 +58,7 @@
                     android:gravity="center"
                     android:text="Industry"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/Comment_Header"
+                    android:textSize="@dimen/filter_text_size"
                     android:textStyle="bold" />
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:gravity="center"
                     android:text="Role"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/Comment_Header"
+                    android:textSize="@dimen/filter_text_size"
                     android:textStyle="bold" />
 
                 <TextView
@@ -84,7 +84,7 @@
                     android:gravity="center"
                     android:text="Location"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/Comment_Header"
+                    android:textSize="@dimen/filter_text_size"
                     android:textStyle="bold" />
 
                 <TextView
@@ -97,7 +97,7 @@
                     android:gravity="center"
                     android:text="Others"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/Comment_Header"
+                    android:textSize="@dimen/filter_text_size"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -152,11 +152,11 @@
             android:layout_marginRight="1dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:background="@android:color/white"
+            android:background="#5498C7"
             android:gravity="center"
             android:text="Apply Filter"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/Comment_Header"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/filter_text_size"
             android:textStyle="normal" />
 
         <TextView
@@ -166,11 +166,11 @@
             android:layout_marginLeft="1dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:background="@android:color/white"
+            android:background="#18BC9A"
             android:gravity="center"
             android:text="Clear Filter"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/Comment_Header"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/filter_text_size"
             android:textStyle="normal" />
     </LinearLayout>
 
