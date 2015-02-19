@@ -358,7 +358,7 @@ public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClick
 	        @Override
 	        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
 	        	
-	        	salary_min=minValue+"";salary_max=maxValue+"";
+	        	salary_min=minValue*100000+"";salary_max=maxValue*100000+"";
                 txt_valuesal.setText(minValue + "lpa"+" - "+maxValue+"lpa");
 	        }
 		});

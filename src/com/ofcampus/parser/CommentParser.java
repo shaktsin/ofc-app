@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
+import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
 public class CommentParser {
@@ -38,7 +39,10 @@ public class CommentParser {
 	private String IMAGE="image";
 	private String REPLYDTO="replyDto";
 	private String SHAREDTO="shareDto";
-	private String POSTIMAGES="images";
+
+	private String POSTIMAGES="attachmentDtoList";
+	private String IMAGES_ID="id";
+	private String IMAGES_URL="url";
 	
 	private String REPLYEMAIL="replyEmail";
 	private String REPLYPHONE="replyPhone";
@@ -191,9 +195,13 @@ public class CommentParser {
 			try {
 				JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
 				if (imageJSONArray!=null && imageJSONArray.length()>=1) {
-					ArrayList<String> images=new ArrayList<String>();
+					ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
 					for (int i = 0; i < imageJSONArray.length(); i++) {
-						images.add(imageJSONArray.get(i).toString());
+						JSONObject imgJSONObject = imageJSONArray.getJSONObject(i);
+						ImageDetails mImageDetails=new ImageDetails();
+						mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(imgJSONObject, IMAGES_ID)));
+						mImageDetails.setImageURL(Util.getJsonValue(imgJSONObject, IMAGES_URL));
+						images.add(mImageDetails);
 					}
 					mJobDetails.setImages(images);
 				}

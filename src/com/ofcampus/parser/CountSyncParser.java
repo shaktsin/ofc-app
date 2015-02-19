@@ -10,6 +10,7 @@ import android.content.Context;
 
 import com.ofcampus.Util;
 import com.ofcampus.databasehelper.JOBListTable;
+import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.JobList;
 
@@ -43,7 +44,10 @@ private Context mContext;
 	
 	private String SHAREDTO="shareDto";
 	private String IMPORTANT="important";
-	private String POSTIMAGES="images";
+
+	private String POSTIMAGES="attachmentDtoList";
+	private String IMAGES_ID="id";
+	private String IMAGES_URL="url";
 	
 	/*Response JSON key value*/
 	private String responsecode="";
@@ -132,9 +136,13 @@ private Context mContext;
 					try {
 						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
 						if (imageJSONArray!=null && imageJSONArray.length()>=1) {
-							ArrayList<String> images=new ArrayList<String>();
+							ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
 							for (int k = 0; k < imageJSONArray.length(); k++) {
-								images.add(imageJSONArray.get(k).toString());
+								JSONObject imgJSONObject = imageJSONArray.getJSONObject(k);
+								ImageDetails mImageDetails=new ImageDetails();
+								mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(imgJSONObject, IMAGES_ID)));
+								mImageDetails.setImageURL(Util.getJsonValue(imgJSONObject, IMAGES_URL));
+								images.add(mImageDetails);
 							}
 							mJobDetails.setImages(images);
 						}

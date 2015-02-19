@@ -43,6 +43,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.Util.JobDataReturnFor;
@@ -95,7 +96,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	
 	/**Filter Data***/
 	private  FilterDataSets mFilterDataSets=null;
-	
+	private boolean isChangedhideList=false;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +133,10 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	protected void onResume() {
 		super.onResume();
 		try {
+			if (((OfCampusApplication)getApplication()).isHidePostModify) {
+				loadJobList();
+				((OfCampusApplication)getApplication()).isHidePostModify=false;
+			}
 			stopservice();
 			startService();
 		} catch (Exception e) {
@@ -702,11 +707,11 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			super.onPostExecute(result);
 			
 			try {
-//				if (arrayJob!=null && arrayJob.size()>=1) {
-//					mJobsFragment.refreshDataInAdapter(arrayJob);
-//				}else {
+				if (arrayJob!=null && arrayJob.size()>=1) {
+					mJobsFragment.refreshDataInAdapter(arrayJob);
+				}else {
 					loadJobList();
-//				}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				Log.e("Load Data in list", e.getMessage().toString());

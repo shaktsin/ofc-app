@@ -47,6 +47,7 @@ import com.ofcampus.customseekbar.RangeSeekBar;
 import com.ofcampus.customseekbar.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.ofcampus.model.Circle;
 import com.ofcampus.model.CityDetails;
+import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.IndustryDetails;
 import com.ofcampus.model.IndustryRoleDetails;
 import com.ofcampus.model.JobDetails;
@@ -602,14 +603,14 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 	
 	private ArrayList<PicDataSet> getJobPicArray(){
 		ArrayList<PicDataSet> mList =new ArrayList<PicDataSet>();
-		ArrayList<String> images = mJobDetails.getImages();
+		ArrayList<ImageDetails> images = mJobDetails.getImages();
 		
 		mList.add(new PicDataSet());
 		
 		if (images!=null && images.size()>=1) {
-			for (String Path_ :images) {
+			for (ImageDetails mImageDetails :images) {
 				PicDataSet mPicDataSet=new PicDataSet();
-				mPicDataSet.path=Path_;
+				mPicDataSet.path=mImageDetails.getImageURL();
 				mList.add(mPicDataSet);
 			}
 		}

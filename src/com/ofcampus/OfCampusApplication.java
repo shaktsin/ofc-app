@@ -18,11 +18,12 @@ public class OfCampusApplication extends Application {
 
 	public ArrayList<InstituteDetails> institutes_;
 	public ArrayList<JobDetails> filterJobs;
-	public String instituteid="";
 	public JobDetails jobdetails;
 	
 	public OfCampusDBHelper DB_HELPER;
 	public boolean fromMYPost=false;
+	
+	public boolean isHidePostModify=false;
 	
 	@Override
 	public void onCreate() {

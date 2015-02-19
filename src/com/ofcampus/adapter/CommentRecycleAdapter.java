@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -25,6 +24,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
@@ -171,7 +171,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				mHolder.img_arrow.setVisibility(View.GONE);
 				
 				
-				ArrayList<String> Images = mJobDetails.getImages();
+				ArrayList<ImageDetails> Images = mJobDetails.getImages();
 				
 				if (Images!=null && Images.size()>=1) {
 					mHolder.viewPager.setVisibility(View.VISIBLE);
@@ -286,14 +286,14 @@ public class CommentRecycleAdapter extends BaseAdapter{
 	
 	private class AlbumPager extends PagerAdapter {
 
-		private ArrayList<String> arrPhotos;
+		private ArrayList<ImageDetails> arrPhotos;
 		private LayoutInflater inflater;
 		private Context context_;
 		private ImageLoader imageLoader = ImageLoader.getInstance();
 		private DisplayImageOptions options;
 		private float width=0.0f;
 		
-		public AlbumPager(Context context, ArrayList<String> arrPhotos_) {
+		public AlbumPager(Context context, ArrayList<ImageDetails> arrPhotos_) {
 			this.arrPhotos = arrPhotos_;
 			this.context_ = context;
 			inflater = LayoutInflater.from(context_);
@@ -333,7 +333,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			
 			imageLayout.setLayoutParams(pram);
 			
-			final String mPhotos = arrPhotos.get(position);
+			final String mPhotos = arrPhotos.get(position).getImageURL();
 			imageLoader.displayImage(mPhotos, imageView, options,new ImageLoadingListener() {
 				
 				@Override

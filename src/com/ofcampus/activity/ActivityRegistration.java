@@ -1,43 +1,65 @@
 package com.ofcampus.activity;
 
-import android.app.Activity;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ofcampus.OfCampusApplication;
-import com.ofcampus.Util;
 import com.ofcampus.R;
+import com.ofcampus.Util;
 import com.ofcampus.Util.userType;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.RegistrationParser;
 import com.ofcampus.parser.RegistrationParser.RegstrationInterface;
 
-public class ActivityRegistration extends Activity implements OnClickListener{
+public class ActivityRegistration extends ActionBarActivity implements OnClickListener{
 
 	
-	private EditText edt_fstname,edt_lstname,edt_accname,edt_email,edt_pass,edt_confpass;
+	private EditText edt_fstname,edt_lstname,edt_accname,edt_email,edt_pass,edt_confpass,edt_verifyCode;
 	private Context context;
 	private TextView rd_female,rd_male;
 	private boolean isMaleSeleted=true;
-	private String instituteID="";
+	
+	private View scr_regpage,rel_verify;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_registration);
 		
 		context=ActivityRegistration.this;
 		initilize();
-		instituteID=((OfCampusApplication)getApplication()).instituteid;
 
 	}
+	
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(0, 0);
+		finish();
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 
 	@Override
 	public void onClick(View v) {
@@ -45,6 +67,11 @@ public class ActivityRegistration extends Activity implements OnClickListener{
 		case R.id.registration_btn_registration:
 			Util.HideKeyBoard(context, v);
 			RegistrationEvent();
+			break;
+			
+		case R.id.registration_btn_Codesubmit:
+			Util.HideKeyBoard(context, v);
+			VerifyEvent();
 			break;
 
 		case R.id.registration_rd_female:
@@ -67,15 +94,27 @@ public class ActivityRegistration extends Activity implements OnClickListener{
 	 * Initialize all the view id here,those are include in the layout.
 	 */
 	private void initilize() {
+		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+		toolbar.setTitle("SignUp");
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		scr_regpage=(View)findViewById(R.id.act_registration_scr);
+		rel_verify=(View) findViewById(R.id.act_registration_scr);
+		
 		edt_fstname=(EditText) findViewById(R.id.registration_edt_firstname);
 		edt_lstname=(EditText) findViewById(R.id.registration_edt_lastname);
 		edt_accname=(EditText) findViewById(R.id.registration_edt_accname);
 		edt_email=(EditText) findViewById(R.id.registration_edt_email);
 		edt_pass=(EditText) findViewById(R.id.registration_edt_password);
 		edt_confpass=(EditText) findViewById(R.id.registration_edt_conpassword);
+		
+		edt_verifyCode=(EditText) findViewById(R.id.registration_edt_verifyCode);
+		
 		rd_female=(TextView) findViewById(R.id.registration_rd_female);
 		rd_male=(TextView) findViewById(R.id.registration_rd_male);
 		((TextView) findViewById(R.id.registration_btn_registration)).setOnClickListener(this);
+		((TextView) findViewById(R.id.registration_btn_Codesubmit)).setOnClickListener(this);
 		rd_female.setOnClickListener(this);
 		rd_male.setOnClickListener(this);
 		rd_male.setSelected(true);
@@ -146,16 +185,15 @@ public class ActivityRegistration extends Activity implements OnClickListener{
 		
 		
 		
+		
 		RegistrationParser mParser=new RegistrationParser();
+//		JSONObject postBody = mParser.getjsonBody(firstName, lastName, accountName, email, password, instituteID, Gender, "false","false",userType.Normal);
+		JSONObject postBody = mParser.getjsonBody(firstName, lastName, accountName, email, password, "", "", "false","false",userType.Normal);
 		mParser.setRegstrationinterface(new RegstrationInterface() {
 			
 			@Override
 			public void OnSuccess(UserDetails mDetails) {
-				if (mDetails!=null) {
-					mDetails.saveInPreferense(context);
-					Util.ShowToast(context, "Successfully registered");
-				}
-				moveToHome();
+				VerifyViewEnable();
 			}
 			
 			@Override
@@ -163,7 +201,47 @@ public class ActivityRegistration extends Activity implements OnClickListener{
 				
 			}
 		}); 
-		mParser.parse(context, firstName, lastName, accountName, email, password, instituteID, Gender, "true","false",userType.Normal);
+		mParser.parse(context, postBody);
+	}
+	
+	
+	
+	private void VerifyViewEnable(){  		
+		Animation anim=AnimationUtils.loadAnimation(context, R.anim.slide_lefthome);
+		rel_verify.clearAnimation();
+		anim.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation arg0) {
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation arg0) {
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation arg0) {
+				scr_regpage.setVisibility(View.VISIBLE);
+				rel_verify.setVisibility(View.GONE);
+			}
+		});
+		rel_verify.startAnimation(anim);
+	}
+
+	private void VerifyEvent(){
+		String verifyCode = edt_verifyCode.getText().toString(); 
+		
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg)); 
+			return;
+		}
+
+		if (verifyCode.length()==0) {
+			Util.ShowToast(context, getResources().getString(R.string.registration_txt_error_repassword)); 
+			return;
+		}
 	}
 	
 	private void moveToHome(){

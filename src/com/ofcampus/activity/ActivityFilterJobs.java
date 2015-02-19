@@ -11,14 +11,13 @@ import android.widget.ListView;
 
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
-import com.ofcampus.adapter.MyPostListAdapter;
-import com.ofcampus.adapter.MyPostListAdapter.MyPostListAdapterInterface;
+import com.ofcampus.adapter.FilterJobsAdapter;
 import com.ofcampus.model.JobDetails;
 
-public class ActivityFilterJobs extends ActionBarActivity implements MyPostListAdapterInterface{
+public class ActivityFilterJobs extends ActionBarActivity{
 	
 	private ListView mypostList;
-	private MyPostListAdapter myPostListAdapter;
+	private FilterJobsAdapter mFilterJobsAdapter;  
 	public ArrayList<JobDetails> filterJobs_;
 	private Context context;
 	
@@ -53,27 +52,16 @@ public class ActivityFilterJobs extends ActionBarActivity implements MyPostListA
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	@Override
-	public void convertViewOnClick(JobDetails mJobDetails) {
-		
-	}
 
-	@Override
-	public void firstIDAndlastID(String fstID, String lstID) {
-		
-	}
-	
 	private void initiliz(){
 		mypostList=(ListView)findViewById(R.id.activity_filter_joblist);
-		myPostListAdapter=new MyPostListAdapter(context, new ArrayList<JobDetails>());
-		myPostListAdapter.setMypostlistadapterinterface(this);
-		mypostList.setAdapter(myPostListAdapter);
+		mFilterJobsAdapter=new FilterJobsAdapter(context, new ArrayList<JobDetails>());
+		mypostList.setAdapter(mFilterJobsAdapter);
 	}
 	
 	private void loadMyPostData(){
 		filterJobs_=((OfCampusApplication)getApplication()).filterJobs;
-		myPostListAdapter.refreshData(filterJobs_);
+		mFilterJobsAdapter.refreshData(filterJobs_);
 	}
 
 	

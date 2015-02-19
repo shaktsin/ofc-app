@@ -33,12 +33,9 @@ private Context mContext;
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public void parse(Context context, String firstName,
-			String lastName, String accountName, String email, String password,
-			String instituteId, String gender, String verified, String thirdPartAuth, userType user) {  
+	public void parse(Context context,JSONObject postBody) {  
 		this.mContext = context;
-		JSONObject obj = getjsonBody(firstName, lastName,accountName, email, password, instituteId, gender, verified,thirdPartAuth,user);
-		loginAsync mLoginAsync = new loginAsync(mContext,obj);
+		loginAsync mLoginAsync = new loginAsync(mContext,postBody);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mLoginAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
@@ -152,7 +149,7 @@ private Context mContext;
 		return pairsofEducation;
 	}
 	
-	public static JSONObject getjsonBody(String firstName, String lastName,
+	public JSONObject getjsonBody(String firstName, String lastName,
 			String accountName, String email, String password,
 			String instituteId, String gender, String verified,
 			String thirdPartAuth, userType user) {
@@ -160,15 +157,15 @@ private Context mContext;
 		try {
 			jsObj.put("firstName", firstName);
 			jsObj.put("lastName", lastName);
-			jsObj.put("accountName", accountName);
+//			jsObj.put("accountName", accountName);
 			jsObj.put("email", email);
-			jsObj.put("instituteId", instituteId);
-			jsObj.put("gender", gender);
+//			jsObj.put("instituteId", instituteId);
+//			jsObj.put("gender", gender);
 			if (user == userType.Normal) {
 				jsObj.put("password", password);
 				jsObj.put("rePassword", password);
 			}
-			jsObj.put("verified", verified);
+//			jsObj.put("verified", verified);
 			jsObj.put("thirdPartAuth", thirdPartAuth);
 		} catch (JSONException e) {
 			e.printStackTrace();

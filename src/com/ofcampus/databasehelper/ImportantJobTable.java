@@ -85,7 +85,7 @@ public class ImportantJobTable {
 	
 	public ArrayList<JobDetails> fatchImpJobData() {
 		ArrayList<JobDetails> jobs = null;
-		String sql = "select * from "+TABLENAME;
+		String sql = "select * from "+TABLENAME+" order by "+POSTID+" desc";
 		Cursor mCursor=null;
 		try {
 			mCursor = dbHelper.getDB().rawQuery(sql, null);
@@ -119,7 +119,7 @@ public class ImportantJobTable {
 				mDetails.setReplyPhone(mCursor.getString(mCursor.getColumnIndex(POSTUSERPHNO)));
 				mDetails.setReplyWatsApp(mCursor.getString(mCursor.getColumnIndex(POSTUSERWHATSAPPNO)));
 				
-				
+//				mDetails.setImages(fatchJobImagePathData(Integer.parseInt(mDetails.getPostid())));
 				jobs.add(mDetails);
 			} while (mCursor.moveToNext());
 		}

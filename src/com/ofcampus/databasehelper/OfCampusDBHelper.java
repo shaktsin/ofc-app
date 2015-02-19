@@ -109,7 +109,8 @@ public class OfCampusDBHelper extends SQLiteOpenHelper {
 	
 	private String sqlForCreateJobPostpath() {
 		String sql = "CREATE TABLE " + JOBListTable.TABJOBSUBIMAGESPATH + " ("
-				+ JOBListTable.POSTID + " INTEGER NOT NULL ,"
+				+ JOBListTable.POSTID + " INTEGER PRIMARY KEY  NOT NULL ,"
+				+ JOBListTable.POSTIMAGESID + " INTEGER NOT NULL ,"
 				+ JOBListTable.POSTIMAGESPATH + " TEXT NOT NULL);";
 		return sql;
 	}

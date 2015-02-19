@@ -82,7 +82,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 			inflater.inflate(R.menu.menu_postedit, menu);
 			return super.onCreateOptionsMenu(menu);
 		}else {
-			return false;
+			return true;
 		}
 	}
 	
@@ -171,7 +171,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 
 		if (!Util.hasConnection(mContext)) {
 			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
-			onBackPressed();
+//			onBackPressed();
 			return;
 		}
 

@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ import com.ofcampus.model.FilterDataSets;
 import com.ofcampus.model.IndustryDetails;
 import com.ofcampus.model.IndustryRoleDetails;
 import com.ofcampus.model.JobDetails;
-import com.ofcampus.model.JobList;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.FilterParser;
 import com.ofcampus.parser.FilterParser.FilterParserInterface;
@@ -125,7 +123,7 @@ public class FilterDialog implements FilterBAdpInterface{
 			
 			@Override
 			public void onClick(View v) {
-					createFilterAPIJSON();
+				createFilterAPIJSON();
 			}
 		});
 		
@@ -170,7 +168,7 @@ public class FilterDialog implements FilterBAdpInterface{
 		salary_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
 	        @Override
 	        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-	        	selected_salarymin=minValue;selected_salarymax=maxValue; 
+	        	selected_salarymin=minValue*100000;selected_salarymax=maxValue*100000; 
                 txt_valuesal.setText(minValue + "lpa"+" - "+maxValue+"lpa");
 	        }
 		});
@@ -258,11 +256,16 @@ public class FilterDialog implements FilterBAdpInterface{
 		otherOp.setVisibility(View.GONE);
 		mAdapter.refreshView(arrGeneral, 0);
 		
-		salary_seekBar.setRangeValues(1, 100);
-		exp_seekBar.setRangeValues(0.5f, 15.0f);
+		salary_seekBar.resetSelectedValues();
+		exp_seekBar.resetSelectedValues();
+
+		txt_valueexp.setText(1 + "Yrs" + " - " + 15 + "Yrs");
+		txt_valuesal.setText(1 + "lpa" + " - " + 100 + "lpa");
 		
-		txt_valueexp.setText(1 + "Yrs"+" - "+100+"Yrs");
-		txt_valuesal.setText(0.5f + "lpa"+" - "+15.0f+"lpa");
+		selected_salarymax = 100;
+		selected_salarymin = 1;
+		selected_expmax = 15;
+		selected_expmin = 1;
 		
 	}
 	private void tabClickEvent(View v) {
@@ -384,11 +387,25 @@ public class FilterDialog implements FilterBAdpInterface{
 		if (!rolesFilterr.equals("")) {
 			rolesFilterr=rolesFilterr.substring(1);
 		}
+
 		
-		if (circle.equals("") && locationFilter.equals("") && industryFilterr.equals("") && rolesFilterr.equals("")) {
+		if (circle.equals("") && locationFilter.equals("")
+				&& industryFilterr.equals("") && rolesFilterr.equals("")
+				&& (salaryFilterr.equals("1~100") || salaryFilterr.equals("100000~10000000"))
+				&& experienceFilterr.equals("1~15")) {
 			Util.ShowToast(context,context.getResources().getString(R.string.Filter_msg_chooseoption));
 			return;
 		}
+		
+		if (salaryFilterr.equals("1~100") || salaryFilterr.equals("100000~10000000")) {
+			salaryFilterr="";
+		}
+		
+		if (experienceFilterr.equals("1~15")) {
+			experienceFilterr="";
+		}
+		
+		
 		
 		FilterParser mFilterParser=new FilterParser(); 
 		JSONObject postData = mFilterParser.getBody(circle,locationFilter, industryFilterr, rolesFilterr, salaryFilterr, experienceFilterr);

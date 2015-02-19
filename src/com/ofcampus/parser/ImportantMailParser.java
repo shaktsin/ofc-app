@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
+import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
 public class ImportantMailParser {
@@ -43,7 +44,9 @@ public class ImportantMailParser {
 	private String REPLYPHONE="replyPhone";
 	private String REPLYWATSAPP="replyWatsApp";
 	
-	private String POSTIMAGES="images";
+	private String POSTIMAGES="attachmentDtoList";
+	private String IMAGES_ID="id";
+	private String IMAGES_URL="url";
 	
 	/*Response JSON key value*/
 	private String responsecode="";
@@ -189,9 +192,13 @@ public class ImportantMailParser {
 					try {
 						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
 						if (imageJSONArray!=null && imageJSONArray.length()>=1) {
-							ArrayList<String> images=new ArrayList<String>();
-							for (int k = 0; k < imageJSONArray.length(); k++) {
-								images.add(imageJSONArray.get(k).toString());
+							ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
+							for (int i1 = 0; i1 < imageJSONArray.length(); i1++) {
+								JSONObject imgJSONObject = imageJSONArray.getJSONObject(i1);
+								ImageDetails mImageDetails=new ImageDetails();
+								mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(imgJSONObject, IMAGES_ID)));
+								mImageDetails.setImageURL(Util.getJsonValue(imgJSONObject, IMAGES_URL));
+								images.add(mImageDetails);
 							}
 							mJobDetails.setImages(images);
 						}

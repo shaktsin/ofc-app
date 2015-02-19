@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.Util.JobDataReturnFor;
+import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
 public class JOBListTable {
@@ -31,6 +32,7 @@ public class JOBListTable {
 	public static String POSTUSERPHNO="replyphone";
 	public static String POSTUSERWHATSAPPNO="replywatsapp";
 	
+	public static String POSTIMAGESID="id";
 	public static String POSTIMAGESPATH="path";
 	
 	 private static OfCampusDBHelper dbHelper = null;
@@ -117,17 +119,18 @@ public class JOBListTable {
 	
 	
 	
-	public void inserJobImagePathData(ArrayList<String> pathArray, int jobpostID) { 
+	public void inserJobImagePathData(ArrayList<ImageDetails> pathArray, int jobpostID) { 
 
 		try {
-			String sql = "Insert or Replace into " + TABJOBSUBIMAGESPATH + " values(?,?);";
+			String sql = "Insert or Replace into " + TABJOBSUBIMAGESPATH + " values(?,?,?);";
 			SQLiteStatement insert = sampleDB.compileStatement(sql);
 
 			if (pathArray!=null && pathArray.size()>=1) {
 				for (int i = 0; i < pathArray.size(); i++) {
 					insert.clearBindings();
 					insert.bindLong(1, jobpostID);
-					insert.bindString(2, pathArray.get(i));
+					insert.bindLong(2, pathArray.get(i).getImageID());
+					insert.bindString(3, pathArray.get(i).getImageURL());
 					insert.execute();
 				}
 			}
@@ -198,18 +201,21 @@ public class JOBListTable {
 		return jobs;
 	}
 	
-	public ArrayList<String> fatchJobImagePathData(int postID) {
-		ArrayList<String> paths = null;
+	public ArrayList<ImageDetails> fatchJobImagePathData(int postID) {
+		ArrayList<ImageDetails> paths = null;
 		String sql = "";
 			sql = "select * from "+TABJOBSUBIMAGESPATH+" where "+POSTID+"='"+postID+"'";
 		Cursor mCursor=null;
 		try {
 			mCursor = dbHelper.getDB().rawQuery(sql, null);
 			if (mCursor != null && mCursor.getCount() >= 1) {
-				paths=new ArrayList<String>();
+				paths=new ArrayList<ImageDetails>();
 				if (mCursor.moveToFirst()) {
-					do {						
-						paths.add(mCursor.getString(mCursor.getColumnIndex(POSTIMAGESPATH)));
+					do {	
+						ImageDetails mImageDetails=new ImageDetails();
+						mImageDetails.setImageID(mCursor.getInt(mCursor.getColumnIndex(POSTIMAGESID)));
+						mImageDetails.setImageURL(mCursor.getString(mCursor.getColumnIndex(POSTIMAGESPATH)));
+						paths.add(mImageDetails);
 					} while (mCursor.moveToNext());
 				}
 			}

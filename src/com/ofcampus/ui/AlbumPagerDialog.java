@@ -22,15 +22,16 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
+import com.ofcampus.model.ImageDetails;
 
 public class AlbumPagerDialog {
 
 	private Context mContext;
 	private Dialog dialog;
 	private int position;
-	private ArrayList<String> arrayUrl=new ArrayList<String>();
+	private ArrayList<ImageDetails> arrayUrl=new ArrayList<ImageDetails>();
 	
-	public AlbumPagerDialog(Context context, ArrayList<String> arrayurl, int position_){ 
+	public AlbumPagerDialog(Context context, ArrayList<ImageDetails> arrayurl, int position_){ 
 		this.mContext=context;
 		this.arrayUrl=arrayurl;
 		this.position=position_;
@@ -53,13 +54,13 @@ public class AlbumPagerDialog {
 	
 	private class AlbumPager extends PagerAdapter {
 
-		private ArrayList<String> arrPhotos;
+		private ArrayList<ImageDetails> arrPhotos;
 		private LayoutInflater inflater;
 		private Context context_;
 		private ImageLoader imageLoader = ImageLoader.getInstance();
 		private DisplayImageOptions options;
 
-		public AlbumPager(Context context, ArrayList<String> arrPhotos_) {
+		public AlbumPager(Context context, ArrayList<ImageDetails> arrPhotos_) {
 			this.arrPhotos = arrPhotos_;
 			this.context_ = context;
 			inflater = LayoutInflater.from(context_);
@@ -91,7 +92,7 @@ public class AlbumPagerDialog {
 			ImageView imageView = (ImageView) imageLayout.findViewById(R.id.iflate_img_pager);
 			final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.iflate_pg);
 		
-			final String mPhotos = arrPhotos.get(position);
+			final String mPhotos = arrPhotos.get(position).getImageURL();
 			imageLoader.displayImage(mPhotos, imageView, options,new ImageLoadingListener() {
 				
 				@Override

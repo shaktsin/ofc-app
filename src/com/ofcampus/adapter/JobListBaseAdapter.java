@@ -21,6 +21,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityMyProfile;
+import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
@@ -177,10 +178,10 @@ public class JobListBaseAdapter extends BaseAdapter{
 			}
 
 			
-			final ArrayList<String> Images = mJobDetails.getImages();
+			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
 			if (Images!=null && Images.size()>=1) {
 				mHolder.joblistview_img_post_rel.setVisibility(View.VISIBLE);
-				imageLoader.displayImage(Images.get(0), mHolder.img_post, options_post);
+				imageLoader.displayImage(Images.get(0).getImageURL(), mHolder.img_post, options_post);
 				mHolder.img_post.setOnClickListener(new OnClickListener() {
 					
 					@Override

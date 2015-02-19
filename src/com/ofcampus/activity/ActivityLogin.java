@@ -1,7 +1,5 @@
 package com.ofcampus.activity;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +17,6 @@ import android.widget.TextView;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.model.InstituteDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.LoginParser;
 import com.ofcampus.parser.LoginParser.LoginInterface;
@@ -29,8 +26,6 @@ public class ActivityLogin extends Activity implements OnClickListener{
 	private LinearLayout LoginBox;
 	private EditText edt_email,edt_pass; 
 	private Context context;
-	private ArrayList<InstituteDetails> institutes;
-	private InstituteDetails mDetails;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

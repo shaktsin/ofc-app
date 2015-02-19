@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.HideJobListAdapter;
@@ -111,6 +112,7 @@ public class ActivityHidePost extends ActionBarActivity implements HideJobListIn
 			@Override
 			public void OnSuccess() {
 				mHideJobListAdapter.removepostion(position);
+				((OfCampusApplication)getApplication()).isHidePostModify=true;
 			}
 			
 			@Override

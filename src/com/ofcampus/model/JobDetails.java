@@ -29,13 +29,12 @@ public class JobDetails {
 	private String salaryTo = "";
 	private String salaryFrom = "";
 	
-	private ArrayList<String> images=new ArrayList<String>();
-	
-	public ArrayList<String> getImages() {
+	private ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
+	public ArrayList<ImageDetails> getImages() {
 		return images;
 	}
 
-	public void setImages(ArrayList<String> images) {
+	public void setImages(ArrayList<ImageDetails> images) {
 		this.images = images;
 	}
 

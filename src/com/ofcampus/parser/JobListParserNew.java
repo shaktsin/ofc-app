@@ -15,6 +15,7 @@ import com.ofcampus.Util;
 import com.ofcampus.Util.JobDataReturnFor;
 import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.CityDetails;
+import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.IndustryDetails;
 import com.ofcampus.model.IndustryRoleDetails;
 import com.ofcampus.model.JobDetails;
@@ -49,7 +50,10 @@ private Context mContext;
 	
 	private String SHAREDTO="shareDto";
 	private String IMPORTANT="important";
-	private String POSTIMAGES="images";
+
+	private String POSTIMAGES="attachmentDtoList";
+	private String IMAGES_ID="id";
+	private String IMAGES_URL="url";
 	
 	/*City List Key*/
 	private String CITYDTOLIST="cityDtoList";
@@ -232,16 +236,20 @@ private Context mContext;
 					try {
 						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
 						if (imageJSONArray!=null && imageJSONArray.length()>=1) {
-							ArrayList<String> images=new ArrayList<String>();
-							for (int k = 0; k < imageJSONArray.length(); k++) {
-								images.add(imageJSONArray.get(k).toString());
+							ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
+							for (int i1 = 0; i1 < imageJSONArray.length(); i1++) {
+								JSONObject imgJSONObject = imageJSONArray.getJSONObject(i1);
+								ImageDetails mImageDetails=new ImageDetails();
+								mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(imgJSONObject, IMAGES_ID)));
+								mImageDetails.setImageURL(Util.getJsonValue(imgJSONObject, IMAGES_URL));
+								images.add(mImageDetails);
 							}
 							mJobDetails.setImages(images);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-
+					
 					jobarray.add(mJobDetails);
 					mJobDetails=null;
 				}
