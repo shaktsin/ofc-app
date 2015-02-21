@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.UserDetails;
@@ -35,8 +36,8 @@ public class ActivityLogin extends Activity implements OnClickListener{
 		
 		context=ActivityLogin.this;
 		initilize();
-		edt_email.setText("sushant@gmail.com");
-		edt_pass.setText("chinmayee");
+		edt_email.setText("dibakar@ofcampus.com");
+		edt_pass.setText("123456");
 	}
 	
 	
@@ -145,9 +146,14 @@ public class ActivityLogin extends Activity implements OnClickListener{
 			@Override
 			public void OnSuccess(UserDetails mDetails) {
 				if (mDetails!=null) {
-					mDetails.saveInPreferense(context);
-					Util.ShowToast(context, "Successfully loged in.");
-					moveToHome();
+					if (mDetails.isVerify()) {
+						mDetails.saveInPreferense(context);
+						Util.ShowToast(context, "Successfully loged in.");
+						moveToHome();
+					}else {
+						((OfCampusApplication)getApplication()).mDetails=mDetails;
+						verifyUser();
+					}
 				}
 			}
 			
@@ -161,6 +167,12 @@ public class ActivityLogin extends Activity implements OnClickListener{
 	
 	private void moveToHome(){
 		startActivity(new Intent(ActivityLogin.this,ActivityHome.class));
+		overridePendingTransition(0, 0);
+		finish();
+	}
+	
+	private void verifyUser(){
+		startActivity(new Intent(ActivityLogin.this,ActivityVerifyCode.class));
 		overridePendingTransition(0, 0);
 		finish();
 	}

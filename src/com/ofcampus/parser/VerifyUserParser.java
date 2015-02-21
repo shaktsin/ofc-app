@@ -16,7 +16,8 @@ import android.os.Build;
 import com.ofcampus.Util;
 import com.ofcampus.model.UserDetails;
 
-public class LoginParser {
+public class VerifyUserParser {
+
 
 	private Context mContext;
 	
@@ -33,29 +34,29 @@ public class LoginParser {
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public void parse(Context context, String email, String password) { 
+	public void parse(Context context, JSONObject json ,String auth) { 
 		this.mContext = context;
-		List<NameValuePair> postData =getparamBody(email, password);
-		loginAsync mLoginAsync = new loginAsync(mContext,postData);
+		VerifyUserParserAsync mVerifyUserParserAsync = new VerifyUserParserAsync(mContext,json,auth);  
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mLoginAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			mVerifyUserParserAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
-			mLoginAsync.execute();
+			mVerifyUserParserAsync.execute();
 		}
 	}
 	
 	
-	private class loginAsync extends AsyncTask<Void, Void, Void>{
+	private class VerifyUserParserAsync extends AsyncTask<Void, Void, Void>{
 		private Context context;
-		private String authenticationJson;
-		private List<NameValuePair> postData; 
-		private UserDetails mDetails;
+		private String authenticationJson,auth;
+		private JSONObject postData; 
+		private boolean success=false;
 		private boolean isTimeOut=false;
 		private ProgressDialog mDialog;
 
-		public loginAsync(Context mContext, List<NameValuePair> postData_) {
+		public VerifyUserParserAsync(Context mContext, JSONObject json,String auth) {
 			this.context = mContext;
-			this.postData = postData_;
+			this.postData = json;
+			this.auth=auth;
 		}
 
 		@Override
@@ -71,7 +72,7 @@ public class LoginParser {
 		protected Void doInBackground(Void... params) {
 			
 			try {
-				String[] responsedata =  Util.PostRequest(postData, Util.getLoginUrl());
+				String[] responsedata =  Util.POST_JOB(Util.getVerifyUrl(), postData, auth); 
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				
@@ -80,11 +81,7 @@ public class LoginParser {
 					responsecode = Util.getJsonValue(mObject, STATUS);
 					if (responsecode!=null && responsecode.equals("200")) {
 						JSONObject userObj = mObject.getJSONObject(RESULTS);
-						mDetails=new UserDetails();
-						mDetails.setName(Util.getJsonValue(userObj, NAME));
-						mDetails.setEmail(Util.getJsonValue(userObj, EMAIL));
-						mDetails.setAuthtoken(Util.getJsonValue(userObj, AUTHTOKEN));
-						mDetails.setVerify(((Util.getJsonValue(userObj, VERIFIED)).equals("true"))?true:false);
+						success = (Util.getJsonValue(userObj, "success").equals("true"))?true:false;
 					}else if(responsecode!=null && responsecode.equals("500")){
 						JSONObject userObj = mObject.getJSONObject(RESULTS);
 						if (userObj!=null) {
@@ -109,51 +106,47 @@ public class LoginParser {
 			}
 			
 			if (isTimeOut) {
-				if (logininterface != null) {
-					logininterface.OnError(); 
+				if (verifyuserpsinterface != null) {
+					verifyuserpsinterface.OnError(); 
 				}
 			}else if (responsecode.equals("200")) {
-				if (mDetails!=null) {
-					if (logininterface!=null) {
-						logininterface.OnSuccess(mDetails);
+					if (verifyuserpsinterface!=null) {
+						verifyuserpsinterface.OnSuccess(success); 
 					}
-				}else {
-					Util.ShowToast(mContext, "Login error.");
-				}
+
 			}else if (responsecode.equals("500")){
 				Util.ShowToast(mContext, responseDetails);
 			}else {
-				Util.ShowToast(mContext, "Login error.");
+				Util.ShowToast(mContext, "Verify error.");
 			}
 		}
 	}
 	
-	public static List<NameValuePair> getparamBody(String email,String password) {
-		List<NameValuePair> pairsofEducation = new ArrayList<NameValuePair>();
-		pairsofEducation.add(new BasicNameValuePair("email", email));
-		pairsofEducation.add(new BasicNameValuePair("password", password));
-		return pairsofEducation;
+	public JSONObject getparamBody(String code) {
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("token", code);
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
 	}
 	
 	
-	public LoginInterface logininterface;
+	public VerifyUserPsInterface verifyuserpsinterface;
 
-	public LoginInterface getLogininterface() {
-		return logininterface;
+	public VerifyUserPsInterface getVerifyuserpsinterface() {
+		return verifyuserpsinterface;
 	}
 
-	public void setLogininterface(LoginInterface logininterface) {
-		this.logininterface = logininterface;
+	public void setVerifyuserpsinterface(VerifyUserPsInterface verifyuserpsinterface) {
+		this.verifyuserpsinterface = verifyuserpsinterface;
 	}
 
-
-	public interface LoginInterface{
-		public void OnSuccess(UserDetails mDetails);
+	public interface VerifyUserPsInterface {
+		public void OnSuccess(boolean success); 
 		public void OnError();
 	}
-	
-	
-	
-	
-	
 }

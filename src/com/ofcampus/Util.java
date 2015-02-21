@@ -148,6 +148,19 @@ public class Util {
 		return baseUrl + "jobs/list?";
 	}
 
+	public static String getVerifyUrl() {
+		return baseUrl + "user/verify";
+	}
+	
+	public static String getRegenerateTokenUrl() {
+		return baseUrl + "user/generate/token";
+	}
+	
+	public static String getJobEditUrl() {
+		return baseUrl + "jobs/edit";
+	}
+	
+	
 	
 	/**
 	 * Show Alert Toast message.
@@ -366,7 +379,9 @@ public class Util {
 					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
 			HttpPost httpPost = new HttpPost(url);
 			String json = "";
-			json = jsonObject.toString();
+			if (jsonObject!=null) {
+				json = jsonObject.toString();
+			}
 			StringEntity se = new StringEntity(json);
 			httpPost.setEntity(se);
 			httpPost.setHeader("Accept", "application/json");
@@ -410,7 +425,9 @@ public class Util {
 					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
 			HttpPost httpPost = new HttpPost(url);
 			String json = "";
-			json = jsonObject.toString();
+			if (jsonObject!=null) {
+				json = jsonObject.toString();
+			}
 			StringEntity se = new StringEntity(json);
 			httpPost.setEntity(se);
 			httpPost.setHeader("Authorization", auth);

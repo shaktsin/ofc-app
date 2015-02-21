@@ -33,7 +33,13 @@ import com.ofcampus.parser.CommentPostParser.CommentPostParserInterface;
 
 public class ActivityComment extends ActionBarActivity implements OnClickListener,commentItemClickListner{
 
-    private ListView commentListView;
+    @Override
+	protected void onPostResume() {
+		super.onPostResume();
+		loadData();
+	}
+
+	private ListView commentListView;
 	private CommentRecycleAdapter mCommentRecycleAdapter;
 	private JobDetails mJobDetails;
 	private UserDetails mUserDetails;
@@ -64,7 +70,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		fromMYPost_ = ((OfCampusApplication) getApplication()).fromMYPost;
 		
 		initilize();
-		loadData();
+//		loadData();
 	}
 	
 	@Override

@@ -53,8 +53,8 @@ import com.ofcampus.model.IndustryRoleDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.PrepareListForJobCreating;
 import com.ofcampus.model.UserDetails;
-import com.ofcampus.parser.JobPostParser;
-import com.ofcampus.parser.JobPostParser.JobPostParserInterface;
+import com.ofcampus.parser.EditJobParser;
+import com.ofcampus.parser.EditJobParser.EditJobParserInterface;
 import com.ofcampus.parser.PrepareForCreatingJobParser;
 import com.ofcampus.parser.PrepareForCreatingJobParser.PrepareParserInterface;
 
@@ -91,7 +91,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 	private HorizontalListView mHlvCustomList;
 	private CustomArrayAdapter mCustomArrayAdapter;
 	private ArrayList<PicDataSet> picdatasets=new ArrayList<PicDataSet>();
-	
+	private ArrayList<String> deletedIDS=new ArrayList<String>();
 	
 	/***Post Job Details**/
 	private JobDetails mJobDetails;
@@ -140,12 +140,12 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 			onBackPressed();
 			return true;
 		case R.id.action_tick:
-//			if (!Util.hasConnection(context)) {
-//				Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg)); 
-//			}else {
-//				resetViewAll();
-//				postJobEvent();
-//			}
+			if (!Util.hasConnection(context)) {
+				Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg)); 
+			}else {
+				resetViewAll();
+				postJobEvent();
+			}
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -343,16 +343,16 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 	@SuppressWarnings("unchecked")
 	private void seekBarDataLoad(){
 		salary_seekBar.setRangeValues(1, 100);
-		exp_seekBar.setRangeValues(0.5f, 15.0f);
+		exp_seekBar.setRangeValues(1, 15);
 		
-		txt_valueexp.setText(0.5f + "Yrs"+" - "+15.0f+"Yrs");
-		txt_valuesal.setText( 1+ "lpa"+" - "+100+"lpa");
-		 
-		exp_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Float>() {
-		        @Override
-		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Float minValue, Float maxValue) {
+		txt_valueexp.setText(1 + "Yrs" + " - " + 15 + "Yrs");
+		txt_valuesal.setText(1 + "lpa" + " - " + 100 + "lpa");
 
-	                exp_min=(int)Math.round(minValue)+"";exp_max=(int)Math.round(maxValue)+"";
+		exp_seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
+		        @Override
+		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+
+	                exp_min=minValue+"";exp_max=maxValue+"";
 	                txt_valueexp.setText(minValue + "Yrs"+" - "+maxValue+"Yrs");
 		        }
 		});
@@ -361,7 +361,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 	        @Override
 	        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
 	        	
-	        	salary_min=minValue+"";salary_max=maxValue+"";
+	        	salary_min=minValue*100000+"";salary_max=maxValue*100000+"";
                 txt_valuesal.setText(minValue + "lpa"+" - "+maxValue+"lpa");
 	        }
 		});
@@ -610,6 +610,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		if (images!=null && images.size()>=1) {
 			for (ImageDetails mImageDetails :images) {
 				PicDataSet mPicDataSet=new PicDataSet();
+				mPicDataSet.ID=""+mImageDetails.getImageID();
 				mPicDataSet.path=mImageDetails.getImageURL();
 				mList.add(mPicDataSet);
 			}
@@ -663,6 +664,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 
 	        PicDataSet mDataSet = PicDataSets.get(position);
 	        String path=mDataSet.path;
+	        final String ID=mDataSet.ID;
 	        holder.pic_cross.setVisibility(View.GONE);
 			if (path.equals("")) {
 				holder.pic.setImageResource(R.drawable.ic_plus);
@@ -681,6 +683,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 					@Override
 					public void onClick(View v) {
 						PicDataSets.remove(position);
+						deletedIDS.add(ID);
 						notifyDataSetChanged();
 					}
 				});
@@ -701,6 +704,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 
 	class PicDataSet{
 		String path="";
+		String ID="";
 	}
 	
 	private void galleryCalling(){
@@ -864,22 +868,16 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		
 		
 		if (jsObj != null) {
-			JobPostParser mJobPostParser = new JobPostParser();
-			mJobPostParser.setJobpostparserinterface(new JobPostParserInterface() {
+			EditJobParser mEditJobParser = new EditJobParser();
+			mEditJobParser.setEditjobparserinterface(new EditJobParserInterface() {
 				
 				@Override
 				public void OnSuccess(JobDetails mJobDetails) {
 					if (mJobDetails!=null) {
 						((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
-						Intent mIntent = new Intent(context,ActivityComment.class);
-						Bundle mBundle=new Bundle();
-						mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
-						mIntent.putExtras(mBundle);
-						startActivity(mIntent);
 						((Activity) context).overridePendingTransition(0, 0); 
 						finish();
 					}
-					
 				}
 				
 				@Override
@@ -887,7 +885,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 					
 				}
 			});
-			mJobPostParser.parse(context, jsObj, mDetails.getAuthtoken(),paths);
+			mEditJobParser.parse(context, jsObj, mDetails.getAuthtoken(),paths);
 
 		}
 	
@@ -903,6 +901,8 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		
 		JSONObject jsObj = new JSONObject();
 		try {
+			
+			jsObj.put("postId", JObID);
 			jsObj.put("timeSpecified", "true");
 			jsObj.put("to", experiencto);
 			jsObj.put("from", experiencfrom);
@@ -943,9 +943,20 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 				locaArray.put(i, location);
 			}
 			
+			
+			if (deletedIDS!=null && deletedIDS.size()>=1) {
+				JSONArray deletedAttachmentArray=new JSONArray();
+				for (int i = 0; i <deletedIDS.size(); i++) {
+					deletedAttachmentArray.put(i, deletedIDS.get(i));
+				}
+				jsObj.put("deletedAttachment", deletedAttachmentArray);
+			}
+			
+			
 			jsObj.put("circleList", circleArray);
 			jsObj.put("industryRolesIdList", RolesArray);
 			jsObj.put("locationIdList", locaArray);
+			
 			
 
 		} catch (JSONException e) {

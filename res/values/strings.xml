@@ -50,6 +50,9 @@
     <string name="registration_txt_hint_password">Password</string>
     <string name="registration_txt_hint_repassword">Confirm Password</string>
     <string name="registration_txt_hint_signup">Sign up</string>
+    <string name="registration_txt_hint_submit">Submit</string>
+    <string name="login_scr_verifycode_msg">Enter Verify Code.</string>
+    <string name="registration_txt_hint_resend">Resend Token</string>
 
     <!-- error message -->
     <string name="registration_txt_error_firstname">Enter first name.</string>

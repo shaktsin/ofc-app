@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_color" >
+    android:background="@color/primary" >
 
-    <TextView
+    <com.ofcampus.ui.CustomTextView
         android:id="@+id/login_textlogo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -15,7 +16,8 @@
         android:text="@string/login_scr_logo_"
         android:textColor="@android:color/white"
         android:textSize="35sp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        ofcampus:fontName="Helvetica.otf" />
 
     <LinearLayout
         android:id="@+id/LoginBox"
@@ -26,13 +28,13 @@
         android:orientation="vertical"
         android:visibility="visible" >
 
-        <EditText
+        <com.ofcampus.ui.CustomEditText
             android:id="@+id/login_edt_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/editbox_rect"
+            android:background="@drawable/joblist_row_rect"
             android:drawableLeft="@drawable/email_icon"
             android:drawablePadding="5dp"
             android:gravity="center_vertical"
@@ -41,16 +43,17 @@
             android:padding="10dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/theme_color" />
+            android:textColor="@color/theme_color"
+            ofcampus:fontName="Helvetica.otf" />
 
-        <EditText
+        <com.ofcampus.ui.CustomEditText
             android:id="@+id/login_edt_passw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/editbox_rect"
+            android:background="@drawable/joblist_row_rect"
             android:drawableLeft="@drawable/key_icon"
             android:drawablePadding="5dp"
             android:gravity="center_vertical"
@@ -59,23 +62,25 @@
             android:padding="10dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/theme_color" />
+            android:textColor="@color/theme_color"
+            ofcampus:fontName="Helvetica.otf" />
 
-        <TextView
+        <com.ofcampus.ui.CustomTextView
             android:id="@+id/login_btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/button_rec"
+            android:background="@drawable/joblist_row_rect"
             android:gravity="center"
             android:padding="8dp"
             android:text="@string/login_scr_btn_login"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/theme_color" />
+            android:textColor="@color/theme_color"
+            ofcampus:fontName="Helvetica.otf" />
 
-        <TextView
+        <com.ofcampus.ui.CustomTextView
             android:id="@+id/login_txt_forsignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,7 +91,8 @@
             android:padding="3dp"
             android:text="@string/login_scr_txt_donthaveaccount"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            ofcampus:fontName="Helvetica.otf" />
     </LinearLayout>
 
 </RelativeLayout>

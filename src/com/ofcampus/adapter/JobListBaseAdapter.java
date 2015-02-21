@@ -86,7 +86,11 @@ public class JobListBaseAdapter extends BaseAdapter{
 			}
 		}
 		this.jobs=modifyJobList;
-		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size()-1).getPostid());
+		if (jobs.size()>=1) {
+			setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size()-1).getPostid());
+		}else {
+			setIDS("", "");
+		}
 		notifyDataSetChanged();
 	}
 	

@@ -10,9 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -31,7 +28,6 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 	private TextView rd_female,rd_male;
 	private boolean isMaleSeleted=true;
 	
-	private View scr_regpage,rel_verify;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +64,6 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 			Util.HideKeyBoard(context, v);
 			RegistrationEvent();
 			break;
-			
-		case R.id.registration_btn_Codesubmit:
-			Util.HideKeyBoard(context, v);
-			VerifyEvent();
-			break;
 
 		case R.id.registration_rd_female:
 			rd_female.setSelected(true);
@@ -99,9 +90,6 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		scr_regpage=(View)findViewById(R.id.act_registration_scr);
-		rel_verify=(View) findViewById(R.id.act_registration_scr);
-		
 		edt_fstname=(EditText) findViewById(R.id.registration_edt_firstname);
 		edt_lstname=(EditText) findViewById(R.id.registration_edt_lastname);
 		edt_accname=(EditText) findViewById(R.id.registration_edt_accname);
@@ -126,12 +114,12 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 	private void RegistrationEvent(){
 		String firstName = edt_fstname.getText().toString(); 
 		String lastName = edt_lstname.getText().toString();
-		String accountName = edt_accname.getText().toString();
+//		String accountName = edt_accname.getText().toString();
 		String email = edt_email.getText().toString();
 		String password = edt_pass.getText().toString();
 		String confpass = edt_confpass.getText().toString(); 
-		int gender=(isMaleSeleted)?0:1;
-		String Gender=gender+"";
+//		int gender=(isMaleSeleted)?0:1;
+//		String Gender=gender+"";
 		
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg)); 
@@ -148,10 +136,10 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 			return;
 		}
 		
-		if (accountName.length()==0) {
-			Util.ShowToast(context, getResources().getString(R.string.registration_txt_error_accname)); 
-			return;
-		}
+//		if (accountName.length()==0) {
+//			Util.ShowToast(context, getResources().getString(R.string.registration_txt_error_accname)); 
+//			return;
+//		}
 		
 		if (email.length()==0) {
 			Util.ShowToast(context, getResources().getString(R.string.registration_txt_error_email)); 
@@ -183,17 +171,14 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 			return;
 		}
 		
-		
-		
-		
 		RegistrationParser mParser=new RegistrationParser();
 //		JSONObject postBody = mParser.getjsonBody(firstName, lastName, accountName, email, password, instituteID, Gender, "false","false",userType.Normal);
-		JSONObject postBody = mParser.getjsonBody(firstName, lastName, accountName, email, password, "", "", "false","false",userType.Normal);
+		JSONObject postBody = mParser.getjsonBody(firstName, lastName, "", email, password, "", "", "false","false",userType.Normal);
 		mParser.setRegstrationinterface(new RegstrationInterface() {
 			
 			@Override
 			public void OnSuccess(UserDetails mDetails) {
-				VerifyViewEnable();
+				moveVerifyCode();
 			}
 			
 			@Override
@@ -203,49 +188,11 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 		}); 
 		mParser.parse(context, postBody);
 	}
-	
-	
-	
-	private void VerifyViewEnable(){  		
-		Animation anim=AnimationUtils.loadAnimation(context, R.anim.slide_lefthome);
-		rel_verify.clearAnimation();
-		anim.setAnimationListener(new AnimationListener() {
-			
-			@Override
-			public void onAnimationStart(Animation arg0) {
-				
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animation arg0) {
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animation arg0) {
-				scr_regpage.setVisibility(View.VISIBLE);
-				rel_verify.setVisibility(View.GONE);
-			}
-		});
-		rel_verify.startAnimation(anim);
-	}
 
-	private void VerifyEvent(){
-		String verifyCode = edt_verifyCode.getText().toString(); 
-		
-		if (!Util.hasConnection(context)) {
-			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg)); 
-			return;
-		}
 
-		if (verifyCode.length()==0) {
-			Util.ShowToast(context, getResources().getString(R.string.registration_txt_error_repassword)); 
-			return;
-		}
-	}
 	
-	private void moveToHome(){
-		startActivity(new Intent(ActivityRegistration.this,ActivityHome.class));
+	private void moveVerifyCode(){
+		startActivity(new Intent(ActivityRegistration.this,ActivityVerifyCode.class));
 		overridePendingTransition(0, 0);
 		finish();
 	}

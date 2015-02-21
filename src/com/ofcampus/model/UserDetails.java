@@ -12,7 +12,16 @@ public class UserDetails {
 	private String name="";
 	private String email="";
 	private String authtoken="";
+	private boolean isVerify=false;
 	
+	public boolean isVerify() {
+		return isVerify;
+	}
+
+	public void setVerify(boolean isVerify) {
+		this.isVerify = isVerify;
+	}
+
 	public String getName() {
 		return name;
 	}

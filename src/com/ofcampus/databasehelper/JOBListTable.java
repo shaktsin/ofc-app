@@ -142,6 +142,21 @@ public class JOBListTable {
 		}
 	}
 	
+	public boolean deleteAllImagesRelatedtoJobID(String postID){
+		boolean success = false;
+		String sql = "";
+		try {
+			sql = "delete from "+TABJOBSUBIMAGESPATH+" where "+POSTID+"='"+postID+"'";
+			success = dbHelper.getDB().rawQuery(sql, null).moveToFirst();
+			sql = "update joblist set issyncdata='0' where issyncdata='1'";
+			success = dbHelper.getDB().rawQuery(sql, null).moveToFirst();
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return success; 
+	}
+	
 	public void inserJobData(ArrayList<JobDetails> Jobs) {
 
 		try {
