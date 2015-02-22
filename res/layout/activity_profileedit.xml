@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        layout="@layout/actiontool_bar" >
+    </include>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/profile_bottom_rel_btn"
+        android:layout_below="@+id/tool_bar"
+        android:scrollbars="none" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <include
+                android:id="@+id/color_line"
+                android:layout_width="fill_parent"
+                android:layout_height="8dp"
+                android:layout_alignParentTop="true"
+                layout="@layout/include_color_line" />
+
+            <RelativeLayout
+                android:id="@+id/profile_rel_imagedetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/color_line"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/joblist_row_rect" >
+
+                <RelativeLayout
+                    android:id="@+id/slide_image"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp" >
+
+                    <com.ofcampus.component.CircleImageView
+                        android:id="@+id/profile_circleView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_profilepic" />
+
+                    <ProgressBar
+                        android:id="@+id/myprofile_view_pgbar"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/myprofile_view_shape"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:src="@drawable/shape_circle_bg"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/slide_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/slide_image"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical" >
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/profile_class"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="6dp"
+                        android:background="@color/primary_dark"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text=""
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/profile_rel_details"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_rel_imagedetails"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="2.5" >
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/editprofile_txt_firstname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/joblist_row_rect"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text="@string/EditProfile_txt_Firstname"
+                        android:textColor="@color/job_subject"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/editprofile_txt_lastname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editprofile_txt_firstname"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/joblist_row_rect"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text="@string/EditProfile_txt_lastname"
+                        android:textColor="@color/job_subject"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/editprofile_txt_accountName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editprofile_txt_lastname"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/joblist_row_rect"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text="@string/EditProfile_txt_accname"
+                        android:textColor="@color/job_subject"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/editprofile_txt_yearofGrad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editprofile_txt_accountName"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/joblist_row_rect"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text="@string/EditProfile_txt_yearofg"
+                        android:textColor="@color/job_subject"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="3" >
+
+                    <com.ofcampus.ui.CustomEditText
+                        android:id="@+id/editprofile_edt_firstname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/joblist_row_rect"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/job_subject"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <com.ofcampus.ui.CustomEditText
+                        android:id="@+id/editprofile_edt_lastname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editprofile_edt_firstname"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/joblist_row_rect"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/job_subject"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <com.ofcampus.ui.CustomEditText
+                        android:id="@+id/editprofile_edt_accountName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editprofile_edt_lastname"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/joblist_row_rect"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/job_subject"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <com.ofcampus.ui.CustomEditText
+                        android:id="@+id/editprofile_edt_yearofGrad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/editprofile_edt_accountName"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/joblist_row_rect"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/job_subject"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="15dp"
+                android:layout_below="@+id/profile_rel_details" >
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/profile_bottom_rel_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
+
+        <ImageView
+            android:id="@+id/myprofile_view_img_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#E84C3D"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_phone" />
+
+        <ImageView
+            android:id="@+id/myprofile_view_img_whatsapp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#5498C7"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_whatsapp" />
+
+        <ImageView
+            android:id="@+id/myprofile_view_img_gmail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#18BC9A"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_gmailicon" />
+    </LinearLayout>
+
+</RelativeLayout>

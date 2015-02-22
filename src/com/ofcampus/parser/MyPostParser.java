@@ -52,6 +52,8 @@ public class MyPostParser  {
 	private String responsecode="";
 	private String responseDetails="";
 	
+	public boolean lodearshow=false;
+	
 	public void parse(Context context, JSONObject postData,String authorization) { 
 		this.mContext = context;
 		MyPostAsync mMyPostAsync = new MyPostAsync(mContext,postData,authorization);  
@@ -83,10 +85,12 @@ public class MyPostParser  {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			mDialog=new ProgressDialog(mContext);
-			mDialog.setMessage("Loading...");
-			mDialog.setCancelable(false);
-			mDialog.show();
+			if (lodearshow) {
+				mDialog=new ProgressDialog(mContext);
+				mDialog.setMessage("Loading...");
+				mDialog.setCancelable(false);
+				mDialog.show();
+			}
 		}
 
 		@Override

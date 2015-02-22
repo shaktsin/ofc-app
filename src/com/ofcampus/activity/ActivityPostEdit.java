@@ -858,7 +858,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		ArrayList<String> paths=new ArrayList<String>();
 		if (picdatasets!=null && picdatasets.size()>=1) {
 			for (PicDataSet pic : picdatasets) {
-				if (!pic.path.equals("")) {
+				if (!pic.path.equals("") && (!pic.path.contains("http://") || !pic.path.contains("https://")) && pic.ID.equals("")) {
 					paths.add(pic.path);
 				}
 				
@@ -875,6 +875,8 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 				public void OnSuccess(JobDetails mJobDetails) {
 					if (mJobDetails!=null) {
 						((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
+						((OfCampusApplication)context.getApplicationContext()).editPostSuccess=true;
+						((OfCampusApplication)context.getApplicationContext()).editPostSuccessForHome=true;
 						((Activity) context).overridePendingTransition(0, 0); 
 						finish();
 					}

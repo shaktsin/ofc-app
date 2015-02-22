@@ -14,6 +14,43 @@ public class UserDetails {
 	private String authtoken="";
 	private boolean isVerify=false;
 	
+	private String fstname="";
+	private String lstname="";
+	private String yearPass="";
+	private String image="";
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getFstname() {
+		return fstname;
+	}
+
+	public void setFstname(String fstname) {
+		this.fstname = fstname;
+	}
+
+	public String getLstname() {
+		return lstname;
+	}
+
+	public void setLstname(String lstname) {
+		this.lstname = lstname;
+	}
+
+	public String getYearPass() {
+		return yearPass;
+	}
+
+	public void setYearPass(String yearPass) {
+		this.yearPass = yearPass;
+	}
+
 	public boolean isVerify() {
 		return isVerify;
 	}

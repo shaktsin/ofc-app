@@ -1,10 +1,13 @@
 package com.ofcampus.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -15,6 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
+import com.ofcampus.Util;
 import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.ui.CustomTextView;
@@ -51,10 +55,21 @@ public class ActivityMyProfile extends ActionBarActivity {
 	}
 	
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_postedit, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	 
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			onBackPressed();
+			return true;
+		case R.id.action_editpost:
+			startActivity(new Intent(ActivityMyProfile.this,ActivityProfileEdit.class));
+			overridePendingTransition(0,0);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

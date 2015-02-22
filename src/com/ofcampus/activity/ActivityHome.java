@@ -133,9 +133,10 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	protected void onResume() {
 		super.onResume();
 		try {
-			if (((OfCampusApplication)getApplication()).isHidePostModify) {
-				loadJobList();
+			if (((OfCampusApplication)getApplication()).isHidePostModify || ((OfCampusApplication)getApplication()).editPostSuccessForHome) {
+				loadJobList(false);
 				((OfCampusApplication)getApplication()).isHidePostModify=false;
+				((OfCampusApplication)getApplication()).editPostSuccessForHome=false;
 			}
 			stopservice();
 			startService();
@@ -365,7 +366,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 				mJobsFragment.refreshComplete();
 			}
 		});
-		mParserNew.parse(mContext, mParserNew.getBody(jobID, 2+""), tocken,false);
+		
+		mParserNew.isShowingPG_=false;
+		mParserNew.parse(mContext, mParserNew.getBody(jobID, 2+""), tocken);
 	}
 	
 	
@@ -456,7 +459,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     
     
     
-    public void loadJobList() {
+    public void loadJobList(boolean isShowingPG) {
 
 		if (!Util.hasConnection(mContext)) {
 			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
@@ -481,7 +484,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 
 			}
 		});
-		mParserNew.parse(mContext, mParserNew.getBody(), tocken,true);
+		mParserNew.isShowingPG_=isShowingPG;
+		mParserNew.parse(mContext, mParserNew.getBody(), tocken);
 	}
     
     
@@ -710,7 +714,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 //				if (arrayJob!=null && arrayJob.size()>=1) {
 //					mJobsFragment.refreshDataInAdapter(arrayJob);
 //				}else {
-					loadJobList();
+					loadJobList(true);
 //				}
 			} catch (Exception e) {
 				e.printStackTrace();

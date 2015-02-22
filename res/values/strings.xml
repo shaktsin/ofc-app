@@ -93,6 +93,11 @@
     <string name="MyProfile_txt_ProfessionalInterests">Professional Interests</string>
     <string name="MyProfile_txt_Interests">Interests</string>
     
+     <!--Edit MyProfile -->
+    <string name="EditProfile_txt_Firstname">First Name</string>
+    <string name="EditProfile_txt_lastname">Last Name</string>
+    <string name="EditProfile_txt_accname">Account Name</string>
+    <string name="EditProfile_txt_yearofg">Year of Graduation</string>
     
     
      <!-- MyProfile -->

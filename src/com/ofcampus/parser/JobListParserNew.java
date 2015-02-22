@@ -79,10 +79,12 @@ private Context mContext;
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
+	 
+	public boolean isShowingPG_;
 	
-	public void parse(Context context, JSONObject postData,String authorization,boolean isShowingPG) { 
+	public void parse(Context context, JSONObject postData,String authorization) { 
 		this.mContext = context;
-		joblistAsync mjoblistAsync = new joblistAsync(mContext,postData,authorization,isShowingPG);
+		joblistAsync mjoblistAsync = new joblistAsync(mContext,postData,authorization);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mjoblistAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
@@ -99,13 +101,12 @@ private Context mContext;
 		private ProgressDialog mDialog;
 		private JobList mJobList;
 		private String authToken;
-		private boolean isShowingPG_;
+		
 
-		public joblistAsync(Context mContext, JSONObject postData_,String authToken_,boolean isShowingPG) {
+		public joblistAsync(Context mContext, JSONObject postData_,String authToken_) {
 			this.context = mContext;
 			this.postData = postData_;
 			this.authToken=authToken_;
-			this.isShowingPG_=isShowingPG;
 		}
 
 		@Override

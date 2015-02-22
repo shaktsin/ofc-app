@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.adapter.MyPostListAdapter;
 import com.ofcampus.adapter.MyPostListAdapter.MyPostListAdapterInterface;
@@ -19,6 +20,8 @@ import com.ofcampus.parser.MyPostParser.MyPostParserInterface;
 
 public class ActivityMyPost extends ActionBarActivity implements MyPostListAdapterInterface{
 	
+	
+
 	private ListView mypostList;
 	private MyPostListAdapter myPostListAdapter;
 	private Context context;
@@ -35,7 +38,7 @@ public class ActivityMyPost extends ActionBarActivity implements MyPostListAdapt
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		initiliz();
-		loadMyPostData();
+		loadMyPostData(true);
 	}
 	
 	@Override
@@ -43,6 +46,16 @@ public class ActivityMyPost extends ActionBarActivity implements MyPostListAdapt
 		super.onBackPressed();
 		overridePendingTransition(0,0);
 		finish();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (((OfCampusApplication)context.getApplicationContext()).editPostSuccess) {
+			loadMyPostData(false);
+			((OfCampusApplication)context.getApplicationContext()).editPostSuccess=false;
+		}
+		
 	}
 	
 	@Override
@@ -72,7 +85,7 @@ public class ActivityMyPost extends ActionBarActivity implements MyPostListAdapt
 		mypostList.setAdapter(myPostListAdapter);
 	}
 	
-	private void loadMyPostData(){
+	private void loadMyPostData(boolean lodearshow_){
 		MyPostParser myPostParser=new MyPostParser();
 		myPostParser.setMypostparserinterface(new MyPostParserInterface() {
 			
@@ -89,6 +102,7 @@ public class ActivityMyPost extends ActionBarActivity implements MyPostListAdapt
 				
 			}
 		});
+		myPostParser.lodearshow=lodearshow_;
 		myPostParser.parse(context, myPostParser.getBody(), UserDetails.getLoggedInUser(context).getAuthtoken());
 		
 	}
