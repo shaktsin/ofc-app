@@ -28,6 +28,11 @@ public class LoginParser {
 	private String EMAIL="email";
 	private String AUTHTOKEN="authToken";
 
+	
+	private String PROFILEIMAGELINK="image";
+	private String FIRSTNAME="firstName";
+	private String LASTNAME="lastName";
+	private String YEAROFGRAD="yearOfGrad";
 
 	/*Response JSON key value*/
 	private String responsecode="";
@@ -84,6 +89,13 @@ public class LoginParser {
 						mDetails.setName(Util.getJsonValue(userObj, NAME));
 						mDetails.setEmail(Util.getJsonValue(userObj, EMAIL));
 						mDetails.setAuthtoken(Util.getJsonValue(userObj, AUTHTOKEN));
+						
+						mDetails.fstname=Util.getJsonValue(userObj, FIRSTNAME);
+						mDetails.lstname=Util.getJsonValue(userObj, LASTNAME);
+						mDetails.image=Util.getJsonValue(userObj, PROFILEIMAGELINK);
+						mDetails.yearPass=Util.getJsonValue(userObj, YEAROFGRAD);
+						
+						
 						mDetails.setVerify(((Util.getJsonValue(userObj, VERIFIED)).equals("true"))?true:false);
 					}else if(responsecode!=null && responsecode.equals("500")){
 						JSONObject userObj = mObject.getJSONObject(RESULTS);

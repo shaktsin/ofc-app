@@ -8,19 +8,28 @@ import com.ofcampus.Util;
 
 public class UserDetails {
 
-	
-	private String name="";
-	private String email="";
-	private String authtoken="";
-	private boolean isVerify=false;
-	
-	private String fstname="";
-	private String lstname="";
-	private String yearPass="";
-	private String image="";
-	
+	public String name = "";
+	public String email = "";
+	public String authtoken = "";
+	public boolean isVerify = false;
+
+	public String fstname = "";
+	public String lstname = "";
+	public String accountname = "";
+
+	public String yearPass = "";
+	public String image = "";
+
 	public String getImage() {
 		return image;
+	}
+
+	public String getAccountname() {
+		return accountname;
+	}
+
+	public void setAccountname(String accountname) {
+		this.accountname = accountname;
 	}
 
 	public void setImage(String image) {
@@ -98,7 +107,7 @@ public class UserDetails {
 		UserDetails obj = gson.fromJson(json, UserDetails.class);
 		return obj;
 	}
-	
+
 	public static void logoutUser(Context context) {
 		SharedPreferences.Editor prefsEditor = Util.getPrefs(context).edit();
 		Gson gson = new Gson();
@@ -106,5 +115,5 @@ public class UserDetails {
 		prefsEditor.putString("LoggedInUser", json);
 		prefsEditor.commit();
 	}
-	
+
 }

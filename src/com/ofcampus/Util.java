@@ -160,6 +160,10 @@ public class Util {
 		return baseUrl + "jobs/edit";
 	}
 	
+	public static String getProfileUpdateUrl() {
+		return baseUrl + "user/update";
+	}
+	
 	
 	
 	/**
@@ -489,6 +493,56 @@ public class Util {
 						reqEntity.addPart("iFile", lFileBody_);
 					}
 				}
+			}
+			
+			httpPost.setEntity(reqEntity);
+			HttpResponse httpResponse = httpclient.execute(httpPost);
+			inputStream = httpResponse.getEntity().getContent();
+			if (inputStream != null)
+				result = convertInputStreamToString(inputStream);
+			else
+				result = "Did not work!";
+			responData[0] = "200";
+			responData[1] = result;
+			
+		} catch (UnsupportedEncodingException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		} catch (IOException e) {
+			responData[0] = "205";
+			e.printStackTrace();
+		}
+
+		return responData;
+	}
+	 
+	public static String[] ProfileUpdte(String url, JSONObject jsonObject,String auth,String path) {
+		InputStream inputStream = null;
+		String result = "";
+		String[] responData = { "", "" };
+
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+			httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			HttpPost httpPost = new HttpPost(url);
+			
+			String json = "";
+			json = jsonObject.toString();
+			httpPost.setHeader("Authorization", auth);
+			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			File lfile = null;
+			reqEntity.addPart("prof", new StringBody(json));
+			if (path != null && !path.equals("")) {
+				lfile = new File(path);
+				FileBody lFileBody_ = new FileBody(lfile); 
+				reqEntity.addPart("iFile", lFileBody_);
 			}
 			
 			httpPost.setEntity(reqEntity);

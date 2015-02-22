@@ -27,6 +27,7 @@ public class OfCampusApplication extends Application {
 	public boolean isHidePostModify=false;
 	public boolean editPostSuccess=false;
 	public boolean editPostSuccessForHome=false;
+	public boolean profileEditSuccess=false;
 	
 	@Override
 	public void onCreate() {

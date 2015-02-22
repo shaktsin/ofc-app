@@ -1,7 +1,5 @@
 package com.ofcampus.parser;
 
-import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +10,7 @@ import android.os.Build;
 
 import com.ofcampus.Util;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.model.UserDetails;
 
 public class EditProfileParser {
 
@@ -26,7 +25,17 @@ public class EditProfileParser {
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths) {   
+	private String ACCOUNTNAME="accountName";
+	private String GRADYEAR="gradYear";
+	private String PROFILEIMAGELINK="profileImageLink";
+	private String FIRSTNAME="firstName";
+	private String LASTNAME="lastName";
+	private String YEAROFGRAD="yearOfGrad";
+	private String EMAIL="email";
+	
+	
+	
+	public void parse(Context context, JSONObject obj,String auth, String paths) {   
 		this.mContext = context;
 		EditProfileParserAsync mEditProfileParserAsync = new EditProfileParserAsync(mContext,obj,auth,paths); 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -41,13 +50,13 @@ public class EditProfileParser {
 		private Context context;
 		private String authenticationJson;
 		private boolean isTimeOut=false;
-		private JobDetails mJobDetails;
+		private UserDetails UDetails;
 		private ProgressDialog mDialog;
 		private JSONObject obj_=null;
-		private ArrayList<String> paths;
+		private String paths;
 		private String auth="";
 		
-		public EditProfileParserAsync(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
+		public EditProfileParserAsync(Context mContext, JSONObject obj, String auth_,String paths_) { 
 			this.context = mContext;
 			this.obj_ = obj; 
 			this.auth=auth_;
@@ -68,7 +77,7 @@ public class EditProfileParser {
 			
 			try {
 				
-				String[] responsedata =	Util.POST_JOBNEW(Util.getJobEditUrl(), obj_,auth,paths);
+				String[] responsedata =	Util.ProfileUpdte(Util.getProfileUpdateUrl(), obj_,auth,paths);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				
@@ -76,7 +85,16 @@ public class EditProfileParser {
 					JSONObject mObject=new JSONObject(authenticationJson);
 					responsecode = Util.getJsonValue(mObject, STATUS);
 					if (responsecode!=null && responsecode.equals("200")) {
-						JSONObject Obj = mObject.getJSONObject(RESULTS);
+						JSONObject userObj = mObject.getJSONObject(RESULTS);
+						UserDetails mDetails=UserDetails.getLoggedInUser(mContext);
+						mDetails.name=Util.getJsonValue(userObj, ACCOUNTNAME);
+						mDetails.fstname=Util.getJsonValue(userObj, FIRSTNAME);
+						mDetails.lstname=Util.getJsonValue(userObj, LASTNAME);
+						mDetails.accountname=Util.getJsonValue(userObj, ACCOUNTNAME);
+						mDetails.image=Util.getJsonValue(userObj, PROFILEIMAGELINK);
+						mDetails.yearPass=Util.getJsonValue(userObj, GRADYEAR);
+						UDetails=mDetails;
+						mDetails.saveInPreferense(mContext);
 						
 					}else if(responsecode!=null && responsecode.equals("500")){
 						JSONObject userObj = mObject.getJSONObject(RESULTS);
@@ -106,10 +124,10 @@ public class EditProfileParser {
 					meditprofileparserinterface.OnError(); 
 				}
 			}else if (responsecode.equals("200")) {
-				if (mJobDetails!=null) {
+				if (UDetails!=null) {
 					if (meditprofileparserinterface!=null) {
-						meditprofileparserinterface.OnSuccess(mJobDetails);
-						Util.ShowToast(mContext, "Job Posted successfully.");
+						meditprofileparserinterface.OnSuccess(UDetails);
+						Util.ShowToast(mContext, "Profile Updated successfully.");
 					}
 				}else {
 					Util.ShowToast(mContext, "Edit profile error.");
@@ -120,7 +138,7 @@ public class EditProfileParser {
 			}else if (responsecode.equals("500")){
 				Util.ShowToast(mContext, responseDetails);
 			}else {
-				Util.ShowToast(mContext, "Edit profile error.");
+				Util.ShowToast(mContext, "Profile Updated Error.");
 			}
 		}
 	}
@@ -138,7 +156,7 @@ public class EditProfileParser {
 		this.meditprofileparserinterface = meditprofileparserinterface;
 	}
 	public interface mEditProfileParserInterface { 
-		public void OnSuccess(JobDetails mJobDetails);
+		public void OnSuccess(UserDetails UDetails);
 
 		public void OnError();
 	}

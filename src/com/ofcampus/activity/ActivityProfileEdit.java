@@ -1,5 +1,8 @@
 package com.ofcampus.activity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,9 +21,12 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.EditProfileParser;
+import com.ofcampus.parser.EditProfileParser.mEditProfileParserInterface;
 
 public class ActivityProfileEdit extends ActionBarActivity implements OnClickListener{
 
@@ -33,6 +39,7 @@ public class ActivityProfileEdit extends ActionBarActivity implements OnClickLis
 	private DisplayImageOptions options;
 	
 	private String Authtoken="";
+	private String path="";
 		
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +124,7 @@ public class ActivityProfileEdit extends ActionBarActivity implements OnClickLis
 			int lColumnIndex = lCursor.getColumnIndex(filePathColumn[0]);
 			String lpicturePath = lCursor.getString(lColumnIndex);
 			imageLoader.displayImage("file://"+lpicturePath,pic, options);
+			path=lpicturePath;
 		}
 
 	}
@@ -176,22 +184,40 @@ public class ActivityProfileEdit extends ActionBarActivity implements OnClickLis
 		}
 		
 		
-//		JSONObject postDate=null;
-//		
-//		EditProfileParser mEditProfileParser=new EditProfileParser();
-//		mEditProfileParser.setMeditprofileparserinterface(new mEditProfileParserInterface() {
-//			
-//			@Override
-//			public void OnSuccess(JobDetails mJobDetails) {
-//				
-//			}
-//			
-//			@Override
-//			public void OnError() {
-//				
-//			}
-//		});
-//		mEditProfileParser.parse(context, postDate, Authtoken, new ArrayList<String>());
+		JSONObject postDate=getJSONBody(fstname, lstname, accname, yearpass); 
 		
+		EditProfileParser mEditProfileParser=new EditProfileParser();
+		mEditProfileParser.setMeditprofileparserinterface(new mEditProfileParserInterface() {
+			
+			@Override
+			public void OnSuccess(UserDetails Details) {
+				((OfCampusApplication)context.getApplicationContext()).profileEditSuccess = true;
+				onBackPressed();
+			}
+			
+			@Override
+			public void OnError() {
+				
+			}
+		});
+		mEditProfileParser.parse(context, postDate, Authtoken, path);
+		
+	}
+	
+	
+	
+	private JSONObject getJSONBody(String firstName,String lastName,String accountName,String yearOfGrad){	
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("firstName", firstName);
+			jsObj.put("lastName", lastName);
+			jsObj.put("accountName", accountName);
+			jsObj.put("yearOfGrad", yearOfGrad);
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
 	}
 }

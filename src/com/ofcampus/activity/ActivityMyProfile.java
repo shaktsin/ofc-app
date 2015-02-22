@@ -17,8 +17,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
-import com.ofcampus.Util;
 import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.ui.CustomTextView;
@@ -27,7 +27,7 @@ public class ActivityMyProfile extends ActionBarActivity {
 
 	private ProgressBar pgbar;
 	private CircleImageView profilepic;
-	private CustomTextView txt_name,txt_email;
+	private CustomTextView txt_name,txt_email,txt_year;
 	private Context context;
 	
 	private UserDetails mDetails;
@@ -54,6 +54,15 @@ public class ActivityMyProfile extends ActionBarActivity {
 		finish();
 	}
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (((OfCampusApplication)context.getApplicationContext()).profileEditSuccess) {
+			loadProfileData();
+			((OfCampusApplication)context.getApplicationContext()).profileEditSuccess=false;
+		}
+		
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -86,7 +95,7 @@ public class ActivityMyProfile extends ActionBarActivity {
 		profilepic=(CircleImageView)findViewById(R.id.profile_circleView);
 		txt_name=(CustomTextView)findViewById(R.id.profile_name);
 		txt_email=(CustomTextView)findViewById(R.id.profile_email);
-		
+		txt_year=(CustomTextView)findViewById(R.id.profile_class);
 		pgbar=(ProgressBar)findViewById(R.id.myprofile_view_pgbar);
 		
 		
@@ -105,8 +114,8 @@ public class ActivityMyProfile extends ActionBarActivity {
 		mDetails=UserDetails.getLoggedInUser(context);
 		txt_name.setText(mDetails.getName());
 		txt_email.setText(mDetails.getEmail());
-		
-		imageLoader.displayImage("https://s3-ap-southeast-1.amazonaws.com/ofcampus/profile/3_profile_susi.png",profilepic, options,new ImageLoadingListener() {
+		txt_year.setText("Class "+mDetails.getYearPass());
+		imageLoader.displayImage(mDetails.getImage(),profilepic, options,new ImageLoadingListener() {
 			
 			@Override
 			public void onLoadingStarted(String arg0, View arg1) {

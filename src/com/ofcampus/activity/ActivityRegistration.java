@@ -102,7 +102,6 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 		rd_female=(TextView) findViewById(R.id.registration_rd_female);
 		rd_male=(TextView) findViewById(R.id.registration_rd_male);
 		((TextView) findViewById(R.id.registration_btn_registration)).setOnClickListener(this);
-		((TextView) findViewById(R.id.registration_btn_Codesubmit)).setOnClickListener(this);
 		rd_female.setOnClickListener(this);
 		rd_male.setOnClickListener(this);
 		rd_male.setSelected(true);
