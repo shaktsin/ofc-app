@@ -27,14 +27,14 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 	private int mIcons[];
 
 	private String name;
-	private int profile;
+	private String profile;
 	private String email;
     
 	private Context context;
 	private ImageLoader imageLoader=ImageLoader.getInstance();
 	private DisplayImageOptions options;
 	
-	public SlideMenuAdapter(Context context,String Titles[], int Icons[], String Name,String Email, int Profile) {
+	public SlideMenuAdapter(Context context,String Titles[], int Icons[], String Name,String Email, String Profile) {
 		
 		this.context=context;
 		mNavTitles = Titles;
@@ -116,10 +116,9 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 			});
 
 		} else {
-			holder.profile.setImageResource(profile);
 			holder.Name.setText(name);
 			holder.email.setText(email);
-			imageLoader.displayImage("https://s3-ap-southeast-1.amazonaws.com/ofcampus/profile/3_profile_susi.png",holder.profile, options);
+			imageLoader.displayImage(profile,holder.profile, options);
 		}
 	}
 

@@ -33,7 +33,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="Go to you mail box and copy verify code from there and paste here ,and click submit"
+                android:text="Check your mailbox, a verification code sent to your mail. Paste that code here."
                 android:textColor="@color/theme_color"
                 android:textSize="18sp"
                 ofcampus:fontName="Helvetica.otf" />

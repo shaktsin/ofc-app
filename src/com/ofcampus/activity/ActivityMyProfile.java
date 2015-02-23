@@ -59,7 +59,7 @@ public class ActivityMyProfile extends ActionBarActivity {
 		super.onResume();
 		if (((OfCampusApplication)context.getApplicationContext()).profileEditSuccess) {
 			loadProfileData();
-			((OfCampusApplication)context.getApplicationContext()).profileEditSuccess=false;
+//			((OfCampusApplication)context.getApplicationContext()).profileEditSuccess=false;
 		}
 		
 	}

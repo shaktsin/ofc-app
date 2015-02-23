@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.Util.userType;
@@ -176,7 +177,8 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 		mParser.setRegstrationinterface(new RegstrationInterface() {
 			
 			@Override
-			public void OnSuccess(UserDetails mDetails) {
+			public void OnSuccess(UserDetails mDetails_) {
+				((OfCampusApplication)getApplication()).mDetails=mDetails_;
 				moveVerifyCode();
 			}
 			

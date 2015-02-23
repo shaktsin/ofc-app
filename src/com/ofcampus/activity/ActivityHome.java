@@ -69,7 +69,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	private String NAME = "";
 	private String EMAIL = "";
 	private String tocken = "";
-	private int PROFILE = R.drawable.ic_profilepic;
+	private String picUrl = "";
+//	private int PROFILE = R.drawable.ic_profilepic;
 
     private Toolbar toolbar;                            
 
@@ -137,6 +138,10 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 				loadJobList(false);
 				((OfCampusApplication)getApplication()).isHidePostModify=false;
 				((OfCampusApplication)getApplication()).editPostSuccessForHome=false;
+			}
+			if (((OfCampusApplication)getApplication()).profileEditSuccess) {
+				updateProfileData();
+				((OfCampusApplication)getApplication()).profileEditSuccess=false;
 			}
 			stopservice();
 			startService();
@@ -388,7 +393,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		img_composejob = (ImageView)findViewById(R.id.activity_home_img_composejob);
 		img_composejob.setOnClickListener(this);
 		
-		mAdapter = new SlideMenuAdapter(ActivityHome.this,Util.TITLES, Util.ICONS, NAME, EMAIL,PROFILE);
+		mAdapter = new SlideMenuAdapter(ActivityHome.this,Util.TITLES, Util.ICONS, NAME, EMAIL,picUrl);
 		mAdapter.setViewclickevent(this);
 		mRecyclerView.setAdapter(mAdapter);
 		mLayoutManager = new LinearLayoutManager(this);
@@ -419,6 +424,18 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     	EMAIL = mUserDetails.getEmail();
     	NAME = mUserDetails.getName();
     	tocken = mUserDetails.getAuthtoken();
+    	picUrl = mUserDetails.getImage();
+    }
+    
+    private void updateProfileData(){
+    	UserDetails mUserDetails = UserDetails.getLoggedInUser(mContext);
+    	EMAIL = mUserDetails.getEmail();
+    	NAME = mUserDetails.getName();
+    	tocken = mUserDetails.getAuthtoken();
+    	picUrl = mUserDetails.getImage();
+    	mAdapter = new SlideMenuAdapter(ActivityHome.this,Util.TITLES, Util.ICONS, NAME, EMAIL,picUrl);
+		mAdapter.setViewclickevent(this);
+		mRecyclerView.setAdapter(mAdapter);
     }
     
     private void initilizePagerview(){
