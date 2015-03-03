@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.ofcampus.ui.CustomTextView
+        android:id="@+id/fragm_joincircle_txt_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Choose Circle from below List"
+        android:textColor="@color/theme_color"
+        android:textSize="18sp"
+        ofcampus:fontName="Helvetica.otf" />
+
+    <ListView
+        android:id="@+id/activity_home_joblist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/fragm_Joincircle_btn_submit"
+        android:layout_below="@+id/fragm_joincircle_txt_title"
+        android:layout_marginTop="20dp"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent" >
+    </ListView>
+
+    <com.ofcampus.ui.CustomTextView
+        android:id="@+id/fragm_Joincircle_btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/joblist_row_rect"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Join Circle"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/theme_color"
+        ofcampus:fontName="Helvetica.otf" />
+
+</RelativeLayout>

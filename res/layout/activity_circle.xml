@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/actiontool_bar" >
+    </include>
+
+    <RelativeLayout
+        android:id="@+id/activity_circle_mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/joblist_bg_color" >
+
+        <LinearLayout
+            android:id="@+id/color_line"
+            android:layout_width="fill_parent"
+            android:layout_height="8dp"
+            android:layout_alignParentTop="true"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="#E84C3D" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="#5498C7" />
+        </LinearLayout>
+
+        <com.ofcampus.component.PagerSlidingTabStripForCircle
+            android:id="@+id/circle_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="48dip"
+            android:layout_below="@+id/color_line"
+            android:background="#F0F0F0" >
+        </com.ofcampus.component.PagerSlidingTabStripForCircle>
+
+        <RelativeLayout
+            android:id="@+id/activity_circle_tabbelowline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/circle_tabs"
+            android:background="@android:color/darker_gray" >
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/circle_tabpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/activity_circle_tabbelowline" />
+    </RelativeLayout>
+
+</LinearLayout>

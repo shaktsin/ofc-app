@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4" >
+
+        <com.ofcampus.ui.CustomTextView
+            android:id="@+id/fragm_createcircle_txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Please enter a circle name to craete your own circle."
+            android:textColor="@color/theme_color"
+            android:textSize="18sp"
+            ofcampus:fontName="Helvetica.otf" />
+
+        <com.ofcampus.ui.CustomEditText
+            android:id="@+id/fragm_createcircle_edt_verifyCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragm_createcircle_txt_title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/joblist_row_rect"
+            android:gravity="center"
+            android:hint="Enter Circle Name Here"
+            android:inputType="text"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/theme_color"
+            ofcampus:fontName="Helvetica.otf" />
+
+        <com.ofcampus.ui.CustomTextView
+            android:id="@+id/fragm_createcircle_btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragm_createcircle_edt_verifyCode"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/joblist_row_rect"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Create Circle"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/theme_color"
+            ofcampus:fontName="Helvetica.otf" />
+    </RelativeLayout>
+
+</LinearLayout>

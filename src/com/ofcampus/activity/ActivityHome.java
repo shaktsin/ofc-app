@@ -262,15 +262,20 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			break;
 		case 4:
 			closeDraware();
-			startActivity(new Intent(ActivityHome.this,ActivitySettings.class));
+			startActivity(new Intent(ActivityHome.this,ActivityHidePost.class));
 			overridePendingTransition(0,0);
 			break;
 		case 5:
 			closeDraware();
-			startActivity(new Intent(ActivityHome.this,ActivityHidePost.class));
+			startActivity(new Intent(ActivityHome.this,ActivityCircle.class));
 			overridePendingTransition(0,0);
 			break;
 		case 6:
+			closeDraware();
+			startActivity(new Intent(ActivityHome.this,ActivitySettings.class));
+			overridePendingTransition(0,0);
+			break;
+		case 7:
 			closeDraware();
 			showLogutDialog();
 			break;

@@ -60,7 +60,7 @@ public class Util {
 
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
 
-	public static String TITLES[] = { "My Profile", "My Posts","Important Mail", "Settings", "Hide Post","Logout" };
+	public static String TITLES[] = { "My Profile", "My Posts", "Important Mail", "Hide Post", "Circle", "Settings", "Logout" };
 	
 	
 	public static String sendto[] = { "Everyone", "Class of 2014","General Management Club", "Finance Club", "Hyderabad Chapter" };
@@ -68,7 +68,8 @@ public class Util {
 	public static String TOOLTITLE[] = { "Comment", "Details" };
 
 	public static int ICONS[] = { R.drawable.ic_profile, R.drawable.ic_mypost,
-			R.drawable.ic_impmail, R.drawable.ic_settings, R.drawable.ic_recycle,R.drawable.ic_logout };
+			R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle,
+			R.drawable.ic_settings, R.drawable.ic_logout };
 
 	public static enum userType {
 		Normal, Gmail, Facebook
