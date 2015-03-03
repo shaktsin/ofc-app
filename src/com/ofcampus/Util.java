@@ -165,7 +165,13 @@ public class Util {
 		return baseUrl + "user/update";
 	}
 	
+	public static String getCreateCircleUrl() {
+		return baseUrl + "circle/create";
+	}
 	
+	public static String getJoinCircleUrl() {
+		return baseUrl + "circle/join";
+	}
 	
 	/**
 	 * Show Alert Toast message.

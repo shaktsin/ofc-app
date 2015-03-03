@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -58,7 +59,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 		TextView textView;
 		ImageView imageView;
 		ImageView profile;
-		LinearLayout slideritem_row;
+		RelativeLayout slideritem_row;
 		TextView Name;
 		TextView email;
 		
@@ -67,7 +68,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 			super(itemView);
 
 			if (ViewType == TYPE_ITEM) {
-				slideritem_row = (LinearLayout) itemView.findViewById(R.id.slideritem_row); 
+				slideritem_row = (RelativeLayout) itemView.findViewById(R.id.slideritem_row); 
 				textView = (TextView) itemView.findViewById(R.id.rowText);
 				imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
 				Holderid = 1;

@@ -92,15 +92,20 @@
     <string name="MyProfile_txt_PreviousEmployers">Previous Employers</string>
     <string name="MyProfile_txt_ProfessionalInterests">Professional Interests</string>
     <string name="MyProfile_txt_Interests">Interests</string>
-    
-     <!--Edit MyProfile -->
+
+    <!-- Edit MyProfile -->
     <string name="EditProfile_txt_Firstname">First Name</string>
     <string name="EditProfile_txt_lastname">Last Name</string>
     <string name="EditProfile_txt_accname">Account Name</string>
     <string name="EditProfile_txt_yearofg">Year of Graduation</string>
-    
-    
-     <!-- MyProfile -->
+
+    <!-- MyProfile -->
     <string name="Filter_msg_chooseoption">Choose at least one option for filter.</string>
+
+    <!-- Circle -->
+    <string name="enter_circlename_title">Please enter a circle name to craete your own circle.</string>
+    <string name="enter_circlename">Enter Circle Name Here</string>
+    <string name="createcircle_txtmodarator">Moderate</string>
+    <string name="create_circlebtn">Create Circle</string>
 
 </resources>
