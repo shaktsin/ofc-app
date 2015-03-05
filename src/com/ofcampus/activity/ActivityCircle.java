@@ -1,5 +1,7 @@
 package com.ofcampus.activity;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +18,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
+import com.ofcampus.Util;
+import com.ofcampus.activity.FragmentJoinCircle.JoinCircleInterface;
+import com.ofcampus.activity.FragmentYourCircle.YourCircleInterface;
 import com.ofcampus.component.PagerSlidingTabStripForCircle;
+import com.ofcampus.model.CircleDetails;
+import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.CircleListParser;
+import com.ofcampus.parser.CircleListParser.CircleListParserInterface;
 
-public class ActivityCircle extends ActionBarActivity implements OnPageChangeListener{
+public class ActivityCircle extends ActionBarActivity implements OnPageChangeListener,YourCircleInterface,JoinCircleInterface{
 
+	
 	private Context context;
+	private static String Authtoken="";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +41,15 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		setContentView(R.layout.activity_circle);
 
 		context=ActivityCircle.this;
+		
+		
+		Authtoken = UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle("Circle");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		initiliz();
-
+		getAllCircleList(true);
 	}
 
 	@Override
@@ -44,6 +59,16 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		finish();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (((OfCampusApplication)context.getApplicationContext()).isNewCircleCreated) {
+			getAllCircleList(false);
+			((OfCampusApplication)context.getApplicationContext()).isNewCircleCreated=false;
+		}
+		
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -109,12 +134,12 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
     private PagerSlidingTabStripForCircle tabs;
 	private ViewPager pager;
 	private SelectionPagerAdapter adapter;
-	private FragmentYourCircle mCreateCircle;
+	private FragmentYourCircle mYourCircle;
 	private FragmentJoinCircle mJoinCircle;
 	
 	public class SelectionPagerAdapter extends FragmentStatePagerAdapter {
 
-		private final String[] TITLES = { "YOUR CIRCLE", "JOIN CIRCLE" };
+		private final String[] TITLES = { "Your Circle", "Join Circle" };
 
 		public SelectionPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -144,15 +169,70 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				mCreateCircle = FragmentYourCircle.newInstance(position,ActivityCircle.this);
-				return mCreateCircle;
+				mYourCircle = FragmentYourCircle.newInstance(position,ActivityCircle.this);
+				mYourCircle.setYourcircleinterface(ActivityCircle.this);
+				return mYourCircle; 
 			case 1:
 				mJoinCircle = FragmentJoinCircle.newInstance(position, ActivityCircle.this);
+				mJoinCircle.setJoincircleinterface(ActivityCircle.this);
 				return mJoinCircle;
 			}
 			return null;
 
 		}
+	}
+
+	
+	private void getAllCircleList(boolean b){ 
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+		
+		CircleListParser mCircleListParser=new CircleListParser();
+		mCircleListParser.setCirclelistparserinterface(new CircleListParserInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
+				if (circlerList!=null && circlerList.size()>=1) {
+					shortCircleList(circlerList);
+				}
+				
+			}
+			
+			@Override
+			public void OnError() {
+				
+			}
+		});
+		mCircleListParser.parse(context, mCircleListParser.getBody("0","8"), Authtoken,b);
+	}
+	
+	private void shortCircleList(ArrayList<CircleDetails> circlerList){
+		ArrayList<CircleDetails> joincircle=new ArrayList<CircleDetails>();
+		ArrayList<CircleDetails> yourcirclecircle=new ArrayList<CircleDetails>();
+		
+		for (CircleDetails circleDetails : circlerList) {
+			if (circleDetails.getJoined().equals("true")) {
+				yourcirclecircle.add(circleDetails);
+			}else {
+				joincircle.add(circleDetails);
+			}
+		}
+		
+		mYourCircle.refreshData(yourcirclecircle);
+		mJoinCircle.refreshData(joincircle);
+	}
+	
+	@Override
+	public void refreshFromJoinView() {
+		getAllCircleList(false);
+		
+	}
+
+	@Override
+	public void refreshFromYourView() {
+		getAllCircleList(false);
 	}
 
 }

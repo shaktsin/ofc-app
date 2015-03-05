@@ -1,18 +1,24 @@
 package com.ofcampus.activity;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.FragmentJoinCircle.JoinCircleInterface;
+import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.JoinCircleParser;
 import com.ofcampus.parser.JoinCircleParser.JoinCircleParserInterface;
+import com.ofcampus.ui.CustomTextView;
 
 public class FragmentYourCircle extends Fragment {
 
@@ -22,7 +28,8 @@ public class FragmentYourCircle extends Fragment {
 	
 	private static String Authtoken="";
 	private ListView yourcircle_list ;
-
+	private YourCircleListAdapter mYourCircleListAdapter;
+	
 	public static FragmentYourCircle newInstance(int position, Context mContext) {
 		FragmentYourCircle f = new FragmentYourCircle();
 		Bundle b = new Bundle();
@@ -48,6 +55,8 @@ public class FragmentYourCircle extends Fragment {
 
 	private void initilizView(View view) {
 		yourcircle_list = (ListView) view.findViewById(R.id.fragmentyourcircle_list);
+		mYourCircleListAdapter=new YourCircleListAdapter(context, new ArrayList<CircleDetails>());
+		yourcircle_list.setAdapter(mYourCircleListAdapter);
 	}
 
 
@@ -72,5 +81,103 @@ public class FragmentYourCircle extends Fragment {
 			}
 		});
 		mJoinCircleParser.parse(context, mJoinCircleParser.getBody(""), Authtoken);
+	}
+	
+	
+	public void refreshData(ArrayList<CircleDetails> circles){
+		mYourCircleListAdapter.refreshData(circles);
+		if (circles!=null && circles.size()>=1) {
+			yourcircle_list.setSelection(0);
+		}
+		
+	}
+	
+	public class YourCircleListAdapter extends BaseAdapter{ 
+
+		private Context mContext;
+		private LayoutInflater inflater;
+		private ArrayList<CircleDetails> circles=null; 
+		
+		public YourCircleListAdapter(Context context,ArrayList<CircleDetails> arrcircle){
+		
+			this.mContext=context; 
+			this.circles=arrcircle; 
+			this.inflater=LayoutInflater.from(context);
+		}
+		
+		public void refreshData(ArrayList<CircleDetails> arrJobs){
+			this.circles= arrJobs;
+			notifyDataSetChanged();
+		}
+
+		public void removepostion(int position) {
+			if (this.circles.size()>=1) {
+				this.circles.remove(position);
+				notifyDataSetChanged();
+			}
+			
+		}
+
+		
+		@Override
+		public int getCount() {
+			return circles.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			
+			ViewHolder mHolder;
+			if (convertView==null) {
+				mHolder=new ViewHolder();
+				convertView=inflater.inflate(R.layout.inflate_circledetails, null);
+				mHolder.txt_joined=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_joined);
+				mHolder.txt_membno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_membno);
+				mHolder.txt_postno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_postno);
+				mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_name);
+				convertView.setTag(mHolder);
+			}else {
+				mHolder=(ViewHolder) convertView.getTag();
+			}
+
+			CircleDetails mCircleDetails=circles.get(position);
+			
+			mHolder.txt_joined.setText("UnJoin");
+			mHolder.txt_membno.setText(mCircleDetails.getMembers()+" Members");
+			mHolder.txt_postno.setText(mCircleDetails.getPosts()+" Posts");
+			mHolder.txt_name.setText(mCircleDetails.getName());
+			
+			return convertView;
+		}
+		
+		private class ViewHolder{
+			CustomTextView txt_name,txt_postno,txt_membno,txt_joined;
+		}
+
+	}
+	
+	
+	public YourCircleInterface yourcircleinterface;
+
+	public YourCircleInterface getYourcircleinterface() {
+		return yourcircleinterface;
+	}
+
+	public void setYourcircleinterface(YourCircleInterface yourcircleinterface) {
+		this.yourcircleinterface = yourcircleinterface;
+	}
+
+	public interface YourCircleInterface {
+		public void refreshFromYourView();
 	}
 }

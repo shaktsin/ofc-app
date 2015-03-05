@@ -1,18 +1,24 @@
 package com.ofcampus.activity;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.JoinCircleParser;
 import com.ofcampus.parser.JoinCircleParser.JoinCircleParserInterface;
+import com.ofcampus.ui.CustomTextView;
 
 public class FragmentJoinCircle extends Fragment {
 
@@ -22,6 +28,7 @@ public class FragmentJoinCircle extends Fragment {
 	
 	private static String Authtoken="";
 	private ListView joincircle_list ;
+	private JoinCircleListAdapter mJoinCircleListAdapter;
 	
 	public static FragmentJoinCircle newInstance(int position, Context mContext) {
 		FragmentJoinCircle f = new FragmentJoinCircle();
@@ -48,11 +55,13 @@ public class FragmentJoinCircle extends Fragment {
 
 	private void initilizView(View view) {
 		joincircle_list = (ListView) view.findViewById(R.id.fragmentjoincircle_list);
+		mJoinCircleListAdapter=new JoinCircleListAdapter(context, new ArrayList<CircleDetails>());
+		joincircle_list.setAdapter(mJoinCircleListAdapter);
 	}
+	
+	
 
-
-	private void joinCircleEvent() {
-
+	private void joinCircleEvent(String circleID) {
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
 			return;
@@ -71,6 +80,114 @@ public class FragmentJoinCircle extends Fragment {
 				
 			}
 		});
-		mJoinCircleParser.parse(context, mJoinCircleParser.getBody(""), Authtoken);
+		mJoinCircleParser.parse(context, mJoinCircleParser.getBody(circleID), Authtoken);
+	}
+	
+	
+	
+	public void refreshData(ArrayList<CircleDetails> circles){
+		mJoinCircleListAdapter.refreshData(circles);
+		if (circles!=null && circles.size()>=1) {
+			joincircle_list.setSelection(0);
+		}
+		
+	}
+	
+	public class JoinCircleListAdapter extends BaseAdapter{  
+
+		private Context mContext;
+		private LayoutInflater inflater;
+		private ArrayList<CircleDetails> circles=null; 
+		
+		public JoinCircleListAdapter(Context context,ArrayList<CircleDetails> arrcircle){
+		
+			this.mContext=context; 
+			this.circles=arrcircle; 
+			this.inflater=LayoutInflater.from(context);
+		}
+		
+		public void refreshData(ArrayList<CircleDetails> arrJobs){
+			this.circles= arrJobs;
+			notifyDataSetChanged();
+		}
+
+		public void removepostion(int position) {
+			if (this.circles.size()>=1) {
+				this.circles.remove(position);
+				notifyDataSetChanged();
+			}
+			
+		}
+
+		
+		@Override
+		public int getCount() {
+			return circles.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			
+			ViewHolder mHolder;
+			if (convertView==null) {
+				mHolder=new ViewHolder();
+				convertView=inflater.inflate(R.layout.inflate_circledetails, null);
+				mHolder.txt_joined=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_joined);
+				mHolder.txt_membno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_membno);
+				mHolder.txt_postno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_postno);
+				mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_name);
+				convertView.setTag(mHolder);
+			}else {
+				mHolder=(ViewHolder) convertView.getTag();
+			}
+
+			CircleDetails mCircleDetails=circles.get(position);
+			final String circleID=mCircleDetails.getId();
+			mHolder.txt_joined.setText("Join");
+			mHolder.txt_membno.setText(mCircleDetails.getMembers()+" Members");
+			mHolder.txt_postno.setText(mCircleDetails.getPosts()+" Posts");
+			mHolder.txt_name.setText(mCircleDetails.getName());
+			
+			
+			mHolder.txt_joined.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					joinCircleEvent(circleID);
+				}
+			});
+			
+			
+			return convertView;
+		}
+		
+		private class ViewHolder{
+			CustomTextView txt_name,txt_postno,txt_membno,txt_joined;
+		}
+
+	}
+	
+	public JoinCircleInterface joincircleinterface;
+
+	public JoinCircleInterface getJoincircleinterface() {
+		return joincircleinterface;
+	}
+
+	public void setJoincircleinterface(JoinCircleInterface joincircleinterface) {
+		this.joincircleinterface = joincircleinterface;
+	}
+
+	public interface JoinCircleInterface {
+		public void refreshFromJoinView();
 	}
 }

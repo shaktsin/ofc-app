@@ -120,7 +120,7 @@ public class JoinCircleParser {
 					Util.ShowToast(mContext, "Error occure.");
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, "Error occure.");
+				Util.ShowToast(mContext, responseDetails);
 			} else {
 				Util.ShowToast(mContext, "Error occure.");
 			}

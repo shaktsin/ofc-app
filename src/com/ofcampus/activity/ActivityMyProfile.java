@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -28,6 +29,7 @@ public class ActivityMyProfile extends ActionBarActivity {
 	private ProgressBar pgbar;
 	private CircleImageView profilepic;
 	private CustomTextView txt_name,txt_email,txt_year;
+	private ImageView profile_imageblur;
 	private Context context;
 	
 	private UserDetails mDetails;
@@ -92,6 +94,7 @@ public class ActivityMyProfile extends ActionBarActivity {
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
+//		profile_imageblur=(ImageView)findViewById(R.id.profile_imageblur);
 		profilepic=(CircleImageView)findViewById(R.id.profile_circleView);
 		txt_name=(CustomTextView)findViewById(R.id.profile_name);
 		txt_email=(CustomTextView)findViewById(R.id.profile_email);
@@ -137,6 +140,7 @@ public class ActivityMyProfile extends ActionBarActivity {
 				pgbar.setVisibility(View.GONE);
 			}
 		});
-		
+//		profile_imageblur.setAlpha(120);
+//		imageLoader.displayImage(mDetails.getImage(),profile_imageblur, options);
 	}
 }

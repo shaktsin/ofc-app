@@ -29,7 +29,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="8dp"
                 android:layout_alignParentTop="true"
-                layout="@layout/include_color_line"/>
+                layout="@layout/include_color_line" />
 
             <RelativeLayout
                 android:id="@+id/profile_rel_imagedetails"
@@ -40,6 +40,15 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/joblist_row_rect" >
+
+                <ImageView
+                    android:id="@+id/profile_imageblur"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_alignBottom="@+id/slide_name"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    android:src="@android:color/white" />
 
                 <RelativeLayout
                     android:id="@+id/slide_image"

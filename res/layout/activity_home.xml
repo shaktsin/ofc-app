@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:background="#EDEEF0"
+            android:background="@android:color/white"
             android:scrollbars="none" >
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.DrawerLayout>

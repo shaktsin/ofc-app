@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.UserDetails;
@@ -101,6 +102,7 @@ public class ActivityCreateCircle extends ActionBarActivity implements OnClickLi
 			@Override
 			public void OnSuccess() {
 				Util.ShowToast(context,"Succesfully Created Your Circle.");
+				((OfCampusApplication)context.getApplicationContext()).isNewCircleCreated=true;
 				onBackPressed();
 			}
 			

@@ -28,6 +28,7 @@ public class OfCampusApplication extends Application {
 	public boolean editPostSuccess=false;
 	public boolean editPostSuccessForHome=false;
 	public boolean profileEditSuccess=false;
+	public boolean isNewCircleCreated=false;
 	
 	@Override
 	public void onCreate() {
