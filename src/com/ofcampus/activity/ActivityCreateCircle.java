@@ -2,11 +2,11 @@ package com.ofcampus.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
@@ -16,44 +16,52 @@ import com.ofcampus.parser.CreateCircleParser.CreateCircleParserInterface;
 import com.ofcampus.ui.CustomEditText;
 import com.ofcampus.ui.CustomTextView;
 
-public class FragmentCreateCircle extends Fragment implements OnClickListener{
+public class ActivityCreateCircle extends ActionBarActivity implements OnClickListener {
 
-	private static final String ARG_POSITION = "position";
-	private static Context context;
-	private int position;
 	
+	private static Context context;
 	private static String Authtoken="";
 	private CustomEditText edt_CircleName;
 	private CustomTextView txt_modarator;
 	private String isModarator="";
-
-	public static FragmentCreateCircle newInstance(int position, Context mContext) {
-		FragmentCreateCircle f = new FragmentCreateCircle();
-		Bundle b = new Bundle();
-		b.putInt(ARG_POSITION, position);
-		f.setArguments(b);
-		context = mContext;
-		Authtoken = UserDetails.getLoggedInUser(context).getAuthtoken();
-		return f;
-	}
-
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		position = getArguments().getInt(ARG_POSITION);
+		setContentView(R.layout.activity_createcircle);
+
+		context = ActivityCreateCircle.this;
+		
+		Authtoken = UserDetails.getLoggedInUser(context).getAuthtoken();
+		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+		toolbar.setTitle("Create Circle");
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		initilizView();
+
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_createcircle, null);
-		initilizView(view);
-		return view;
+	public void onBackPressed() {
+		super.onBackPressed();
+		overridePendingTransition(0, 0);
+		finish();
 	}
 
-	private void initilizView(View view) {
-		edt_CircleName=(CustomEditText)view.findViewById(R.id.fragm_createcircle_edt_verifyCode);
-		((CustomTextView)view.findViewById(R.id.fragm_createcircle_btn_submit)).setOnClickListener(this);
-		txt_modarator =(CustomTextView)view.findViewById(R.id.fragm_createcircle_txtmodarator);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	private void initilizView() {
+		edt_CircleName=(CustomEditText)findViewById(R.id.fragm_createcircle_edt_verifyCode);
+		((CustomTextView)findViewById(R.id.fragm_createcircle_btn_submit)).setOnClickListener(this);
+		txt_modarator =(CustomTextView)findViewById(R.id.fragm_createcircle_txtmodarator);
 		txt_modarator.setOnClickListener(this);
 	}
 
@@ -65,7 +73,7 @@ public class FragmentCreateCircle extends Fragment implements OnClickListener{
 			break;
 		case R.id.fragm_createcircle_txtmodarator:
 			txt_modarator.setSelected(txt_modarator.isSelected()?false:true); 
-			isModarator = (txt_modarator.isSelected())?"true":"false";
+			isModarator = (txt_modarator.isSelected())?"false":"true";
 			break;
 
 		default:
@@ -93,6 +101,7 @@ public class FragmentCreateCircle extends Fragment implements OnClickListener{
 			@Override
 			public void OnSuccess() {
 				Util.ShowToast(context,"Succesfully Created Your Circle.");
+				onBackPressed();
 			}
 			
 			@Override

@@ -1,5 +1,7 @@
 package com.ofcampus.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,8 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.ofcampus.R;
@@ -17,11 +21,14 @@ import com.ofcampus.component.PagerSlidingTabStripForCircle;
 
 public class ActivityCircle extends ActionBarActivity implements OnPageChangeListener{
 
+	private Context context;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_circle);
 
+		context=ActivityCircle.this;
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle("Circle");
 		setSupportActionBar(toolbar);
@@ -38,10 +45,21 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_circle, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	 
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			onBackPressed();
+			return true;
+		case R.id.action_createcircle:
+			startActivity(new Intent(ActivityCircle.this,ActivityCreateCircle.class));
+			overridePendingTransition(0,0);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -91,12 +109,12 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
     private PagerSlidingTabStripForCircle tabs;
 	private ViewPager pager;
 	private SelectionPagerAdapter adapter;
-	private FragmentCreateCircle mCreateCircle;
+	private FragmentYourCircle mCreateCircle;
 	private FragmentJoinCircle mJoinCircle;
 	
 	public class SelectionPagerAdapter extends FragmentStatePagerAdapter {
 
-		private final String[] TITLES = { "Create Circle", "Join Circle" };
+		private final String[] TITLES = { "YOUR CIRCLE", "JOIN CIRCLE" };
 
 		public SelectionPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -126,7 +144,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				mCreateCircle = FragmentCreateCircle.newInstance(position,ActivityCircle.this);
+				mCreateCircle = FragmentYourCircle.newInstance(position,ActivityCircle.this);
 				return mCreateCircle;
 			case 1:
 				mJoinCircle = FragmentJoinCircle.newInstance(position, ActivityCircle.this);

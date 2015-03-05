@@ -14,17 +14,17 @@ import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.JoinCircleParser;
 import com.ofcampus.parser.JoinCircleParser.JoinCircleParserInterface;
 
-public class FragmentJoinCircle extends Fragment {
+public class FragmentYourCircle extends Fragment {
 
 	private static final String ARG_POSITION = "position";
 	private static Context context;
 	private int position;
 	
 	private static String Authtoken="";
-	private ListView joincircle_list ;
-	
-	public static FragmentJoinCircle newInstance(int position, Context mContext) {
-		FragmentJoinCircle f = new FragmentJoinCircle();
+	private ListView yourcircle_list ;
+
+	public static FragmentYourCircle newInstance(int position, Context mContext) {
+		FragmentYourCircle f = new FragmentYourCircle();
 		Bundle b = new Bundle();
 		b.putInt(ARG_POSITION, position);
 		f.setArguments(b);
@@ -41,17 +41,17 @@ public class FragmentJoinCircle extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_joincircle, null);
+		View view = inflater.inflate(R.layout.fragment_yourcircle, null);
 		initilizView(view);
 		return view;
 	}
 
 	private void initilizView(View view) {
-		joincircle_list = (ListView) view.findViewById(R.id.fragmentjoincircle_list);
+		yourcircle_list = (ListView) view.findViewById(R.id.fragmentyourcircle_list);
 	}
 
 
-	private void joinCircleEvent() {
+	private void unjoinCircleEvent() {
 
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));

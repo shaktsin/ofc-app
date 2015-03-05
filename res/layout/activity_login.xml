@@ -3,7 +3,7 @@
     xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary" >
+    android:background="@color/joblist_bg_color" >
 
     <com.ofcampus.ui.CustomTextView
         android:id="@+id/login_textlogo"
@@ -14,7 +14,7 @@
         android:gravity="center"
         android:padding="2dp"
         android:text="@string/login_scr_logo_"
-        android:textColor="@android:color/white"
+        android:textColor="@color/primary"
         android:textSize="35sp"
         android:textStyle="bold|italic"
         ofcampus:fontName="Helvetica.otf" />
@@ -43,7 +43,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/theme_color"
+            android:textColor="@color/primary"
             ofcampus:fontName="Helvetica.otf" />
 
         <com.ofcampus.ui.CustomEditText
@@ -62,7 +62,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/theme_color"
+            android:textColor="@color/primary"
             ofcampus:fontName="Helvetica.otf" />
 
         <com.ofcampus.ui.CustomTextView
@@ -72,12 +72,12 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/joblist_row_rect"
+            android:background="@drawable/button_rec"
             android:gravity="center"
             android:padding="8dp"
             android:text="@string/login_scr_btn_login"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/theme_color"
+            android:textColor="@android:color/white"
             ofcampus:fontName="Helvetica.otf" />
 
         <com.ofcampus.ui.CustomTextView
@@ -91,7 +91,7 @@
             android:padding="3dp"
             android:text="@string/login_scr_txt_donthaveaccount"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@android:color/white"
+            android:textColor="@color/primary"
             ofcampus:fontName="Helvetica.otf" />
     </LinearLayout>
 

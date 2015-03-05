@@ -83,6 +83,7 @@ public class Util {
 		Normal, syncdata
 	}
 
+	/********************URl List**********************/
 	public static String getLoginUrl() {
 		return baseUrl + "user/login";
 	}
@@ -172,6 +173,12 @@ public class Util {
 	public static String getJoinCircleUrl() {
 		return baseUrl + "circle/join";
 	}
+	
+	public static String getAllCircleUrl() {
+		return baseUrl + "circle/all";
+	}
+	
+	/********************URl List**********************/
 	
 	/**
 	 * Show Alert Toast message.

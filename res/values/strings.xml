@@ -104,8 +104,9 @@
 
     <!-- Circle -->
     <string name="enter_circlename_title">Please enter a circle name to craete your own circle.</string>
-    <string name="enter_circlename">Enter Circle Name Here</string>
-    <string name="createcircle_txtmodarator">Moderate</string>
+    <string name="enter_circlename">Name of Circle</string>
+     <string name="enter_msg_circlename">Please enter Circle Name.</string>
+    <string name="createcircle_txtmodarator">Public</string>
     <string name="create_circlebtn">Create Circle</string>
 
 </resources>
