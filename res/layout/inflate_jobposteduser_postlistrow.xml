@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/inflate_comment_img_pic" >
 
             <com.ofcampus.ui.CustomTextView
@@ -45,10 +45,22 @@
                 ofcampus:fontName="HelveticaBold.ttf" />
 
             <com.ofcampus.ui.CustomTextView
-                android:id="@+id/inflate_comment_txt_contain"
+                android:id="@+id/inflate_comment_txt_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/inflate_comment_txt_name"
+                android:layout_marginTop="2dp"
+                android:maxLines="4"
+                android:text=""
+                android:textColor="@color/job_contain"
+                android:textSize="@dimen/Comment_username"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/inflate_comment_txt_contain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inflate_comment_txt_subject"
                 android:layout_marginTop="2dp"
                 android:maxLines="4"
                 android:text=""

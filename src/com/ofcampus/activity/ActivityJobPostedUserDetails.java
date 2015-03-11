@@ -334,6 +334,9 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				mHolder.txt_commentname=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_name);
 				mHolder.txt_commentdate=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_postdate);
 				mHolder.txt_commenteddetails=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_contain);
+				mHolder.txt_subject=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_subject); 
+				
+				
 				
 				convertView.setTag(mHolder);
 			}else{
@@ -347,14 +350,15 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				imageLoader.displayImage(url, mHolder.img_commentprfpic, options);
 			}
 			mHolder.txt_commentname.setText(mJobDetails.getName());
-			mHolder.txt_commentdate.setText("Commented on "+mJobDetails.getPostedon());
+			mHolder.txt_commentdate.setText("Posted on "+mJobDetails.getPostedon());
 			mHolder.txt_commenteddetails.setText(mJobDetails.getContent());
+			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			
 			return convertView;
 		}
 		private class ViewHolder {
 			public ImageView img_commentprfpic;
-			public CustomTextView txt_commentname,txt_commentdate,txt_commenteddetails,txt_load;
+			public CustomTextView txt_commentname,txt_commentdate,txt_commenteddetails,txt_subject;
 		}
 		
 	}
