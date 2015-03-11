@@ -5,15 +5,20 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.adapter.JobListBaseAdapter;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.JoinCircleParser;
@@ -29,6 +34,13 @@ public class FragmentJoinCircle extends Fragment {
 	private static String Authtoken="";
 	private ListView joincircle_list ;
 	private JoinCircleListAdapter mJoinCircleListAdapter;
+	
+
+    
+    /***For Load more****/
+//    private int minimumofsets = 5,mLastFirstVisibleItem = 0;
+//    private boolean loadingMore = false;
+//    private RelativeLayout footer_pg;
 	
 	public static FragmentJoinCircle newInstance(int position, Context mContext) {
 		FragmentJoinCircle f = new FragmentJoinCircle();
@@ -57,6 +69,41 @@ public class FragmentJoinCircle extends Fragment {
 		joincircle_list = (ListView) view.findViewById(R.id.fragmentjoincircle_list);
 		mJoinCircleListAdapter=new JoinCircleListAdapter(context, new ArrayList<CircleDetails>());
 		joincircle_list.setAdapter(mJoinCircleListAdapter);
+		
+		
+//		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
+//		joincircle_list.setOnScrollListener(new OnScrollListener() {
+//
+//			@Override
+//			public void onScrollStateChanged(AbsListView view, int scrollState) {
+//			}
+//
+//			@Override
+//			public void onScroll(AbsListView view, int firstVisibleItem,
+//					int visibleItemCount, int totalItemCount) {
+//
+//				int lastInScreen = firstVisibleItem + visibleItemCount;
+//				if (mJoinCircleListAdapter != null
+//						&& totalItemCount > minimumofsets
+//						&& (lastInScreen == totalItemCount) && !(loadingMore)) {
+//					if (mLastFirstVisibleItem < firstVisibleItem) {
+//						if (!Util.hasConnection(context)) {
+//							Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+//							return;
+//						}
+//						Log.i("SCROLLING DOWN", "TRUE");
+//						footer_pg.setVisibility(View.VISIBLE); 
+//						loadingMore = true;
+////						if (jobsfrginterface!=null) {
+////							jobsfrginterface.loadcall(lastJobID);
+////						}
+//					}
+//				}
+//				mLastFirstVisibleItem = firstVisibleItem;
+//			}
+//		});
+
+		
 	}
 	
 	
@@ -154,8 +201,8 @@ public class FragmentJoinCircle extends Fragment {
 			CircleDetails mCircleDetails=circles.get(position);
 			final String circleID=mCircleDetails.getId();
 			mHolder.txt_joined.setText("Join");
-			mHolder.txt_membno.setText(mCircleDetails.getMembers()+" Members");
-			mHolder.txt_postno.setText(mCircleDetails.getPosts()+" Posts");
+			mHolder.txt_membno.setText(mCircleDetails.getMembers()+"\n Members");
+			mHolder.txt_postno.setText(mCircleDetails.getPosts()+"\n Posts");
 			mHolder.txt_name.setText(mCircleDetails.getName());
 			
 			

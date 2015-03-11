@@ -18,11 +18,14 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.ActivityJobPostedUserDetails;
 import com.ofcampus.activity.ActivityMyProfile;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.model.UserDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
 
@@ -202,8 +205,12 @@ public class JobListBaseAdapter extends BaseAdapter{
 				
 				@Override
 				public void onClick(View v) {
-					mContext.startActivity(new Intent(mContext,ActivityMyProfile.class));
-					((Activity) mContext).overridePendingTransition(0,0);
+					if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
+						((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+						mContext.startActivity(new Intent(mContext,ActivityJobPostedUserDetails.class));
+						((Activity) mContext).overridePendingTransition(0,0);
+					}
+					
 				}
 			});
 			

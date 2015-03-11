@@ -42,7 +42,6 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 
 		context=ActivityCircle.this;
 		
-		
 		Authtoken = UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle("Circle");
@@ -206,6 +205,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 			}
 		});
 		mCircleListParser.parse(context, mCircleListParser.getBody("0","8"), Authtoken,b);
+//		{"userId":11,"pageNo":0, "perPage":8, "appName":"ofCampus", "plateFormId":0}
 	}
 	
 	private void shortCircleList(ArrayList<CircleDetails> circlerList){

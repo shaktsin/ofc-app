@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.activity.FragmentJoinCircle.JoinCircleInterface;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.JoinCircleParser;
@@ -30,6 +33,14 @@ public class FragmentYourCircle extends Fragment {
 	private ListView yourcircle_list ;
 	private YourCircleListAdapter mYourCircleListAdapter;
 	
+	
+    /***For Load more****/
+    private int minimumofsets = 8,mLastFirstVisibleItem = 0;
+    private boolean loadingMore = false;
+    private RelativeLayout footer_pg;
+    
+    
+    
 	public static FragmentYourCircle newInstance(int position, Context mContext) {
 		FragmentYourCircle f = new FragmentYourCircle();
 		Bundle b = new Bundle();
@@ -57,6 +68,40 @@ public class FragmentYourCircle extends Fragment {
 		yourcircle_list = (ListView) view.findViewById(R.id.fragmentyourcircle_list);
 		mYourCircleListAdapter=new YourCircleListAdapter(context, new ArrayList<CircleDetails>());
 		yourcircle_list.setAdapter(mYourCircleListAdapter);
+		
+		
+		
+		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
+		yourcircle_list.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				if (mYourCircleListAdapter != null
+						&& totalItemCount > minimumofsets
+						&& (lastInScreen == totalItemCount) && !(loadingMore)) {
+					if (mLastFirstVisibleItem < firstVisibleItem) {
+						if (!Util.hasConnection(context)) {
+							Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+							return;
+						}
+						Log.i("SCROLLING DOWN", "TRUE");
+						footer_pg.setVisibility(View.VISIBLE); 
+						loadingMore = true;
+//						if (jobsfrginterface!=null) {
+//							jobsfrginterface.loadcall(lastJobID);
+//						}
+					}
+				}
+				mLastFirstVisibleItem = firstVisibleItem;
+			}
+		});
 	}
 
 
@@ -153,8 +198,8 @@ public class FragmentYourCircle extends Fragment {
 			CircleDetails mCircleDetails=circles.get(position);
 			
 			mHolder.txt_joined.setText("UnJoin");
-			mHolder.txt_membno.setText(mCircleDetails.getMembers()+" Members");
-			mHolder.txt_postno.setText(mCircleDetails.getPosts()+" Posts");
+			mHolder.txt_membno.setText(mCircleDetails.getMembers()+"\n Members");
+			mHolder.txt_postno.setText(mCircleDetails.getPosts()+"\n Posts");
 			mHolder.txt_name.setText(mCircleDetails.getName());
 			
 			return convertView;

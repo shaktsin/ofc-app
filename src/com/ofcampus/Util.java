@@ -178,6 +178,10 @@ public class Util {
 		return baseUrl + "circle/all";
 	}
 	
+	public static String getJOBPostedProfileUrl() {
+		return baseUrl + "post/user/profile";
+	}
+	
 	/********************URl List**********************/
 	
 	/**
