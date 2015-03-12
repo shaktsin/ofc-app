@@ -2,23 +2,20 @@ package com.ofcampus.activity;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.adapter.JobListBaseAdapter;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.JoinCircleParser;
@@ -120,6 +117,9 @@ public class FragmentJoinCircle extends Fragment {
 			@Override
 			public void OnSuccess() {
 				Util.ShowToast(context,"Succesfully Join Circle.");
+				if (joincircleinterface!=null) {
+					joincircleinterface.refreshFromJoinView();
+				}
 			}
 			
 			@Override
@@ -214,6 +214,18 @@ public class FragmentJoinCircle extends Fragment {
 				}
 			});
 			
+			mHolder.txt_name.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent mIntent=new Intent(mContext,ActivityCircleProfile.class);
+					Bundle mBundle=new Bundle();
+					mBundle.putString("CircleID", circleID);
+					mIntent.putExtras(mBundle);
+					mContext.startActivity(mIntent);
+					((Activity) mContext).overridePendingTransition(0,0);
+				}
+			});
 			
 			return convertView;
 		}

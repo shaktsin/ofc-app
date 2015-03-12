@@ -2,25 +2,28 @@ package com.ofcampus.activity;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
-import com.ofcampus.parser.JoinCircleParser;
-import com.ofcampus.parser.JoinCircleParser.JoinCircleParserInterface;
+import com.ofcampus.parser.UnJoinCircleParser;
+import com.ofcampus.parser.UnJoinCircleParser.UnJoinCircleParserInterface;
 import com.ofcampus.ui.CustomTextView;
 
 public class FragmentYourCircle extends Fragment {
@@ -105,19 +108,22 @@ public class FragmentYourCircle extends Fragment {
 	}
 
 
-	private void unjoinCircleEvent() {
+	private void unjoinCircleEvent(String circleID) {
 
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
 			return;
 		}
 		
-		JoinCircleParser mJoinCircleParser = new JoinCircleParser();
-		mJoinCircleParser.setJoincircleparserinterface(new JoinCircleParserInterface() {
+		UnJoinCircleParser mUnJoinCircleParser = new UnJoinCircleParser();
+		mUnJoinCircleParser.setUnjoincircleparserinterface(new UnJoinCircleParserInterface() {
 			
 			@Override
 			public void OnSuccess() {
-				Util.ShowToast(context,"Succesfully Join Circle.");
+				Util.ShowToast(context,"Succesfully UnJoin Circle.");
+				if (yourcircleinterface!=null) {
+					yourcircleinterface.refreshFromYourView();
+				}
 			}
 			
 			@Override
@@ -125,7 +131,7 @@ public class FragmentYourCircle extends Fragment {
 				
 			}
 		});
-		mJoinCircleParser.parse(context, mJoinCircleParser.getBody(""), Authtoken);
+		mUnJoinCircleParser.parse(context, mUnJoinCircleParser.getBody(circleID), Authtoken);
 	}
 	
 	
@@ -196,12 +202,35 @@ public class FragmentYourCircle extends Fragment {
 			}
 
 			CircleDetails mCircleDetails=circles.get(position);
+			final String circleID=mCircleDetails.getId();
 			
 			mHolder.txt_joined.setText("UnJoin");
 			mHolder.txt_membno.setText(mCircleDetails.getMembers()+"\n Members");
 			mHolder.txt_postno.setText(mCircleDetails.getPosts()+"\n Posts");
 			mHolder.txt_name.setText(mCircleDetails.getName());
 			
+			
+			mHolder.txt_joined.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					unjoinCircleEvent(circleID);
+				}
+			});
+
+			mHolder.txt_name.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent mIntent=new Intent(mContext,ActivityCircleProfile.class);
+					Bundle mBundle=new Bundle();
+					mBundle.putString("CircleID", circleID);
+					mIntent.putExtras(mBundle);
+					mContext.startActivity(mIntent);
+					((Activity) mContext).overridePendingTransition(0,0);
+				}
+			});
+
 			return convertView;
 		}
 		

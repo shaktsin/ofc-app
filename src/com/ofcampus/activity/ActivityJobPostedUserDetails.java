@@ -412,8 +412,8 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 			ViewHolder mHolder;
 			if (convertView==null) {
 				mHolder=new ViewHolder();
-				convertView=inflater.inflate(R.layout.inflate_circledetails, null);
-				mHolder.txt_joined=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_joined);
+				convertView=inflater.inflate(R.layout.inflate_circledetails_jobposteduser, null);
+//				mHolder.txt_joined=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_joined);
 				mHolder.txt_membno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_membno);
 				mHolder.txt_postno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_postno);
 				mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_name);
@@ -424,7 +424,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 
 			CircleDetails mCircleDetails=circles.get(position);
 			
-			mHolder.txt_joined.setText("UnJoin");
+//			mHolder.txt_joined.setText("UnJoin");
 			mHolder.txt_membno.setText(mCircleDetails.getMembers()+"\n Members");
 			mHolder.txt_postno.setText(mCircleDetails.getPosts()+"\n Posts");
 			mHolder.txt_name.setText(mCircleDetails.getName());

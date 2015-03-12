@@ -174,6 +174,10 @@ public class Util {
 		return baseUrl + "circle/join";
 	}
 	
+	public static String getUnJoinCircleUrl() {
+		return baseUrl + "circle/unjoin";
+	}
+	
 	public static String getAllCircleUrl() {
 		return baseUrl + "circle/all";
 	}
@@ -181,6 +185,13 @@ public class Util {
 	public static String getJOBPostedProfileUrl() {
 		return baseUrl + "post/user/profile";
 	}
+	
+	public static String getCircleProfileUrl() {
+		return baseUrl + "post/circle/profile";
+	}
+	
+	
+	
 	
 	/********************URl List**********************/
 	
