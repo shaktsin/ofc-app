@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -226,13 +227,23 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	
 	@Override
 	public void refreshFromJoinView() {
-		getAllCircleList(false);
+		callCircleLIst();
 		
 	}
 
 	@Override
 	public void refreshFromYourView() {
-		getAllCircleList(false);
+		callCircleLIst();
+	}
+	
+	
+	private void callCircleLIst() {
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getAllCircleList(false);
+			}
+		}, 300);
 	}
 
 }

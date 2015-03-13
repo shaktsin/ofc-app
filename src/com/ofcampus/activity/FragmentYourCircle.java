@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -196,6 +197,10 @@ public class FragmentYourCircle extends Fragment {
 				mHolder.txt_membno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_membno);
 				mHolder.txt_postno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_postno);
 				mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_name);
+				
+				mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
+				mHolder.img_own=(ImageView)convertView.findViewById(R.id.joblistview_img_imp);
+				
 				convertView.setTag(mHolder);
 			}else {
 				mHolder=(ViewHolder) convertView.getTag();
@@ -208,6 +213,19 @@ public class FragmentYourCircle extends Fragment {
 			mHolder.txt_membno.setText(mCircleDetails.getMembers()+"\n Members");
 			mHolder.txt_postno.setText(mCircleDetails.getPosts()+"\n Posts");
 			mHolder.txt_name.setText(mCircleDetails.getName());
+			
+			mHolder.img_own.setVisibility(mCircleDetails.getAdmin().equals("true")?View.VISIBLE:View.GONE);
+			mHolder.img_own.setSelected(mCircleDetails.getAdmin().equals("true")?true:false); 
+			
+			
+//			mHolder.img_own.setVisibility(View.VISIBLE);
+//			mHolder.img_own.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					
+//				}
+//			});
 			
 			
 			mHolder.txt_joined.setOnClickListener(new OnClickListener() {
@@ -236,6 +254,7 @@ public class FragmentYourCircle extends Fragment {
 		
 		private class ViewHolder{
 			CustomTextView txt_name,txt_postno,txt_membno,txt_joined;
+			ImageView img_arrow,img_own;
 		}
 
 	}

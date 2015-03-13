@@ -89,10 +89,10 @@ public class CircleProfileParser {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			mDialog = new ProgressDialog(mContext);
-			mDialog.setMessage("Loading...");
-			mDialog.setCancelable(false);
-			mDialog.show();
+//			mDialog = new ProgressDialog(mContext);
+//			mDialog.setMessage("Loading...");
+//			mDialog.setCancelable(false);
+//			mDialog.show();
 		}
 
 		@Override
@@ -132,10 +132,10 @@ public class CircleProfileParser {
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 
-			if (mDialog != null && mDialog.isShowing()) {
-				mDialog.cancel();
-				mDialog = null;
-			}
+//			if (mDialog != null && mDialog.isShowing()) {
+//				mDialog.cancel();
+//				mDialog = null;
+//			}
 			if (isTimeOut) {
 				if (circleprofileparserinterface != null) {
 					circleprofileparserinterface.OnError();

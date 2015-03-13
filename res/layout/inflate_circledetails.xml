@@ -13,26 +13,55 @@
         android:layout_marginTop="0dp"
         android:background="@android:color/white" >
 
-        <com.ofcampus.ui.CustomTextView
-            android:id="@+id/inflt_circlerow_txt_name"
+        <RelativeLayout
+            android:id="@+id/inflt_circlerow_rel_nameandopp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:drawablePadding="8dp"
-            android:drawableLeft="@drawable/ic_circle"
-            android:singleLine="true"
-            android:gravity="center_vertical|left"
-            android:text=""
-            android:textColor="@color/theme_color"
-            android:textSize="@dimen/joblitview_Subject"
-            android:textStyle="normal"
-            ofcampus:fontName="Helvetica.otf" />
+            android:layout_height="wrap_content" >
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/inflt_circlerow_txt_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/joblistview_img_imp"
+                android:drawableLeft="@drawable/ic_circle"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical|left"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_Subject"
+                android:textStyle="normal"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <ImageView
+                android:id="@+id/joblistview_img_imp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2dp"
+                android:layout_toLeftOf="@+id/joblistview_img_arrow"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/important_selector"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/joblistview_img_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_downarrow"
+                android:visibility="invisible" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/inflt_circlerow_linearselection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/inflt_circlerow_txt_name"
+            android:layout_below="@+id/inflt_circlerow_rel_nameandopp"
             android:background="#d7eff2"
             android:orientation="horizontal" >
 

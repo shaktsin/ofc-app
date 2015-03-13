@@ -190,8 +190,21 @@ public class Util {
 		return baseUrl + "post/circle/profile";
 	}
 	
+	public static String getCircleActivateUrl() {
+		return baseUrl + "circle/activate";
+	}
 	
+	public static String getCircleDeActivateUrl() {
+		return baseUrl + "circle/deactivate";
+	}
 	
+	public static String getAcceptRequestUrl() {
+		return baseUrl + "circle/authorize";
+	}
+	
+	public static String getRejectRequestUrl() {
+		return baseUrl + "circle/authorize/revoke";
+	}
 	
 	/********************URl List**********************/
 	
