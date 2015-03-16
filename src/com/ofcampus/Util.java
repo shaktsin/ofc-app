@@ -206,6 +206,13 @@ public class Util {
 		return baseUrl + "circle/authorize/revoke";
 	}
 	
+	public static String getAllPendingRequestUrl() {
+		return baseUrl + "circle/requests";
+	}
+	
+	
+	
+	
 	/********************URl List**********************/
 	
 	/**

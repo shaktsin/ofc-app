@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,14 +21,22 @@ import android.widget.RelativeLayout;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.CircleProfile;
 import com.ofcampus.model.CircleUserDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.AcceptRequestToJoinCircleParser;
+import com.ofcampus.parser.AcceptRequestToJoinCircleParser.AcceptRequestParserInterface;
 import com.ofcampus.parser.CircleProfileParser;
 import com.ofcampus.parser.CircleProfileParser.CircleProfileParserInterface;
+import com.ofcampus.parser.GetAllPendingRequestList;
+import com.ofcampus.parser.GetAllPendingRequestList.PendingRequestParserInterface;
+import com.ofcampus.parser.RejectRequestToJoinCircleParser;
+import com.ofcampus.parser.RejectRequestToJoinCircleParser.RejectRequestParserInterface;
 import com.ofcampus.ui.CustomTextView;
 
 public class ActivityCircleProfile extends ActionBarActivity implements OnClickListener{
@@ -39,15 +46,19 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 
 	private ProgressBar pgbar;
 	private CustomTextView txt_name, txt_postno, txt_circleno, nodata;
-	private ListView post_list, user_list;
+	private ListView post_list, user_list,pendingrqs_list;
 	private LinearLayout lin_main;
 	private RelativeLayout rel_pg;
 
 	private PostAdapter mpostAdapter;
 	private UsersAdapter mUsersAdapter;
+	private PendingUsersAdapter mPendingUsersAdapter;
+	private CircleDetails mCircleDetails;
+	
 	private ArrayList<ImageView> textselection = new ArrayList<ImageView>();
 	private ArrayList<CircleUserDetails> arraycircle = null;
 	private ArrayList<JobDetails> arraypost = null;
+	private ArrayList<CircleUserDetails> pendingUser = null;
 
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions options;
@@ -95,6 +106,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			Selection(0);
 			post_list.setVisibility(View.VISIBLE);
 			user_list.setVisibility(View.GONE);
+			pendingrqs_list.setVisibility(View.GONE);
 			if (arraypost!=null && arraypost.size()>=1) {
 				nodata.setVisibility(View.GONE);
 			}else {
@@ -107,6 +119,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			Selection(1);
 			post_list.setVisibility(View.GONE);
 			user_list.setVisibility(View.VISIBLE);
+			pendingrqs_list.setVisibility(View.GONE);
 			if (arraycircle!=null && arraycircle.size()>=1) {
 				nodata.setVisibility(View.GONE);
 			}else {
@@ -114,6 +127,20 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 				nodata.setVisibility(View.VISIBLE);
 			}
 			break;
+			
+		case R.id.circleprofile_pendingreq:
+			Selection(2);
+			post_list.setVisibility(View.GONE);
+			user_list.setVisibility(View.GONE);
+			pendingrqs_list.setVisibility(View.VISIBLE);
+			if (pendingUser!=null && pendingUser.size()>=1) {
+				nodata.setVisibility(View.GONE);
+			}else {
+				nodata.setText("No Pending User available");
+				nodata.setVisibility(View.VISIBLE);
+			}
+			break;
+			
 
 		default:
 			break;
@@ -127,8 +154,10 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+		mCircleDetails = ((OfCampusApplication)context.getApplicationContext()).mCircleDetails_;
+		
 		authorization = UserDetails.getLoggedInUser(context).getAuthtoken();
-		circleId = getIntent().getExtras().getString("CircleID");
+		circleId = mCircleDetails.getId();
 
 
 		txt_name = (CustomTextView) findViewById(R.id.cricle_name);
@@ -139,17 +168,28 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		textselection = new ArrayList<ImageView>();
 		textselection.add((ImageView) findViewById(R.id.circleprofile_postselection));
 		textselection.add((ImageView) findViewById(R.id.circleprofile_circleselection));
-		setClicklistner();
+		if (mCircleDetails.getAdmin().equals("true")) {
+			ImageView pendingreq = (ImageView) findViewById(R.id.circleprofile_pendingreq);
+			pendingreq.setVisibility(View.VISIBLE);
+			textselection.add(pendingreq);
+		}
+		
 
 		post_list = (ListView) findViewById(R.id.cricle_post_list);
 		user_list = (ListView) findViewById(R.id.cricle_user_list);
+		pendingrqs_list = (ListView) findViewById(R.id.cricle_pendingreq_list);
 		nodata = (CustomTextView) findViewById(R.id.jobposteduser_nodata);
+
+		setClicklistner();
 
 		mpostAdapter = new PostAdapter(context, new ArrayList<JobDetails>());
 		post_list.setAdapter(mpostAdapter);
 
 		mUsersAdapter = new UsersAdapter(context, new ArrayList<CircleUserDetails>());
 		user_list.setAdapter(mUsersAdapter);
+		
+		mPendingUsersAdapter = new PendingUsersAdapter(context, new ArrayList<CircleUserDetails>());
+		pendingrqs_list.setAdapter(mPendingUsersAdapter);
 
 		lin_main = (LinearLayout) findViewById(R.id.circleprf_linearmain);
 		rel_pg = (RelativeLayout) findViewById(R.id.jobposteduser_linear_pg);
@@ -194,8 +234,10 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 
 			@Override
 			public void OnSuccess(CircleProfile mCircleProfile) {
-				Log.e("TAG", mCircleProfile.toString());
 				processData(mCircleProfile);
+				if (mCircleDetails.getAdmin().equals("true")) {
+					getPendingList();
+				}
 			}
 
 			@Override
@@ -206,6 +248,71 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		mCircleProfileParser.parse(context,mCircleProfileParser.getBody(circleId, "0", "8"),authorization);
 	}
 
+	private void getPendingList(){
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+		rel_pg.setVisibility(View.VISIBLE);
+		GetAllPendingRequestList mAllPendingRequestList=new GetAllPendingRequestList();
+		mAllPendingRequestList.setPendingrequestparserinterface(new PendingRequestParserInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<CircleUserDetails> pendingUser_) {
+				if (pendingUser_!=null && pendingUser_.size()>=1) {
+					pendingUser=pendingUser_;
+					mPendingUsersAdapter.refreshData(pendingUser_);
+				}
+			}
+			
+			@Override
+			public void OnError() {
+				rel_pg.setVisibility(View.GONE);
+			}
+		});
+		mAllPendingRequestList.parse(context,mAllPendingRequestList.getBody(circleId, "0", "8"),authorization);
+	}
+	
+	
+	private void acceptRequest(String userId) {
+		AcceptRequestToJoinCircleParser mJoinCircleParser=new AcceptRequestToJoinCircleParser();
+		mJoinCircleParser.setAcceptrequestparserinterface(new AcceptRequestParserInterface() {
+			
+			@Override
+			public void OnSuccess() {
+				
+				
+			}
+			
+			@Override
+			public void OnError() {
+			
+				
+			}
+		});
+		mJoinCircleParser.parse(context,mJoinCircleParser.getBody(circleId, userId) , authorization);
+	}
+
+	private void rejectRequest(String userId) {
+		RejectRequestToJoinCircleParser mRejectRequestParser = new RejectRequestToJoinCircleParser();
+		mRejectRequestParser.setRejectRequestparserinterface(new RejectRequestParserInterface() {
+			
+			@Override
+			public void OnSuccess() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void OnError() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		mRejectRequestParser.parse(context, mRejectRequestParser.getBody(circleId, userId), authorization);
+	}
+	
+	
 	
 	private void processData(CircleProfile mCircleProfile){
 		try {
@@ -400,6 +507,116 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		private class ViewHolder{
 			public ImageView img_commentprfpic;
 			public CustomTextView txt_name,txt_email,txt_grdyear;
+		}
+	}
+	
+	private class PendingUsersAdapter extends BaseAdapter{ 
+		 
+		private Context mContext;
+		private LayoutInflater inflater;
+		private ArrayList<CircleUserDetails> circles=null; 
+		
+		public PendingUsersAdapter(Context context,ArrayList<CircleUserDetails> arrcircle){
+		
+			this.mContext=context; 
+			this.circles=arrcircle; 
+			this.inflater=LayoutInflater.from(context);
+			
+			options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.ic_profilepic)
+					.showImageForEmptyUri(R.drawable.ic_profilepic)
+					.showImageOnFail(R.drawable.ic_profilepic)
+					.cacheInMemory(true).cacheOnDisk(true)
+					.considerExifParams(true).build();
+			imageLoader.init(ImageLoaderConfiguration.createDefault(context));
+		}
+		
+		public void refreshData(ArrayList<CircleUserDetails> arrJobs){
+			this.circles= arrJobs;
+			notifyDataSetChanged();
+		}
+
+		public void removepostion(int position) {
+			if (this.circles.size()>=1) {
+				this.circles.remove(position);
+				notifyDataSetChanged();
+			}
+			
+		}
+
+		
+		@Override
+		public int getCount() {
+			return circles.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			
+			ViewHolder mHolder;
+			if (convertView==null) {
+				mHolder=new ViewHolder();
+				convertView=inflater.inflate(R.layout.inflate_pendingreqst_row, parent,false);
+				/**Comment Section*/
+				
+				mHolder.img_commentprfpic=(ImageView)convertView.findViewById(R.id.inflate_comment_img_pic);
+				mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_name);
+				mHolder.txt_email=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_email);
+				mHolder.txt_grdyear=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_yeargrd);
+				mHolder.txtbtn_accept=(CustomTextView)convertView.findViewById(R.id.inflate_pendingrqst_btnaccept);
+				mHolder.txtbtn_reject=(CustomTextView)convertView.findViewById(R.id.inflate_pendingrqst_btnreject);
+			
+				convertView.setTag(mHolder);
+			}else {
+				mHolder=(ViewHolder) convertView.getTag();
+			}
+
+			CircleUserDetails mCircleUserDetails=circles.get(position);
+			final String Userid =mCircleUserDetails.getUserid();
+			
+			String url=mCircleUserDetails.getUserimage();
+			if (url!=null && !url.equals("") && !url.equals("null")) {
+				imageLoader.displayImage(url, mHolder.img_commentprfpic, options);
+			}
+			
+			mHolder.txt_name.setText(mCircleUserDetails.getUsername());
+			mHolder.txt_email.setText(mCircleUserDetails.getUseryearofgrad());
+			mHolder.txt_grdyear.setText(mCircleUserDetails.getUseryearofgrad()); 
+			
+			
+			mHolder.txtbtn_accept.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					acceptRequest(Userid);
+					
+				}
+			});
+			mHolder.txtbtn_reject.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					rejectRequest(Userid);
+					
+				}
+			});
+			
+			return convertView;
+		}
+		
+		private class ViewHolder{
+			public ImageView img_commentprfpic;
+			public CustomTextView txt_name,txt_email,txt_grdyear,txtbtn_accept,txtbtn_reject;
 		}
 	}
 }

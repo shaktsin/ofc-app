@@ -11,18 +11,22 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.ofcampus.databasehelper.OfCampusDBHelper;
+import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.InstituteDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 
 public class OfCampusApplication extends Application {
 
+
+	public OfCampusDBHelper DB_HELPER;
+	public boolean fromMYPost=false;
+	
 	public ArrayList<InstituteDetails> institutes_;
 	public ArrayList<JobDetails> filterJobs;
 	public JobDetails jobdetails;
 	public UserDetails mDetails;
-	public OfCampusDBHelper DB_HELPER;
-	public boolean fromMYPost=false;
+	public CircleDetails mCircleDetails_;
 	
 	public boolean isHidePostModify=false;
 	public boolean editPostSuccess=false;

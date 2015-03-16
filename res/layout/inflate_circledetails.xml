@@ -39,11 +39,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="2dp"
                 android:layout_toLeftOf="@+id/joblistview_img_arrow"
                 android:contentDescription="@string/app_name"
+                android:padding="3dp"
                 android:src="@drawable/important_selector"
-                android:visibility="visible" />
+                android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/joblistview_img_arrow"
@@ -51,9 +51,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="2dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_downarrow"
+                android:padding="3dp"
+                android:src="@drawable/circleactive_selector"
                 android:visibility="invisible" />
         </RelativeLayout>
 

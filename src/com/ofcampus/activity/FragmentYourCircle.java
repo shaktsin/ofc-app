@@ -19,10 +19,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.CircleActivateParser;
+import com.ofcampus.parser.CircleActivateParser.CircleActivateParserInterface;
+import com.ofcampus.parser.CircleDeActivateParser;
+import com.ofcampus.parser.CircleDeActivateParser.CircleDeActivateParserInterface;
 import com.ofcampus.parser.UnJoinCircleParser;
 import com.ofcampus.parser.UnJoinCircleParser.UnJoinCircleParserInterface;
 import com.ofcampus.ui.CustomTextView;
@@ -136,6 +141,49 @@ public class FragmentYourCircle extends Fragment {
 	}
 	
 	
+	private void circleActivate(String circleID){
+		CircleActivateParser mActivateParser=new CircleActivateParser();
+		mActivateParser.setCircleactivateparserinterface(new CircleActivateParserInterface() {
+			
+			@Override
+			public void OnSuccess() {
+				Util.ShowToast(context,"Succesfully Activated your Circle.");
+				if (yourcircleinterface!=null) {
+					yourcircleinterface.refreshFromYourView();
+				}
+				
+			}
+			
+			@Override
+			public void OnError() {
+				
+			}
+		});
+		mActivateParser.parse(context, mActivateParser.getBody(circleID), Authtoken);
+	}
+	
+	private void circleDeActivate(String circleID){
+		CircleDeActivateParser mDeActivateParser=new CircleDeActivateParser();
+		mDeActivateParser.setCircleDeActivateparserinterface(new CircleDeActivateParserInterface() {
+			
+			@Override
+			public void OnSuccess() {
+				Util.ShowToast(context,"Succesfully DeActivated your Circle.");
+				if (yourcircleinterface!=null) {
+					yourcircleinterface.refreshFromYourView();
+				}
+			}
+			
+			@Override
+			public void OnError() {
+				
+			}
+		});
+		mDeActivateParser.parse(context, mDeActivateParser.getBody(circleID), Authtoken);
+	}
+	
+	
+	
 	public void refreshData(ArrayList<CircleDetails> circles){
 		mYourCircleListAdapter.refreshData(circles);
 		if (circles!=null && circles.size()>=1) {
@@ -217,16 +265,23 @@ public class FragmentYourCircle extends Fragment {
 			mHolder.img_own.setVisibility(mCircleDetails.getAdmin().equals("true")?View.VISIBLE:View.GONE);
 			mHolder.img_own.setSelected(mCircleDetails.getAdmin().equals("true")?true:false); 
 			
-			
-//			mHolder.img_own.setVisibility(View.VISIBLE);
-//			mHolder.img_own.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-//					
-//				}
-//			});
-			
+			if (mCircleDetails.getAdmin().equals("true")) { 
+				mHolder.img_arrow.setVisibility(View.VISIBLE);
+				mHolder.img_arrow.setSelected(mCircleDetails.getSelected().equals("true")?true:false); 
+				mHolder.img_arrow.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if(circles.get(position).getSelected().equals("true")){
+							circleDeActivate(circleID);
+						}else {
+							circleActivate(circleID);
+						}
+					}
+				});
+			}else {
+				mHolder.img_arrow.setVisibility(View.INVISIBLE);
+			}
 			
 			mHolder.txt_joined.setOnClickListener(new OnClickListener() {
 
@@ -241,9 +296,10 @@ public class FragmentYourCircle extends Fragment {
 				@Override
 				public void onClick(View v) {
 					Intent mIntent=new Intent(mContext,ActivityCircleProfile.class);
-					Bundle mBundle=new Bundle();
-					mBundle.putString("CircleID", circleID);
-					mIntent.putExtras(mBundle);
+//					Bundle mBundle=new Bundle();
+//					mBundle.putString("CircleID", circleID);
+//					mIntent.putExtras(mBundle);
+					((OfCampusApplication)mContext.getApplicationContext()).mCircleDetails_=circles.get(position);
 					mContext.startActivity(mIntent);
 					((Activity) mContext).overridePendingTransition(0,0);
 				}

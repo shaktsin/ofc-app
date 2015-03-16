@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
@@ -219,9 +220,10 @@ public class FragmentJoinCircle extends Fragment {
 				@Override
 				public void onClick(View v) {
 					Intent mIntent=new Intent(mContext,ActivityCircleProfile.class);
-					Bundle mBundle=new Bundle();
-					mBundle.putString("CircleID", circleID);
-					mIntent.putExtras(mBundle);
+//					Bundle mBundle=new Bundle();
+//					mBundle.putString("CircleID", circleID);
+//					mIntent.putExtras(mBundle);
+					((OfCampusApplication)mContext.getApplicationContext()).mCircleDetails_=circles.get(position);
 					mContext.startActivity(mIntent);
 					((Activity) mContext).overridePendingTransition(0,0);
 				}
