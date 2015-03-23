@@ -47,7 +47,7 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.Util.JobDataReturnFor;
-import com.ofcampus.activity.JobsFragment.JobsFrgInterface;
+import com.ofcampus.activity.FragmentJobs.JobsFrgInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
@@ -89,9 +89,10 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     private PagerSlidingTabStrip tabs;
 	private ViewPager pager;
 	private MyPagerAdapter adapter;
-	private JobsFragment mJobsFragment;
-	private ClassifiedsFragment mClassifiedsFragment;
-	private MeetupsFragment mMeetupsFragment;
+	private FragmentNewsFeeds fragmentNewsFeeds; 
+	private FragmentJobs fragmentJobs; 
+	private FragmentClassifieds mClassifiedsFragment;
+	private FragmentMeetups fragmentMeetups; 
 
 	private TextView txt_countjob,txt_countclass ,txt_countmetup;
 	
@@ -338,11 +339,11 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 					Log.e("pulltorefreshcall success", e.toString());
 					e.printStackTrace();
 				}
-				mJobsFragment.refreshSwipeDataInAdapter(jobs);
+				fragmentJobs.refreshSwipeDataInAdapter(jobs);
 				JOBListTable.getInstance(mContext).deleteoutDatedPost(jobs.size());
 			} else {
 				Util.ShowToast(mContext, "No more job updated.");
-				mJobsFragment.refreshComplete();
+				fragmentJobs.refreshComplete();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -363,17 +364,17 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 				if (mJobList != null) {
 					ArrayList<JobDetails> jobs = mJobList.getJobs();
 					if (jobs != null && jobs.size() >= 1) {
-						mJobsFragment.refreshLoadMoreDataInAdapter(jobs);
+						fragmentJobs.refreshLoadMoreDataInAdapter(jobs);
 					}else {
 						Util.ShowToast(mContext, "No more job available.");
-						mJobsFragment.refreshComplete();
+						fragmentJobs.refreshComplete();
 					}
 				}
 			}
 
 			@Override
 			public void OnError() {
-				mJobsFragment.refreshComplete();
+				fragmentJobs.refreshComplete();
 			}
 		});
 		
@@ -496,7 +497,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 				if (mJobList != null) {
 					ArrayList<JobDetails> jobs = mJobList.getJobs();
 					if (jobs != null && jobs.size() >= 1) {
-						mJobsFragment.refreshDataInAdapter(jobs);
+						fragmentJobs.refreshDataInAdapter(jobs);
 					}
 				}
 			}
@@ -541,7 +542,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     
     public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
-		private final String[] TITLES = { "Jobs", "Classifieds","Meetups"};
+//		private final String[] TITLES = { "Jobs", "Classifieds","Meetups"};
+    	private final String[] TITLES = { "Newsfeed", "Jobs","Classifieds"};
 
 		public MyPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -570,16 +572,20 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		@Override
 		public Fragment getItem(int position) {
 			switch (position) {
+			
 			case 0:
-				mJobsFragment = JobsFragment.newInstance(position,ActivityHome.this);
-				mJobsFragment.setJobsfrginterface(ActivityHome.this);
-				return mJobsFragment;
+				fragmentNewsFeeds = FragmentNewsFeeds.newInstance(position,ActivityHome.this);
+				return fragmentNewsFeeds;
 			case 1:
-				mClassifiedsFragment = ClassifiedsFragment.newInstance(position,ActivityHome.this);
-				return mClassifiedsFragment;
+				fragmentJobs = FragmentJobs.newInstance(position,ActivityHome.this);
+				fragmentJobs.setJobsfrginterface(ActivityHome.this);
+				return fragmentJobs;
 			case 2:
-				mMeetupsFragment = MeetupsFragment.newInstance(position,ActivityHome.this);
-				return mMeetupsFragment;
+				mClassifiedsFragment = FragmentClassifieds.newInstance(position,ActivityHome.this);
+				return mClassifiedsFragment;
+//			case 3:
+//				fragmentMeetups = FragmentMeetups.newInstance(position,ActivityHome.this);
+//				return fragmentMeetups;
 			}
 			return null;
 			
@@ -641,9 +647,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 						count[1]="";
 						count[2]="";
 					}else {
-						if (mJobsFragment.firsttJobID!=null && !mJobsFragment.firsttJobID.equals("")) {
+						if (fragmentJobs.firsttJobID!=null && !fragmentJobs.firsttJobID.equals("")) {
 							CountSyncParser countSyncParser=new CountSyncParser();
-							arrJOb = countSyncParser.parse(mContext, countSyncParser.getBody(mJobsFragment.firsttJobID, 1+""), tocken);
+							arrJOb = countSyncParser.parse(mContext, countSyncParser.getBody(fragmentJobs.firsttJobID, 1+""), tocken);
 							if (arrJOb!=null && arrJOb.size()>=1) {
 								count[0]=""+arrJOb.size();
 								count[1]="";

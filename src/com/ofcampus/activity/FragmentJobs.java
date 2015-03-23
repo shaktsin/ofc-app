@@ -33,7 +33,7 @@ import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 import com.ofcampus.ui.ReplyDialog;
 
-public class JobsFragment extends Fragment  implements jobListInterface,OnRefreshListener{
+public class FragmentJobs extends Fragment  implements jobListInterface,OnRefreshListener{
 
 	private static final String ARG_POSITION = "position";
 	private static Context context;
@@ -55,8 +55,8 @@ public class JobsFragment extends Fragment  implements jobListInterface,OnRefres
 	
 	
     
-	public static JobsFragment newInstance(int position,Context mContext) {
-		JobsFragment f = new JobsFragment();
+	public static FragmentJobs newInstance(int position,Context mContext) {
+		FragmentJobs f = new FragmentJobs();
 		Bundle b = new Bundle();
 		b.putInt(ARG_POSITION, position);
 		f.setArguments(b);

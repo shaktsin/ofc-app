@@ -36,8 +36,8 @@ public class ActivityLogin extends Activity implements OnClickListener{
 		
 		context=ActivityLogin.this;
 		initilize();
-		edt_email.setText("dibakar@ofcampus.com");
-		edt_pass.setText("123456");
+//		edt_email.setText("dibakar@ofcampus.com");
+//		edt_pass.setText("123456");
 	}
 	
 	
@@ -49,9 +49,12 @@ public class ActivityLogin extends Activity implements OnClickListener{
 			Util.HideKeyBoard(context, v);
 			LoginEvent();
 			break;
-		case R.id.login_txt_forsignup:
+		case R.id.login_btn_signup:
 			startActivity(new Intent(ActivityLogin.this,ActivityRegistration.class));
 			overridePendingTransition(0, 0);
+			break;
+		case R.id.login_txt_forgotpass:
+		
 			break;
 
 		default:
@@ -68,8 +71,9 @@ public class ActivityLogin extends Activity implements OnClickListener{
 		edt_email=(EditText) findViewById(R.id.login_edt_email);
 		edt_pass=(EditText) findViewById(R.id.login_edt_passw);
 		LoginBox.setVisibility(View.GONE);
-		((TextView) findViewById(R.id.login_txt_forsignup)).setOnClickListener(this);
 		((TextView) findViewById(R.id.login_btn_login)).setOnClickListener(this);
+		((TextView) findViewById(R.id.login_btn_signup)).setOnClickListener(this);
+		((TextView) findViewById(R.id.login_txt_forgotpass)).setOnClickListener(this);
 		gotoNext(100);
 	}
 	

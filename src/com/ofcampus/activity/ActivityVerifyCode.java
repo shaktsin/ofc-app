@@ -49,10 +49,6 @@ public class ActivityVerifyCode extends Activity implements OnClickListener{
 			Util.HideKeyBoard(context, v);
 			VerifyCodeEvent(); 
 			break;
-		case R.id.login_txt_forsignup:
-			startActivity(new Intent(ActivityVerifyCode.this,ActivityRegistration.class));
-			overridePendingTransition(0, 0);
-			break;
 		case R.id.registration_btn_resend:
 			ResendTokenEvent();
 			break;
