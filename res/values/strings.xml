@@ -31,11 +31,19 @@
 
     <!-- Login Screen -->
     <string name="login_scr_logo_">Of Campus</string>
-    <string name="login_scr_hint_email">Enter email address</string>
+    <!--
+         <string name="login_scr_hint_email">Enter email address</string>
     <string name="login_scr_hint_Pass">Enter password</string>
+    -->
+
+    <string name="login_scr_hint_email">xyz@collegename.edu</string>
+    <string name="login_scr_hint_Pass">Enter password</string>
+    
+    
     <string name="login_scr_btn_login">Login</string>
     <string name="login_scr_btn_gpllogin">Sign in with Google+</string>
-    <string name="login_scr_txt_donthaveaccount">Don\'t have an account?click here</string>
+    <string name="login_scr_txt_signup">Create an account</string>
+    <string name="login_scr_txt_forgotpass">Forgot password</string>
     <string name="login_scr_email_msg">Enter an email address.</string>
     <string name="login_scr_error_email_msg">Enter an valid email address.</string>
     <string name="login_scr_edtpass_msg">Enter a password.</string>
@@ -105,7 +113,7 @@
     <!-- Circle -->
     <string name="enter_circlename_title">Please enter a circle name to craete your own circle.</string>
     <string name="enter_circlename">Name of Circle</string>
-     <string name="enter_msg_circlename">Please enter Circle Name.</string>
+    <string name="enter_msg_circlename">Please enter Circle Name.</string>
     <string name="createcircle_txtmodarator">Public</string>
     <string name="create_circlebtn">Create Circle</string>
 

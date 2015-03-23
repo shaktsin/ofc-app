@@ -133,7 +133,7 @@ public class LoginParser {
 					Util.ShowToast(mContext, "Login error.");
 				}
 			}else if (responsecode.equals("500")){
-				Util.ShowToast(mContext, responseDetails);
+				Util.ShowToast(mContext, "Invalid Credentials");
 			}else {
 				Util.ShowToast(mContext, "Login error.");
 			}

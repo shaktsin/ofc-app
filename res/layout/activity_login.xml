@@ -15,9 +15,9 @@
         android:padding="2dp"
         android:text="@string/login_scr_logo_"
         android:textColor="@color/primary"
-        android:textSize="35sp"
-        android:textStyle="bold|italic"
-        ofcampus:fontName="Helvetica.otf" />
+        android:textSize="40sp"
+        android:textStyle="bold"
+        ofcampus:fontName="Roboto-BoldCondensedItalic.ttf" />
 
     <LinearLayout
         android:id="@+id/LoginBox"
@@ -79,9 +79,24 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"
             ofcampus:fontName="Helvetica.otf" />
+        
+        <com.ofcampus.ui.CustomTextView
+            android:id="@+id/login_btn_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_rec"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/login_scr_txt_signup"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            ofcampus:fontName="Helvetica.otf" />
 
         <com.ofcampus.ui.CustomTextView
-            android:id="@+id/login_txt_forsignup"
+            android:id="@+id/login_txt_forgotpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -89,7 +104,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:padding="3dp"
-            android:text="@string/login_scr_txt_donthaveaccount"
+            android:text="@string/login_scr_txt_forgotpass"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/primary"
             ofcampus:fontName="Helvetica.otf" />
