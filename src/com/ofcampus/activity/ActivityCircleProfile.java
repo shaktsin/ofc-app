@@ -150,7 +150,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	private void initilize() {
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("Circle Profile");
+		toolbar.setTitle("Club Profile");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

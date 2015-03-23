@@ -293,13 +293,13 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	public void onPageSelected(int position) {
 		switch (position) {
 		case 0:
-			
+			img_composejob.setVisibility(View.GONE);
 			break;
 		case 1:
-			
+			img_composejob.setVisibility(View.VISIBLE);
 			break;
 		case 2:
-			
+			img_composejob.setVisibility(View.GONE);
 			break;
 
 		default:
@@ -398,6 +398,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		mRecyclerView.setHasFixedSize(true);
 		img_composejob = (ImageView)findViewById(R.id.activity_home_img_composejob);
 		img_composejob.setOnClickListener(this);
+		img_composejob.setVisibility(View.GONE);
 		
 		mAdapter = new SlideMenuAdapter(ActivityHome.this,Util.TITLES, Util.ICONS, NAME, EMAIL,picUrl);
 		mAdapter.setViewclickevent(this);
@@ -471,6 +472,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		pager.setPageMargin(pageMargin);
 		tabs.setViewPager(pager);
 		pager.setOffscreenPageLimit(3);
+		pager.setCurrentItem(1);
 		tabs.setOnPageChangeListener(this);
     }
     

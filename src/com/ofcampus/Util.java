@@ -60,7 +60,7 @@ public class Util {
 
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
 
-	public static String TITLES[] = { "My Profile", "My Posts", "Important Mail", "Hide Post", "Circle", "Settings", "Logout" };
+	public static String TITLES[] = { "My Profile", "My Posts", "Important Mail", "Hide Post", "Clubs", "Settings", "Logout" };
 	
 	
 	public static String sendto[] = { "Everyone", "Class of 2014","General Management Club", "Finance Club", "Hyderabad Chapter" };

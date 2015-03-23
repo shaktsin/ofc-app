@@ -35,7 +35,7 @@ public class ActivityCreateCircle extends ActionBarActivity implements OnClickLi
 		
 		Authtoken = UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("Create Circle");
+		toolbar.setTitle("Create Club");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		initilizView();

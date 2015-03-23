@@ -45,7 +45,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		
 		Authtoken = UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("Circle");
+		toolbar.setTitle("Clubs");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		initiliz();
@@ -139,7 +139,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	
 	public class SelectionPagerAdapter extends FragmentStatePagerAdapter {
 
-		private final String[] TITLES = { "Your Circle", "Join Circle" };
+		private final String[] TITLES = { "Your Clubs", "Join Clubs" };
 
 		public SelectionPagerAdapter(FragmentManager fm) {
 			super(fm);
