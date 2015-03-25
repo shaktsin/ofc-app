@@ -12,22 +12,25 @@ import android.widget.TextView;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.parser.ForgotPasswordParser;
-import com.ofcampus.parser.ForgotPasswordParser.ForgotPasswordParserInterface;
+import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.ResetPaswordParser;
+import com.ofcampus.parser.ResetPaswordParser.ResetPaswordParserInterface;
 
-public class ActivityForgotPassword extends ActionBarActivity implements OnClickListener {
+public class ActivityResetPassword extends ActionBarActivity implements OnClickListener {
 
-	private EditText edt_email;
+	private EditText edt_password,edt_retypepassword;
 	private Context context;
+	private String Auth="";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_forgotpassword);
+		setContentView(R.layout.activity_resetpassword);
 
-		context = ActivityForgotPassword.this;
+		context = ActivityResetPassword.this;
+		Auth=UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("");
+		toolbar.setTitle("Reset Password");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		initilize();
@@ -53,9 +56,9 @@ public class ActivityForgotPassword extends ActionBarActivity implements OnClick
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.forgotpasswrd_btn_Submit:
+		case R.id.resetpass_btn_reset:
 			Util.HideKeyBoard(context, v);
-			ForgotPasswordEvent(); 
+			ResetPasswordEvent();  
 			break;
 		default:
 			break;
@@ -66,42 +69,46 @@ public class ActivityForgotPassword extends ActionBarActivity implements OnClick
 	 * Initialize all the view id here,those are include in the layout.
 	 */
 	private void initilize() {
-		edt_email = (EditText) findViewById(R.id.forgotpasswrd_edt_email);
-		((TextView) findViewById(R.id.forgotpasswrd_btn_Submit)).setOnClickListener(this);
+		edt_password= (EditText) findViewById(R.id.resetpass_edt_password);
+		edt_retypepassword = (EditText) findViewById(R.id.resetpass_edt_retppassword);
+		
+		((TextView) findViewById(R.id.resetpass_btn_reset)).setOnClickListener(this);
 	}
 
 	/**
 	 * After click on Login button this event run.
 	 */
-	private void ForgotPasswordEvent() {
-		String email = edt_email.getText().toString();		
+	private void ResetPasswordEvent() {
+		String password = edt_password.getText().toString();		
+		String retyppassword = edt_retypepassword.getText().toString();		
 	
-		if (email.length()==0) {
-			Util.ShowToast(context, getResources().getString(R.string.login_scr_email_msg)); 
+		if (password.length()==0) {
+			Util.ShowToast(context, getResources().getString(R.string.resetpassword_enterpassword)); 
 			return;
 		}
 		
-		if (!Util.isValidEmail(email)) {
-			Util.ShowToast(context, getResources().getString(R.string.login_scr_error_email_msg));
+		if (retyppassword.length()==0) {
+			Util.ShowToast(context, getResources().getString(R.string.resetpassword_retypepassword)); 
 			return;
 		}
 		
-		if (!Util.isValidEmail_again(email)) { 
-			Util.ShowToast(context, getResources().getString(R.string.login_scr_error_email_msg));
+		if (!retyppassword.equalsIgnoreCase(password)) {
+			Util.ShowToast(context, getResources().getString(R.string.resetpassword_validation)); 
 			return;
 		}
+		
 		
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg)); 
 			return;
 		}
 		
-		ForgotPasswordParser mParser=new ForgotPasswordParser();
-		mParser.setForgotpasswordparserinterface(new ForgotPasswordParserInterface() {
+		ResetPaswordParser mParser=new ResetPaswordParser();
+		mParser.setResetpaswordparserinterface(new ResetPaswordParserInterface() {
 			
 			@Override
 			public void OnSuccess() {
-				Util.ShowToast(context, "Please check your mailbox,password has been sent."); 
+				Util.ShowToast(context, "Successfully reset your password"); 
 				onBackPressed();
 			}
 			
@@ -110,7 +117,8 @@ public class ActivityForgotPassword extends ActionBarActivity implements OnClick
 				
 			}
 		});
-		mParser.parse(context, mParser.getBody(email)); 
+		
+		mParser.parse(context, mParser.getBody(password, retyppassword), Auth);
 		
 	}
 }

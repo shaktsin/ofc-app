@@ -271,7 +271,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 					overridePendingTransition(0,0);
 					break;
 				case 6:
-					startActivity(new Intent(ActivityHome.this,ActivitySettings.class));
+					startActivity(new Intent(ActivityHome.this,ActivityResetPassword.class));
 					overridePendingTransition(0,0);
 					break;
 				case 7:
@@ -449,11 +449,11 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     	
     	txt_countjob = (TextView) findViewById(R.id.activity_home_jobcount);
     	bgShape = (GradientDrawable)txt_countjob.getBackground();
-    	bgShape.setColor(Color.parseColor("#E84C3D"));
+    	bgShape.setColor(Color.parseColor("#5498C7"));
     	
     	txt_countclass = (TextView) findViewById(R.id.activity_home_classcount);
     	bgShape = (GradientDrawable)txt_countclass.getBackground();
-    	bgShape.setColor(Color.parseColor("#5498C7"));
+    	bgShape.setColor(Color.parseColor("#E84C3D"));
     	
     	txt_countmetup = (TextView) findViewById(R.id.activity_home_meetcount);
     	bgShape = (GradientDrawable)txt_countmetup.getBackground();

@@ -38,8 +38,6 @@
 
     <string name="login_scr_hint_email">xyz@collegename.edu</string>
     <string name="login_scr_hint_Pass">Enter password</string>
-    
-    
     <string name="login_scr_btn_login">Login</string>
     <string name="login_scr_btn_gpllogin">Sign in with Google+</string>
     <string name="login_scr_txt_signup">Create an account</string>
@@ -116,5 +114,12 @@
     <string name="enter_msg_circlename">Please enter Circle Name.</string>
     <string name="createcircle_txtmodarator">Public</string>
     <string name="create_circlebtn">Create Circle</string>
+
+    <!-- Reset Password -->
+
+    <string name="resetpassword_Submit">Submit</string>
+    <string name="resetpassword_enterpassword">Enter Password</string>
+    <string name="resetpassword_retypepassword">Retype Password</string>
+    <string name="resetpassword_validation">Password and Retype Password not same.</string>
 
 </resources>
