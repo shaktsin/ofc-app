@@ -141,7 +141,7 @@ public class ImportantMailParser {
 						importantmailparserinterface.OnSuccess(mJobList); 
 					}
 				}else {
-					Util.ShowToast(mContext, "Joblist parse error.");
+					Util.ShowToast(mContext, "No more Important Jobs.");
 				}
 			}else if (responsecode.equals("500")){
 				Util.ShowToast(mContext, responseDetails);

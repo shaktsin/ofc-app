@@ -243,47 +243,46 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	}
     
 	@Override
-	public void OnViewItemClick(int position) {
-		switch (position) {
+	public void OnViewItemClick(final int position) {
+		closeDraware();
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				switch (position) {
 
-		case 1:
-			closeDraware();
-			startActivity(new Intent(ActivityHome.this,ActivityMyProfile.class));
-			overridePendingTransition(0,0);
-			break;
-		case 2:
-			closeDraware();
-			startActivity(new Intent(ActivityHome.this,ActivityMyPost.class));
-			overridePendingTransition(0,0);
-			break;
-		case 3:
-			closeDraware();
-			startActivity(new Intent(ActivityHome.this,ActivityImportantmail.class));
-			overridePendingTransition(0,0);
-			break;
-		case 4:
-			closeDraware();
-			startActivity(new Intent(ActivityHome.this,ActivityHidePost.class));
-			overridePendingTransition(0,0);
-			break;
-		case 5:
-			closeDraware();
-			startActivity(new Intent(ActivityHome.this,ActivityCircle.class));
-			overridePendingTransition(0,0);
-			break;
-		case 6:
-			closeDraware();
-			startActivity(new Intent(ActivityHome.this,ActivitySettings.class));
-			overridePendingTransition(0,0);
-			break;
-		case 7:
-			closeDraware();
-			showLogutDialog();
-			break;
+				case 1:
+					startActivity(new Intent(ActivityHome.this,ActivityMyProfile.class));
+					overridePendingTransition(0,0);
+					break;
+				case 2:
+					startActivity(new Intent(ActivityHome.this,ActivityMyPost.class));
+					overridePendingTransition(0,0);
+					break;
+				case 3:
+					startActivity(new Intent(ActivityHome.this,ActivityImportantmail.class));
+					overridePendingTransition(0,0);
+					break;
+				case 4:
+					startActivity(new Intent(ActivityHome.this,ActivityHidePost.class));
+					overridePendingTransition(0,0);
+					break;
+				case 5:
+					startActivity(new Intent(ActivityHome.this,ActivityCircle.class));
+					overridePendingTransition(0,0);
+					break;
+				case 6:
+					startActivity(new Intent(ActivityHome.this,ActivitySettings.class));
+					overridePendingTransition(0,0);
+					break;
+				case 7:
+					showLogutDialog();
+					break;
 
-		default:
-			break;
-		}
+				default:
+					break;
+				}
+			}
+		}, 200);
 	}
     
 	/**
@@ -398,7 +397,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		mRecyclerView.setHasFixedSize(true);
 		img_composejob = (ImageView)findViewById(R.id.activity_home_img_composejob);
 		img_composejob.setOnClickListener(this);
-		img_composejob.setVisibility(View.GONE);
+//		img_composejob.setVisibility(View.GONE);
 		
 		mAdapter = new SlideMenuAdapter(ActivityHome.this,Util.TITLES, Util.ICONS, NAME, EMAIL,picUrl);
 		mAdapter.setViewclickevent(this);

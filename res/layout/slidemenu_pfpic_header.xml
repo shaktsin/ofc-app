@@ -8,8 +8,8 @@
 
     <RelativeLayout
         android:id="@+id/slide_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp" >
 
@@ -33,7 +33,7 @@
         android:layout_below="@+id/slide_image"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:orientation="vertical" >
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/name"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:text="Class 2014"
             android:textColor="@color/job_contain"
             android:textSize="12sp"

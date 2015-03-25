@@ -14,17 +14,17 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/activity_home_jobcount"
+                android:id="@+id/activity_home_classcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="5dp"
                 android:background="@drawable/ic_count"
+                android:gravity="center"
                 android:padding="5dp"
                 android:singleLine="true"
                 android:text="2"
-                android:gravity="center"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/joblitview_postdate"
                 android:visibility="visible" />
@@ -36,7 +36,7 @@
             android:layout_weight="1" >
 
             <TextView
-                android:id="@+id/activity_home_classcount"
+                android:id="@+id/activity_home_jobcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

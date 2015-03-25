@@ -210,8 +210,13 @@ public class Util {
 		return baseUrl + "circle/requests";
 	}
 	
+	public static String getForGotPasswordUrl() {
+		return baseUrl + "user/forgot/password";
+	}
 	
-	
+	public static String getResetPasswordUrl() {
+		return baseUrl + "user/change/password";
+	}
 	
 	/********************URl List**********************/
 	

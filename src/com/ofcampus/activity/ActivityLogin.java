@@ -54,7 +54,8 @@ public class ActivityLogin extends Activity implements OnClickListener{
 			overridePendingTransition(0, 0);
 			break;
 		case R.id.login_txt_forgotpass:
-		
+			startActivity(new Intent(ActivityLogin.this,ActivityForgotPassword.class));
+			overridePendingTransition(0, 0);
 			break;
 
 		default:
