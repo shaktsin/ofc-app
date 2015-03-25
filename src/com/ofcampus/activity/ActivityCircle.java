@@ -243,7 +243,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 			public void run() {
 				getAllCircleList(false);
 			}
-		}, 300);
+		}, 600);
 	}
 
 }

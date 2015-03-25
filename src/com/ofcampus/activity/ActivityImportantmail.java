@@ -12,11 +12,9 @@ import android.widget.ListView;
 
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.Util.JobDataReturnFor;
 import com.ofcampus.adapter.ImportantMailListAdapter;
 import com.ofcampus.adapter.ImportantMailListAdapter.ImportantMailListAdapterInterface;
 import com.ofcampus.databasehelper.ImportantJobTable;
-import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.ImportantMailParser;
