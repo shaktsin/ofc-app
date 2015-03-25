@@ -27,7 +27,7 @@ public class ActivityForgotPassword extends ActionBarActivity implements OnClick
 
 		context = ActivityForgotPassword.this;
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("");
+		toolbar.setTitle("Forgot Password");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		initilize();
