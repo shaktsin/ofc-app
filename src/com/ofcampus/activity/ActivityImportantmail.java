@@ -15,21 +15,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.ImportantMailListAdapter;
 import com.ofcampus.adapter.ImportantMailListAdapter.ImportantMailListAdapterInterface;
 import com.ofcampus.databasehelper.ImportantJobTable;
+import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.ImportantMailParser;
+import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.ImportantMailParser.ImportantMailParserInterface;
+import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 
 public class ActivityImportantmail  extends ActionBarActivity implements ImportantMailListAdapterInterface{
 	
 	private ListView mypostList;
 	private ImportantMailListAdapter mImportantMailListAdapter;
 	private Context context;
+	private String token="";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class ActivityImportantmail  extends ActionBarActivity implements Importa
 		setContentView(R.layout.activity_importantmail);
 
 		context=ActivityImportantmail.this;
+		token=UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle("Important Mail");
 		setSupportActionBar(toolbar);
@@ -73,6 +79,11 @@ public class ActivityImportantmail  extends ActionBarActivity implements Importa
 		
 	}
 	
+	@Override
+	public void unIportantEvent(JobDetails mJobDetails, int postion) {
+		UnImptCalling(mJobDetails,11,postion);	
+	}
+	
 	private void initiliz(){
 		mypostList=(ListView)findViewById(R.id.activity_home_importantmaillist);
 		mImportantMailListAdapter=new ImportantMailListAdapter(context, new ArrayList<JobDetails>());
@@ -105,32 +116,56 @@ public class ActivityImportantmail  extends ActionBarActivity implements Importa
 		}
 	}
 	
+	
+	
+	private void UnImptCalling(final JobDetails mJobDetails, final int state, final int postion){   
+		if (!Util.hasConnection(context)) { 
+			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+		
+		PostUnHideUnImpParser PostUnHideUnImpParser=new PostUnHideUnImpParser();
+		PostUnHideUnImpParser.setPostunhideunimpparserinterface(new PostUnHideUnImpParserInterface() {
+			
+			@Override
+			public void OnSuccess() {
+				mJobDetails.important=0;
+				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+				mImportantMailListAdapter.unImportantJobRemove(mJobDetails,postion);
+				((OfCampusApplication)getApplication()).isHidePostModify=true;
+			}
+			
+			@Override
+			public void OnError() {
+				
+			}
+		});
+		PostUnHideUnImpParser.parse(context, PostUnHideUnImpParser.getBody(state+"", mJobDetails.getPostid()), token);  
+	}
+	
+	
+	
+	/**
+	 * Offline Data from Data Base.
+	 */
 	private class loadOffLineData extends AsyncTask<Void, Void, Void> {
-
 		private ArrayList<JobDetails> arrayJob;
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
 		protected Void doInBackground(Void... params) {
-			
 			arrayJob = ImportantJobTable.getInstance(context).fatchImpJobData();
-			
 			return null;
 		}
-
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			
 			if (arrayJob!=null && arrayJob.size()>=1) {
 				mImportantMailListAdapter.refreshData(arrayJob);
 			}
 		}
 
 	}
+
+	
 
 	
 }

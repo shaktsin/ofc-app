@@ -69,7 +69,7 @@ public class ActivityHidePost extends ActionBarActivity implements HideJobListIn
 	
 	@Override
 	public void arrowUnHideClieckEvent(JobDetails mJobDetails,int position) {
-		HideCalling(mJobDetails,12,position);
+		UnHideCalling(mJobDetails,12,position); 
 	}
 	
 	private void initiliz(){
@@ -105,7 +105,7 @@ public class ActivityHidePost extends ActionBarActivity implements HideJobListIn
 		
 	}
 	
-	private void HideCalling(final JobDetails mJobDetails, final int state, final int position){    
+	private void UnHideCalling(final JobDetails mJobDetails, final int state, final int position){    
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
 			return;

@@ -18,7 +18,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -70,6 +69,13 @@ public class ImportantMailListAdapter extends BaseAdapter{
 		notifyDataSetChanged();
 	}
 	
+	
+	public void unImportantJobRemove(JobDetails mJobDetails, int postion) {
+		this.jobs.remove(postion);
+		notifyDataSetChanged();
+	}
+	
+	
 	public ArrayList<JobDetails> getJobData(){
 		return this.jobs;
 	}
@@ -91,11 +97,11 @@ public class ImportantMailListAdapter extends BaseAdapter{
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		
 		ViewHolder mHolder;
 		if (convertView==null) {
-			mHolder=new ViewHolder();
+			mHolder=new ViewHolder(); 
 			convertView=inflater.inflate(R.layout.inflate_joblistrow, null);
 			mHolder.profilepic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
@@ -125,11 +131,17 @@ public class ImportantMailListAdapter extends BaseAdapter{
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			mHolder.txt_contain.setText(mJobDetails.getContent());
 			
-//			if (mJobDetails.getImportant()==1) {
-//				mHolder.img_important.setVisibility(View.VISIBLE);
-//			}else {
-//				mHolder.img_important.setVisibility(View.GONE);
-//			}
+			mHolder.img_important.setVisibility(View.VISIBLE);
+			mHolder.img_important.setSelected(true);
+			mHolder.img_important.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if (importantmaillistadapterinterface!=null) {
+						importantmaillistadapterinterface.unIportantEvent(mJobDetails, position); 
+					}
+				}
+			});
 
 			
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
@@ -224,7 +236,7 @@ public class ImportantMailListAdapter extends BaseAdapter{
 
 	public interface ImportantMailListAdapterInterface {
 		public void convertViewOnClick(JobDetails mJobDetails);
-
+		public void unIportantEvent(JobDetails mJobDetails,int postion);
 		public void firstIDAndlastID(String fstID, String lstID);
 	}
 }
