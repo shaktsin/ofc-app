@@ -1,3 +1,8 @@
+/*
+ * This is the source code of OfCampus for Android v. 1.0.0.
+ * You should have received a copy of the license in this archive (see LICENSE).
+ * Copyright @Dibakar_Mistry, 2015.
+ */
 package com.ofcampus.adapter;
 
 import java.util.ArrayList;
@@ -8,14 +13,11 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.ofcampus.R;
-import com.ofcampus.model.Circle;
 import com.ofcampus.model.IndustryDetails;
 
 public class SpinnerIndustryAdapter  implements SpinnerAdapter {

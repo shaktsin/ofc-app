@@ -1,3 +1,8 @@
+/*
+ * This is the source code of OfCampus for Android v. 1.0.0.
+ * You should have received a copy of the license in this archive (see LICENSE).
+ * Copyright @Dibakar_Mistry, 2015.
+ */
 package com.ofcampus.parser;
 
 import java.util.ArrayList;
@@ -13,7 +18,6 @@ import android.os.Build;
 
 import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
-import com.ofcampus.model.InstituteDetails;
 
 public class CircleListParser {
 

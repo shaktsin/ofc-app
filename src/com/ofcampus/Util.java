@@ -1,3 +1,9 @@
+/*
+ * This is the source code of OfCampus for Android v. 1.0.0.
+ * You should have received a copy of the license in this archive (see LICENSE).
+ * Copyright Dibakar MIstry, 2015.
+ */
+
 package com.ofcampus;
 
 import java.io.BufferedReader;

@@ -1,3 +1,8 @@
+/*
+ * This is the source code of OfCampus for Android v. 1.0.0.
+ * You should have received a copy of the license in this archive (see LICENSE).
+ * Copyright @Dibakar_Mistry, 2015.
+ */
 package com.ofcampus.activity;
 
 import java.util.ArrayList;
@@ -98,12 +103,7 @@ public class ActivityImportantmail  extends ActionBarActivity implements Importa
 			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
 			new loadOffLineData().execute();
 		}
-
-		
-		
 	}
-	
-	
 	
 	private class loadOffLineData extends AsyncTask<Void, Void, Void> {
 
