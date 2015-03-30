@@ -3,6 +3,7 @@ package com.ofcampus.activity;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -94,10 +95,13 @@ public class ActivityNewsDetails extends ActionBarActivity implements OnClickLis
 			onBackPressed();
 			return true;
 		case R.id.action_editpost:
-//			((OfCampusApplication) getApplication()).jobdetails=mJobDetails;	
-//			startActivity(new Intent(ActivityNewsDetails.this,ActivityPostEdit.class));
-//			overridePendingTransition(0,0);
-//			onBackPressed();
+			((OfCampusApplication) getApplication()).jobdetails=mJobDetails;
+			Intent mIntent = new Intent(ActivityNewsDetails.this,ActivityPostEdit.class);
+			Bundle mBundle=new Bundle();
+			mBundle.putInt("createFor", 0);
+			mIntent.putExtras(mBundle);
+			startActivity(mIntent);
+			overridePendingTransition(0,0);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

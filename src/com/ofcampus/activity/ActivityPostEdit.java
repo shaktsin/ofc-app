@@ -60,6 +60,8 @@ import com.ofcampus.model.PrepareListForJobCreating;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.EditJobParser;
 import com.ofcampus.parser.EditJobParser.EditJobParserInterface;
+import com.ofcampus.parser.EditNewsParser;
+import com.ofcampus.parser.EditNewsParser.EditNewsParserInterface;
 import com.ofcampus.parser.PrepareForCreatingJobParser;
 import com.ofcampus.parser.PrepareForCreatingJobParser.PrepareParserInterface;
 
@@ -69,7 +71,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 	private Context context;
 	private UserDetails mDetails;
 	private Spinner industry,role,location;
-	private EditText jobheadline,jobdetails,edt_email,edt_phno,edt_whatsapp;
+	private EditText postheadline,postdetails,edt_email,edt_phno,edt_whatsapp; 
 	private TextView txt_valueexp,txt_valuesal,edit_to;
 	
 	private String phno,email,whatsapp;
@@ -102,14 +104,23 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 	private JobDetails mJobDetails;
 	private String JObID="";
 	
+	
+	private int  createFor=0;//Create News Post=0 , Create JobPost =1;
+	private String hintconcText="";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_createjob_new);
 
 		context=ActivityPostEdit.this;
+		
+		Bundle mBundle=getIntent().getExtras();
+		createFor=mBundle.getInt("createFor");
+		hintconcText=(createFor==0)?"Post":"Job";
+		
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("Create Job");
+		toolbar.setTitle(hintconcText+" Edit");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -149,7 +160,11 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 				Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg)); 
 			}else {
 				resetViewAll();
-				postJobEvent();
+				if (createFor==0) {
+					PostNewsEvent();
+				}else {
+					postJobEvent();
+				}
 			}
 			return true;
 		}
@@ -267,8 +282,8 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		location=(Spinner)findViewById(R.id.activity_createjob_spn_location);
 
 			
-		jobheadline = (EditText) findViewById(R.id.activity_createjob_edit_jobtitle);
-		jobdetails = (EditText) findViewById(R.id.activity_createjob_edit_jobdescrip);
+		postheadline = (EditText) findViewById(R.id.activity_createjob_edit_jobtitle);
+		postdetails = (EditText) findViewById(R.id.activity_createjob_edit_jobdescrip);
 		
 		edt_email = (EditText) findViewById(R.id.activity_create_edt_emailreply);
 		edt_phno = (EditText) findViewById(R.id.activity_create_edt_phone);
@@ -281,7 +296,11 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		edit_to = (TextView)findViewById(R.id.activity_createjob_edit_to);
 		edit_to.setOnClickListener(this);
 		((ImageView)findViewById(R.id.activity_createjob_attached)).setOnClickListener(this);
-		((ImageView)findViewById(R.id.activity_createjob_edit)).setOnClickListener(this);
+		if (createFor==0) {
+			((ImageView)findViewById(R.id.activity_createjob_edit)).setVisibility(View.GONE);
+		}else {
+			((ImageView)findViewById(R.id.activity_createjob_edit)).setOnClickListener(this);
+		}
 		((ImageView)findViewById(R.id.activity_createjob_rply)).setOnClickListener(this);
 		
 		sendtolist=(ListView)findViewById(R.id.activity_createjob_new_sendtolist);
@@ -405,8 +424,8 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;		
 		JObID=mJobDetails.getPostid();
 
-		jobheadline.setText(mJobDetails.getSubject());
-		jobdetails.setText(mJobDetails.getContent());
+		postheadline.setText(mJobDetails.getSubject());
+		postdetails.setText(mJobDetails.getContent());
 		
 		edt_email.setText(mJobDetails.getReplyEmail());
 		edt_phno.setText(mJobDetails.getReplyPhone());
@@ -755,8 +774,8 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		String experiencfrom=exp_max;
 		String salaryto=salary_min;
 		String salaryfrom=salary_max;
-		String headline=jobheadline.getText().toString();
-		String headlinedetails=jobdetails.getText().toString();
+		String headline=postheadline.getText().toString();
+		String headlinedetails=postdetails.getText().toString();
 		
 		if (industryid==-1) {
 			Util.ShowToast(context, "Please select Industry.");
@@ -972,4 +991,137 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		return jsObj;
 	}
 	
+	
+	/***************************************Job Posting Section********************************/
+
+	private void PostNewsEvent(){
+		String email_=edt_email.getText().toString().trim();
+		String ph_=edt_phno.getText().toString().trim();
+		String whats_=edt_whatsapp.getText().toString().trim();
+		String headline=postheadline.getText().toString();
+		String headlinedetails=postdetails.getText().toString();
+	
+		if (headline.equals("")) {
+			Util.ShowToast(context, "Please fill Job Headline.");
+			return;
+		}
+		
+		if (headline.length()>500) {
+			Util.ShowToast(context, "News Headline exit limit.");
+			return;
+		}
+		
+		if (headlinedetails.equals("")) {
+			Util.ShowToast(context, "Please fill Job Details."); 
+			return;
+		}
+		
+		if (headlinedetails.length() > 65535) {
+			Util.ShowToast(context, "News Details exit limit.");
+			return;
+		}
+		
+		if (!ph_.equals("") && ph_.length() < 10 && ph_.length() > 13) {
+			Util.ShowToast(context, "Please enter a valid Phone Number.");
+			return;
+		}
+		
+		if (!whats_.equals("") && whats_.length() < 10 && whats_.length() > 13) {
+			Util.ShowToast(context, "Please enter a valid WhatsApp Number.");
+			return;
+		}
+		
+		String id="";
+		for (Circle mCircle : circlelist) {
+			if (mCircle.isTick==1) {
+				id=id+","+mCircle.getCircleid();
+			}
+		}
+		
+		if (id.equals("")) {
+			Util.ShowToast(context, "Please select to.");
+			return;
+		}
+		
+		id=id.substring(1);
+		JSONObject newsObj = getBody(headline,headlinedetails,email_,ph_,whats_,id+",");
+	
+		ArrayList<String> paths=new ArrayList<String>();
+		if (picdatasets!=null && picdatasets.size()>=1) {
+			for (PicDataSet pic : picdatasets) {
+				if (!pic.path.equals("")) {
+					paths.add(pic.path);
+				}
+				
+			}
+		}
+		
+		if (newsObj != null) {  
+			EditNewsParser mEditNewsParser=new EditNewsParser(); 
+			mEditNewsParser.setEditnewsparserinterface(new EditNewsParserInterface() {
+				
+				@Override
+				public void OnSuccess(JobDetails mJobDetails) {
+					if (mJobDetails!=null) {
+						((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
+						((OfCampusApplication)context.getApplicationContext()).editPostSuccess=true;
+						((OfCampusApplication)context.getApplicationContext()).editPostSuccessForNews=true;
+						((Activity) context).overridePendingTransition(0, 0); 
+						finish();
+					}
+				}
+				
+				@Override
+				public void OnError() {
+					
+				}
+			});
+			mEditNewsParser.parse(context, newsObj, mDetails.getAuthtoken(),paths);
+		}
+	}
+	
+	private JSONObject getBody(String headline,String headlinedetails, String email_, String ph_, String whats_, String Circle_id) { 
+		
+		JSONObject jsObj = new JSONObject();
+		try {
+//			jsObj.put("post", JObID);
+			jsObj.put("postId", JObID);
+			jsObj.put("replyEmail", email_);
+			jsObj.put("replyPhone", ph_);
+			jsObj.put("replyWatsApp", whats_);
+			
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+			
+			jsObj.put("subject", headline);
+			jsObj.put("content", headlinedetails);
+			
+			JSONObject obj=new JSONObject();
+			obj.put("shareEmail", "-1");
+			obj.put("sharePhone", "-1");
+			obj.put("shareWatsApp", "-1");
+			jsObj.put("shareDto", obj);
+			
+			if (deletedIDS!=null && deletedIDS.size()>=1) {
+				JSONArray deletedAttachmentArray=new JSONArray();
+				for (int i = 0; i <deletedIDS.size(); i++) {
+					deletedAttachmentArray.put(i, deletedIDS.get(i));
+				}
+				jsObj.put("deletedAttachment", deletedAttachmentArray);
+			}
+			
+			
+			String[] circle=Circle_id.split(",");
+			JSONArray circleArray=new JSONArray();
+			for (int i = 0; i <circle.length; i++) {
+				circleArray.put(i, circle[i]);
+			}
+			jsObj.put("circleList", circleArray);
+			
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
+	}
 }

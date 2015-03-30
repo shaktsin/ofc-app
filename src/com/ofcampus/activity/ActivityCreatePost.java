@@ -108,7 +108,7 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 		Bundle mBundle=getIntent().getExtras();
 		String title=mBundle.getString("ToolBarTitle");
 		createFor=mBundle.getInt("createFor");
-		hintconcText=(createFor==0)?"News":"Job";
+		hintconcText=(createFor==0)?"Post":"Job";
 		
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle(title);
@@ -275,8 +275,8 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 		postheadline = (EditText) findViewById(R.id.activity_createjob_edit_jobtitle);
 		postdetails = (EditText) findViewById(R.id.activity_createjob_edit_jobdescrip);
 		
-		postheadline.setHint(hintconcText+" Title");
-		postdetails.setHint(hintconcText+" Description"); 
+		postheadline.setHint(hintconcText+" Subject");
+		postdetails.setHint(hintconcText+" Content"); 
 		
 		edt_email = (EditText) findViewById(R.id.activity_create_edt_emailreply);
 		edt_phno = (EditText) findViewById(R.id.activity_create_edt_phone);

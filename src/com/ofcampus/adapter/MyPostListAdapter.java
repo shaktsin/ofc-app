@@ -202,6 +202,7 @@ public class MyPostListAdapter extends BaseAdapter{
 	 */
 	public void newsRowOnClick(JobDetails mJobDetails) {
 		((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+		((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=true;
 		Intent mIntent = new Intent(mContext,ActivityNewsDetails.class);
 		Bundle mBundle=new Bundle();
 		mBundle.putString("key_dlorcmt", "News Details");
@@ -211,6 +212,7 @@ public class MyPostListAdapter extends BaseAdapter{
 	}
 	public void newsCommentClickEvent(JobDetails mJobDetails) {
 		((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+		((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=true;
 		Intent mIntent = new Intent(mContext,ActivityNewsDetails.class);
 		Bundle mBundle=new Bundle();
 		mBundle.putString("key_dlorcmt", "News Comments");

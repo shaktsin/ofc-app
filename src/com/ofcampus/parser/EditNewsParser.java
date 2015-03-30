@@ -1,8 +1,3 @@
-/*
- * This is the source code of OfCampus for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.ofcampus.parser;
 
 import java.util.ArrayList;
@@ -21,7 +16,8 @@ import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
-public class EditJobParser {
+public class EditNewsParser {
+
 
 	
 	private Context mContext;
@@ -56,16 +52,16 @@ public class EditJobParser {
 	
 	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths) {   
 		this.mContext = context;
-		EditJobParserAsync mEditJobParserAsync = new EditJobParserAsync(mContext,obj,auth,paths); 
+		Async mAsync = new Async(mContext,obj,auth,paths); 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mEditJobParserAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); 
+			mAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); 
 		} else {
-			mEditJobParserAsync.execute(); 
+			mAsync.execute(); 
 		}
 	}
 	
 	
-	private class EditJobParserAsync extends AsyncTask<Void, Void, Void>{
+	private class Async extends AsyncTask<Void, Void, Void>{
 		private Context context;
 		private String authenticationJson;
 		private boolean isTimeOut=false;
@@ -75,7 +71,7 @@ public class EditJobParser {
 		private ArrayList<String> paths;
 		private String auth="";
 		
-		public EditJobParserAsync(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
+		public Async(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
 			this.context = mContext;
 			this.obj_ = obj; 
 			this.auth=auth_;
@@ -96,7 +92,7 @@ public class EditJobParser {
 			
 			try {
 				
-				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getJobEditUrl(), obj_,auth,paths,"jobs");
+				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getEditNewsUrl(), obj_,auth,paths,"feed");
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				
@@ -142,25 +138,25 @@ public class EditJobParser {
 			}
 			
 			if (isTimeOut) {
-				if (editjobparserinterface != null) {
-					editjobparserinterface.OnError(); 
+				if (editnewsparserinterface != null) {
+					editnewsparserinterface.OnError(); 
 				}
 			}else if (responsecode.equals("200")) {
 				if (mJobDetails!=null) {
-					if (editjobparserinterface!=null) {
-						editjobparserinterface.OnSuccess(mJobDetails);
-						Util.ShowToast(mContext, "Job edit successfully.");
+					if (editnewsparserinterface!=null) {
+						editnewsparserinterface.OnSuccess(mJobDetails);
+						Util.ShowToast(mContext, "News edit successfully.");
 					}
 				}else {
-					Util.ShowToast(mContext, "Job edit error.");
-					if (editjobparserinterface != null) {
-						editjobparserinterface.OnError();  
+					Util.ShowToast(mContext, "News edit error.");
+					if (editnewsparserinterface != null) {
+						editnewsparserinterface.OnError();   
 					}
 				}
 			}else if (responsecode.equals("500")){
 				Util.ShowToast(mContext, responseDetails);
 			}else {
-				Util.ShowToast(mContext, "Job edit error.");
+				Util.ShowToast(mContext, "News edit error.");
 			}
 		}
 	}
@@ -210,18 +206,18 @@ public class EditJobParser {
 		
 	}
 	
-	public EditJobParserInterface editjobparserinterface;
+	public EditNewsParserInterface editnewsparserinterface;
 
-	public EditJobParserInterface getEditjobparserinterface() {
-		return editjobparserinterface;
+	public EditNewsParserInterface getEditnewsparserinterface() {
+		return editnewsparserinterface;
 	}
 
-	public void setEditjobparserinterface(
-			EditJobParserInterface editjobparserinterface) {
-		this.editjobparserinterface = editjobparserinterface;
+	public void setEditnewsparserinterface(
+			EditNewsParserInterface editnewsparserinterface) {
+		this.editnewsparserinterface = editnewsparserinterface;
 	}
 
-	public interface EditJobParserInterface {
+	public interface EditNewsParserInterface {
 		public void OnSuccess(JobDetails mJobDetails);
 
 		public void OnError();

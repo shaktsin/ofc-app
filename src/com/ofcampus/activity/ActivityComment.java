@@ -105,9 +105,12 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 			return true;
 		case R.id.action_editpost:
 			((OfCampusApplication) getApplication()).jobdetails=mJobDetails;	
-			startActivity(new Intent(ActivityComment.this,ActivityPostEdit.class));
+			Intent mIntent = new Intent(ActivityComment.this,ActivityPostEdit.class);
+			Bundle mBundle=new Bundle();
+			mBundle.putInt("createFor", 1);
+			mIntent.putExtras(mBundle);
+			startActivity(mIntent);
 			overridePendingTransition(0,0);
-//			onBackPressed();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -54,7 +54,6 @@ import com.ofcampus.Util;
 import com.ofcampus.Util.JobDataReturnFor;
 import com.ofcampus.activity.FragmentJobs.JobsFrgInterface;
 import com.ofcampus.activity.FragmentNewsFeeds.FragmentNewsInterface;
-import com.ofcampus.activity.FragmentNewsFeeds.FragmentNewsInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
@@ -149,6 +148,13 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 				((OfCampusApplication)getApplication()).isHidePostModify=false;
 				((OfCampusApplication)getApplication()).editPostSuccessForHome=false;
 			}
+			
+			if (((OfCampusApplication)getApplication()).editPostSuccessForNews) {
+				fragmentNewsFeeds.loadData();
+				((OfCampusApplication)getApplication()).editPostSuccessForNews=false;
+			}
+			
+			
 			if (((OfCampusApplication)getApplication()).profileEditSuccess) {
 				updateProfileData();
 				((OfCampusApplication)getApplication()).profileEditSuccess=false;
