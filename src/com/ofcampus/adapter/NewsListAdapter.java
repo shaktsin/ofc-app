@@ -11,9 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -33,7 +31,7 @@ import com.ofcampus.model.UserDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
 
-public class JobListBaseAdapter extends BaseAdapter{
+public class NewsListAdapter extends BaseAdapter{
 
 	private Context mContext;
 	private LayoutInflater inflater;
@@ -42,7 +40,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 	private DisplayImageOptions options;
 	private DisplayImageOptions options_post;
 	
-	public JobListBaseAdapter(Context context,ArrayList<JobDetails> arrJobs){
+	public NewsListAdapter(Context context,ArrayList<JobDetails> arrJobs){
 	
 		this.mContext=context; 
 		this.jobs=arrJobs; 
@@ -82,45 +80,45 @@ public class JobListBaseAdapter extends BaseAdapter{
 		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size()-1).getPostid());
 		notifyDataSetChanged();
 	}
-	
-	
-	public void hideJob(JobDetails hideJob){
-		ArrayList<JobDetails> currentJobList=new ArrayList<JobDetails>(this.jobs);
-		ArrayList<JobDetails> modifyJobList=new ArrayList<JobDetails>();
-		for (JobDetails jobDetails : currentJobList) {
-			if (!hideJob.getPostid().equals(jobDetails.getPostid())) {
-				modifyJobList.add(jobDetails);
-			}
-		}
-		this.jobs=modifyJobList;
-		if (jobs.size()>=1) {
-			setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size()-1).getPostid());
-		}else {
-			setIDS("", "");
-		}
-		notifyDataSetChanged();
-	}
-	
-	public void importantJob(JobDetails hideJob){
-		for (JobDetails jobDetails : jobs) {
-			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
-				jobDetails.important=1;
-			}
-		}
-		notifyDataSetChanged();
-	}
-	
-	public void unimportantJob(JobDetails hideJob){
-		for (JobDetails jobDetails : jobs) {
-			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
-				jobDetails.important=0;
-			}
-		}
-		notifyDataSetChanged();
-	}
-	
-	
-	public ArrayList<JobDetails> getJobData(){
+//	
+//	
+//	public void hideJob(JobDetails hideJob){
+//		ArrayList<JobDetails> currentJobList=new ArrayList<JobDetails>(this.jobs);
+//		ArrayList<JobDetails> modifyJobList=new ArrayList<JobDetails>();
+//		for (JobDetails jobDetails : currentJobList) {
+//			if (!hideJob.getPostid().equals(jobDetails.getPostid())) {
+//				modifyJobList.add(jobDetails);
+//			}
+//		}
+//		this.jobs=modifyJobList;
+//		if (jobs.size()>=1) {
+//			setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size()-1).getPostid());
+//		}else {
+//			setIDS("", "");
+//		}
+//		notifyDataSetChanged();
+//	}
+//	
+//	public void importantJob(JobDetails hideJob){
+//		for (JobDetails jobDetails : jobs) {
+//			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
+//				jobDetails.important=1;
+//			}
+//		}
+//		notifyDataSetChanged();
+//	}
+//	
+//	public void unimportantJob(JobDetails hideJob){
+//		for (JobDetails jobDetails : jobs) {
+//			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
+//				jobDetails.important=0;
+//			}
+//		}
+//		notifyDataSetChanged();
+//	}
+//	
+//	
+	public ArrayList<JobDetails> getJobData() {
 		return this.jobs;
 	}
 	
@@ -222,8 +220,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 				
 				@Override
 				public void onClick(View v) {
-					if (joblistinterface!=null) {
-						joblistinterface.convertViewOnClick(mJobDetails);
+					if (newslistinterface!=null) {
+						newslistinterface.convertViewOnClick(mJobDetails);
 					}
 				}
 			});
@@ -232,8 +230,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					if (joblistinterface != null) {
-						joblistinterface.replyClickEvent(mJobDetails);
+					if (newslistinterface != null) {
+						newslistinterface.replyClickEvent(mJobDetails);
 					}
 				}
 			});
@@ -250,8 +248,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					if (joblistinterface != null) {
-						joblistinterface.commentClickEvent(mJobDetails);
+					if (newslistinterface != null) {
+						newslistinterface.commentClickEvent(mJobDetails);
 					}
 				}
 			});
@@ -260,53 +258,53 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					if (joblistinterface != null) {
-						if (mJobDetails.getImportant()==0) {
-							joblistinterface.impClieckEvent(mJobDetails);
-						}else {
-							joblistinterface.unimpClieckEvent(mJobDetails);
-						}
-						
-					}
+//					if (newslistinterface != null) {
+//						if (mJobDetails.getImportant()==0) {
+//							newslistinterface.impClieckEvent(mJobDetails);
+//						}else {
+//							newslistinterface.unimpClieckEvent(mJobDetails);
+//						}
+//						
+//					}
 				}
 			});
 			
-			mHolder.img_arrow.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					try {
-						PopupMenu popup = new PopupMenu(mContext, v);
-						popup.getMenuInflater().inflate(R.menu.job_optionmenu, popup.getMenu());
-						popup.show();
-						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-							@Override
-							public boolean onMenuItemClick(MenuItem item) {
-
-								switch (item.getItemId()) {
-								case R.id.hidepost:
-									if (joblistinterface != null) {
-										joblistinterface.arrowHideClieckEvent(mJobDetails);
-									}
-									break;
-								case R.id.spampost:
-									if (joblistinterface != null) {
-										joblistinterface.arrowSpamClieckEvent(mJobDetails);
-									}
-									break;
-
-								default:
-									break;
-								}
-
-								return true;
-							}
-						});
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
+//			mHolder.img_arrow.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					try {
+//						PopupMenu popup = new PopupMenu(mContext, v);
+//						popup.getMenuInflater().inflate(R.menu.job_optionmenu, popup.getMenu());
+//						popup.show();
+//						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//							@Override
+//							public boolean onMenuItemClick(MenuItem item) {
+//
+//								switch (item.getItemId()) {
+//								case R.id.hidepost:
+//									if (newslistinterface != null) {
+//										newslistinterface.arrowHideClieckEvent(mJobDetails);
+//									}
+//									break;
+//								case R.id.spampost:
+//									if (newslistinterface != null) {
+//										newslistinterface.arrowSpamClieckEvent(mJobDetails);
+//									}
+//									break;
+//
+//								default:
+//									break;
+//								}
+//
+//								return true;
+//							}
+//						});
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			});
 		}
 		return convertView;
 	}
@@ -321,30 +319,29 @@ public class JobListBaseAdapter extends BaseAdapter{
 	}
 	
 	public void setIDS(String fstID,String lstID){
-		if (joblistinterface!=null) {
-			joblistinterface.firstIDAndlastID(fstID,lstID);
+		if (newslistinterface!=null) {
+			newslistinterface.firstIDAndlastID(fstID,lstID); 
 		}
 	}
 	
 	
-	public jobListInterface joblistinterface;
-	
-	
-	public jobListInterface getJoblistinterface() {
-		return joblistinterface;
+	public NewsListInterface newslistinterface;
+
+	public NewsListInterface getNewslistinterface() {
+		return newslistinterface;
 	}
 
-	public void setJoblistinterface(jobListInterface joblistinterface) {
-		this.joblistinterface = joblistinterface;
+	public void setNewslistinterface(NewsListInterface newslistinterface) {
+		this.newslistinterface = newslistinterface;
 	}
 
-	public interface jobListInterface{
+	public interface NewsListInterface{ 
 		public void convertViewOnClick(JobDetails mJobDetails); 
 		public void firstIDAndlastID(String fstID, String lstID); 
-		public void arrowHideClieckEvent(JobDetails mJobDetails);  
-		public void arrowSpamClieckEvent(JobDetails mJobDetails);  
-		public void impClieckEvent(JobDetails mJobDetails);  
-		public void unimpClieckEvent(JobDetails mJobDetails);  
+//		public void arrowHideClieckEvent(JobDetails mJobDetails);  
+//		public void arrowSpamClieckEvent(JobDetails mJobDetails);  
+//		public void impClieckEvent(JobDetails mJobDetails);  
+//		public void unimpClieckEvent(JobDetails mJobDetails);  
 		public void replyClickEvent(JobDetails mJobDetails);  
 		public void commentClickEvent(JobDetails mJobDetails);  
 	}

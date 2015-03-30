@@ -18,13 +18,11 @@ import com.ofcampus.model.JobDetails;
 
 public class CommentPostParser {
 
-
 	private Context mContext;
 	private String STATUS="status";
 	private String RESULTS="results";
 //	private String EXCEPTION="exception";
 //	private String MESSAGES="messages";
-
 
 	/*Job List Key*/
 	private String POSTID="postId";
@@ -34,12 +32,7 @@ public class CommentPostParser {
 	private String ID="id";
 	private String NAME="name";
 	private String IMAGE="image";
-	
 
-    	
-    	
-    	
-	
 	/**CommentList Key*/
 	private String COMMENTLISTRESPONSE="commentListResponse";
 
@@ -90,7 +83,7 @@ public class CommentPostParser {
 			
 			try {
 				
-				String[] responsedata =	 Util.POST_JOB(Util.getCommentPostUrl(), postData, authtoken);
+				String[] responsedata =	 Util.POSTWithJSONAuth(Util.getCommentPostUrl(), postData, authtoken);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				

@@ -5,22 +5,57 @@
  */
 package com.ofcampus.activity;
 
+import java.util.ArrayList;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
+import com.ofcampus.Util;
+import com.ofcampus.adapter.NewsListAdapter;
+import com.ofcampus.adapter.NewsListAdapter.NewsListInterface;
+import com.ofcampus.model.JobDetails;
+import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.NewsFeedListParser;
+import com.ofcampus.parser.NewsFeedListParser.NewsFeedListParserInterface;
+import com.ofcampus.ui.ReplyDialog;
 
-public class FragmentNewsFeeds extends Fragment implements OnClickListener{
+public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsListInterface,OnRefreshListener{
 
 	private static final String ARG_POSITION = "position";
 	private static Context context;
 	private int position;
 	
+    private ListView newslist; 
+    private RelativeLayout footer_pg;
+    private NewsListAdapter mNewsListAdapter; 
+    private String tocken = "";
+    
+    /***For Load more****/
+    public String firsttJobID="",lastJobID="";
+    private int minimumofsets = 5,mLastFirstVisibleItem = 0;
+    private boolean loadingMore = false;
+	
+    private SwipeRefreshLayout swipeLayout;
+    
+    
+    public ArrayList<JobDetails> notifyfeeds=null;
+    
 	public static FragmentNewsFeeds newInstance(int position, Context mContext) { 
 		FragmentNewsFeeds f = new FragmentNewsFeeds(); 
 		Bundle b = new Bundle();
@@ -39,6 +74,9 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 	    View view = inflater.inflate(R.layout.fragment_newsfeeds, null);
+	    initilizView(view);
+		initilizeSwipeRefresh(view);
+		loadData();
 		return view;
 	}
 	
@@ -50,4 +88,241 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener{
 			break;
 		}
 	}
+	
+	
+	@Override
+	public void convertViewOnClick(JobDetails mJobDetails) {
+		((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
+		Intent mIntent = new Intent(context,ActivityNewsDetails.class);
+		Bundle mBundle=new Bundle();
+		mBundle.putString("key_dlorcmt", "News Details");
+		mIntent.putExtras(mBundle);
+		startActivity(mIntent);
+		((Activity) context).overridePendingTransition(0, 0); 
+	}
+	
+	@Override
+	public void firstIDAndlastID(String fstID, String lstID) {
+		firsttJobID=fstID;
+		lastJobID=lstID;
+	}
+
+	@Override
+	public void replyClickEvent(JobDetails mJobDetails) {
+		new ReplyDialog(context, mJobDetails);
+	}
+
+	@Override
+	public void commentClickEvent(JobDetails mJobDetails) {
+		((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
+		Intent mIntent = new Intent(context,ActivityNewsDetails.class);
+		Bundle mBundle=new Bundle();
+		mBundle.putString("key_dlorcmt", "News Comments");
+		mIntent.putExtras(mBundle);
+		startActivity(mIntent);
+		((Activity) context).overridePendingTransition(0, 0);
+	}
+	
+	
+	@Override 
+	public void onRefresh() {
+//		{"plateFormId":"0","appName":"ofCampus","postId":"25","operation":"1"}
+//		pulltorefreshcall(firsttJobID);
+		pulltorefreshcall();
+	}
+	
+	
+	
+	
+	private void initilizView(View view) {
+		newslist = (ListView) view.findViewById(R.id.activity_home_newslist);
+		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
+
+		mNewsListAdapter=new NewsListAdapter(context, new ArrayList<JobDetails>());
+		mNewsListAdapter.setNewslistinterface(this);
+		newslist.setAdapter(mNewsListAdapter); 
+		
+		
+		newslist.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				if (mNewsListAdapter != null
+						&& totalItemCount > minimumofsets
+						&& (lastInScreen == totalItemCount) && !(loadingMore)) {
+					if (mLastFirstVisibleItem < firstVisibleItem) {
+						if (!Util.hasConnection(context)) {
+							Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+							return;
+						}
+						Log.i("SCROLLING DOWN", "TRUE");
+						footer_pg.setVisibility(View.VISIBLE);
+						loadingMore = true;
+						loadMore(lastJobID);
+					}
+				}
+				mLastFirstVisibleItem = firstVisibleItem;
+			}
+		});
+
+	}
+	
+	private void initilizeSwipeRefresh(View v) {
+		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+		swipeLayout.setOnRefreshListener(this);
+		swipeLayout.setColorScheme(R.color.pull_blue_bright,
+				R.color.pull_green_light, R.color.pull_orange_light,
+				R.color.pull_red_light);
+	}
+	
+	/**
+	 * Initial Load News Calling.
+	 */
+	public void loadData() { 
+		UserDetails mUserDetails = UserDetails.getLoggedInUser(context);
+		tocken = mUserDetails.getAuthtoken();
+		
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+		
+		NewsFeedListParser mFeedListParser=new NewsFeedListParser();
+		mFeedListParser.setNewsfeedlistparserinterface(new NewsFeedListParserInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<JobDetails> newsList) {
+				if (newsList != null && newsList.size() >= 1) {
+					mNewsListAdapter.refreshData(newsList);
+				}
+			}
+			
+			@Override
+			public void OnError() {
+				refreshComplete();
+			}
+		});
+		mFeedListParser.parse(context, mFeedListParser.getBody(), tocken);
+	}
+
+	/**
+	 * Pull To Refresh Load News Calling.
+	 */
+	private void pulltorefreshcall(String JobID){
+		
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+		
+		NewsFeedListParser mFeedListParser=new NewsFeedListParser();
+		mFeedListParser.setNewsfeedlistparserinterface(new NewsFeedListParserInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<JobDetails> newsList) {
+
+				if (newsList != null && newsList.size() >= 1) {
+					mNewsListAdapter.refreshSwipeData(newsList); 
+				}else {
+					Util.ShowToast(context, "No more News updated.");
+				}
+				refreshComplete();
+			}
+			
+			@Override
+			public void OnError() {
+				refreshComplete();
+			}
+		});
+		mFeedListParser.isShowingPG_=false;
+		mFeedListParser.parse(context, mFeedListParser.getBody(JobID, 1+""), tocken);
+	}
+	
+	private void pulltorefreshcall(){
+		if (notifyfeeds != null && notifyfeeds.size() >= 1) {
+			mNewsListAdapter.refreshSwipeData(notifyfeeds);
+			notifyfeeds=null;
+			if (fragmentnewsinterface!=null) {
+				fragmentnewsinterface.pulltorefreshcallComplete();
+			}
+		} else {
+			Util.ShowToast(context, "No more News updated.");
+		}
+		refreshComplete();
+	}
+	
+	/**
+	 * Load more Refresh Load News Calling.
+	 */
+	private void loadMore(String JobID){
+		
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+		
+		NewsFeedListParser mFeedListParser=new NewsFeedListParser();
+		mFeedListParser.setNewsfeedlistparserinterface(new NewsFeedListParserInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<JobDetails> newsList) {
+				if (newsList != null && newsList.size() >= 1) {
+					mNewsListAdapter.refreshloadmoreData(newsList); 
+				}else {
+					Util.ShowToast(context, "No more News available.");
+				}
+				refreshComplete();
+			}
+			
+			@Override
+			public void OnError() {
+				refreshComplete();
+			}
+		});
+		mFeedListParser.isShowingPG_=false;
+		mFeedListParser.parse(context, mFeedListParser.getBody(JobID, 2+""), tocken);
+	}
+	
+	/**
+	 * Check progress showing or not.
+	 */
+	public void refreshComplete() {
+		if (swipeLayout.isRefreshing()) {
+			swipeLayout.setRefreshing(false);
+		}
+		if (footer_pg.getVisibility()==View.VISIBLE) {
+			footer_pg.setVisibility(View.GONE);
+			loadingMore = false;
+		}
+		
+	}
+	
+	
+	
+	/**
+	 * Interface for News Fragment.
+	 */
+	public FragmentNewsInterface fragmentnewsinterface;
+
+	public FragmentNewsInterface getFragmentnewsinterface() {
+		return fragmentnewsinterface;
+	}
+
+	public void setFragmentnewsinterface(
+			FragmentNewsInterface fragmentnewsinterface) {
+		this.fragmentnewsinterface = fragmentnewsinterface;
+	}
+
+	public interface FragmentNewsInterface {
+		public void pulltorefreshcallComplete();//After pul refresh complete remove the notification.
+	}
+	
+	
 }

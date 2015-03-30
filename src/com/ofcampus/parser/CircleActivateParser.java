@@ -71,7 +71,7 @@ public class CircleActivateParser {
 		protected Void doInBackground(Void... params) {
 
 			try {
-				String[] responsedata = Util.POST_JOB(Util.getCircleActivateUrl(), postData, authorization);
+				String[] responsedata = Util.POSTWithJSONAuth(Util.getCircleActivateUrl(), postData, authorization);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
 

@@ -62,7 +62,7 @@ public class ResendTokenCodeParser {
 		protected Void doInBackground(Void... params) {
 			
 			try {
-				String[] responsedata =  Util.POST_JOB(Util.getRegenerateTokenUrl(), null, auth); 
+				String[] responsedata =  Util.POSTWithJSONAuth(Util.getRegenerateTokenUrl(), null, auth); 
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				

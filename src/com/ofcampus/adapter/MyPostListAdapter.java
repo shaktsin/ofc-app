@@ -26,6 +26,7 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityComment;
+import com.ofcampus.activity.ActivityNewsDetails;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
@@ -152,14 +153,11 @@ public class MyPostListAdapter extends BaseAdapter{
 				
 				@Override
 				public void onClick(View v) {
-					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
-					((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=true;
-					Intent mIntent = new Intent(mContext,ActivityComment.class);
-					Bundle mBundle=new Bundle();
-					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
-					mIntent.putExtras(mBundle);
-					mContext.startActivity(mIntent);
-					((Activity) mContext).overridePendingTransition(0, 0); 
+					if (mJobDetails.getPostType().equals("3")) {
+						newsRowOnClick(mJobDetails);
+					}else {
+						jobRowOnClick(mJobDetails);
+					}
 				}
 			});
 			
@@ -183,20 +181,70 @@ public class MyPostListAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
-					((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=true;
-					Intent mIntent = new Intent(mContext,ActivityComment.class);
-					Bundle mBundle=new Bundle();
-					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[0]);
-					mIntent.putExtras(mBundle);
-					mContext.startActivity(mIntent);
-					((Activity) mContext).overridePendingTransition(0, 0); 
+					
+					if (mJobDetails.getPostType().equals("3")) {
+						newsCommentClickEvent(mJobDetails);
+					}else {
+						jobCommentClickEvent(mJobDetails);
+					}
+					
 				}
 			});
 
 		}
 		return convertView;
 	}
+	
+	
+	
+	/**
+	 * for News Item Click Event.
+	 */
+	public void newsRowOnClick(JobDetails mJobDetails) {
+		((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+		Intent mIntent = new Intent(mContext,ActivityNewsDetails.class);
+		Bundle mBundle=new Bundle();
+		mBundle.putString("key_dlorcmt", "News Details");
+		mIntent.putExtras(mBundle);
+		mContext.startActivity(mIntent);
+		((Activity) mContext).overridePendingTransition(0, 0); 
+	}
+	public void newsCommentClickEvent(JobDetails mJobDetails) {
+		((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+		Intent mIntent = new Intent(mContext,ActivityNewsDetails.class);
+		Bundle mBundle=new Bundle();
+		mBundle.putString("key_dlorcmt", "News Comments");
+		mIntent.putExtras(mBundle);
+		mContext.startActivity(mIntent);
+		((Activity) mContext).overridePendingTransition(0, 0);
+	}
+	/********************************/
+	
+	/**
+	 * for Post Job Item Click Event.
+	 */
+	public void jobRowOnClick(JobDetails mJobDetails) {
+		((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+		((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=true;
+		Intent mIntent = new Intent(mContext,ActivityComment.class);
+		Bundle mBundle=new Bundle();
+		mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
+		mIntent.putExtras(mBundle);
+		mContext.startActivity(mIntent);
+		((Activity) mContext).overridePendingTransition(0, 0); 
+	}
+	public void jobCommentClickEvent(JobDetails mJobDetails) {
+		((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+		((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=true;
+		Intent mIntent = new Intent(mContext,ActivityComment.class);
+		Bundle mBundle=new Bundle();
+		mBundle.putString("key_dlorcmt", Util.TOOLTITLE[0]);
+		mIntent.putExtras(mBundle);
+		mContext.startActivity(mIntent);
+		((Activity) mContext).overridePendingTransition(0, 0); 
+	}
+	
+	/***********************************/
 	
 	private class ViewHolder{
 		ImageView profilepic;

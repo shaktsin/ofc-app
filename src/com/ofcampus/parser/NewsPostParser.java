@@ -20,7 +20,8 @@ import com.ofcampus.Util;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
-public class JobPostParser {
+public class NewsPostParser {
+
 	
 	private Context mContext;
 	private String STATUS="status";
@@ -54,16 +55,16 @@ public class JobPostParser {
 	
 	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths) {   
 		this.mContext = context;
-		jobPostAsyncAsync mjobPostAsyncAsync = new jobPostAsyncAsync(mContext,obj,auth,paths); 
+		Async mAsync = new Async(mContext,obj,auth,paths);  
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mjobPostAsyncAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			mAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
-			mjobPostAsyncAsync.execute(); 
+			mAsync.execute(); 
 		}
 	}
 	
 	
-	private class jobPostAsyncAsync extends AsyncTask<Void, Void, Void>{
+	private class Async extends AsyncTask<Void, Void, Void>{
 		private Context context;
 		private String authenticationJson;
 		private boolean isTimeOut=false;
@@ -73,7 +74,7 @@ public class JobPostParser {
 		private ArrayList<String> paths;
 		private String auth="";
 		
-		public jobPostAsyncAsync(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
+		public Async(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
 			this.context = mContext;
 			this.obj_ = obj; 
 			this.auth=auth_;
@@ -94,7 +95,7 @@ public class JobPostParser {
 			
 			try {
 				
-				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getcreateJobUrl(), obj_,auth,paths,"jobs");
+				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getCreateNewsUrl(), obj_,auth,paths,"feed");
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				
@@ -130,25 +131,25 @@ public class JobPostParser {
 			}
 			
 			if (isTimeOut) {
-				if (jobpostparserinterface != null) {
-					jobpostparserinterface.OnError(); 
+				if (newspostparserinterface != null) {
+					newspostparserinterface.OnError(); 
 				}
 			}else if (responsecode.equals("200")) {
 				if (mJobDetails!=null) {
-					if (jobpostparserinterface!=null) {
-						jobpostparserinterface.OnSuccess(mJobDetails);
-						Util.ShowToast(mContext, "Job Posted successfully.");
+					if (newspostparserinterface!=null) {
+						newspostparserinterface.OnSuccess(mJobDetails);
+						Util.ShowToast(mContext, "News Posted successfully.");
 					}
 				}else {
-					Util.ShowToast(mContext, "Job Post error.");
-					if (jobpostparserinterface != null) {
-						jobpostparserinterface.OnError(); 
+					Util.ShowToast(mContext, "News Post error.");
+					if (newspostparserinterface != null) {
+						newspostparserinterface.OnError(); 
 					}
 				}
 			}else if (responsecode.equals("500")){
-				Util.ShowToast(mContext, responseDetails);
+				Util.ShowToast(mContext, "News Post error.");
 			}else {
-				Util.ShowToast(mContext, "Job Post error.");
+				Util.ShowToast(mContext, "News Post error.");
 			}
 		}
 	}
@@ -198,21 +199,22 @@ public class JobPostParser {
 		
 	}
 	
-	public JobPostParserInterface jobpostparserinterface;
+	public NewsPostParserInterface newspostparserinterface;
 
-	public JobPostParserInterface getJobpostparserinterface() {
-		return jobpostparserinterface;
+	public NewsPostParserInterface getNewspostparserinterface() {
+		return newspostparserinterface;
 	}
 
-	public void setJobpostparserinterface(
-			JobPostParserInterface jobpostparserinterface) {
-		this.jobpostparserinterface = jobpostparserinterface;
+	public void setNewspostparserinterface(
+			NewsPostParserInterface newspostparserinterface) {
+		this.newspostparserinterface = newspostparserinterface;
 	}
 
-	public interface JobPostParserInterface {
+	public interface NewsPostParserInterface {
 		public void OnSuccess(JobDetails mJobDetails);
 
 		public void OnError();
 	}
+
 
 }

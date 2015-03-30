@@ -72,7 +72,7 @@ public class CreateCircleParser {
 		protected Void doInBackground(Void... params) {
 
 			try {
-				String[] responsedata = Util.POST_JOB(Util.getCreateCircleUrl(), postData, authorization);
+				String[] responsedata = Util.POSTWithJSONAuth(Util.getCreateCircleUrl(), postData, authorization);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
 

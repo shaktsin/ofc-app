@@ -73,7 +73,7 @@ public class RejectRequestToJoinCircleParser {
 		protected Void doInBackground(Void... params) {
 
 			try {
-				String[] responsedata = Util.POST_JOB(Util.getRejectRequestUrl(), postData, authorization);
+				String[] responsedata = Util.POSTWithJSONAuth(Util.getRejectRequestUrl(), postData, authorization);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
 

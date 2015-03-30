@@ -6,7 +6,10 @@
 package com.ofcampus.parser;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,8 +23,7 @@ import com.ofcampus.Util;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
-public class JobPostParser {
-	
+public class NewsDetailsParser {
 	private Context mContext;
 	private String STATUS="status";
 	private String RESULTS="results";
@@ -41,43 +43,55 @@ public class JobPostParser {
 	private String IMAGE="image";
 	private String REPLYDTO="replyDto";
 	private String SHAREDTO="shareDto";
-	
+
 	private String POSTIMAGES="attachmentDtoList";
 	private String IMAGES_ID="id";
 	private String IMAGES_URL="url";
 	
+	private String REPLYEMAIL="replyEmail";
+	private String REPLYPHONE="replyPhone";
+	private String REPLYWATSAPP="replyWatsApp";
 	
-
+	
+	/**CommentList Key*/
+	private String COMMENTLISTRESPONSE="commentListResponse";
+	private String COMMENTRESPONSELIST="commentResponseList";
+	private String COMMENTEDON="commentedOn";
+	private String COMMENTID="commentId";
+	private String TOTALRESULTS="totalResults";
+	
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths) {   
+	
+	private int totalCommentCount=0;
+	
+	public void parse(Context context,String id,String auth) {  
 		this.mContext = context;
-		jobPostAsyncAsync mjobPostAsyncAsync = new jobPostAsyncAsync(mContext,obj,auth,paths); 
+		List<NameValuePair> postData = getparamBody(auth);
+		Async mAsync = new Async(mContext,postData,id); 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mjobPostAsyncAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			mAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
-			mjobPostAsyncAsync.execute(); 
+			mAsync.execute();   
 		}
 	}
 	
 	
-	private class jobPostAsyncAsync extends AsyncTask<Void, Void, Void>{
+	private class Async extends AsyncTask<Void, Void, Void>{
 		private Context context;
 		private String authenticationJson;
 		private boolean isTimeOut=false;
-		private JobDetails mJobDetails;
+		private ArrayList<JobDetails> arrayJobsComment;
 		private ProgressDialog mDialog;
-		private JSONObject obj_=null;
-		private ArrayList<String> paths;
-		private String auth="";
+		private List<NameValuePair> postData;
+		private String id="";
 		
-		public jobPostAsyncAsync(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
+		public Async(Context mContext, List<NameValuePair> postData_, String id_) {
 			this.context = mContext;
-			this.obj_ = obj; 
-			this.auth=auth_;
-			this.paths=paths_;
+			this.postData = postData_; 
+			this.id=id_; 
 		}
 
 		@Override
@@ -94,7 +108,7 @@ public class JobPostParser {
 			
 			try {
 				
-				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getcreateJobUrl(), obj_,auth,paths,"jobs");
+				String[] responsedata =	Util.GetRequest(postData,Util.getGetNewsfeedUrl(id));
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				
@@ -104,7 +118,7 @@ public class JobPostParser {
 					if (responsecode!=null && responsecode.equals("200")) {
 						JSONObject Obj = mObject.getJSONObject(RESULTS);
 						if (Obj!=null) {
-							mJobDetails = getParseData(Obj);
+							arrayJobsComment = getParseData(Obj);
 						}
 					}else if(responsecode!=null && responsecode.equals("500")){
 						JSONObject userObj = mObject.getJSONObject(RESULTS);
@@ -130,36 +144,42 @@ public class JobPostParser {
 			}
 			
 			if (isTimeOut) {
-				if (jobpostparserinterface != null) {
-					jobpostparserinterface.OnError(); 
+				if (newsdetailsparserinterface != null) { 
+					newsdetailsparserinterface.OnError(); 
 				}
 			}else if (responsecode.equals("200")) {
-				if (mJobDetails!=null) {
-					if (jobpostparserinterface!=null) {
-						jobpostparserinterface.OnSuccess(mJobDetails);
-						Util.ShowToast(mContext, "Job Posted successfully.");
+				if (arrayJobsComment!=null) {
+					if (newsdetailsparserinterface!=null) {
+						newsdetailsparserinterface.OnSuccess(arrayJobsComment,totalCommentCount);  
 					}
 				}else {
-					Util.ShowToast(mContext, "Job Post error.");
-					if (jobpostparserinterface != null) {
-						jobpostparserinterface.OnError(); 
+					Util.ShowToast(mContext, "News Details parser error.");
+					if (newsdetailsparserinterface != null) {
+						newsdetailsparserinterface.OnError(); 
 					}
 				}
 			}else if (responsecode.equals("500")){
 				Util.ShowToast(mContext, responseDetails);
 			}else {
-				Util.ShowToast(mContext, "Job Post error.");
+				Util.ShowToast(mContext, "News Details parser error.");
 			}
 		}
 	}
 	
 	
-	private JobDetails getParseData(JSONObject jsonobject){
+	public static List<NameValuePair> getparamBody(String authorization) {
+		List<NameValuePair> pairsofEducation = new ArrayList<NameValuePair>();
+		pairsofEducation.add(new BasicNameValuePair("Authorization", authorization));
+		return pairsofEducation;
+	}
+	
+	private ArrayList<JobDetails> getParseData(JSONObject jsonobject){
 
-		JobDetails mJobDetails =null;
-		
+
+		ArrayList<JobDetails> arrayJobsComment = null; 
 		try {
-			mJobDetails =new JobDetails();
+			arrayJobsComment=new ArrayList<JobDetails>();
+			JobDetails mJobDetails  =new JobDetails();
 			mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID)); 
 			mJobDetails.setSubject(Util.getJsonValue(jsonobject, SUBJECT));
 			mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));
@@ -173,6 +193,12 @@ public class JobPostParser {
 			
 			mJobDetails.setReplydto(Util.getJsonValue(jsonobject, REPLYDTO));
 			mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
+			
+			JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
+			
+			mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
+			mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
+			mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
 			
 			try {
 				JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
@@ -191,26 +217,67 @@ public class JobPostParser {
 				e.printStackTrace();
 			}
 			
+			arrayJobsComment.add(mJobDetails);
+			
+			try {
+				JSONObject commentJsonObj=jsonobject.getJSONObject(COMMENTLISTRESPONSE);
+				JSONArray commentArrJsonArray = null; 
+				if (commentJsonObj!=null) {
+					commentArrJsonArray = commentJsonObj.getJSONArray(COMMENTRESPONSELIST);
+					 
+					 if (commentArrJsonArray!=null && commentArrJsonArray.length()>=1) {
+						 
+						String totalCount =  Util.getJsonValue(commentJsonObj, TOTALRESULTS);
+						totalCommentCount=(totalCount!=null && !totalCount.equals(""))?Integer.parseInt(totalCount):0;
+						
+						
+							for (int i = 0; i < commentArrJsonArray.length(); i++) {
+								
+								JSONObject commenObj=commentArrJsonArray.getJSONObject(i);
+								
+								JobDetails jobComment=new JobDetails();
+								jobComment.setPostid(Util.getJsonValue(commenObj, POSTID)); 
+								jobComment.setCommentID(Util.getJsonValue(commenObj, COMMENTID));
+								jobComment.setContent(Util.getJsonValue(commenObj, CONTENT));
+								jobComment.setPostedon(Util.getJsonValue(commenObj, COMMENTEDON));
+								JSONObject jobCommentuserJSONobj=commenObj.getJSONObject(USERDTO);
+								jobComment.setId(Util.getJsonValue(jobCommentuserJSONobj, ID));
+								jobComment.setName(Util.getJsonValue(jobCommentuserJSONobj, NAME));
+								jobComment.setImage(Util.getJsonValue(jobCommentuserJSONobj, IMAGE));
+								arrayJobsComment.add(jobComment);
+							}
+						}
+					 
+				}
+				
+				
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return mJobDetails;
+		return arrayJobsComment;
 		
 	}
 	
-	public JobPostParserInterface jobpostparserinterface;
+	public NewsDetailsParserInterface newsdetailsparserinterface;
 
-	public JobPostParserInterface getJobpostparserinterface() {
-		return jobpostparserinterface;
+	
+	public NewsDetailsParserInterface getNewsdetailsparserinterface() {
+		return newsdetailsparserinterface;
 	}
 
-	public void setJobpostparserinterface(
-			JobPostParserInterface jobpostparserinterface) {
-		this.jobpostparserinterface = jobpostparserinterface;
+	public void setNewsdetailsparserinterface(
+			NewsDetailsParserInterface newsdetailsparserinterface) {
+		this.newsdetailsparserinterface = newsdetailsparserinterface;
 	}
 
-	public interface JobPostParserInterface {
-		public void OnSuccess(JobDetails mJobDetails);
+	public interface NewsDetailsParserInterface {
+		public void OnSuccess(ArrayList<JobDetails> arrayJobsComment, int totalCommentCount);  
 
 		public void OnError();
 	}

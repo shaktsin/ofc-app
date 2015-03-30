@@ -100,7 +100,7 @@ public class CommentAllParser {
 			
 			try {
 				
-				String[] responsedata =	 Util.POST_JOB(Util.getOldCommentsUrl(), postData, authtoken);
+				String[] responsedata =	 Util.POSTWithJSONAuth(Util.getOldCommentsUrl(), postData, authtoken);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				

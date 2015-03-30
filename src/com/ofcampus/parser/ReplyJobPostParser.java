@@ -80,7 +80,7 @@ public class ReplyJobPostParser {
 		protected Void doInBackground(Void... params) {
 			
 			try {
-				String[] responsedata =  Util.POST_JOB(Util.getJobHidetUrl(), postData, authorization);
+				String[] responsedata =  Util.POSTWithJSONAuth(Util.getJobHidetUrl(), postData, authorization);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				

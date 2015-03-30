@@ -71,7 +71,7 @@ public class VerifyUserParser {
 		protected Void doInBackground(Void... params) {
 			
 			try {
-				String[] responsedata =  Util.POST_JOB(Util.getVerifyUrl(), postData, auth); 
+				String[] responsedata =  Util.POSTWithJSONAuth(Util.getVerifyUrl(), postData, auth); 
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				

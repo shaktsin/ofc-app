@@ -96,7 +96,7 @@ public class EditJobParser {
 			
 			try {
 				
-				String[] responsedata =	Util.POST_JOBNEW(Util.getJobEditUrl(), obj_,auth,paths);
+				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getJobEditUrl(), obj_,auth,paths,"jobs");
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				

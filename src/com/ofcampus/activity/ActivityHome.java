@@ -53,6 +53,8 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.Util.JobDataReturnFor;
 import com.ofcampus.activity.FragmentJobs.JobsFrgInterface;
+import com.ofcampus.activity.FragmentNewsFeeds.FragmentNewsInterface;
+import com.ofcampus.activity.FragmentNewsFeeds.FragmentNewsInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
@@ -65,9 +67,10 @@ import com.ofcampus.parser.CountSyncParser;
 import com.ofcampus.parser.FilterJobParser;
 import com.ofcampus.parser.JobListParserNew;
 import com.ofcampus.parser.JobListParserNew.JobListParserNewInterface;
+import com.ofcampus.parser.NewsFeedListParser;
 import com.ofcampus.ui.FilterDialog;
 
-public class ActivityHome extends ActionBarActivity implements OnClickListener,viewCLickEvent,OnPageChangeListener,JobsFrgInterface{
+public class ActivityHome extends ActionBarActivity implements OnClickListener,viewCLickEvent,OnPageChangeListener,JobsFrgInterface,FragmentNewsInterface{
 
 	
 
@@ -91,6 +94,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 
     
     /*Pager section*/
+    private int currentSelection=1;
     private PagerSlidingTabStrip tabs;
 	private ViewPager pager;
 	private MyPagerAdapter adapter;
@@ -238,7 +242,17 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_home_img_composejob:
-			startActivity(new Intent(ActivityHome.this,ActivityCreateJobNew.class));
+			Intent mIntent=new Intent(ActivityHome.this,ActivityCreatePost.class);
+			Bundle mBundle=new Bundle();
+			if (currentSelection==0) {
+				mBundle.putString("ToolBarTitle", "Create News");
+				mBundle.putInt("createFor", currentSelection);
+			}else {
+				mBundle.putString("ToolBarTitle", "Create Job");
+				mBundle.putInt("createFor", currentSelection);
+			}
+			mIntent.putExtras(mBundle);
+			startActivity(mIntent);
 			overridePendingTransition(0,0);
 			break;
 
@@ -297,7 +311,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	public void onPageSelected(int position) {
 		switch (position) {
 		case 0:
-			img_composejob.setVisibility(View.GONE);
+			img_composejob.setVisibility(View.VISIBLE);
 			break;
 		case 1:
 			img_composejob.setVisibility(View.VISIBLE);
@@ -309,6 +323,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		default:
 			break;
 		}
+		currentSelection=position;
 	}
 	
 	@Override
@@ -392,6 +407,14 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		new loadExistDataFromDB().execute();
 	}
 	
+
+
+	@Override
+	public void pulltorefreshcallComplete() {
+		count[1]="";
+		txt_countclass.setVisibility(View.GONE);
+	}
+    
 	
 	private void initilizActionBarDrawer() {
 		toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -581,6 +604,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			
 			case 0:
 				fragmentNewsFeeds = FragmentNewsFeeds.newInstance(position,ActivityHome.this);
+				fragmentNewsFeeds.setFragmentnewsinterface(ActivityHome.this);
 				return fragmentNewsFeeds;
 			case 1:
 				fragmentJobs = FragmentJobs.newInstance(position,ActivityHome.this);
@@ -641,6 +665,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		}
 	}
 
+	private NewsFeedListParser mNewsFeedListParser=null;
+	
 	private class MyTask extends TimerTask {
 		@Override
 		public void run() {
@@ -673,6 +699,18 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 						mFilterDataSets =	new FilterJobParser().parse(mContext, tocken);
 					} catch (Exception e) {
 						e.printStackTrace();
+					}
+					
+					if (fragmentNewsFeeds!=null && !fragmentNewsFeeds.firsttJobID.equals("") && fragmentNewsFeeds.notifyfeeds==null) {
+						if (mNewsFeedListParser==null) {
+							mNewsFeedListParser=new NewsFeedListParser();
+						}
+						fragmentNewsFeeds.notifyfeeds = mNewsFeedListParser.bgSyncCalling(mContext, mNewsFeedListParser.getBody(fragmentNewsFeeds.firsttJobID, 1+""), tocken);
+						if (fragmentNewsFeeds.notifyfeeds!=null && fragmentNewsFeeds.notifyfeeds.size()>=1) {
+							count[1]=fragmentNewsFeeds.notifyfeeds.size()+"";
+						}
+					}else {
+						count[1]="";
 					}
 					
 					handler.sendEmptyMessage(0);
@@ -718,7 +756,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		}
 	};
 
-    
+	 /**********************************************  End Sync service ***********************************************************/
+	
 	private class loadExistDataFromDB extends AsyncTask<Void, Void, Void> {
 
 		private ArrayList<JobDetails> arrayJob;
@@ -791,5 +830,5 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		}
 
 	}
-    
+
 }

@@ -112,7 +112,7 @@ public class GetJobPostedUserProfileParser {
 			
 			try {
 				
-				String[] responsedata = Util.POST_JOB(Util.getJOBPostedProfileUrl(), postData, authorization);
+				String[] responsedata = Util.POSTWithJSONAuth(Util.getJOBPostedProfileUrl(), postData, authorization);
 				
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;

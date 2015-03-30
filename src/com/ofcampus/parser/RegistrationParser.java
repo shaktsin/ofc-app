@@ -82,7 +82,7 @@ private Context mContext;
 			
 			try {
 				
-				String[] responsedata =	Util.POST(Util.getSignUp(), obj_);
+				String[] responsedata =	Util.POSTWithJSON(Util.getSignUp(), obj_);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				

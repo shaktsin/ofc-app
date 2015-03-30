@@ -73,7 +73,7 @@ public class ResetPaswordParser {
 		protected Void doInBackground(Void... params) {
 
 			try {
-				String[] responsedata = Util.POST_JOB(Util.getResetPasswordUrl(), postData,Auth_);
+				String[] responsedata = Util.POSTWithJSONAuth(Util.getResetPasswordUrl(), postData,Auth_);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
 

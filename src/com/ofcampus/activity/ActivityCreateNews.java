@@ -57,12 +57,12 @@
 //import com.ofcampus.model.JobDetails;
 //import com.ofcampus.model.PrepareListForJobCreating;
 //import com.ofcampus.model.UserDetails;
-//import com.ofcampus.parser.JobPostParser;
-//import com.ofcampus.parser.JobPostParser.JobPostParserInterface;
+//import com.ofcampus.parser.NewsPostParser;
+//import com.ofcampus.parser.NewsPostParser.NewsPostParserInterface;
 //import com.ofcampus.parser.PrepareForCreatingJobParser;
 //import com.ofcampus.parser.PrepareForCreatingJobParser.PrepareParserInterface;
 //
-//public class ActivityCreateJobNew  extends ActionBarActivity  implements OnClickListener,OnItemSelectedListener{
+//public class ActivityCreateNews  extends ActionBarActivity  implements OnClickListener,OnItemSelectedListener{
 //
 //	public int GALLERY_REQUEST = 1;
 //	private Context context;
@@ -104,9 +104,9 @@
 //		super.onCreate(savedInstanceState);
 //		setContentView(R.layout.activity_createjob_new);
 //
-//		context=ActivityCreateJobNew.this;
+//		context=ActivityCreateNews.this;
 //		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-//		toolbar.setTitle("Create Job");
+//		toolbar.setTitle("Create News");
 //		setSupportActionBar(toolbar);
 //		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //
@@ -277,7 +277,7 @@
 //		edit_to = (TextView)findViewById(R.id.activity_createjob_edit_to);
 //		edit_to.setOnClickListener(this);
 //		((ImageView)findViewById(R.id.activity_createjob_attached)).setOnClickListener(this);
-//		((ImageView)findViewById(R.id.activity_createjob_edit)).setOnClickListener(this);
+//		((ImageView)findViewById(R.id.activity_createjob_edit)).setVisibility(View.GONE);
 //		((ImageView)findViewById(R.id.activity_createjob_rply)).setOnClickListener(this);
 //		
 //		sendtolist=(ListView)findViewById(R.id.activity_createjob_new_sendtolist);
@@ -694,56 +694,47 @@
 //		}
 //
 //	}
-//
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-//	
 //	
 //	private void postJobEvent(){
-//		String industry="";
-//		String industryrole="";
-//		String location="";
+////		String industry="";
+////		String industryrole="";
+////		String location="";
 //		
 //		String email_=edt_email.getText().toString().trim();
 //		String ph_=edt_phno.getText().toString().trim();
 //		String whats_=edt_whatsapp.getText().toString().trim();
 //		
-//		String experiencto=exp_min;
-//		String experiencfrom=exp_max;
-//		String salaryto=salary_min;
-//		String salaryfrom=salary_max;
+////		String experiencto=exp_min;
+////		String experiencfrom=exp_max;
+////		String salaryto=salary_min;
+////		String salaryfrom=salary_max;
 //		String headline=jobheadline.getText().toString();
 //		String headlinedetails=jobdetails.getText().toString();
 //		
-//		if (industryid==-1) {
-//			Util.ShowToast(context, "Please select Industry.");
-//			return;
-//		}else {
-//			industry=industries.get(industryid).getIndustry_id();
-//		}
-//		
-//		if (rolid==-1) {
-//			Util.ShowToast(context, "Please select Role.");
-//			return;
-//		}else {
-//			industryrole=industries.get(industryid).getIndustryRoles().get(rolid).getIndustryroles_id();
-//		}
-//		
-//		
-//		if (experiencto.equals("")) {
-//			Util.ShowToast(context, "Please fill the Experience to.");
-//			return;
-//		}
-//		
-//		if (experiencfrom.equals("")) {
-//			Util.ShowToast(context, "Please fill the Experience from.");
-//			return;
-//		}
+////		if (industryid==-1) {
+////			Util.ShowToast(context, "Please select Industry.");
+////			return;
+////		}else {
+////			industry=industries.get(industryid).getIndustry_id();
+////		}
+////		
+////		if (rolid==-1) {
+////			Util.ShowToast(context, "Please select Role.");
+////			return;
+////		}else {
+////			industryrole=industries.get(industryid).getIndustryRoles().get(rolid).getIndustryroles_id();
+////		}
+////		
+////		
+////		if (experiencto.equals("")) {
+////			Util.ShowToast(context, "Please fill the Experience to.");
+////			return;
+////		}
+////		
+////		if (experiencfrom.equals("")) {
+////			Util.ShowToast(context, "Please fill the Experience from.");
+////			return;
+////		}
 //		
 ////		if(!(Integer.parseInt(experiencfrom)>=Integer.parseInt(experiencto))){
 ////			Util.ShowToast(context, "Experienc from value should be greater then the Experienc to value");
@@ -751,27 +742,27 @@
 ////		}
 //		
 //		
-//		if (salaryto.equals("")) {
-//			Util.ShowToast(context, "Please fill the salary to.");
-//			return;
-//		}
-//		
-//		if (salaryfrom.equals("")) {
-//			Util.ShowToast(context, "Please fill the salary from.");
-//			return;
-//		}
+////		if (salaryto.equals("")) {
+////			Util.ShowToast(context, "Please fill the salary to.");
+////			return;
+////		}
+////		
+////		if (salaryfrom.equals("")) {
+////			Util.ShowToast(context, "Please fill the salary from.");
+////			return;
+////		}
 //		
 ////		if(!(Integer.parseInt(salaryfrom)>=Integer.parseInt(salaryto))){
 ////			Util.ShowToast(context, "From Salary value should be greater then the To Salary value");
 ////			return;
 ////		}
 //		
-//		if (cityid==-1) {
-//			Util.ShowToast(context, "Please select city.");
-//			return;
-//		}else {
-//			location=arrcity.get(cityid).getCity_id();
-//		}
+////		if (cityid==-1) {
+////			Util.ShowToast(context, "Please select city.");
+////			return;
+////		}else {
+////			location=arrcity.get(cityid).getCity_id();
+////		}
 //		
 //		if (headline.equals("")) {
 //			Util.ShowToast(context, "Please fill Job Headline.");
@@ -779,7 +770,7 @@
 //		}
 //		
 //		if (headline.length()>500) {
-//			Util.ShowToast(context, "Job Headline exit limit.");
+//			Util.ShowToast(context, "News Headline exit limit.");
 //			return;
 //		}
 //		
@@ -789,7 +780,7 @@
 //		}
 //		
 //		if (headlinedetails.length() > 65535) {
-//			Util.ShowToast(context, "Job Details exit limit.");
+//			Util.ShowToast(context, "News Details exit limit.");
 //			return;
 //		}
 //		
@@ -818,9 +809,7 @@
 //		}
 //		
 //		id=id.substring(1);
-//		
-//		
-//		JSONObject jsObj = getBody(industry,industryrole,location,experiencto,experiencfrom,salaryto,salaryfrom,headline,headlinedetails,email_,ph_,whats_,id+",");
+//		JSONObject newsObj = getBody(headline,headlinedetails,email_,ph_,whats_,id+",");
 //	
 //		ArrayList<String> paths=new ArrayList<String>();
 //		if (picdatasets!=null && picdatasets.size()>=1) {
@@ -832,11 +821,9 @@
 //			}
 //		}
 //		
-//		
-//		
-//		if (jsObj != null) {
-//			JobPostParser mJobPostParser = new JobPostParser();
-//			mJobPostParser.setJobpostparserinterface(new JobPostParserInterface() {
+//		if (newsObj != null) {  
+//			NewsPostParser mPostParser=new NewsPostParser();
+//			mPostParser.setNewspostparserinterface(new NewsPostParserInterface() {
 //				
 //				@Override
 //				public void OnSuccess(JobDetails mJobDetails) {
@@ -850,7 +837,6 @@
 //						((Activity) context).overridePendingTransition(0, 0); 
 //						finish();
 //					}
-//					
 //				}
 //				
 //				@Override
@@ -858,32 +844,42 @@
 //					
 //				}
 //			});
-//			mJobPostParser.parse(context, jsObj, mDetails.getAuthtoken(),paths);
-//
+//			mPostParser.parse(context, newsObj, mDetails.getAuthtoken(),paths);
 //		}
 //	
 //	}
 //
 //	
+////	http://205.147.110.176:8080/api/feed/create
+////	{
+////		  "replyWatsApp": "",
+////		  "shareDto": {
+////		    "shareWatsApp": "-1",
+////		    "sharePhone": "-1",
+////		    "shareEmail": "-1"
+////		  },
+////		  "replyPhone": "",
+////		  "plateFormId": "0",
+////		  "subject": "bn",
+////		  "appName": "ofCampus",
+////		  "content": "bbb",
+////		  "replyEmail": "dibakar@ofcampus.com",
+////		  "circleList": [
+////		    "21"
+////		  ]
+////		}
 //	
-//	private JSONObject getBody(String industry, String industryrole,
-//			String location, String experiencto, String experiencfrom,
-//			String salaryto, String salaryfrom, String headline,
-//			String headlinedetails, String email_, String ph_, String whats_, String Circle_id) { 
+////	{"replyEmail":"dibakar@ofcampus.com","replyPhone":"",
+////		"replyWatsApp":"985455777","plateFormId":"0",
+////		"appName":"ofCampus","subject":"news post",
+////		"content":"news post test","shareDto":
+////		{"shareEmail":"-1","sharePhone":"-1","shareWatsApp":"-1"},"circleList":["22"]}
+//	
+//	private JSONObject getBody(String headline,String headlinedetails, String email_, String ph_, String whats_, String Circle_id) { 
 //
 //		
 //		JSONObject jsObj = new JSONObject();
 //		try {
-//			jsObj.put("timeSpecified", "true");
-//			jsObj.put("to", experiencto);
-//			jsObj.put("from", experiencfrom);
-//			jsObj.put("salarySpecified", "true");
-//			
-//			jsObj.put("salaryTo", salaryto);
-//			jsObj.put("salaryFrom", salaryfrom);
-//			jsObj.put("subject", headline);
-//			jsObj.put("content", headlinedetails);
-//			
 //			jsObj.put("replyEmail", email_);
 //			jsObj.put("replyPhone", ph_);
 //			jsObj.put("replyWatsApp", whats_);
@@ -891,6 +887,8 @@
 //			jsObj.put("plateFormId", "0");
 //			jsObj.put("appName", "ofCampus");
 //			
+//			jsObj.put("subject", headline);
+//			jsObj.put("content", headlinedetails);
 //			
 //			JSONObject obj=new JSONObject();
 //			obj.put("shareEmail", "-1");
@@ -903,20 +901,7 @@
 //			for (int i = 0; i <circle.length; i++) {
 //				circleArray.put(i, circle[i]);
 //			}
-//			
-//			JSONArray RolesArray=new JSONArray();
-//			for (int i = 0; i <1; i++) {
-//				RolesArray.put(i, industryrole);
-//			}
-//			
-//			JSONArray locaArray=new JSONArray();
-//			for (int i = 0; i <1; i++) {
-//				locaArray.put(i, location);
-//			}
-//			
 //			jsObj.put("circleList", circleArray);
-//			jsObj.put("industryRolesIdList", RolesArray);
-//			jsObj.put("locationIdList", locaArray);
 //			
 //
 //		} catch (JSONException e) {

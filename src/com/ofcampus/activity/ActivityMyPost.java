@@ -25,8 +25,6 @@ import com.ofcampus.parser.MyPostParser.MyPostParserInterface;
 
 public class ActivityMyPost extends ActionBarActivity implements MyPostListAdapterInterface{
 	
-	
-
 	private ListView mypostList;
 	private MyPostListAdapter myPostListAdapter;
 	private Context context;

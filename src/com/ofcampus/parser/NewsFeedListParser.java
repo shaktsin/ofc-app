@@ -17,10 +17,17 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
+import com.ofcampus.Util.JobDataReturnFor;
+import com.ofcampus.databasehelper.JOBListTable;
+import com.ofcampus.model.CityDetails;
 import com.ofcampus.model.ImageDetails;
+import com.ofcampus.model.IndustryDetails;
+import com.ofcampus.model.IndustryRoleDetails;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.model.JobList;
 
-public class FilterParser {
+public class NewsFeedListParser {
+
 	private Context mContext;
 	
 	private String STATUS="status";
@@ -31,7 +38,7 @@ public class FilterParser {
 	private String MESSAGES="messages";
 
 	/*Job List Key*/
-	private String JOBCREATERESPONSELIST="jobCreateResponseList";
+	private String NEWSFEEDLIST="newsfeedList";  
 	private String POSTID="postId";
 	private String SUBJECT="subject";
 	private String ISB_JOBS="ISB JOBS";
@@ -53,42 +60,33 @@ public class FilterParser {
 	private String POSTIMAGES="attachmentDtoList";
 	private String IMAGES_ID="id";
 	private String IMAGES_URL="url";
-	
-
-
 
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
+	 
+	public boolean isShowingPG_;
 	
-	public void parse(Context context, JSONObject postData,String authorization,boolean isShowingPG) { 
+	public void parse(Context context, JSONObject postData_,String authToken_) { 
 		this.mContext = context;
-		FilterParserAsync mFilterParserAsync = new FilterParserAsync(mContext,postData,authorization,isShowingPG); 
+		this.postData = postData_;
+		this.authToken=authToken_;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mFilterParserAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			new Async().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
-			mFilterParserAsync.execute();  
+			new Async().execute();  
 		}
 	}
 	
 	
-	private class FilterParserAsync extends AsyncTask<Void, Void, Void>{ 
-		private Context context;
-		private String authenticationJson;
-		private JSONObject postData; 
-		private boolean isTimeOut=false;
+	private String authenticationJson;
+	private JSONObject postData; 
+	private boolean isTimeOut=false;
+	private ArrayList<JobDetails> newsList;
+	private String authToken;
+
+	private class Async extends AsyncTask<Void, Void, Void>{ 
 		private ProgressDialog mDialog;
-		private ArrayList<JobDetails> JobList;
-		private String authToken;
-		private boolean isShowingPG_;
-
-		public FilterParserAsync(Context mContext, JSONObject postData_,String authToken_,boolean isShowingPG) {
-			this.context = mContext;
-			this.postData = postData_;
-			this.authToken=authToken_;
-			this.isShowingPG_=isShowingPG;
-		}
-
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -103,32 +101,8 @@ public class FilterParser {
 		@Override
 		protected Void doInBackground(Void... params) {
 			
-			try {
-				String[] responsedata =  Util.POSTWithJSONAuth(Util.getFilterUrl(), postData, authToken);
-				authenticationJson = responsedata[1];
-				isTimeOut = (responsedata[0].equals("205"))?true:false;
-				
-				if (authenticationJson!=null && !authenticationJson.equals("")) {
-					JSONObject mObject=new JSONObject(authenticationJson);
-					responsecode = Util.getJsonValue(mObject, STATUS);
-					if (responsecode!=null && responsecode.equals("200")) {
-						JSONObject Obj = mObject.getJSONObject(RESULTS); 
-						if (Obj!=null && !Obj.equals("")) {
-							String expt= Util.getJsonValue(Obj, EXCEPTION);
-							if (expt.equals("false")) {
-								JobList = parseJSONData(Obj);
-							}
-						}
-					}else if(responsecode!=null && (responsecode.equals("500") || responsecode.equals("401"))){
-						JSONObject userObj = mObject.getJSONObject(RESULTS);
-						if (userObj!=null) {
-							responseDetails=userObj.getJSONArray("messages").get(0).toString();
-						}
-					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+			doingBGWork();
+			
 			return null;
 		}
 
@@ -142,45 +116,81 @@ public class FilterParser {
 			}
 			
 			if (isTimeOut) {
-				if (filterparserinterface != null) {
-					filterparserinterface.OnError(); 
+				if (newsfeedlistparserinterface != null) {
+					newsfeedlistparserinterface.OnError(); 
 				}
 			}else if (responsecode.equals("200")) {
-
-				if (JobList!=null && JobList.size()>=1) {
-					if (filterparserinterface!=null) {
-						filterparserinterface.OnSuccess(JobList); 
-					}
-				}else {
-					Util.ShowToast(mContext, "NO data availble.");
+				if (newsfeedlistparserinterface!=null) {
+					newsfeedlistparserinterface.OnSuccess(newsList);
 				}
 			}else if (responsecode.equals("500") || responsecode.equals("401")){
-				Util.ShowToast(mContext, responseDetails);
+				Util.ShowToast(mContext, "No more News.");
+				if (newsfeedlistparserinterface!=null) {
+					newsfeedlistparserinterface.OnError();
+				}
 			}else {
-				Util.ShowToast(mContext, "Filter Error.");
+				Util.ShowToast(mContext, "News parse error.");
+				if (newsfeedlistparserinterface!=null) {
+					newsfeedlistparserinterface.OnError();
+				}
 			}
 		}
 	}
-	
-	
 
 	
+	public ArrayList<JobDetails> bgSyncCalling(Context context, JSONObject postData_,String authToken_){
+		this.mContext = context;
+		this.postData = postData_;
+		this.authToken=authToken_;
+		doingBGWork();
+		return newsList;
+	}
 	
+	public void doingBGWork(){
+		try {
+			String[] responsedata =  Util.POSTWithJSONAuth(Util.getNewsListUrl(), postData, authToken);
+			authenticationJson = responsedata[1];
+			isTimeOut = (responsedata[0].equals("205"))?true:false;
+			
+			if (authenticationJson!=null && !authenticationJson.equals("")) {
+				JSONObject mObject=new JSONObject(authenticationJson);
+				responsecode = Util.getJsonValue(mObject, STATUS);
+				if (responsecode!=null && responsecode.equals("200")) {
+					JSONObject Obj = mObject.getJSONObject(RESULTS); 
+					if (Obj!=null && !Obj.equals("")) {
+						String expt= Util.getJsonValue(Obj, EXCEPTION);
+						if (expt.equals("false")) {
+							newsList = parseJSONData(Obj); 
+						}
+					}
+				}else if(responsecode!=null && (responsecode.equals("500") || responsecode.equals("401"))){
+					JSONObject userObj = mObject.getJSONObject(RESULTS);
+					if (userObj!=null) {
+						responseDetails=userObj.getJSONArray("messages").get(0).toString();
+					}
+				}
+			}
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	
+	}
 	
 	public ArrayList<JobDetails> parseJSONData(JSONObject obj){
 
-		ArrayList<JobDetails> jobarray = new ArrayList<JobDetails>();
+		ArrayList<JobDetails> newsArray=null;
 		
 		try {
-			JSONObject jsonobject=null;
-			
-			JSONArray jobjsonarray=obj.getJSONArray(JOBCREATERESPONSELIST) ;
+			JSONArray jobjsonarray=obj.getJSONArray(NEWSFEEDLIST) ;
 			
 			if (jobjsonarray != null && jobjsonarray.length() >= 1) {
 				
+				newsArray = new ArrayList<JobDetails>(); 
+				
 				for (int i = 0; i < jobjsonarray.length(); i++) {
 					JobDetails mJobDetails=new JobDetails();
-					jsonobject = jobjsonarray.getJSONObject(i);
+					JSONObject jsonobject = jobjsonarray.getJSONObject(i);
 					
 					mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID)); 
 					mJobDetails.setSubject(Util.getJsonValue(jsonobject, SUBJECT));
@@ -217,56 +227,76 @@ public class FilterParser {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-
-					jobarray.add(mJobDetails);
+					
+					newsArray.add(mJobDetails);
 					mJobDetails=null;
 				}
 			}
-			
 			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
-		return jobarray;
+		return newsArray;
 		
 	}
 	
-
-	public JSONObject getBody(String circle,String locationFilter, String industryFilter,String rolesFilter,String salaryFilter,String experienceFilter) {
+	
+//	{"plateFormId":0,"appName":"ofCampus","postId":,"operation":,"perPage":,"pageNo":}
+	public JSONObject getBody(String postId, String operation,String perPage, String pageNo) {
 		JSONObject jsObj = new JSONObject();
 		try {
 			jsObj.put("plateFormId", "0");
 			jsObj.put("appName", "ofCampus");
-			jsObj.put("circleFilter", circle);
-			jsObj.put("locationFilter", locationFilter);
-			jsObj.put("industryFilter", industryFilter);
-			jsObj.put("rolesFilter", rolesFilter);
-			jsObj.put("salaryFilter", salaryFilter);
-			jsObj.put("experienceFilter", experienceFilter);
-
+			jsObj.put("postId", postId);
+			jsObj.put("operation", operation);
+//			jsObj.put("perPage", perPage);
+//			jsObj.put("pageNo", pageNo);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return jsObj;
 	}
 	
+	public JSONObject getBody(String postId, String operation) {
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+			jsObj.put("postId", postId);
+			jsObj.put("operation", operation);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
+	}
 	
+	public JSONObject getBody() {
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
+	}
 	
-	public FilterParserInterface filterparserinterface;
+	public NewsFeedListParserInterface newsfeedlistparserinterface;
 
-	public FilterParserInterface getFilterparserinterface() {
-		return filterparserinterface;
+	public NewsFeedListParserInterface getNewsfeedlistparserinterface() {
+		return newsfeedlistparserinterface;
 	}
 
-	public void setFilterparserinterface(
-			FilterParserInterface filterparserinterface) {
-		this.filterparserinterface = filterparserinterface;
+	public void setNewsfeedlistparserinterface(
+			NewsFeedListParserInterface newsfeedlistparserinterface) {
+		this.newsfeedlistparserinterface = newsfeedlistparserinterface;
 	}
 
-	public interface FilterParserInterface {
-		public void OnSuccess(ArrayList<JobDetails> jobList);
+	public interface NewsFeedListParserInterface {
+		public void OnSuccess(ArrayList<JobDetails> newsList); 
 
 		public void OnError();
 	}
+
 }

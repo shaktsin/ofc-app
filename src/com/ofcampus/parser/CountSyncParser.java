@@ -67,7 +67,7 @@ private Context mContext;
 		ArrayList<JobDetails> jobs = null;
 		
 		try {
-			String[] responsedata =  Util.POST_JOB(Util.getJobListUrl(), postData, authorization);
+			String[] responsedata =  Util.POSTWithJSONAuth(Util.getJobListUrl(), postData, authorization);
 			authenticationJson = responsedata[1];
 			isTimeOut = (responsedata[0].equals("205"))?true:false;
 			

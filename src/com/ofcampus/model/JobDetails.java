@@ -34,6 +34,16 @@ public class JobDetails {
 	private String salaryTo = "";
 	private String salaryFrom = "";
 	
+	private String postType="";
+	
+	public String getPostType() {
+		return postType;
+	}
+
+	public void setPostType(String postType) {
+		this.postType = postType;
+	}
+
 	private ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
 	public ArrayList<ImageDetails> getImages() {
 		return images;

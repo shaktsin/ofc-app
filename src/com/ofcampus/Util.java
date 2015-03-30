@@ -224,6 +224,26 @@ public class Util {
 		return baseUrl + "user/change/password";
 	}
 	
+	//News Section
+	public static String getNewsListUrl() {
+		return baseUrl + "feed/list";
+	}
+	
+	public static String getPrepareNewsUrl() {
+		return baseUrl + "feed/prepare";
+	}
+	
+	public static String getCreateNewsUrl() {
+		return baseUrl + "feed/create";
+	}
+	
+	public static String getGetNewsfeedUrl(String postId) {
+		return baseUrl + "feed/"+postId;
+	}
+	public static String getEditNewsUrl() {
+		return baseUrl + "feed/edit";
+	}
+	
 	/********************URl List**********************/
 	
 	/**
@@ -430,7 +450,13 @@ public class Util {
 		return responData;
 	}
 	
-	public static String[] POST(String url, JSONObject jsonObject) {
+	/**
+	 * 
+	 * @param url
+	 * @param jsonObject
+	 * @return
+	 */
+	public static String[] POSTWithJSON(String url, JSONObject jsonObject) {
 		InputStream inputStream = null;
 		String result = "";
 		String[] responData = { "", "" };
@@ -475,8 +501,14 @@ public class Util {
 		return responData;
 	}
 
-	public static String[] POST_JOB(String url, JSONObject jsonObject,
-			String auth) {
+	/**
+	 * 
+	 * @param url
+	 * @param jsonObject
+	 * @param auth
+	 * @return
+	 */
+	public static String[] POSTWithJSONAuth(String url, JSONObject jsonObject,String auth) { 
 		InputStream inputStream = null;
 		String result = "";
 		String[] responData = { "", "" };
@@ -523,7 +555,7 @@ public class Util {
 	
 	
 	
-	public static String[] POST_JOBNEW(String url, JSONObject jsonObject,String auth,ArrayList<String> paths) {
+	public static String[] POSTWithAuthJSONFile(String url, JSONObject jsonObject,String auth,ArrayList<String> paths,String JSONTAG) {
 		InputStream inputStream = null;
 		String result = "";
 		String[] responData = { "", "" };
@@ -544,7 +576,7 @@ public class Util {
 			
 			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 			File lfile = null;
-			reqEntity.addPart("jobs", new StringBody(json));
+			reqEntity.addPart(JSONTAG, new StringBody(json));
 			if (paths != null && paths.size() >= 1) {
 				for (String path : paths) {
 					if (path != null) {
@@ -582,6 +614,14 @@ public class Util {
 		return responData;
 	}
 	 
+	/**
+	 * 
+	 * @param url
+	 * @param jsonObject
+	 * @param auth
+	 * @param path
+	 * @return
+	 */
 	public static String[] ProfileUpdte(String url, JSONObject jsonObject,String auth,String path) {
 		InputStream inputStream = null;
 		String result = "";

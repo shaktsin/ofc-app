@@ -13,6 +13,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 
+import com.crittercism.app.Crittercism;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -46,6 +47,7 @@ public class OfCampusApplication extends Application {
 		super.onCreate();
 		initilizeDB();
 		initImageLoader(getApplicationContext());
+		Crittercism.initialize(getApplicationContext(), "5519900b7fa1f3d21c00633d");
 	}
 
 	@Override

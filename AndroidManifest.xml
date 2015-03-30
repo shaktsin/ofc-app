@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".OfCampusApplication"
@@ -180,6 +181,27 @@
         </activity>
         <activity
             android:name=".activity.ActivityResetPassword"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityCreateNews"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityCreatePost"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityNewsDetails"
             android:configChanges="keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

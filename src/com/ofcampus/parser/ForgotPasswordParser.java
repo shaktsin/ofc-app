@@ -70,7 +70,7 @@ public class ForgotPasswordParser {
 		protected Void doInBackground(Void... params) {
 
 			try {
-				String[] responsedata = Util.POST(Util.getForGotPasswordUrl(), postData);
+				String[] responsedata = Util.POSTWithJSON(Util.getForGotPasswordUrl(), postData);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
 

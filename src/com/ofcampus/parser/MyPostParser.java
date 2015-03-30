@@ -52,6 +52,7 @@ public class MyPostParser  {
 	private String POSTIMAGES="attachmentDtoList";
 	private String IMAGES_ID="id";
 	private String IMAGES_URL="url";
+	private String POSTTYPE="postType";
 	
 	/*Response JSON key value*/
 	private String responsecode="";
@@ -102,7 +103,7 @@ public class MyPostParser  {
 		protected Void doInBackground(Void... params) {
 			
 			try {
-				String[] responsedata =   Util.POST_JOB(Util.getMyPostJobUrl(), postData, authorization);
+				String[] responsedata =   Util.POSTWithJSONAuth(Util.getMyPostJobUrl(), postData, authorization);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				
@@ -185,6 +186,7 @@ public class MyPostParser  {
 					mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));
 					mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
 					mJobDetails.setPostedon(Util.getJsonValue(jsonobject, POSTEDON));
+					mJobDetails.setPostType(Util.getJsonValue(jsonobject, POSTTYPE));
 					
 					JSONObject userJSONobj=jsonobject.getJSONObject(USERDTO);
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
