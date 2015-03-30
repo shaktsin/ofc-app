@@ -1049,7 +1049,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		ArrayList<String> paths=new ArrayList<String>();
 		if (picdatasets!=null && picdatasets.size()>=1) {
 			for (PicDataSet pic : picdatasets) {
-				if (!pic.path.equals("")) {
+				if (!pic.path.equals("") && (!pic.path.contains("http://") || !pic.path.contains("https://")) && pic.ID.equals("")) {
 					paths.add(pic.path);
 				}
 				
