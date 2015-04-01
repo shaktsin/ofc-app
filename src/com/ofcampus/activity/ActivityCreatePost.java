@@ -66,7 +66,7 @@ import com.ofcampus.parser.PrepareForCreatingJobParser.PrepareParserInterface;
 
 public class ActivityCreatePost  extends ActionBarActivity  implements OnClickListener,OnItemSelectedListener{
 
-	public int GALLERY_REQUEST = 1;
+	public static int GALLERY_REQUEST = 1;
 	private Context context;
 	private UserDetails mDetails;
 	private Spinner industry,role,location;
@@ -620,7 +620,7 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 
 	    @Override
 		public int getCount() {
-			return PicDataSets.size();
+			return (PicDataSets!=null)?PicDataSets.size():0;
 		}
 	    
 	    
@@ -634,8 +634,8 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        Holder holder;
 	        if (convertView == null) {
+	        	holder = new Holder();
 	            convertView = mInflater.inflate(R.layout.inflate_createjob_pic, parent, false);
-	            holder = new Holder();
 	            holder.pic = (ImageView) convertView.findViewById(R.id.infalte_createjob_pi);
 	            convertView.setTag(holder);
 	        } else {
@@ -671,8 +671,11 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 	}
 	
 	private void galleryCalling(){
-		Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//		Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//		startActivityForResult(i, GALLERY_REQUEST);
+		Intent i = new Intent(context,ActivityGallery.class);
 		startActivityForResult(i, GALLERY_REQUEST);
+		overridePendingTransition(0, 0);
 	}
 	
 	//
@@ -681,21 +684,25 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && null != data) {
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-			Cursor lCursor = getContentResolver().query(selectedImage,
-					filePathColumn, null, null, null);
-			lCursor.moveToFirst();
-
-			int lColumnIndex = lCursor.getColumnIndex(filePathColumn[0]);
-			String lpicturePath = lCursor.getString(lColumnIndex);
+//			Uri selectedImage = data.getData();
+//			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+//
+//			Cursor lCursor = getContentResolver().query(selectedImage,
+//					filePathColumn, null, null, null);
+//			lCursor.moveToFirst();
+//
+//			int lColumnIndex = lCursor.getColumnIndex(filePathColumn[0]);
+//			String lpicturePath = lCursor.getString(lColumnIndex);
 			
-			PicDataSet mPicDataSet=new PicDataSet();
-			mPicDataSet.path=lpicturePath;
-			ArrayList<PicDataSet> arrData= new ArrayList<PicDataSet>();
-			arrData.add(mPicDataSet);
-			mCustomArrayAdapter.addImage(arrData);
+			Bundle mbBundle = data.getExtras();
+			String lpicturePath = mbBundle.getString("contents");
+			if (lpicturePath!=null) {
+				PicDataSet mPicDataSet=new PicDataSet();
+				mPicDataSet.path=lpicturePath;
+				ArrayList<PicDataSet> arrData= new ArrayList<PicDataSet>();
+				arrData.add(mPicDataSet);
+				mCustomArrayAdapter.addImage(arrData);
+			}
 		}
 
 	}

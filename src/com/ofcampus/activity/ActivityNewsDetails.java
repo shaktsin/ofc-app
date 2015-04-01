@@ -64,8 +64,8 @@ public class ActivityNewsDetails extends ActionBarActivity implements OnClickLis
 	}
 	
 	@Override
-	protected void onPostResume() {
-		super.onPostResume();
+	protected void onResume() {
+		super.onResume();
 		loadData();
 	}
 	  
@@ -162,9 +162,12 @@ public class ActivityNewsDetails extends ActionBarActivity implements OnClickLis
 	private void loadData() {
 
 		mUserDetails = UserDetails.getLoggedInUser(mContext);
-		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;		
+		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;	
+		if (mJobDetails==null) {
+			onBackPressed();
+			return;
+		}
 		JObID=mJobDetails.getPostid();
-		
 		rel_comnt.setVisibility(isFromDetails?View.GONE:View.VISIBLE);
 		
 		ArrayList<JobDetails> arrayList=new ArrayList<JobDetails>();

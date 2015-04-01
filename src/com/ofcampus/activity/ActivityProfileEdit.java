@@ -128,8 +128,11 @@ public class ActivityProfileEdit extends ActionBarActivity implements OnClickLis
 
 			int lColumnIndex = lCursor.getColumnIndex(filePathColumn[0]);
 			String lpicturePath = lCursor.getString(lColumnIndex);
-			imageLoader.displayImage("file://"+lpicturePath,pic, options);
-			path=lpicturePath;
+			if (lpicturePath!=null) {
+				imageLoader.displayImage("file://"+lpicturePath,pic, options);
+				path=lpicturePath;
+			}
+			
 		}
 
 	}
