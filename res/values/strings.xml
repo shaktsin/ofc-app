@@ -114,6 +114,7 @@
     <string name="enter_msg_circlename">Please enter Circle Name.</string>
     <string name="createcircle_txtmodarator">Public</string>
     <string name="create_circlebtn">Create Circle</string>
+    <string name="join_circle_normal_btn">Join</string>
 
     <!-- Reset Password -->
 
@@ -121,5 +122,9 @@
     <string name="resetpassword_enterpassword">Enter Password</string>
     <string name="resetpassword_retypepassword">Retype Password</string>
     <string name="resetpassword_validation">Password and Retype Password not same.</string>
+    
+    <!-- Circle Profile -->
+    <string name="profile_posts">Posts</string>
+    <string name="profile_members">Members</string>
 
 </resources>

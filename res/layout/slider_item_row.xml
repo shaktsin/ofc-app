@@ -25,11 +25,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/rowIcon"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#4c4c4c"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>
 

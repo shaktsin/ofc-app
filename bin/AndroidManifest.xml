@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".OfCampusApplication"
@@ -48,13 +50,8 @@
             android:name=".activity.ActivityRegistration"
             android:configChanges="keyboardHidden"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".activity.ActivityInstituteList"
-            android:configChanges="keyboardHidden"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name=".activity.ActivityHome"
@@ -98,6 +95,117 @@
             android:configChanges="keyboardHidden"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityComment"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityCreateJobNew"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityFilterJobs"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityHidePost"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityPostEdit"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityVerifyCode"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityProfileEdit"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityCircle"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityCreateCircle"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityJobPostedUserDetails"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityCircleProfile"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityForgotPassword"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityResetPassword"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityCreateNews"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityCreatePost"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.ActivityNewsDetails"
+            android:configChanges="keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
     </application>
 

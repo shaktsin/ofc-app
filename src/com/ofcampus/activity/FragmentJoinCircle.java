@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,7 +18,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
@@ -195,10 +198,11 @@ public class FragmentJoinCircle extends Fragment {
 			if (convertView==null) {
 				mHolder=new ViewHolder();
 				convertView=inflater.inflate(R.layout.inflate_circledetails, null);
-				mHolder.txt_joined=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_joined);
-				mHolder.txt_membno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_membno);
-				mHolder.txt_postno=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_postno);
+				//mHolder.txt_joined=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_joined);
+				mHolder.last_post=(CustomTextView)convertView.findViewById(R.id.inflt_last_posts_details);
+				mHolder.txt_post_and_members=(TextView)convertView.findViewById(R.id.post_and_members_info);
 				mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.inflt_circlerow_txt_name);
+				mHolder.join_btn = (Button)convertView.findViewById(R.id.join_circle);
 				convertView.setTag(mHolder);
 			}else {
 				mHolder=(ViewHolder) convertView.getTag();
@@ -206,19 +210,38 @@ public class FragmentJoinCircle extends Fragment {
 
 			CircleDetails mCircleDetails=circles.get(position);
 			final String circleID=mCircleDetails.getId();
-			mHolder.txt_joined.setText("Join");
-			mHolder.txt_membno.setText(mCircleDetails.getMembers()+"\n Members");
-			mHolder.txt_postno.setText(mCircleDetails.getPosts()+"\n Posts");
-			mHolder.txt_name.setText(mCircleDetails.getName());
+			//mHolder.txt_joined.setText("Join");
+			//mHolder.txt_membno.setText(mCircleDetails.getMembers()+"\n Members");
+			//mHolder.txt_postno.setText(mCircleDetails.getPosts()+"\n Posts");
 			
+			//mHolder.join_btn.setText("Join");
 			
-			mHolder.txt_joined.setOnClickListener(new OnClickListener() {
+			String circleName = mCircleDetails.getName();
+			String camelCaseName = Character.toString(Character.toUpperCase(circleName.charAt(0))) +
+					circleName.substring(1).toLowerCase();
+			//circleName = new String()circleName.
+			mHolder.txt_name.setText(camelCaseName);
+			String post_and_members_details = mCircleDetails.getMembers() + " members,"+ mCircleDetails.getPosts() + " posts";
+			mHolder.txt_post_and_members.setText(post_and_members_details);
+			//mHolder.last_post.setText("This is the tribute to all metallica fans!");
+			
+			mHolder.join_btn.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					joinCircleEvent(circleID);
+					//((Button) v).setEnabled(false);
+					Button btn = (Button) v;
+					btn.setFocusableInTouchMode(false);
+					btn.setFocusable(false);
+					//btn.setBackgroundDrawable((R.drawable.btn_pressed);
+					//btn.setEnabled(false);
+					//btn.setText("Member");
+					//btn.setTextColor(Color.parseColor("#ffffff"));
 				}
 			});
+			
+			
 			
 			mHolder.txt_name.setOnClickListener(new OnClickListener() {
 				
@@ -238,7 +261,9 @@ public class FragmentJoinCircle extends Fragment {
 		}
 		
 		private class ViewHolder{
-			CustomTextView txt_name,txt_postno,txt_membno,txt_joined;
+			CustomTextView txt_name,last_post,txt_joined;
+			TextView txt_post_and_members;
+			Button join_btn;
 		}
 
 	}
