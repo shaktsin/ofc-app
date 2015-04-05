@@ -5,12 +5,9 @@
  */
 package com.ofcampus.activity;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,14 +23,10 @@ import android.view.MenuItem;
 
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
-import com.ofcampus.Util;
 import com.ofcampus.activity.FragmentJoinCircle.JoinCircleInterface;
 import com.ofcampus.activity.FragmentYourCircle.YourCircleInterface;
 import com.ofcampus.component.PagerSlidingTabStripForCircle;
-import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
-import com.ofcampus.parser.CircleListParser;
-import com.ofcampus.parser.CircleListParser.CircleListParserInterface;
 
 public class ActivityCircle extends ActionBarActivity implements OnPageChangeListener,YourCircleInterface,JoinCircleInterface{
 
@@ -54,7 +47,6 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		initiliz();
-		getAllCircleList(true);
 	}
 
 	@Override
@@ -68,8 +60,8 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	protected void onResume() {
 		super.onResume();
 		if (((OfCampusApplication)context.getApplicationContext()).isNewCircleCreated) {
-			getAllCircleList(false);
 			((OfCampusApplication)context.getApplicationContext()).isNewCircleCreated=false;
+//			getAllCircleList(false);
 		}
 		
 	}
@@ -187,68 +179,14 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		}
 	}
 
-	
-	private void getAllCircleList(boolean b){ 
-		if (!Util.hasConnection(context)) {
-			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
-			return;
-		}
-		
-		CircleListParser mCircleListParser=new CircleListParser();
-		mCircleListParser.setCirclelistparserinterface(new CircleListParserInterface() {
-			
-			@Override
-			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
-				if (circlerList!=null && circlerList.size()>=1) {
-					shortCircleList(circlerList);
-				}
-				
-			}
-			
-			@Override
-			public void OnError() {
-				
-			}
-		});
-		mCircleListParser.parse(context, mCircleListParser.getBody("0","8"), Authtoken,b);
-//		{"userId":11,"pageNo":0, "perPage":8, "appName":"ofCampus", "plateFormId":0}
-	}
-	
-	private void shortCircleList(ArrayList<CircleDetails> circlerList){
-		ArrayList<CircleDetails> joincircle=new ArrayList<CircleDetails>();
-		ArrayList<CircleDetails> yourcirclecircle=new ArrayList<CircleDetails>();
-		
-		for (CircleDetails circleDetails : circlerList) {
-			if (circleDetails.getJoined().equals("true")) {
-				yourcirclecircle.add(circleDetails);
-			}else {
-				joincircle.add(circleDetails);
-			}
-		}
-		
-		mYourCircle.refreshData(yourcirclecircle);
-		mJoinCircle.refreshData(joincircle);
-	}
-	
 	@Override
-	public void refreshFromJoinView() {
-		callCircleLIst();
-		
+	public void CircleJoin() {
+		mYourCircle.firstCalling(false);
 	}
 
 	@Override
-	public void refreshFromYourView() {
-		callCircleLIst();
-	}
-	
-	
-	private void callCircleLIst() {
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				getAllCircleList(false);
-			}
-		}, 600);
+	public void CircleUnJoined() {
+		mJoinCircle.firstCalling(false);
 	}
 
 }

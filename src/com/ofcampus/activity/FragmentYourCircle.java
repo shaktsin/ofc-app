@@ -21,7 +21,6 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,6 +34,8 @@ import com.ofcampus.parser.CircleActivateParser;
 import com.ofcampus.parser.CircleActivateParser.CircleActivateParserInterface;
 import com.ofcampus.parser.CircleDeActivateParser;
 import com.ofcampus.parser.CircleDeActivateParser.CircleDeActivateParserInterface;
+import com.ofcampus.parser.CircleJoinListParser;
+import com.ofcampus.parser.CircleJoinListParser.CircleJoinListParserInterface;
 import com.ofcampus.parser.UnJoinCircleParser;
 import com.ofcampus.parser.UnJoinCircleParser.UnJoinCircleParserInterface;
 import com.ofcampus.ui.CustomTextView;
@@ -51,11 +52,11 @@ public class FragmentYourCircle extends Fragment {
 	
 	
     /***For Load more****/
-    private int minimumofsets = 8,mLastFirstVisibleItem = 0;
+	private int pageNo=0;
+	private int pagecount=8;
+    private int minimumofsets = 7,mLastFirstVisibleItem = 0;
     private boolean loadingMore = false;
     private RelativeLayout footer_pg;
-    
-    
     
 	public static FragmentYourCircle newInstance(int position, Context mContext) {
 		FragmentYourCircle f = new FragmentYourCircle();
@@ -77,6 +78,7 @@ public class FragmentYourCircle extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_yourcircle, null);
 		initilizView(view);
+		firstCalling(true); 
 		return view;
 	}
 
@@ -84,9 +86,7 @@ public class FragmentYourCircle extends Fragment {
 		yourcircle_list = (ListView) view.findViewById(R.id.fragmentyourcircle_list);
 		mYourCircleListAdapter=new YourCircleListAdapter(context, new ArrayList<CircleDetails>());
 		yourcircle_list.setAdapter(mYourCircleListAdapter);
-		
-		
-		
+			
 		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
 		yourcircle_list.setOnScrollListener(new OnScrollListener() {
 
@@ -110,9 +110,7 @@ public class FragmentYourCircle extends Fragment {
 						Log.i("SCROLLING DOWN", "TRUE");
 						footer_pg.setVisibility(View.VISIBLE); 
 						loadingMore = true;
-//						if (jobsfrginterface!=null) {
-//							jobsfrginterface.loadcall(lastJobID);
-//						}
+						getAllCircleList(false,(pageNo+1),pagecount);
 					}
 				}
 				mLastFirstVisibleItem = firstVisibleItem;
@@ -120,8 +118,14 @@ public class FragmentYourCircle extends Fragment {
 		});
 	}
 
-
-	private void unjoinCircleEvent(String circleID) {
+	public void firstCalling(boolean b){
+		pageNo=0;
+		pagecount=8;
+		getAllCircleList(b, 0, 8); 
+	}
+	
+	
+	private void unjoinCircleEvent(String circleID, final int position_) {
 
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
@@ -134,8 +138,9 @@ public class FragmentYourCircle extends Fragment {
 			@Override
 			public void OnSuccess() {
 				Util.ShowToast(context,"Succesfully UnJoin Circle.");
+				mYourCircleListAdapter.removepostion(position_); 
 				if (yourcircleinterface!=null) {
-					yourcircleinterface.refreshFromYourView();
+					yourcircleinterface.CircleUnJoined();
 				}
 			}
 			
@@ -155,9 +160,9 @@ public class FragmentYourCircle extends Fragment {
 			@Override
 			public void OnSuccess() {
 				Util.ShowToast(context,"Succesfully Activated your Circle.");
-				if (yourcircleinterface!=null) {
-					yourcircleinterface.refreshFromYourView();
-				}
+				pageNo=0;
+				pagecount=8;
+				getAllCircleList(false, 0, 8);
 				
 			}
 			
@@ -176,9 +181,9 @@ public class FragmentYourCircle extends Fragment {
 			@Override
 			public void OnSuccess() {
 				Util.ShowToast(context,"Succesfully DeActivated your Circle.");
-				if (yourcircleinterface!=null) {
-					yourcircleinterface.refreshFromYourView();
-				}
+				pageNo=0;
+				pagecount=8;
+				getAllCircleList(false, 0, 8);
 			}
 			
 			@Override
@@ -190,13 +195,38 @@ public class FragmentYourCircle extends Fragment {
 	}
 	
 	
-	
-	public void refreshData(ArrayList<CircleDetails> circles){
-		mYourCircleListAdapter.refreshData(circles);
-		if (circles!=null && circles.size()>=1) {
-			yourcircle_list.setSelection(0);
+	private void getAllCircleList(boolean b,final int pageNo_,int pagecount_){ 
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			return;
 		}
 		
+		CircleJoinListParser mCircleListParser=new CircleJoinListParser();
+		mCircleListParser.setCirclejoinlistparserinterface(new CircleJoinListParserInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
+				if (circlerList!=null && circlerList.size()>=1) {
+					if (pageNo==0) {
+						mYourCircleListAdapter.refreshData(circlerList);
+						pageNo=pageNo_+1;
+					}else {
+						mYourCircleListAdapter.addMoreData(circlerList);
+						pageNo=pageNo_+1;
+						minimumofsets=minimumofsets+pagecount;
+					}
+					footer_pg.setVisibility(View.GONE); 
+					loadingMore = false;
+				}
+			}
+			
+			@Override
+			public void OnError() {
+				footer_pg.setVisibility(View.GONE); 
+				loadingMore = false;
+			}
+		});
+		mCircleListParser.parse(context, mCircleListParser.getBody(pageNo_,pagecount_), Authtoken,b);
 	}
 	
 	public class YourCircleListAdapter extends BaseAdapter{ 
@@ -212,10 +242,16 @@ public class FragmentYourCircle extends Fragment {
 			this.inflater=LayoutInflater.from(context);
 		}
 		
-		public void refreshData(ArrayList<CircleDetails> arrJobs){
-			this.circles= arrJobs;
+		public void refreshData(ArrayList<CircleDetails> arrCircle){ 
+			this.circles= arrCircle;
 			notifyDataSetChanged();
 		}
+		
+		public void addMoreData(ArrayList<CircleDetails> arrCircles){ 
+			this.circles.addAll(arrCircles);
+			notifyDataSetChanged();
+		}
+
 
 		public void removepostion(int position) {
 			if (this.circles.size()>=1) {
@@ -310,7 +346,7 @@ public class FragmentYourCircle extends Fragment {
 
 				@Override
 				public void onClick(View v) {
-					unjoinCircleEvent(circleID);
+					unjoinCircleEvent(circleID,position);
 				}
 			});
 
@@ -351,6 +387,6 @@ public class FragmentYourCircle extends Fragment {
 	}
 
 	public interface YourCircleInterface {
-		public void refreshFromYourView();
+		public void CircleUnJoined();
 	}
 }

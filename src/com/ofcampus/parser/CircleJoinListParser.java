@@ -19,7 +19,7 @@ import android.os.Build;
 import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
 
-public class CircleListParser {
+public class CircleJoinListParser {
 
 
 	private Context mContext;
@@ -90,7 +90,7 @@ public class CircleListParser {
 		protected Void doInBackground(Void... params) {
 
 			try {
-				String[] responsedata = Util.POSTWithJSONAuth(Util.getUnJoinListCircleUrl(), postData, authorization);
+				String[] responsedata = Util.POSTWithJSONAuth(Util.getJoinListCircleUrl(), postData, authorization);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
 
@@ -130,13 +130,13 @@ public class CircleListParser {
 				mDialog = null;
 			}
 			if (isTimeOut) {
-				if (circlelistparserinterface != null) {
-					circlelistparserinterface.OnError();
+				if (circlejoinlistparserinterface != null) {
+					circlejoinlistparserinterface.OnError();
 				}
 			} else if (responsecode.equals("200")) {
 				if (circlerList != null && circlerList.size()>=1) {
-					if (circlelistparserinterface != null) {
-						circlelistparserinterface.OnSuccess(circlerList);   
+					if (circlejoinlistparserinterface != null) {
+						circlejoinlistparserinterface.OnSuccess(circlerList);    
 					}
 				} else {
 					Util.ShowToast(mContext, "No circle available");
@@ -178,29 +178,29 @@ public class CircleListParser {
 		return circlerList;
 	}
 	
-	public JSONObject getBody(int pageNo_,int pagecount_) {
+	public JSONObject getBody(int pageNo,int pagecount) { 
 		JSONObject jsObj = new JSONObject();
 		try {
-			jsObj.put("pageNo", pageNo_+""); 
-			jsObj.put("perPage", pagecount_+"");
+			jsObj.put("pageNo", pageNo+"");
+			jsObj.put("perPage", pagecount+"");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return jsObj;
 	}
 
-	public CircleListParserInterface circlelistparserinterface;
+	public CircleJoinListParserInterface circlejoinlistparserinterface;
 
-	public CircleListParserInterface getCirclelistparserinterface() {
-		return circlelistparserinterface;
+	public CircleJoinListParserInterface getCirclejoinlistparserinterface() {
+		return circlejoinlistparserinterface;
 	}
 
-	public void setCirclelistparserinterface(
-			CircleListParserInterface circlelistparserinterface) {
-		this.circlelistparserinterface = circlelistparserinterface;
+	public void setCirclejoinlistparserinterface(
+			CircleJoinListParserInterface circlejoinlistparserinterface) {
+		this.circlejoinlistparserinterface = circlejoinlistparserinterface;
 	}
 
-	public interface CircleListParserInterface {
+	public interface CircleJoinListParserInterface {
 		public void OnSuccess(ArrayList<CircleDetails> circlerList);
 
 		public void OnError();

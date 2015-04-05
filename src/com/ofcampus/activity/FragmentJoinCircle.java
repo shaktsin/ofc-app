@@ -10,16 +10,19 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ofcampus.OfCampusApplication;
@@ -27,6 +30,8 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.CircleListParser;
+import com.ofcampus.parser.CircleListParser.CircleListParserInterface;
 import com.ofcampus.parser.JoinCircleParser;
 import com.ofcampus.parser.JoinCircleParser.JoinCircleParserInterface;
 import com.ofcampus.ui.CustomTextView;
@@ -44,9 +49,11 @@ public class FragmentJoinCircle extends Fragment {
 
     
     /***For Load more****/
-//    private int minimumofsets = 5,mLastFirstVisibleItem = 0;
-//    private boolean loadingMore = false;
-//    private RelativeLayout footer_pg;
+	private int pageNo=0;
+	private int pagecount=8;
+    private int minimumofsets = 7,mLastFirstVisibleItem = 0;
+    private boolean loadingMore = false;
+    private RelativeLayout footer_pg;
 	
 	public static FragmentJoinCircle newInstance(int position, Context mContext) {
 		FragmentJoinCircle f = new FragmentJoinCircle();
@@ -68,6 +75,7 @@ public class FragmentJoinCircle extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_joincircle, null);
 		initilizView(view);
+		firstCalling(false); 
 		return view;
 	}
 
@@ -77,44 +85,45 @@ public class FragmentJoinCircle extends Fragment {
 		joincircle_list.setAdapter(mJoinCircleListAdapter);
 		
 		
-//		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
-//		joincircle_list.setOnScrollListener(new OnScrollListener() {
-//
-//			@Override
-//			public void onScrollStateChanged(AbsListView view, int scrollState) {
-//			}
-//
-//			@Override
-//			public void onScroll(AbsListView view, int firstVisibleItem,
-//					int visibleItemCount, int totalItemCount) {
-//
-//				int lastInScreen = firstVisibleItem + visibleItemCount;
-//				if (mJoinCircleListAdapter != null
-//						&& totalItemCount > minimumofsets
-//						&& (lastInScreen == totalItemCount) && !(loadingMore)) {
-//					if (mLastFirstVisibleItem < firstVisibleItem) {
-//						if (!Util.hasConnection(context)) {
-//							Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
-//							return;
-//						}
-//						Log.i("SCROLLING DOWN", "TRUE");
-//						footer_pg.setVisibility(View.VISIBLE); 
-//						loadingMore = true;
-////						if (jobsfrginterface!=null) {
-////							jobsfrginterface.loadcall(lastJobID);
-////						}
-//					}
-//				}
-//				mLastFirstVisibleItem = firstVisibleItem;
-//			}
-//		});
+		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
+		joincircle_list.setOnScrollListener(new OnScrollListener() {
 
-		
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				if (mJoinCircleListAdapter != null
+						&& totalItemCount > minimumofsets
+						&& (lastInScreen == totalItemCount) && !(loadingMore)) {
+					if (mLastFirstVisibleItem < firstVisibleItem) {
+						if (!Util.hasConnection(context)) {
+							Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+							return;
+						}
+						Log.i("SCROLLING DOWN", "TRUE");
+						footer_pg.setVisibility(View.VISIBLE); 
+						loadingMore = true;
+						getAllCircleList(false,(pageNo+1),pagecount);
+					}
+				}
+				mLastFirstVisibleItem = firstVisibleItem;
+			}
+		});
+
 	}
 	
-	
+	public void firstCalling(boolean b){
+		pageNo=0;
+		pagecount=8;
+		getAllCircleList(b, 0, 8); 
+	}
 
-	private void joinCircleEvent(String circleID) {
+	private void joinCircleEvent(String circleID,final int position_) {
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
 			return;
@@ -126,8 +135,9 @@ public class FragmentJoinCircle extends Fragment {
 			@Override
 			public void OnSuccess() {
 				Util.ShowToast(context,"Succesfully Join Circle.");
+				mJoinCircleListAdapter.removepostion(position_); 
 				if (joincircleinterface!=null) {
-					joincircleinterface.refreshFromJoinView();
+					joincircleinterface.CircleJoin();
 				}
 			}
 			
@@ -138,16 +148,43 @@ public class FragmentJoinCircle extends Fragment {
 		});
 		mJoinCircleParser.parse(context, mJoinCircleParser.getBody(circleID), Authtoken);
 	}
+
 	
-	
-	
-	public void refreshData(ArrayList<CircleDetails> circles){
-		mJoinCircleListAdapter.refreshData(circles);
-		if (circles!=null && circles.size()>=1) {
-			joincircle_list.setSelection(0);
+	private void getAllCircleList(boolean b,final int pageNo_,int pagecount_){ 
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			return;
 		}
 		
+		CircleListParser mCircleListParser=new CircleListParser();
+		mCircleListParser.setCirclelistparserinterface(new CircleListParserInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
+				if (circlerList!=null && circlerList.size()>=1) {
+					if (pageNo==0) {
+						mJoinCircleListAdapter.refreshData(circlerList);
+						pageNo=pageNo_+1;
+					}else {
+						mJoinCircleListAdapter.addMoreData(circlerList);
+						pageNo=pageNo_+1;
+						minimumofsets=minimumofsets+pagecount;
+					}
+					footer_pg.setVisibility(View.GONE); 
+					loadingMore = false;
+				}
+			}
+			
+			@Override
+			public void OnError() {
+				footer_pg.setVisibility(View.GONE); 
+				loadingMore = false;
+			}
+		});
+		mCircleListParser.parse(context, mCircleListParser.getBody(pageNo_,pagecount_), Authtoken,b);
 	}
+	
+	
 	
 	public class JoinCircleListAdapter extends BaseAdapter{  
 
@@ -162,10 +199,16 @@ public class FragmentJoinCircle extends Fragment {
 			this.inflater=LayoutInflater.from(context);
 		}
 		
-		public void refreshData(ArrayList<CircleDetails> arrJobs){
-			this.circles= arrJobs;
+		public void refreshData(ArrayList<CircleDetails> arrCircle){ 
+			this.circles= arrCircle;
 			notifyDataSetChanged();
 		}
+		
+		public void addMoreData(ArrayList<CircleDetails> arrCircles){ 
+			this.circles.addAll(arrCircles);
+			notifyDataSetChanged();
+		}
+
 
 		public void removepostion(int position) {
 			if (this.circles.size()>=1) {
@@ -229,7 +272,7 @@ public class FragmentJoinCircle extends Fragment {
 				
 				@Override
 				public void onClick(View v) {
-					joinCircleEvent(circleID);
+					joinCircleEvent(circleID,position);
 					//((Button) v).setEnabled(false);
 					Button btn = (Button) v;
 					btn.setFocusableInTouchMode(false);
@@ -279,6 +322,6 @@ public class FragmentJoinCircle extends Fragment {
 	}
 
 	public interface JoinCircleInterface {
-		public void refreshFromJoinView();
+		public void CircleJoin();
 	}
 }
