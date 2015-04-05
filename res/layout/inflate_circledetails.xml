@@ -33,34 +33,33 @@
                 android:textSize="@dimen/joblitview_Subject"
                 android:textStyle="normal"
                 ofcampus:fontName="Helvetica.otf" />
-            
-            <TextView 
+
+            <TextView
                 android:id="@+id/post_and_members_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/inflt_circlerow_txt_name"
-                android:text=""
                 android:paddingLeft="5dp"
-                android:textSize="12sp"
+                android:text=""
                 android:textColor="#8899a6"
-                />
-            
+                android:textSize="12sp" />
+
             <com.ofcampus.ui.CustomTextView
                 android:id="@+id/inflt_last_posts_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/post_and_members_info"
+                android:layout_marginTop="10dp"
                 android:background="@android:color/white"
                 android:gravity="center"
-                android:singleLine="false"
                 android:paddingLeft="5dp"
-                android:layout_marginTop="10dp"
+                android:singleLine="false"
                 android:text=""
-                android:layout_below="@+id/post_and_members_info"
                 android:textColor="@color/cirlce_post_color"
                 android:textSize="@dimen/circle_post_details"
                 android:textStyle="bold"
                 ofcampus:fontName="Helvetica.otf" />
-           
+
             <Button
                 android:id="@+id/join_circle"
                 android:layout_width="wrap_content"
@@ -68,17 +67,14 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="5dp"
-                android:text="@string/join_circle_normal_btn" 
                 android:background="@drawable/btn_rectangular"
-                android:textColor="@drawable/btn_color_selector"
                 android:clickable="true"
-                />
-
-            
-
+                android:text="@string/join_circle_normal_btn"
+                android:textColor="@drawable/btn_color_selector" />
         </RelativeLayout>
-        
-        <!-- <LinearLayout
+
+        <!--
+        <LinearLayout
             android:id="@+id/inflt_circle_detail_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,7 +85,8 @@
             
             
             
-        </LinearLayout> -->
+        </LinearLayout>
+        -->
 
         <View
             android:layout_width="match_parent"
