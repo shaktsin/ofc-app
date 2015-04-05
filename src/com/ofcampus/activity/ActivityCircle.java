@@ -61,7 +61,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		super.onResume();
 		if (((OfCampusApplication)context.getApplicationContext()).isNewCircleCreated) {
 			((OfCampusApplication)context.getApplicationContext()).isNewCircleCreated=false;
-//			getAllCircleList(false);
+			mYourCircle.firstCalling(false);
 		}
 		
 	}
