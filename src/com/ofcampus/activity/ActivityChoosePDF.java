@@ -7,6 +7,7 @@ package com.ofcampus.activity;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -51,7 +52,17 @@ public class ActivityChoosePDF extends ActionBarActivity {
 			@Override
 			public void didSelectFiles(DirectoryFragment activity,
 					ArrayList<String> files) {
-				mDirectoryFragment.showErrorBox(files.get(0).toString()); 
+//				mDirectoryFragment.showErrorBox(files.get(0).toString()); 
+            	String path=files.get(0).toString();
+            	path=path.replace("file://", "");
+            	
+            	Intent intent = new Intent();
+				Bundle mBundle = new Bundle();
+				mBundle.putString("contents",path);
+				intent.putExtras(mBundle);
+				setResult(RESULT_OK, intent);
+				overridePendingTransition(0, 0);
+				finish();
 			}
 
 			@Override

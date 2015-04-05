@@ -110,7 +110,7 @@ public class FragmentYourCircle extends Fragment {
 						Log.i("SCROLLING DOWN", "TRUE");
 						footer_pg.setVisibility(View.VISIBLE); 
 						loadingMore = true;
-						getAllCircleList(false,(pageNo+1),pagecount);
+						getAllCircleList(false,pageNo,pagecount);
 					}
 				}
 				mLastFirstVisibleItem = firstVisibleItem;
@@ -119,9 +119,15 @@ public class FragmentYourCircle extends Fragment {
 	}
 
 	public void firstCalling(boolean b){
+		resetAllCond();
+		getAllCircleList(b, 0, 8); 
+	}
+
+	private void resetAllCond(){
 		pageNo=0;
 		pagecount=8;
-		getAllCircleList(b, 0, 8); 
+		minimumofsets = 7;
+		mLastFirstVisibleItem = 0;
 	}
 	
 	

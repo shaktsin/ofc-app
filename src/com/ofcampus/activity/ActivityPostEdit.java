@@ -45,6 +45,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.ActivityCreatePost.PicDataSet;
 import com.ofcampus.adapter.SpinnerCityAdapter;
 import com.ofcampus.adapter.SpinnerIndustryAdapter;
 import com.ofcampus.adapter.SpinnerIndustryRoleAdapter;
@@ -68,6 +69,7 @@ import com.ofcampus.parser.PrepareForCreatingJobParser.PrepareParserInterface;
 public class ActivityPostEdit extends ActionBarActivity implements OnClickListener,OnItemSelectedListener{
 
 	public int GALLERY_REQUEST = 1;
+	public static int DOC_REQUEST = 2;
 	private Context context;
 	private UserDetails mDetails;
 	private Spinner industry,role,location;
@@ -85,7 +87,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 	private SpinnerIndustryRoleAdapter mSpinnerIndustryRoleAdapter;
 	
 	private int industryid=-1,rolid=-1,cityid=-1;
-	private ArrayList<RelativeLayout> arrayRelative=new ArrayList<RelativeLayout>();
+	private ArrayList<View> arrayView=new ArrayList<View>();
 	
 	private ListView sendtolist;
 	private SendToBaseAdapter mSendToBaseAdapter;
@@ -99,6 +101,13 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 	private CustomArrayAdapter mCustomArrayAdapter;
 	private ArrayList<PicDataSet> picdatasets=new ArrayList<PicDataSet>();
 	private ArrayList<String> deletedIDS=new ArrayList<String>();
+	
+	
+	private ArrayList<PicDataSet> docpdfdatasets=new ArrayList<PicDataSet>();
+	private HorizontalListView pdfattached_list;
+	private DOCPDFArrayAdapter mDOCPDFArrayAdapter;
+	
+	
 	
 	/***Post Job Details**/
 	private JobDetails mJobDetails;
@@ -178,7 +187,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		switch (v.getId()) {
 		case R.id.activity_createjob_edit_to:
 			Util.HideKeyBoard(context, v); 
-			if (arrayRelative.get(0).getVisibility()==View.VISIBLE) {
+			if (arrayView.get(0).getVisibility()==View.VISIBLE) {
 				resetViewAll();
 				return;
 			}
@@ -186,7 +195,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 			break;
 		case R.id.activity_createjob_edit:
 			Util.HideKeyBoard(context, v); 
-			if (arrayRelative.get(1).getVisibility()==View.VISIBLE) {
+			if (arrayView.get(1).getVisibility()==View.VISIBLE) {
 				resetViewAll();
 				return;
 			}
@@ -194,16 +203,28 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 			break;
 		case R.id.activity_createjob_rply:
 			Util.HideKeyBoard(context, v); 
-			if (arrayRelative.get(2).getVisibility()==View.VISIBLE) {
+			if (arrayView.get(2).getVisibility()==View.VISIBLE) {
 				resetViewAll();
 				return;
 			}
 			loadForntView(2);
 			break;
+			
 		case R.id.activity_createjob_attached:
 			Util.HideKeyBoard(context, v); 
-			resetViewAll();
-			mHlvCustomList.setVisibility((mHlvCustomList.getVisibility()==View.VISIBLE)?View.GONE:View.VISIBLE);		
+			if (arrayView.get(3).getVisibility()==View.VISIBLE) {
+				resetViewAll();
+				return;
+			}
+			loadForntView(3);		
+			break;
+		case R.id.activity_createjob_docattached:
+			Util.HideKeyBoard(context, v); 
+			if (arrayView.get(4).getVisibility()==View.VISIBLE) {
+				resetViewAll();
+				return;
+			}
+			loadForntView(4);	
 			break;
 
 		default:
@@ -273,6 +294,9 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		mCustomArrayAdapter=new CustomArrayAdapter(context, getpicArray(null));
 		mHlvCustomList.setAdapter(mCustomArrayAdapter);
 		
+		pdfattached_list = (HorizontalListView) findViewById(R.id.pdfattached_list);
+		mDOCPDFArrayAdapter = new DOCPDFArrayAdapter(context, getDOCArray(null));
+		pdfattached_list.setAdapter(mDOCPDFArrayAdapter);
 		
 		exp_seekBar=(RangeSeekBar)findViewById(R.id.activity_createjob_expseekbar);
 		salary_seekBar=(RangeSeekBar)findViewById(R.id.activity_createjob_salaryseekbar);
@@ -302,6 +326,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 			((ImageView)findViewById(R.id.activity_createjob_edit)).setOnClickListener(this);
 		}
 		((ImageView)findViewById(R.id.activity_createjob_rply)).setOnClickListener(this);
+		((ImageView)findViewById(R.id.activity_createjob_docattached)).setOnClickListener(this);
 		
 		sendtolist=(ListView)findViewById(R.id.activity_createjob_new_sendtolist);
 		mSendToBaseAdapter = new SendToBaseAdapter(context, new ArrayList<Circle>());
@@ -310,14 +335,16 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		((RelativeLayout)findViewById(R.id.rel_rplview_main)).setOnClickListener(this);
 		((RelativeLayout)findViewById(R.id.rel_additional_main)).setOnClickListener(this);
 		
-		arrayRelative.add((RelativeLayout)findViewById(R.id.rel_tolist));
-		arrayRelative.add((RelativeLayout)findViewById(R.id.rel_detailadd));
-		arrayRelative.add((RelativeLayout)findViewById(R.id.rel_reply));
+		arrayView.add(findViewById(R.id.rel_tolist));
+		arrayView.add(findViewById(R.id.rel_detailadd));
+		arrayView.add(findViewById(R.id.rel_reply));
+		arrayView.add(findViewById(R.id.hlvCustomList));
+		arrayView.add(findViewById(R.id.pdfattached_list));
 		setClicEvent();
 	}
 	
 	private void setClicEvent(){
-		for (RelativeLayout rel: arrayRelative) {
+		for (View rel: arrayView) { 
 			rel.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -330,29 +357,25 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		}
 	}
 	private void loadForntView(int position){
-		for (int i = 0; i < arrayRelative.size(); i++) {
+		for (int i = 0; i < arrayView.size(); i++) {
 			if (i==position) {
-				arrayRelative.get(i).setVisibility(View.VISIBLE);
+				arrayView.get(i).setVisibility(View.VISIBLE);
 			}else {
-				arrayRelative.get(i).setVisibility(View.GONE);
+				arrayView.get(i).setVisibility(View.GONE);
 			}
 		} 
-		resetList();
 	}
 	
 	private void resetViewAll(){
-		for (RelativeLayout rel: arrayRelative) {
+		for (View rel: arrayView) {
 			rel.setVisibility(View.GONE);
 		}
 	}
-	
-	private void resetList(){
-		mHlvCustomList.setVisibility(View.GONE);
-	}
+
 	
 	private boolean anyviewVisible(){
 		boolean isvisible=false;
-		for (RelativeLayout rel: arrayRelative) {
+		for (View rel: arrayView) {
 			isvisible = (rel.getVisibility()==View.VISIBLE)?true:false;
 			if (isvisible)
 				break;
@@ -625,6 +648,15 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		return mList;
 	}
 	
+	private ArrayList<PicDataSet> getDOCArray(PicDataSet mPicDataSet){
+		ArrayList<PicDataSet> mList =new ArrayList<PicDataSet>();
+		if (mPicDataSet==null) {
+			mList.add(new PicDataSet());
+		}
+		return mList;
+	}
+	
+	
 	private ArrayList<PicDataSet> getJobPicArray(){
 		ArrayList<PicDataSet> mList =new ArrayList<PicDataSet>();
 		ArrayList<ImageDetails> images = mJobDetails.getImages();
@@ -696,7 +728,12 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 					
 					@Override
 					public void onClick(View v) {
-						galleryCalling();
+						if (PicDataSets.size()<5) {
+							galleryCalling();
+						}else {
+							Util.ShowToast(context, "Exide max list.");
+						}
+						
 					}
 				});
 			}else if (path.contains("http://") || path.contains("https://")) {
@@ -731,9 +768,88 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		String ID="";
 	}
 	
+	
+	/**
+	 *DOC PDF Attached List.
+	 */
+	public class DOCPDFArrayAdapter extends ArrayAdapter<PicDataSet> {
+		   
+
+		private LayoutInflater mInflater;
+	    private ArrayList<PicDataSet> DOCPDFDataSets;
+	    public DOCPDFArrayAdapter(Context context,ArrayList<PicDataSet> PicDataSets_) {
+	        super(context, R.layout.inflate_createjob_pic, PicDataSets_);
+	        this.DOCPDFDataSets=PicDataSets_;
+	        mInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    }
+
+	    @Override
+		public int getCount() {
+			return (DOCPDFDataSets!=null)?DOCPDFDataSets.size():0;
+		} 
+	    
+	    
+	    public void addImage(ArrayList<PicDataSet> picdatasets_){
+	    	this.DOCPDFDataSets.addAll(picdatasets_);
+	    	docpdfdatasets=this.DOCPDFDataSets;
+	    	notifyDataSetChanged();
+	    }
+	    
+	    @Override
+	    public View getView(int position, View convertView, ViewGroup parent) {
+	        Holder holder;
+	        if (convertView == null) {
+	        	holder = new Holder();
+	            convertView = mInflater.inflate(R.layout.inflate_createjob_pic, parent, false);
+	            holder.pic = (ImageView) convertView.findViewById(R.id.infalte_createjob_pi);
+	            convertView.setTag(holder);
+	        } else {
+	            holder = (Holder) convertView.getTag();
+	        }
+
+	        PicDataSet mDataSet = DOCPDFDataSets.get(position);
+	        String path=mDataSet.path;
+			if (path.equals("")) {
+				holder.pic.setImageResource(R.drawable.ic_plus);
+				holder.pic.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if (DOCPDFDataSets.size()<4) {
+							docpdfCalling();
+						}else {
+							Util.ShowToast(context, "Exide max list.");
+						}
+					}
+				});
+			}else {
+				if (path.contains(".DOC") || path.contains(".doc")) {
+					holder.pic.setImageResource(R.drawable.doc);
+				}else {
+					holder.pic.setImageResource(R.drawable.pdf);
+				}
+				
+			}
+
+	        return convertView;
+	    }
+
+	    /** View holder for the views we need access to */
+	    private  class Holder {
+	        public ImageView pic;
+	    }
+	}
+	
 	private void galleryCalling(){
-		Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		Intent i = new Intent(context,ActivityGallery.class);
 		startActivityForResult(i, GALLERY_REQUEST);
+		overridePendingTransition(0, 0);
+	}
+	
+	private void docpdfCalling(){
+		Intent i = new Intent(context,ActivityChoosePDF.class);
+		startActivityForResult(i, DOC_REQUEST);
+		overridePendingTransition(0, 0);
 	}
 	
 	//
@@ -889,6 +1005,15 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 			}
 		}
 		
+		ArrayList<String> docpdfPaths=new ArrayList<String>();
+		if (docpdfdatasets!=null && docpdfdatasets.size()>=1) {
+			for (PicDataSet docpdf : docpdfdatasets) {
+				if (!docpdf.path.equals("")) {
+					docpdfPaths.add(docpdf.path);
+				}
+				
+			}
+		}
 		
 		
 		if (jsObj != null) {
@@ -911,7 +1036,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 					
 				}
 			});
-			mEditJobParser.parse(context, jsObj, mDetails.getAuthtoken(),paths);
+			mEditJobParser.parse(context, jsObj, mDetails.getAuthtoken(),paths,docpdfPaths);
 
 		}
 	
@@ -1056,6 +1181,17 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 			}
 		}
 		
+		
+		ArrayList<String> docpdfPaths=new ArrayList<String>();
+		if (docpdfdatasets!=null && docpdfdatasets.size()>=1) {
+			for (PicDataSet docpdf : docpdfdatasets) {
+				if (!docpdf.path.equals("")) {
+					docpdfPaths.add(docpdf.path);
+				}
+				
+			}
+		}
+		
 		if (newsObj != null) {  
 			EditNewsParser mEditNewsParser=new EditNewsParser(); 
 			mEditNewsParser.setEditnewsparserinterface(new EditNewsParserInterface() {
@@ -1076,7 +1212,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 					
 				}
 			});
-			mEditNewsParser.parse(context, newsObj, mDetails.getAuthtoken(),paths);
+			mEditNewsParser.parse(context, newsObj, mDetails.getAuthtoken(),paths,docpdfPaths);
 		}
 	}
 	

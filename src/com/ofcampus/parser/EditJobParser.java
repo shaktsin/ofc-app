@@ -54,9 +54,9 @@ public class EditJobParser {
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths) {   
+	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths,ArrayList<String> docpdfPaths) {   
 		this.mContext = context;
-		EditJobParserAsync mEditJobParserAsync = new EditJobParserAsync(mContext,obj,auth,paths); 
+		EditJobParserAsync mEditJobParserAsync = new EditJobParserAsync(mContext,obj,auth,paths,docpdfPaths); 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mEditJobParserAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); 
 		} else {
@@ -73,13 +73,15 @@ public class EditJobParser {
 		private ProgressDialog mDialog;
 		private JSONObject obj_=null;
 		private ArrayList<String> paths;
+		private ArrayList<String> docpdfPaths;
 		private String auth="";
 		
-		public EditJobParserAsync(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
+		public EditJobParserAsync(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_, ArrayList<String> docpdfPaths_) { 
 			this.context = mContext;
 			this.obj_ = obj; 
 			this.auth=auth_;
 			this.paths=paths_;
+			this.docpdfPaths=docpdfPaths_;
 		}
 
 		@Override
@@ -96,7 +98,7 @@ public class EditJobParser {
 			
 			try {
 				
-				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getJobEditUrl(), obj_,auth,paths,"jobs");
+				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getJobEditUrl(), obj_,auth,paths,"jobs",docpdfPaths);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				

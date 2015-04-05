@@ -560,7 +560,7 @@ public class Util {
 	
 	
 	
-	public static String[] POSTWithAuthJSONFile(String url, JSONObject jsonObject,String auth,ArrayList<String> paths,String JSONTAG) {
+	public static String[] POSTWithAuthJSONFile(String url, JSONObject jsonObject,String auth,ArrayList<String> paths,String JSONTAG, ArrayList<String> docpdfPaths) {
 		InputStream inputStream = null;
 		String result = "";
 		String[] responData = { "", "" };
@@ -588,6 +588,16 @@ public class Util {
 						lfile = new File(path);
 						FileBody lFileBody_ = new FileBody(lfile);
 						reqEntity.addPart("iFile", lFileBody_);
+					}
+				}
+			}
+			
+			if (docpdfPaths != null && docpdfPaths.size() >= 1) {
+				for (String docpdf : docpdfPaths) {
+					if (docpdf != null) {
+						lfile = new File(docpdf);
+						FileBody lFileBody_ = new FileBody(lfile);
+						reqEntity.addPart("jFile", lFileBody_);
 					}
 				}
 			}

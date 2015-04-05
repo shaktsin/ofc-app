@@ -52,9 +52,9 @@ public class JobPostParser {
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths) {   
+	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths, ArrayList<String> docpdfPaths) {    
 		this.mContext = context;
-		jobPostAsyncAsync mjobPostAsyncAsync = new jobPostAsyncAsync(mContext,obj,auth,paths); 
+		jobPostAsyncAsync mjobPostAsyncAsync = new jobPostAsyncAsync(mContext,obj,auth,paths,docpdfPaths); 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mjobPostAsyncAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
@@ -71,13 +71,15 @@ public class JobPostParser {
 		private ProgressDialog mDialog;
 		private JSONObject obj_=null;
 		private ArrayList<String> paths;
+		private ArrayList<String> docpdfPaths;
 		private String auth="";
 		
-		public jobPostAsyncAsync(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
+		public jobPostAsyncAsync(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_, ArrayList<String> docpdfPaths_) { 
 			this.context = mContext;
 			this.obj_ = obj; 
 			this.auth=auth_;
 			this.paths=paths_;
+			this.docpdfPaths=docpdfPaths_;
 		}
 
 		@Override
@@ -94,7 +96,7 @@ public class JobPostParser {
 			
 			try {
 				
-				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getcreateJobUrl(), obj_,auth,paths,"jobs");
+				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getcreateJobUrl(), obj_,auth,paths,"jobs",docpdfPaths);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				

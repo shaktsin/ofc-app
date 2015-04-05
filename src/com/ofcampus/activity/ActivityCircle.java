@@ -8,6 +8,7 @@ package com.ofcampus.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -181,12 +182,23 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 
 	@Override
 	public void CircleJoin() {
-		mYourCircle.firstCalling(false);
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mYourCircle.firstCalling(false);
+			}
+		}, 200);
 	}
 
 	@Override
 	public void CircleUnJoined() {
-		mJoinCircle.firstCalling(false);
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mJoinCircle.firstCalling(false);
+			}
+		}, 200);
+		
 	}
 
 }

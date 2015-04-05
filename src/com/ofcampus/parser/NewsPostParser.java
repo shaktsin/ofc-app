@@ -53,9 +53,9 @@ public class NewsPostParser {
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths) {   
+	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths, ArrayList<String> docpdfPaths) {    
 		this.mContext = context;
-		Async mAsync = new Async(mContext,obj,auth,paths);  
+		Async mAsync = new Async(mContext,obj,auth,paths,docpdfPaths);  
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
@@ -72,13 +72,15 @@ public class NewsPostParser {
 		private ProgressDialog mDialog;
 		private JSONObject obj_=null;
 		private ArrayList<String> paths;
+		private ArrayList<String> docpdfPaths;
 		private String auth="";
 		
-		public Async(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_) { 
+		public Async(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_, ArrayList<String> docpdfPaths_) {  
 			this.context = mContext;
 			this.obj_ = obj; 
 			this.auth=auth_;
 			this.paths=paths_;
+			this.docpdfPaths=docpdfPaths_;
 		}
 
 		@Override
@@ -95,7 +97,7 @@ public class NewsPostParser {
 			
 			try {
 				
-				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getCreateNewsUrl(), obj_,auth,paths,"feed");
+				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getCreateNewsUrl(), obj_,auth,paths,"feed",docpdfPaths);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				
