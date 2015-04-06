@@ -34,6 +34,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	
 	private Context context;
 	private static String Authtoken="";
+	private int postDelayTime=700;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +188,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 			public void run() {
 				mYourCircle.firstCalling(false);
 			}
-		}, 200);
+		}, postDelayTime);
 	}
 
 	@Override
@@ -197,7 +198,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 			public void run() {
 				mJoinCircle.firstCalling(false);
 			}
-		}, 200);
+		}, postDelayTime);
 		
 	}
 

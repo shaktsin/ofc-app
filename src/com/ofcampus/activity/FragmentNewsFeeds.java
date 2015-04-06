@@ -43,7 +43,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 	
     private ListView newslist; 
     private RelativeLayout footer_pg;
-    private NewsListAdapter mNewsListAdapter; 
+    private  NewsListAdapter mNewsListAdapter; 
     private String tocken = "";
     
     /***For Load more****/
@@ -182,6 +182,13 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 				R.color.pull_red_light);
 	}
 	
+	public int getAdapterCount(){
+		if (mNewsListAdapter==null) {
+			return 0;
+		}else {
+			return mNewsListAdapter.getCount();
+		}
+	}
 	/**
 	 * Initial Load News Calling.
 	 */

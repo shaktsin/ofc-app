@@ -591,13 +591,13 @@ public class Util {
 					}
 				}
 			}
-			
+			File jFile = null;
 			if (docpdfPaths != null && docpdfPaths.size() >= 1) {
 				for (String docpdf : docpdfPaths) {
 					if (docpdf != null) {
-						lfile = new File(docpdf);
-						FileBody lFileBody_ = new FileBody(lfile);
-						reqEntity.addPart("jFile", lFileBody_);
+						jFile = new File(docpdf);
+						FileBody jFileBody_ = new FileBody(jFile);
+						reqEntity.addPart("jFile", jFileBody_);
 					}
 				}
 			}

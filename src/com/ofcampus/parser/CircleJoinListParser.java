@@ -15,6 +15,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 
 import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
@@ -94,6 +95,8 @@ public class CircleJoinListParser {
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
 
+//				Log.e("JoinList", authenticationJson.toString());
+				
 				if (authenticationJson != null && !authenticationJson.equals("")) {
 					JSONObject mObject = new JSONObject(authenticationJson);
 					responsecode = Util.getJsonValue(mObject, STATUS);
@@ -141,12 +144,20 @@ public class CircleJoinListParser {
 				} else {
 					Util.ShowToast(mContext, "No circle available");
 				}
-			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, "Error occure.");
+			}else if (responsecode.equals("500")) {
+				Util.ShowToast(mContext, "No more circle available");
+				error();
 			} else {
 				Util.ShowToast(mContext, "Error occure.");
+				error();
 			}
 
+		}
+	}
+	
+	private void error(){
+		if (circlejoinlistparserinterface != null) {
+			circlejoinlistparserinterface.OnError();
 		}
 	}
 	

@@ -14,6 +14,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 
 import com.ofcampus.Util;
 import com.ofcampus.model.InstituteDetails;
@@ -75,7 +76,7 @@ public class UnJoinCircleParser {
 				String[] responsedata = Util.POSTWithJSONAuth(Util.getUnJoinCircleUrl(), postData, authorization);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
-
+				
 				if (authenticationJson != null && !authenticationJson.equals("")) {
 					JSONObject mObject = new JSONObject(authenticationJson);
 					responsecode = Util.getJsonValue(mObject, STATUS);
