@@ -716,7 +716,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 						if (fragmentNewsFeeds.notifyfeeds!=null && fragmentNewsFeeds.notifyfeeds.size()>=1) {
 							count[1]=fragmentNewsFeeds.notifyfeeds.size()+"";
 						}
-					}else if(fragmentNewsFeeds!=null && !fragmentNewsFeeds.firsttJobID.equals("") 
+					}else if(fragmentNewsFeeds!=null && fragmentNewsFeeds.firsttJobID.equals("") 
 							&& fragmentNewsFeeds.lastJobID.equals("") && fragmentNewsFeeds.getAdapterCount()==0 ){
 						if (mNewsFeedListParser==null) {
 							mNewsFeedListParser=new NewsFeedListParser();
