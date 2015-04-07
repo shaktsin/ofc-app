@@ -66,7 +66,6 @@ import com.ofcampus.parser.CountSyncParser;
 import com.ofcampus.parser.FilterJobParser;
 import com.ofcampus.parser.JobListParserNew;
 import com.ofcampus.parser.JobListParserNew.JobListParserNewInterface;
-import com.ofcampus.parser.NewsFeedListParser;
 import com.ofcampus.ui.FilterDialog;
 
 public class ActivityHome extends ActionBarActivity implements OnClickListener,viewCLickEvent,OnPageChangeListener,JobsFrgInterface,FragmentNewsInterface{
@@ -607,7 +606,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		@Override
 		public Fragment getItem(int position) {
 			switch (position) {
-			
 			case 0:
 				fragmentNewsFeeds = FragmentNewsFeeds.newInstance(position,ActivityHome.this);
 				fragmentNewsFeeds.setFragmentnewsinterface(ActivityHome.this);
@@ -619,12 +617,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			case 2:
 				mClassifiedsFragment = FragmentClassifieds.newInstance(position,ActivityHome.this);
 				return mClassifiedsFragment;
-//			case 3:
-//				fragmentMeetups = FragmentMeetups.newInstance(position,ActivityHome.this);
-//				return fragmentMeetups;
 			}
 			return null;
-			
 		}
 	}
     
@@ -797,36 +791,18 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	}
 	
 	
-	private void loadFilterData(){
+	private void loadFilterData() {
 		if (Util.hasConnection(mContext)) {
-			new loadFilterData().execute();
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						mFilterDataSets = new FilterJobParser().parse(mContext,tocken);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
 		}
 	}
-	
-	private class loadFilterData extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			
-			try {
-				mFilterDataSets =	new FilterJobParser().parse(mContext, tocken);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-		}
-
-	}
-
 }
