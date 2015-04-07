@@ -5,11 +5,13 @@
  */
 package com.ofcampus.adapter;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
@@ -27,9 +29,13 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
+import com.ofcampus.component.ProgressView;
+import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.PdfDocLoader;
+import com.ofcampus.parser.PdfDocLoader.LoadListner;
 import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
 
@@ -60,6 +66,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 				.showImageForEmptyUri(R.drawable.no_postimage)
 				.showImageOnFail(R.drawable.no_postimage).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
+		
+		
 	}
 	
 	public void refreshData(ArrayList<JobDetails> arrJobs){
@@ -141,7 +149,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) { 
 		
 		ViewHolder mHolder;
 		if (convertView==null) {
@@ -190,33 +198,104 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 			
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
-			if (Images!=null && Images.size()>=1) {
-				mHolder.joblistview_img_post_rel.setVisibility(View.VISIBLE);
-				imageLoader.displayImage(Images.get(0).getImageURL(), mHolder.img_post, options_post);
-				mHolder.img_post.setOnClickListener(new OnClickListener() {
+			final String urlLink =Images.get(0).getImageURL();
+			if (isContainDocFile(urlLink)) { 
+				
+				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+				if (mDocumentPath!=null && mDocumentPath.mapPath.containsKey(urlLink)) {
+					mHolder.img_post.setImageResource(R.drawable.doc_green);
+					mHolder.img_post.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							try {
+								if (isDocFile(urlLink)) { 
+									DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+									String path = mDocumentPath.mapPath.get(urlLink);
+									Intent intent = new Intent();
+									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.setAction(Intent.ACTION_VIEW);
+									String type = "application/msword";
+									intent.setDataAndType(Uri.fromFile(new File(path)), type);
+									mContext.startActivity(intent);
+								}else if (isPdfFile(urlLink)) {
+									DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+									String path = mDocumentPath.mapPath.get(urlLink);
+									Intent intent = new Intent();
+									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.setAction(Intent.ACTION_VIEW);
+									String type = "application/pdf";
+									intent.setDataAndType(Uri.fromFile(new File(path)), type);
+									mContext.startActivity(intent);
+								}
+								
+							} catch (Exception e) {
+								e.printStackTrace();
+							} 
+						}
+					});
+				}else {
+					mHolder.img_post.setImageResource(R.drawable.docload_g);
+					mHolder.img_post.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+//							ProgressView mView=new ProgressView();
+							PdfDocLoader mPdfDocLoader = new PdfDocLoader();
+							mPdfDocLoader.setLoadlistner(new LoadListner() {
+								
+								@Override
+								public void OnErroe(View v) {
+									((ImageView)v).setImageResource(R.drawable.doc_green);
+								}
+								
+								@Override
+								public void OnComplete(View v) {
+									((ImageView)v).setImageResource(R.drawable.doc_green);
+									notifyDataSetChanged();
+								}
+								
+								@Override
+								public void OnCancel(View v) {
+									((ImageView)v).setImageResource(R.drawable.doc_green);
+									
+								}
+							});
+							mPdfDocLoader.load(mContext, jobs.get(position).getImages().get(0).getImageURL(), null,v);
+						}
+					});
+				}
+				
+			}else {
+				if (Images!=null && Images.size()>=1) {
+					mHolder.joblistview_img_post_rel.setVisibility(View.VISIBLE);
+					imageLoader.displayImage(Images.get(0).getImageURL(), mHolder.img_post, options_post);
+					mHolder.img_post.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							new AlbumPagerDialog(mContext, Images,0);
+						}
+					});
+					
+				}else {
+					mHolder.joblistview_img_post_rel.setVisibility(View.GONE);
+				}
+				
+				mHolder.profilepic.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
-						new AlbumPagerDialog(mContext, Images,0);
+						if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
+							((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+							mContext.startActivity(new Intent(mContext,ActivityJobPostedUserDetails.class));
+							((Activity) mContext).overridePendingTransition(0,0);
+						}
+						
 					}
 				});
-				
-			}else {
-				mHolder.joblistview_img_post_rel.setVisibility(View.GONE);
 			}
 			
-			mHolder.profilepic.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
-						((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
-						mContext.startActivity(new Intent(mContext,ActivityJobPostedUserDetails.class));
-						((Activity) mContext).overridePendingTransition(0,0);
-					}
-					
-				}
-			});
 			
 			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
 				
@@ -349,4 +428,47 @@ public class JobListBaseAdapter extends BaseAdapter{
 		public void commentClickEvent(JobDetails mJobDetails);  
 	}
 
+	private boolean isContainDocFile(String url){
+		if (url.contains(".doc")) {
+			return true;
+		}else if(url.contains(".DOC")){
+			return true;
+		}if (url.contains(".docx")) {
+			return true;
+		}else if(url.contains(".DOCX")){
+			return true;
+		}if (url.contains(".pdf")) {
+			return true;
+		}else if(url.contains(".PDF")){
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+	
+	private boolean isDocFile(String url){
+		if (url.contains(".doc")) {
+			return true;
+		}else if(url.contains(".DOC")){
+			return true;
+		}if (url.contains(".docx")) {
+			return true;
+		}else if(url.contains(".DOCX")){
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	private boolean isPdfFile(String url){
+		if (url.contains(".pdf")) {
+			return true;
+		}else if(url.contains(".PDF")){
+			return true;
+		}else {
+			return false;
+		}
+	}
 }
