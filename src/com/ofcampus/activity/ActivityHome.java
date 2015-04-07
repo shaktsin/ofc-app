@@ -671,7 +671,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		}
 	}
 
-	private NewsFeedListParser mNewsFeedListParser=null;
+	
 	
 	private class MyTask extends TimerTask {
 		@Override
@@ -707,28 +707,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 						e.printStackTrace();
 					}
 					
-					/***For News Feed**/
-					if (fragmentNewsFeeds!=null && !fragmentNewsFeeds.firsttJobID.equals("") && fragmentNewsFeeds.notifyfeeds==null) {
-						if (mNewsFeedListParser==null) {
-							mNewsFeedListParser=new NewsFeedListParser();
-						}
-						fragmentNewsFeeds.notifyfeeds = mNewsFeedListParser.bgSyncCalling(mContext, mNewsFeedListParser.getBody(fragmentNewsFeeds.firsttJobID, 1+""), tocken);
-						if (fragmentNewsFeeds.notifyfeeds!=null && fragmentNewsFeeds.notifyfeeds.size()>=1) {
-							count[1]=fragmentNewsFeeds.notifyfeeds.size()+"";
-						}
-					}else if(fragmentNewsFeeds!=null && fragmentNewsFeeds.firsttJobID.equals("") 
-							&& fragmentNewsFeeds.lastJobID.equals("") && fragmentNewsFeeds.getAdapterCount()==0 ){
-						if (mNewsFeedListParser==null) {
-							mNewsFeedListParser=new NewsFeedListParser();
-						}
-						fragmentNewsFeeds.notifyfeeds = mNewsFeedListParser.bgSyncCalling(mContext, mNewsFeedListParser.getBody(fragmentNewsFeeds.firsttJobID, 1+""), tocken);
-						if (fragmentNewsFeeds.notifyfeeds!=null && fragmentNewsFeeds.notifyfeeds.size()>=1) {
-							count[1]=fragmentNewsFeeds.notifyfeeds.size()+"";
-						}
-					}else {
-						count[1]="";
-					}
-					/***For News Feed**/
+					/***For News Feed Sync**/
+					count[1]=(fragmentNewsFeeds!=null)?fragmentNewsFeeds.getUpdateNewsCount():"";
+					/***For News Feed Sync**/
 					
 					handler.sendEmptyMessage(0);
 				}

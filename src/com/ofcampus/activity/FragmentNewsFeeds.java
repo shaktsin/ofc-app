@@ -126,8 +126,6 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 	
 	@Override 
 	public void onRefresh() {
-//		{"plateFormId":"0","appName":"ofCampus","postId":"25","operation":"1"}
-//		pulltorefreshcall(firsttJobID);
 		pulltorefreshcall();
 	}
 	
@@ -218,39 +216,78 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 		});
 		mFeedListParser.parse(context, mFeedListParser.getBody(), tocken);
 	}
-
+	
+	
+	/** News Sync Process 07 April 20015**/
+	public boolean isNewsComming() {
+		if (!firsttJobID.equals("") && notifyfeeds == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isNewsCommingFstTime() {
+		if (firsttJobID.equals("") && lastJobID.equals("") && getAdapterCount()==0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private NewsFeedListParser mNewsFeedListParser=null;
+	public String getUpdateNewsCount(){
+		String count="";
+		try {
+			if (mNewsFeedListParser==null) { 
+				mNewsFeedListParser=new NewsFeedListParser();
+			}
+			ArrayList<JobDetails> news=null;
+			if (isNewsCommingFstTime() || isNewsComming()) {
+				news = notifyfeeds = mNewsFeedListParser.bgSyncCalling(context, mNewsFeedListParser.getBody(firsttJobID, 1+""), tocken); 
+			}
+			count=(news!=null && news.size()>=1)?news.size()+"":"";
+			mNewsFeedListParser=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+	/** News Sync Process**/
+	
+	
 	/**
 	 * Pull To Refresh Load News Calling.
 	 */
-	private void pulltorefreshcall(String JobID){
-		
-		if (!Util.hasConnection(context)) {
-			Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
-			return;
-		}
-		
-		NewsFeedListParser mFeedListParser=new NewsFeedListParser();
-		mFeedListParser.setNewsfeedlistparserinterface(new NewsFeedListParserInterface() {
-			
-			@Override
-			public void OnSuccess(ArrayList<JobDetails> newsList) {
-
-				if (newsList != null && newsList.size() >= 1) {
-					mNewsListAdapter.refreshSwipeData(newsList); 
-				}else {
-					Util.ShowToast(context, "No more News updated.");
-				}
-				refreshComplete();
-			}
-			
-			@Override
-			public void OnError() {
-				refreshComplete();
-			}
-		});
-		mFeedListParser.isShowingPG_=false;
-		mFeedListParser.parse(context, mFeedListParser.getBody(JobID, 1+""), tocken);
-	}
+//	private void pulltorefreshcall(String JobID){
+//		
+//		if (!Util.hasConnection(context)) {
+//			Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+//			return;
+//		}
+//		
+//		NewsFeedListParser mFeedListParser=new NewsFeedListParser();
+//		mFeedListParser.setNewsfeedlistparserinterface(new NewsFeedListParserInterface() {
+//			
+//			@Override
+//			public void OnSuccess(ArrayList<JobDetails> newsList) {
+//
+//				if (newsList != null && newsList.size() >= 1) {
+//					mNewsListAdapter.refreshSwipeData(newsList); 
+//				}else {
+//					Util.ShowToast(context, "No more News updated.");
+//				}
+//				refreshComplete();
+//			}
+//			
+//			@Override
+//			public void OnError() {
+//				refreshComplete();
+//			}
+//		});
+//		mFeedListParser.isShowingPG_=false;
+//		mFeedListParser.parse(context, mFeedListParser.getBody(JobID, 1+""), tocken);
+//	}
 	
 	private void pulltorefreshcall(){
 		if (notifyfeeds != null && notifyfeeds.size() >= 1) {
@@ -308,10 +345,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 			footer_pg.setVisibility(View.GONE);
 			loadingMore = false;
 		}
-		
 	}
-	
-	
 	
 	/**
 	 * Interface for News Fragment.
@@ -328,7 +362,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 	}
 
 	public interface FragmentNewsInterface {
-		public void pulltorefreshcallComplete();//After pul refresh complete remove the notification.
+		public void pulltorefreshcallComplete();//After pull to refresh complete remove the notification.
 	}
 	
 	
