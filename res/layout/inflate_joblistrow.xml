@@ -146,19 +146,15 @@
                 android:background="@android:color/transparent"
                 android:visibility="gone" >
 
-                <com.ofcampus.component.CircularCounter
-                    xmlns:meter="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/meter"
-                    android:layout_width="@dimen/comment_pager_hight"
-                    android:layout_height="@dimen/comment_pager_hight"
-                    android:layout_centerInParent="true"
-                    android:padding="5dp"
-                    android:visibility="visible"
-                    meter:metricSize="20sp"
-                    meter:metricText=""
-                    meter:range="100"
-                    meter:textColor="@color/ColorPrimaryDark"
-                    meter:textSize="60sp" />
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="@style/ProgressBarStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:indeterminate="false"
+                    android:max="100" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 

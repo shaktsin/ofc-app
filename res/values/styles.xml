@@ -18,4 +18,6 @@
         <item name="android:windowExitAnimation">@anim/dialogclosedialog</item>
     </style>
 
+    <style name="ProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal" />
+
 </resources>

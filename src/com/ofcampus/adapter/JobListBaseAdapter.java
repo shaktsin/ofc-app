@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -167,12 +168,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 			mHolder.txt_contain=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
 			
 			mHolder.rel_meter = (RelativeLayout) convertView.findViewById(R.id.rel_meter);
-			mHolder.meter = (CircularCounter) convertView.findViewById(R.id.meter);
-			mHolder.meter.setFirstWidth(mContext.getResources().getDimension(R.dimen.first))
-					.setFirstColor(Color.parseColor("#35475D"))
-					.setSecondColor(Color.TRANSPARENT)
-					.setThirdColor(Color.TRANSPARENT)
-					.setBackgroundColor(Color.parseColor("#65ffffff"));
+			mHolder.meter = (ProgressBar) convertView.findViewById(R.id.progress);
+			
 			
 			mHolder.btn_reply=(ImageView)convertView.findViewById(R.id.joblistview_txt_reply);
 			mHolder.btn_share=(ImageView)convertView.findViewById(R.id.joblistview_txt_share);
@@ -189,7 +186,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		}
 		
 		final JobDetails mJobDetails = jobs.get(position);
-		final CircularCounter meter_=mHolder.meter;
+		final ProgressBar meter_=mHolder.meter;
 		final RelativeLayout relmeter=mHolder.rel_meter;
 		
 		if (mJobDetails!=null) {
@@ -262,7 +259,6 @@ public class JobListBaseAdapter extends BaseAdapter{
 									((ImageView)v).setImageResource(R.drawable.doc_green);
 									meter_.setVisibility(View.GONE);
 									relmeter.setVisibility(View.VISIBLE);
-									meter_.setValues(0,0,0);
 								}
 								
 								@Override
@@ -271,7 +267,6 @@ public class JobListBaseAdapter extends BaseAdapter{
 									notifyDataSetChanged();
 									meter_.setVisibility(View.GONE);
 									relmeter.setVisibility(View.VISIBLE);
-									meter_.setValues(0,0,0);
 								}
 								
 								@Override
@@ -279,10 +274,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 									((ImageView)v).setImageResource(R.drawable.doc_green);
 									meter_.setVisibility(View.GONE);
 									relmeter.setVisibility(View.VISIBLE);
-									meter_.setValues(0,0,0);
 								}
 							});
-							meter_.setValues(0,0,0);
 							meter_.setVisibility(View.VISIBLE);
 							relmeter.setVisibility(View.VISIBLE);
 							mPdfDocLoader.load(mContext, jobs.get(position).getImages().get(0).getImageURL(), meter_,v);
@@ -426,7 +419,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		RelativeLayout rel_meter;
 		
 		
-		CircularCounter meter;
+		ProgressBar meter;
 	}
 	
 	public void setIDS(String fstID,String lstID){
