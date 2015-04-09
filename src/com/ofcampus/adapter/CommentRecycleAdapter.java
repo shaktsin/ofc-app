@@ -5,10 +5,13 @@
  */
 package com.ofcampus.adapter;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,6 +24,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ImageView.ScaleType;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -29,8 +33,11 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.parser.PdfDocLoader;
+import com.ofcampus.parser.PdfDocLoader.LoadListner;
 import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
 import com.ofcampus.ui.ReplyDialog;
@@ -326,6 +333,11 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		}
 		
 		@Override
+		public int getItemPosition(Object object) {
+		    return POSITION_NONE;
+		}
+		
+		@Override
 		public Object instantiateItem(ViewGroup view, final int position) {
 			View imageLayout = inflater.inflate(R.layout.inflate_jobdetails_pager_view,view, false);
 			assert imageLayout != null;
@@ -339,38 +351,107 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			imageLayout.setLayoutParams(pram);
 			
 			final String mPhotos = arrPhotos.get(position).getImageURL();
-			imageLoader.displayImage(mPhotos, imageView, options,new ImageLoadingListener() {
-				
-				@Override
-				public void onLoadingStarted(String arg0, View arg1) {
-					spinner.setVisibility(View.VISIBLE);
+			if (Util.isContainDocFile(mPhotos)) { 
+				imageView.setScaleType(ScaleType.CENTER_INSIDE);
+				spinner.setVisibility(View.GONE);
+				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+				if (mDocumentPath!=null && mDocumentPath.mapPath.containsKey(mPhotos)) {
+					imageView.setImageResource(R.drawable.doc_green);
+					imageView.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							try {
+								if (Util.isDocFile(mPhotos)) {  
+									DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+									String path = mDocumentPath.mapPath.get(mPhotos);
+									Intent intent = new Intent();
+									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.setAction(Intent.ACTION_VIEW);
+									String type = "application/msword";
+									intent.setDataAndType(Uri.fromFile(new File(path)), type);
+									mContext.startActivity(intent);
+								}else if (Util.isPdfFile(mPhotos)) {
+									DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+									String path = mDocumentPath.mapPath.get(mPhotos);
+									Intent intent = new Intent();
+									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+									intent.setAction(Intent.ACTION_VIEW);
+									String type = "application/pdf";
+									intent.setDataAndType(Uri.fromFile(new File(path)), type);
+									mContext.startActivity(intent);
+								}
+								
+							} catch (Exception e) {
+								e.printStackTrace();
+							} 
+						}
+					});
+				}else {
+					imageView.setImageResource(R.drawable.docload_g);
+					imageView.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+//							ProgressView mView=new ProgressView();
+							PdfDocLoader mPdfDocLoader = new PdfDocLoader();
+							mPdfDocLoader.setLoadlistner(new LoadListner() {
+								
+								@Override
+								public void OnErroe(View v) {
+									((ImageView)v).setImageResource(R.drawable.doc_green);
+								}
+								
+								@Override
+								public void OnComplete(View v) {
+									((ImageView)v).setImageResource(R.drawable.doc_green);
+									notifyDataSetChanged();
+								}
+								
+								@Override
+								public void OnCancel(View v) {
+									((ImageView)v).setImageResource(R.drawable.doc_green);
+									
+								}
+							});
+							mPdfDocLoader.load(mContext,mPhotos, null,v);
+						}
+					});
 				}
 				
-				@Override
-				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
-					spinner.setVisibility(View.GONE);
-				}
-				
-				@Override
-				public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
-					spinner.setVisibility(View.GONE);
-				}
-				
-				@Override
-				public void onLoadingCancelled(String arg0, View arg1) {
-					spinner.setVisibility(View.GONE);
-				}
-			});
+			}else {
+				imageView.setScaleType(ScaleType.CENTER_CROP);
+				imageLoader.displayImage(mPhotos, imageView, options,new ImageLoadingListener() {
+					
+					@Override
+					public void onLoadingStarted(String arg0, View arg1) {
+						spinner.setVisibility(View.VISIBLE);
+					}
+					
+					@Override
+					public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+						spinner.setVisibility(View.GONE);
+					}
+					
+					@Override
+					public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
+						spinner.setVisibility(View.GONE);
+					}
+					
+					@Override
+					public void onLoadingCancelled(String arg0, View arg1) {
+						spinner.setVisibility(View.GONE);
+					}
+				});
+				imageLayout.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						new AlbumPagerDialog(mContext, arrPhotos,position);
+					}
+				});
+			}
 			
-			
-			
-			imageLayout.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					new AlbumPagerDialog(mContext, arrPhotos,position);
-				}
-			});
 			view.addView(imageLayout, 0);
 			return imageLayout;
 		}

@@ -45,7 +45,7 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	private int position;
     private ListView joblist;
     private RelativeLayout footer_pg;
-    private JobListBaseAdapter mJobListAdapter;
+    public JobListBaseAdapter mJobListAdapter;
     private String tocken = "";
     
     /***For Load more****/

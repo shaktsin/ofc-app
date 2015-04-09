@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.view.View;
 
+import com.ofcampus.component.CircularCounter;
 import com.ofcampus.component.ProgressView;
 import com.ofcampus.model.DocumentPath;
 
@@ -23,7 +24,7 @@ public class PdfDocLoader {
 	private Context mContext;
 	private View v;
 	
-	public void load(Context mContext_, String url_ , ProgressView pg_, View v_) {    
+	public void load(Context mContext_, String url_ , CircularCounter pg_, View v_) {    
 		this.mContext = mContext_;
 		this.v = v_;
 		Async mAsync = new Async(url_,pg_);  
@@ -39,11 +40,11 @@ public class PdfDocLoader {
 		
 
 		private String url ; 
-		private ProgressView pg;
+		private CircularCounter pg;
 		private boolean isSuccess=false;
 		private int index = 0;
 		
-		public Async(String url_ , ProgressView pg_) {  
+		public Async(String url_ , CircularCounter pg_) {  
 			url=url_;
 			pg=pg_;
 		}
@@ -86,8 +87,8 @@ public class PdfDocLoader {
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
-//			pg.setProgress((float)values[index]);
-//			index++;
+			pg.setValues((int)values[index],0,0);
+			index++;
 		}
 		
 		@Override

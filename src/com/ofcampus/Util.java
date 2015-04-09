@@ -798,4 +798,49 @@ public class Util {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public static boolean isContainDocFile(String url){
+		if (url.contains(".doc")) {
+			return true;
+		}else if(url.contains(".DOC")){
+			return true;
+		}if (url.contains(".docx")) {
+			return true;
+		}else if(url.contains(".DOCX")){
+			return true;
+		}if (url.contains(".pdf")) {
+			return true;
+		}else if(url.contains(".PDF")){
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+	
+	public static boolean isDocFile(String url){
+		if (url.contains(".doc")) {
+			return true;
+		}else if(url.contains(".DOC")){
+			return true;
+		}if (url.contains(".docx")) {
+			return true;
+		}else if(url.contains(".DOCX")){
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public static boolean isPdfFile(String url){
+		if (url.contains(".pdf")) {
+			return true;
+		}else if(url.contains(".PDF")){
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

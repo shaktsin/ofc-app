@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
@@ -21,6 +22,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.RelativeLayout;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -29,7 +32,7 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
-import com.ofcampus.component.ProgressView;
+import com.ofcampus.component.CircularCounter;
 import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
@@ -163,6 +166,14 @@ public class JobListBaseAdapter extends BaseAdapter{
 			mHolder.txt_subject=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_subject);
 			mHolder.txt_contain=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
 			
+			mHolder.rel_meter = (RelativeLayout) convertView.findViewById(R.id.rel_meter);
+			mHolder.meter = (CircularCounter) convertView.findViewById(R.id.meter);
+			mHolder.meter.setFirstWidth(mContext.getResources().getDimension(R.dimen.first))
+					.setFirstColor(Color.parseColor("#35475D"))
+					.setSecondColor(Color.TRANSPARENT)
+					.setThirdColor(Color.TRANSPARENT)
+					.setBackgroundColor(Color.parseColor("#65ffffff"));
+			
 			mHolder.btn_reply=(ImageView)convertView.findViewById(R.id.joblistview_txt_reply);
 			mHolder.btn_share=(ImageView)convertView.findViewById(R.id.joblistview_txt_share);
 			mHolder.btn_comment=(ImageView)convertView.findViewById(R.id.joblistview_txt_comment);
@@ -178,6 +189,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 		}
 		
 		final JobDetails mJobDetails = jobs.get(position);
+		final CircularCounter meter_=mHolder.meter;
+		final RelativeLayout relmeter=mHolder.rel_meter;
 		
 		if (mJobDetails!=null) {
 			String url=mJobDetails.getImage();
@@ -199,8 +212,8 @@ public class JobListBaseAdapter extends BaseAdapter{
 			
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
 			final String urlLink =Images.get(0).getImageURL();
-			if (isContainDocFile(urlLink)) { 
-				
+			if (Util.isContainDocFile(urlLink)) { 
+				mHolder.img_post.setScaleType(ScaleType.CENTER_INSIDE);
 				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
 				if (mDocumentPath!=null && mDocumentPath.mapPath.containsKey(urlLink)) {
 					mHolder.img_post.setImageResource(R.drawable.doc_green);
@@ -209,7 +222,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 						@Override
 						public void onClick(View v) {
 							try {
-								if (isDocFile(urlLink)) { 
+								if (Util.isDocFile(urlLink)) { 
 									DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
 									String path = mDocumentPath.mapPath.get(urlLink);
 									Intent intent = new Intent();
@@ -218,7 +231,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 									String type = "application/msword";
 									intent.setDataAndType(Uri.fromFile(new File(path)), type);
 									mContext.startActivity(intent);
-								}else if (isPdfFile(urlLink)) {
+								}else if (Util.isPdfFile(urlLink)) {
 									DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
 									String path = mDocumentPath.mapPath.get(urlLink);
 									Intent intent = new Intent();
@@ -247,26 +260,39 @@ public class JobListBaseAdapter extends BaseAdapter{
 								@Override
 								public void OnErroe(View v) {
 									((ImageView)v).setImageResource(R.drawable.doc_green);
+									meter_.setVisibility(View.GONE);
+									relmeter.setVisibility(View.VISIBLE);
+									meter_.setValues(0,0,0);
 								}
 								
 								@Override
 								public void OnComplete(View v) {
 									((ImageView)v).setImageResource(R.drawable.doc_green);
 									notifyDataSetChanged();
+									meter_.setVisibility(View.GONE);
+									relmeter.setVisibility(View.VISIBLE);
+									meter_.setValues(0,0,0);
 								}
 								
 								@Override
 								public void OnCancel(View v) {
 									((ImageView)v).setImageResource(R.drawable.doc_green);
-									
+									meter_.setVisibility(View.GONE);
+									relmeter.setVisibility(View.VISIBLE);
+									meter_.setValues(0,0,0);
 								}
 							});
-							mPdfDocLoader.load(mContext, jobs.get(position).getImages().get(0).getImageURL(), null,v);
+							meter_.setValues(0,0,0);
+							meter_.setVisibility(View.VISIBLE);
+							relmeter.setVisibility(View.VISIBLE);
+							mPdfDocLoader.load(mContext, jobs.get(position).getImages().get(0).getImageURL(), meter_,v);
 						}
 					});
 				}
 				
 			}else {
+				
+				mHolder.img_post.setScaleType(ScaleType.CENTER_CROP);
 				if (Images!=null && Images.size()>=1) {
 					mHolder.joblistview_img_post_rel.setVisibility(View.VISIBLE);
 					imageLoader.displayImage(Images.get(0).getImageURL(), mHolder.img_post, options_post);
@@ -397,6 +423,10 @@ public class JobListBaseAdapter extends BaseAdapter{
 		ImageView btn_reply,btn_share,btn_comment;
 		ImageView img_post;
 		CardView joblistview_img_post_rel;
+		RelativeLayout rel_meter;
+		
+		
+		CircularCounter meter;
 	}
 	
 	public void setIDS(String fstID,String lstID){
@@ -428,47 +458,5 @@ public class JobListBaseAdapter extends BaseAdapter{
 		public void commentClickEvent(JobDetails mJobDetails);  
 	}
 
-	private boolean isContainDocFile(String url){
-		if (url.contains(".doc")) {
-			return true;
-		}else if(url.contains(".DOC")){
-			return true;
-		}if (url.contains(".docx")) {
-			return true;
-		}else if(url.contains(".DOCX")){
-			return true;
-		}if (url.contains(".pdf")) {
-			return true;
-		}else if(url.contains(".PDF")){
-			return true;
-		}else {
-			return false;
-		}
-	}
 	
-	
-	
-	private boolean isDocFile(String url){
-		if (url.contains(".doc")) {
-			return true;
-		}else if(url.contains(".DOC")){
-			return true;
-		}if (url.contains(".docx")) {
-			return true;
-		}else if(url.contains(".DOCX")){
-			return true;
-		}else {
-			return false;
-		}
-	}
-	
-	private boolean isPdfFile(String url){
-		if (url.contains(".pdf")) {
-			return true;
-		}else if(url.contains(".PDF")){
-			return true;
-		}else {
-			return false;
-		}
-	}
 }

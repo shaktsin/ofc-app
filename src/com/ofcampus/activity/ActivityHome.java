@@ -153,6 +153,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 				((OfCampusApplication)getApplication()).editPostSuccessForNews=false;
 			}
 			
+			if (fragmentJobs.mJobListAdapter!=null) {
+				fragmentJobs.mJobListAdapter.notifyDataSetChanged();
+			}
 			
 			if (((OfCampusApplication)getApplication()).profileEditSuccess) {
 				updateProfileData();

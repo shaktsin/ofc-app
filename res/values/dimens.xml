@@ -16,4 +16,13 @@
     <dimen name="comment_pager_hight">250dp</dimen>
     <dimen name="comment_pager_Pading">20dp</dimen>
 
+    <!-- Circluer -->
+    <dimen name="width">10dp</dimen>
+    <dimen name="textSize">70dp</dimen>
+    <dimen name="metricSize">14dp</dimen>
+    <dimen name="metricPaddingY">25dp</dimen>
+    <dimen name="first">10dp</dimen>
+    <dimen name="second">15dp</dimen>
+    <dimen name="third">20dp</dimen>
+
 </resources>
