@@ -33,9 +33,11 @@ public class JobDetails {
 	private String from = "";
 	private String salaryTo = "";
 	private String salaryFrom = "";
-	
-	private String postType="";
-	
+
+	private String postType = "";
+	private ArrayList<ImageDetails> images = new ArrayList<ImageDetails>();
+	private ArrayList<DocDetails> Doclist = new ArrayList<DocDetails>();
+
 	public String getPostType() {
 		return postType;
 	}
@@ -44,13 +46,20 @@ public class JobDetails {
 		this.postType = postType;
 	}
 
-	private ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
 	public ArrayList<ImageDetails> getImages() {
 		return images;
 	}
 
 	public void setImages(ArrayList<ImageDetails> images) {
 		this.images = images;
+	}
+
+	public ArrayList<DocDetails> getDoclist() {
+		return Doclist;
+	}
+
+	public void setDoclist(ArrayList<DocDetails> doclist) {
+		Doclist = doclist;
 	}
 
 	public int showProgress = 0;
