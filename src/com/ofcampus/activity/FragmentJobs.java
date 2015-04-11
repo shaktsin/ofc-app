@@ -57,8 +57,8 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	private SwipeRefreshLayout swipeLayout;
 	
 	
-	public String firsttJobID="",lastJobID="";
-	   public ArrayList<JobDetails> notifyJObs=null;
+	public String firsttJobID = "", lastJobID = "";
+	public ArrayList<JobDetails> notifyJObs = null;
 	
     
 	public static FragmentJobs newInstance(int position,Context mContext) {
