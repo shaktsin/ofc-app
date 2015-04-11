@@ -87,9 +87,11 @@ private Context mContext;
 	 
 	public boolean isShowingPG_;
 	
-	public void parse(Context context, JSONObject postData,String authorization) { 
+	public void parse(Context context, JSONObject postData_,String authToken_) { 
 		this.mContext = context;
-		joblistAsync mjoblistAsync = new joblistAsync(mContext,postData,authorization);
+		this.postData = postData_;
+		this.authToken=authToken_;
+		joblistAsync mjoblistAsync = new joblistAsync();
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mjoblistAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
@@ -97,72 +99,30 @@ private Context mContext;
 		}
 	}
 	
+	private String authenticationJson;
+	private JSONObject postData; 
+	private boolean isTimeOut=false;
+	private ArrayList<JobDetails> jobList;
+	private String authToken;
 	
 	private class joblistAsync extends AsyncTask<Void, Void, Void>{ 
-		private Context context;
-		private String authenticationJson;
-		private JSONObject postData; 
-		private boolean isTimeOut=false;
-		private ProgressDialog mDialog;
-		private JobList mJobList;
-		private String authToken;
-		
-
-		public joblistAsync(Context mContext, JSONObject postData_,String authToken_) {
-			this.context = mContext;
-			this.postData = postData_;
-			this.authToken=authToken_;
-		}
-
+		private ProgressDialog pgDialog; 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			if (isShowingPG_) {
-				mDialog=new ProgressDialog(mContext);
-				mDialog.setMessage("Loading...");
-				mDialog.setCancelable(false);
-				mDialog.show();
+				pgDialog=new ProgressDialog(mContext);
+				pgDialog.setMessage("Loading...");
+				pgDialog.setCancelable(false);
+				pgDialog.show();
 			}
 		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			
-			try {
-				String[] responsedata =  Util.POSTWithJSONAuth(Util.getJobListUrl(), postData, authToken);
-				authenticationJson = responsedata[1];
-				isTimeOut = (responsedata[0].equals("205"))?true:false;
-				
-				if (authenticationJson!=null && !authenticationJson.equals("")) {
-					JSONObject mObject=new JSONObject(authenticationJson);
-					responsecode = Util.getJsonValue(mObject, STATUS);
-					if (responsecode!=null && responsecode.equals("200")) {
-						JSONObject Obj = mObject.getJSONObject(RESULTS); 
-						if (Obj!=null && !Obj.equals("")) {
-							String expt= Util.getJsonValue(Obj, EXCEPTION);
-							if (expt.equals("false")) {
-								mJobList = parseJSONData(Obj);
-								ArrayList<JobDetails> arrayJobInDB =JOBListTable.getInstance(context).fatchJobData(JobDataReturnFor.Normal);
-								if (arrayJobInDB==null) {
-									JOBListTable.getInstance(mContext).inserJobData(mJobList.getJobs());
-								}else if(arrayJobInDB!=null && arrayJobInDB.size() < 12) {
-									int size=12 - arrayJobInDB.size();
-									if (mJobList.getJobs()!=null && mJobList.getJobs().size()>=1) {
-										JOBListTable.getInstance(mContext).inserJobData(mJobList.getJobs() ,size);
-									}
-								}
-							}
-						}
-					}else if(responsecode!=null && (responsecode.equals("500") || responsecode.equals("401"))){
-						JSONObject userObj = mObject.getJSONObject(RESULTS);
-						if (userObj!=null) {
-							responseDetails=userObj.getJSONArray("messages").get(0).toString();
-						}
-					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+			doingBGWork();
+			
 			return null;
 		}
 
@@ -170,9 +130,9 @@ private Context mContext;
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 			
-			if (mDialog!=null && mDialog.isShowing()) {
-				mDialog.cancel();
-				mDialog=null;
+			if (pgDialog!=null && pgDialog.isShowing()) {
+				pgDialog.cancel();
+				pgDialog=null;
 			}
 			
 			if (isTimeOut) {
@@ -180,12 +140,12 @@ private Context mContext;
 					joblistparsernewinterface.OnError(); 
 				}
 			}else if (responsecode.equals("200")) {
-				if (mJobList!=null) {
+				if (jobList!=null) {
 					if (joblistparsernewinterface!=null) {
-						joblistparsernewinterface.OnSuccess(mJobList);
+						joblistparsernewinterface.OnSuccess(jobList);
 					}
 				}else {
-					Util.ShowToast(mContext, "Joblist parse error.");
+					Util.ShowToast(mContext, "No more Job");
 				}
 			}else if (responsecode.equals("500") || responsecode.equals("401")){
 				Util.ShowToast(mContext, responseDetails);
@@ -196,11 +156,53 @@ private Context mContext;
 	}
 	
 	
-
+	public ArrayList<JobDetails> bgSyncCalling(Context context, JSONObject postData_,String authToken_){
+		this.mContext = context;
+		this.postData = postData_;
+		this.authToken=authToken_;
+		doingBGWork();
+		return jobList;
+	}
 	
+	public void doingBGWork(){
+		try {
+			String[] responsedata =  Util.POSTWithJSONAuth(Util.getJobListUrl(), postData, authToken);
+			authenticationJson = responsedata[1];
+			isTimeOut = (responsedata[0].equals("205"))?true:false;
+			
+			if (authenticationJson!=null && !authenticationJson.equals("")) {
+				JSONObject mObject=new JSONObject(authenticationJson);
+				responsecode = Util.getJsonValue(mObject, STATUS);
+				if (responsecode!=null && responsecode.equals("200")) {
+					JSONObject Obj = mObject.getJSONObject(RESULTS); 
+					if (Obj!=null && !Obj.equals("")) {
+						String expt= Util.getJsonValue(Obj, EXCEPTION);
+						if (expt.equals("false")) {
+							jobList = parseJSONData(Obj); 
+							ArrayList<JobDetails> arrayJobInDB =JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.Normal);
+							if (arrayJobInDB==null) {
+								JOBListTable.getInstance(mContext).inserJobData(jobList);
+							}else if(arrayJobInDB!=null && arrayJobInDB.size() < 12) {
+								int size=12 - arrayJobInDB.size();
+								if (jobList!=null && jobList.size()>=1) { 
+									JOBListTable.getInstance(mContext).inserJobData(jobList ,size);
+								}
+							}
+						}
+					}
+				}else if(responsecode!=null && (responsecode.equals("500") || responsecode.equals("401"))){
+					JSONObject userObj = mObject.getJSONObject(RESULTS);
+					if (userObj!=null) {
+						responseDetails=userObj.getJSONArray("messages").get(0).toString();
+					}
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 	
-	
-	public JobList parseJSONData(JSONObject obj){
+	public ArrayList<JobDetails> parseJSONData(JSONObject obj){
 
 		JobList mJobList=new JobList();
 		
@@ -322,7 +324,7 @@ private Context mContext;
 			e.printStackTrace();
 		}
 		
-		return mJobList;
+		return mJobList.getJobs();
 		
 	}
 	
@@ -367,7 +369,7 @@ private Context mContext;
 	}
 
 	public interface JobListParserNewInterface {
-		public void OnSuccess(JobList mJobList);
+		public void OnSuccess(ArrayList<JobDetails> jobList);
 
 		public void OnError();
 	}

@@ -168,8 +168,17 @@ public class JobListBaseAdapter extends BaseAdapter{
 			mHolder.txt_contain=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
 			
 			mHolder.rel_meter = (RelativeLayout) convertView.findViewById(R.id.rel_meter);
-			mHolder.meter = (ProgressBar) convertView.findViewById(R.id.progress);
+			mHolder.meter = (CircularCounter) convertView.findViewById(R.id.meter);
+			mHolder.meter.setFirstWidth(mContext.getResources().getDimension(R.dimen.first))
+				.setFirstColor(Color.parseColor("#008000"))
+		
+				.setSecondWidth(mContext.getResources().getDimension(R.dimen.second))
+				.setSecondColor(Color.TRANSPARENT)
 			
+				.setThirdWidth(mContext.getResources().getDimension(R.dimen.third))
+				.setThirdColor(Color.TRANSPARENT)
+				
+				.setBackgroundColor(Color.parseColor("#65008000"));
 			
 			mHolder.btn_reply=(ImageView)convertView.findViewById(R.id.joblistview_txt_reply);
 			mHolder.btn_share=(ImageView)convertView.findViewById(R.id.joblistview_txt_share);
@@ -186,7 +195,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		}
 		
 		final JobDetails mJobDetails = jobs.get(position);
-		final ProgressBar meter_=mHolder.meter;
+		final CircularCounter meter_=mHolder.meter;
 		final RelativeLayout relmeter=mHolder.rel_meter;
 		
 		if (mJobDetails!=null) {
@@ -208,112 +217,129 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 			
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
-			final String urlLink =Images.get(0).getImageURL();
-			if (Util.isContainDocFile(urlLink)) { 
-				mHolder.img_post.setScaleType(ScaleType.CENTER_INSIDE);
-				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
-				if (mDocumentPath!=null && mDocumentPath.mapPath.containsKey(urlLink)) {
-					mHolder.img_post.setImageResource(R.drawable.doc_green);
-					mHolder.img_post.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							try {
-								if (Util.isDocFile(urlLink)) { 
-									DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
-									String path = mDocumentPath.mapPath.get(urlLink);
-									Intent intent = new Intent();
-									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-									intent.setAction(Intent.ACTION_VIEW);
-									String type = "application/msword";
-									intent.setDataAndType(Uri.fromFile(new File(path)), type);
-									mContext.startActivity(intent);
-								}else if (Util.isPdfFile(urlLink)) {
-									DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
-									String path = mDocumentPath.mapPath.get(urlLink);
-									Intent intent = new Intent();
-									intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-									intent.setAction(Intent.ACTION_VIEW);
-									String type = "application/pdf";
-									intent.setDataAndType(Uri.fromFile(new File(path)), type);
-									mContext.startActivity(intent);
-								}
-								
-							} catch (Exception e) {
-								e.printStackTrace();
-							} 
-						}
-					});
-				}else {
-					mHolder.img_post.setImageResource(R.drawable.docload_g);
-					mHolder.img_post.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-//							ProgressView mView=new ProgressView();
-							PdfDocLoader mPdfDocLoader = new PdfDocLoader();
-							mPdfDocLoader.setLoadlistner(new LoadListner() {
-								
-								@Override
-								public void OnErroe(View v) {
-									((ImageView)v).setImageResource(R.drawable.doc_green);
-									meter_.setVisibility(View.GONE);
-									relmeter.setVisibility(View.VISIBLE);
-								}
-								
-								@Override
-								public void OnComplete(View v) {
-									((ImageView)v).setImageResource(R.drawable.doc_green);
-									notifyDataSetChanged();
-									meter_.setVisibility(View.GONE);
-									relmeter.setVisibility(View.VISIBLE);
-								}
-								
-								@Override
-								public void OnCancel(View v) {
-									((ImageView)v).setImageResource(R.drawable.doc_green);
-									meter_.setVisibility(View.GONE);
-									relmeter.setVisibility(View.VISIBLE);
-								}
-							});
-							meter_.setVisibility(View.VISIBLE);
-							relmeter.setVisibility(View.VISIBLE);
-							mPdfDocLoader.load(mContext, jobs.get(position).getImages().get(0).getImageURL(), meter_,v);
-						}
-					});
-				}
-				
-			}else {
-				
-				mHolder.img_post.setScaleType(ScaleType.CENTER_CROP);
-				if (Images!=null && Images.size()>=1) {
-					mHolder.joblistview_img_post_rel.setVisibility(View.VISIBLE);
-					imageLoader.displayImage(Images.get(0).getImageURL(), mHolder.img_post, options_post);
-					mHolder.img_post.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							new AlbumPagerDialog(mContext, Images,0);
-						}
-					});
-					
-				}else {
-					mHolder.joblistview_img_post_rel.setVisibility(View.GONE);
-				}
-				
-				mHolder.profilepic.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
-							((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
-							mContext.startActivity(new Intent(mContext,ActivityJobPostedUserDetails.class));
-							((Activity) mContext).overridePendingTransition(0,0);
-						}
-						
+			
+			if (Images!=null && Images.size()>=1) {
+				final String urlLink =Images.get(0).getImageURL();
+				if (Util.isContainDocFile(urlLink)) { 
+					mHolder.img_post.setScaleType(ScaleType.CENTER_INSIDE);
+					DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+					if (mDocumentPath!=null && mDocumentPath.mapPath.containsKey(urlLink)) {
+						mHolder.img_post.setImageResource(R.drawable.doc_green);
+						mHolder.img_post.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								try {
+									if (Util.isDocFile(urlLink)) { 
+										DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+										String path = mDocumentPath.mapPath.get(urlLink);
+										Intent intent = new Intent();
+										intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										intent.setAction(Intent.ACTION_VIEW);
+										String type = "application/msword";
+										intent.setDataAndType(Uri.fromFile(new File(path)), type);
+										mContext.startActivity(intent);
+									}else if (Util.isPdfFile(urlLink)) {
+										DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+										String path = mDocumentPath.mapPath.get(urlLink);
+										Intent intent = new Intent();
+										intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										intent.setAction(Intent.ACTION_VIEW);
+										String type = "application/pdf";
+										intent.setDataAndType(Uri.fromFile(new File(path)), type);
+										mContext.startActivity(intent);
+									}
+									
+								} catch (Exception e) {
+									e.printStackTrace();
+								} 
+							}
+						});
+					}else {
+						mHolder.img_post.setImageResource(R.drawable.docload_g);
+						mHolder.img_post.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+//								ProgressView mView=new ProgressView();
+								PdfDocLoader mPdfDocLoader = new PdfDocLoader();
+								mPdfDocLoader.setLoadlistner(new LoadListner() {
+									
+									@Override
+									public void OnErroe(View v) {
+										((ImageView)v).setImageResource(R.drawable.doc_green);
+										meter_.setVisibility(View.GONE);
+										relmeter.setVisibility(View.GONE);
+										v.setVisibility(View.VISIBLE);
+									}
+									
+									@Override
+									public void OnProgress(int value){
+										if (meter_.getVisibility()==View.GONE) {
+											meter_.setVisibility(View.VISIBLE);
+										}
+										meter_.setValues(value, 0, 0);
+									}
+									
+									@Override
+									public void OnComplete(View v) {
+										((ImageView)v).setImageResource(R.drawable.doc_green);
+										notifyDataSetChanged();
+										meter_.setVisibility(View.GONE);
+										relmeter.setVisibility(View.GONE);
+										v.setVisibility(View.VISIBLE);
+									}
+									
+									@Override
+									public void OnCancel(View v) {
+										((ImageView)v).setImageResource(R.drawable.doc_green);
+										meter_.setVisibility(View.GONE);
+										relmeter.setVisibility(View.GONE);
+										v.setVisibility(View.VISIBLE);
+									}
+								});
+								v.setVisibility(View.GONE);
+								meter_.setVisibility(View.VISIBLE);
+								relmeter.setVisibility(View.VISIBLE);
+								mPdfDocLoader.load(mContext, jobs.get(position).getImages().get(0).getImageURL(),v);
+							}
+						});
 					}
-				});
+					
+				}else {
+					
+					mHolder.img_post.setScaleType(ScaleType.CENTER_CROP);
+					if (Images!=null && Images.size()>=1) {
+						mHolder.joblistview_img_post_rel.setVisibility(View.VISIBLE);
+						imageLoader.displayImage(Images.get(0).getImageURL(), mHolder.img_post, options_post);
+						mHolder.img_post.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								new AlbumPagerDialog(mContext, Images,0);
+							}
+						});
+						
+					}else {
+						mHolder.joblistview_img_post_rel.setVisibility(View.GONE);
+					}
+					
+					mHolder.profilepic.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
+								((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+								mContext.startActivity(new Intent(mContext,ActivityJobPostedUserDetails.class));
+								((Activity) mContext).overridePendingTransition(0,0);
+							}
+							
+						}
+					});
+				}
 			}
+			
+			
 			
 			
 			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
@@ -419,7 +445,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 		RelativeLayout rel_meter;
 		
 		
-		ProgressBar meter;
+		CircularCounter meter;
 	}
 	
 	public void setIDS(String fstID,String lstID){

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -33,6 +34,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.component.CircularCounter;
 import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
@@ -341,9 +343,22 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		public Object instantiateItem(ViewGroup view, final int position) {
 			View imageLayout = inflater.inflate(R.layout.inflate_jobdetails_pager_view,view, false);
 			assert imageLayout != null;
-			ImageView imageView = (ImageView) imageLayout.findViewById(R.id.iflate_img_pager);
-			final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.iflate_pg);
+			ImageView imageView = (ImageView) imageLayout.findViewById(R.id.iflate_img_pager);		
+			final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.iflate_pg);	
+			
+			final RelativeLayout relmeter = (RelativeLayout) imageLayout.findViewById(R.id.rel_meter);
+			
+			final CircularCounter meter = (CircularCounter) imageLayout.findViewById(R.id.meter);
+			meter.setFirstWidth(mContext.getResources().getDimension(R.dimen.first))
+				.setFirstColor(Color.parseColor("#008000"))
 		
+				.setSecondWidth(mContext.getResources().getDimension(R.dimen.second))
+				.setSecondColor(Color.TRANSPARENT)
+			
+				.setThirdWidth(mContext.getResources().getDimension(R.dimen.third))
+				.setThirdColor(Color.TRANSPARENT)
+				
+				.setBackgroundColor(Color.parseColor("#65008000"));
 			
 			
 			ViewGroup.LayoutParams pram=new LayoutParams((int)(width),ViewGroup.LayoutParams.MATCH_PARENT);
@@ -393,28 +408,47 @@ public class CommentRecycleAdapter extends BaseAdapter{
 						
 						@Override
 						public void onClick(View v) {
-//							ProgressView mView=new ProgressView();
 							PdfDocLoader mPdfDocLoader = new PdfDocLoader();
 							mPdfDocLoader.setLoadlistner(new LoadListner() {
 								
 								@Override
 								public void OnErroe(View v) {
 									((ImageView)v).setImageResource(R.drawable.doc_green);
+									meter.setVisibility(View.GONE);
+									relmeter.setVisibility(View.GONE);
+									v.setVisibility(View.VISIBLE);
+								}
+								
+								@Override
+								public void OnProgress(int value){
+									if (meter.getVisibility()==View.GONE) {
+										meter.setVisibility(View.VISIBLE);
+									}
+									meter.setValues(value, 0, 0);
+									
 								}
 								
 								@Override
 								public void OnComplete(View v) {
 									((ImageView)v).setImageResource(R.drawable.doc_green);
 									notifyDataSetChanged();
+									meter.setVisibility(View.GONE);
+									relmeter.setVisibility(View.GONE);
+									v.setVisibility(View.VISIBLE);
 								}
 								
 								@Override
 								public void OnCancel(View v) {
 									((ImageView)v).setImageResource(R.drawable.doc_green);
-									
+									meter.setVisibility(View.GONE); 
+									relmeter.setVisibility(View.GONE);
+									v.setVisibility(View.VISIBLE);
 								}
 							});
-							mPdfDocLoader.load(mContext,mPhotos, null,v);
+							v.setVisibility(View.GONE);
+							meter.setVisibility(View.VISIBLE);
+							relmeter.setVisibility(View.VISIBLE);
+							mPdfDocLoader.load(mContext,mPhotos, v);
 						}
 					});
 				}

@@ -129,9 +129,6 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 		pulltorefreshcall();
 	}
 	
-	
-	
-	
 	private void initilizView(View view) {
 		newslist = (ListView) view.findViewById(R.id.activity_home_newslist);
 		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
@@ -254,47 +251,13 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 		return count;
 	}
 	/** News Sync Process**/
-	
-	
-	/**
-	 * Pull To Refresh Load News Calling.
-	 */
-//	private void pulltorefreshcall(String JobID){
-//		
-//		if (!Util.hasConnection(context)) {
-//			Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
-//			return;
-//		}
-//		
-//		NewsFeedListParser mFeedListParser=new NewsFeedListParser();
-//		mFeedListParser.setNewsfeedlistparserinterface(new NewsFeedListParserInterface() {
-//			
-//			@Override
-//			public void OnSuccess(ArrayList<JobDetails> newsList) {
-//
-//				if (newsList != null && newsList.size() >= 1) {
-//					mNewsListAdapter.refreshSwipeData(newsList); 
-//				}else {
-//					Util.ShowToast(context, "No more News updated.");
-//				}
-//				refreshComplete();
-//			}
-//			
-//			@Override
-//			public void OnError() {
-//				refreshComplete();
-//			}
-//		});
-//		mFeedListParser.isShowingPG_=false;
-//		mFeedListParser.parse(context, mFeedListParser.getBody(JobID, 1+""), tocken);
-//	}
-	
+
 	private void pulltorefreshcall(){
 		if (notifyfeeds != null && notifyfeeds.size() >= 1) {
 			mNewsListAdapter.refreshSwipeData(notifyfeeds);
 			notifyfeeds=null;
 			if (fragmentnewsinterface!=null) {
-				fragmentnewsinterface.pulltorefreshcallComplete();
+				fragmentnewsinterface.pullToRefreshCallCompleteForNews();
 			}
 		} else {
 			Util.ShowToast(context, "No more News updated.");
@@ -362,7 +325,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 	}
 
 	public interface FragmentNewsInterface {
-		public void pulltorefreshcallComplete();//After pull to refresh complete remove the notification.
+		public void pullToRefreshCallCompleteForNews();//After pull to refresh complete remove the notification.
 	}
 	
 	

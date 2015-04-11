@@ -32,6 +32,8 @@ import com.ofcampus.databasehelper.ImportantJobTable;
 import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.JobListParserNew;
+import com.ofcampus.parser.JobListParserNew.JobListParserNewInterface;
 import com.ofcampus.parser.PostJobHideMarkedParser;
 import com.ofcampus.parser.PostJobHideMarkedParser.PostJobHideMarkedParserInterface;
 import com.ofcampus.parser.PostUnHideUnImpParser;
@@ -42,7 +44,6 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 
 	private static final String ARG_POSITION = "position";
 	private static Context context;
-	private int position;
     private ListView joblist;
     private RelativeLayout footer_pg;
     public JobListBaseAdapter mJobListAdapter;
@@ -57,7 +58,7 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	
 	
 	public String firsttJobID="",lastJobID="";
-	
+	   public ArrayList<JobDetails> notifyJObs=null;
 	
     
 	public static FragmentJobs newInstance(int position,Context mContext) {
@@ -72,7 +73,6 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		position = getArguments().getInt(ARG_POSITION);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 		View view=inflater.inflate(R.layout.fragment_jobs, null);
 		initilizView(view);
 		initilizeSwipeRefresh(view);
-		loadProfileData();
+		loadData(true);
 		return view;
 	}
 	
@@ -143,25 +143,16 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	@Override 
 	public void onRefresh() {
 		if (jobsfrginterface!=null) {
-			jobsfrginterface.pulltorefreshcall(firsttJobID);
+			pulltorefreshcall();
 		}
 	}
-	
-	
-	
-	private void loadProfileData() {
-		UserDetails mUserDetails = UserDetails.getLoggedInUser(context);
-		tocken = mUserDetails.getAuthtoken();
-		if (jobsfrginterface!=null) {
-			jobsfrginterface.firstLoadCall();
-		}
-	}
-	
+
+	/**
+	 * Initialize The View:
+	 */
 	private void initilizView(View view) {
 		joblist = (ListView) view.findViewById(R.id.activity_home_joblist);
 		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
-		
-		
 		
 		mJobListAdapter=new JobListBaseAdapter(context, new ArrayList<JobDetails>());
 		mJobListAdapter.setJoblistinterface(this);
@@ -190,9 +181,7 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 						Log.i("SCROLLING DOWN", "TRUE");
 						footer_pg.setVisibility(View.VISIBLE);
 						loadingMore = true;
-						if (jobsfrginterface!=null) {
-							jobsfrginterface.loadcall(lastJobID);
-						}
+						loadMore(lastJobID);
 					}
 				}
 				mLastFirstVisibleItem = firstVisibleItem;
@@ -201,14 +190,129 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 
 	}
 	
-	
+	/**
+	 * Initialize PullToRefresh:
+	 */
 	private void initilizeSwipeRefresh(View v) {
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(this);
-		swipeLayout.setColorScheme(R.color.pull_blue_bright,
-				R.color.pull_green_light, R.color.pull_orange_light,
-				R.color.pull_red_light);
+		swipeLayout.setColorScheme(R.color.pull_blue_bright,R.color.pull_green_light, R.color.pull_orange_light,R.color.pull_red_light);
 	}
+	
+	/**
+	 * Initial Load Job Calling.
+	 */
+	public void loadData(boolean isShowingPG) { 
+		
+		tocken=UserDetails.getLoggedInUser(context).getAuthtoken();
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+
+		JobListParserNew mParserNew=new JobListParserNew();
+		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<JobDetails> jobList) {
+				if (jobList != null && jobList.size() >= 1) {
+					refreshDataInAdapter(jobList); 
+				}
+			}
+
+			@Override
+			public void OnError() {
+
+			}
+		});
+		mParserNew.isShowingPG_=isShowingPG;
+		mParserNew.parse(context, mParserNew.getBody(), tocken);
+	}
+	
+	
+	public void loadMore(String jobID) { 
+		JobListParserNew mParserNew=new JobListParserNew();
+		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<JobDetails> jobList) {
+				if (jobList != null && jobList.size() >= 1) {
+					refreshLoadMoreDataInAdapter(jobList);
+				}else {
+					Util.ShowToast(context, "No more job available.");
+					refreshComplete();
+				}
+			}
+	
+			@Override
+			public void OnError() {
+				refreshComplete();
+			}
+		});
+		
+		mParserNew.isShowingPG_=false;
+		mParserNew.parse(context, mParserNew.getBody(jobID, 2+""), tocken);
+	}
+	
+
+	private void pulltorefreshcall(){
+		if (notifyJObs != null && notifyJObs.size() >= 1) {
+			mJobListAdapter.refreshSwipeData(notifyJObs);
+			notifyJObs=null;
+			if (jobsfrginterface!=null) {
+				jobsfrginterface.pullToRefreshCallCompleteForJob(); 
+			}
+		} else {
+			Util.ShowToast(context, "No more News updated.");
+		}
+		refreshComplete();
+	}
+	
+	
+	/** JOB SYNC PROCESS  7TH APRIL 2015 **/
+	public boolean isJobComming() { 
+		if (!firsttJobID.equals("") && notifyJObs == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isJobCommingFstTime() { 
+		if (firsttJobID.equals("") && lastJobID.equals("") && getAdapterCount()==0) { 
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public int getAdapterCount(){
+		if (mJobListAdapter==null) {
+			return 0;
+		}else {
+			return mJobListAdapter.getCount(); 
+		}
+	}
+	
+	private JobListParserNew mJobListParserNew=null; 
+	public String getUpdateJobsCount(){
+		String count="";
+		try {
+			if (mJobListParserNew==null) { 
+				mJobListParserNew=new JobListParserNew();
+			}
+			ArrayList<JobDetails> jobs=null;
+			if (isJobCommingFstTime() || isJobComming()) {
+				jobs = notifyJObs = mJobListParserNew.bgSyncCalling(context, mJobListParserNew.getBody(firsttJobID, 1+""), tocken); 
+			}
+			count=(jobs!=null && jobs.size()>=1)?jobs.size()+"":""; 
+			mJobListParserNew=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+	/** News Sync Process**/
 	
 	
 	public void refreshComplete() {
@@ -317,11 +421,8 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	}
 
 	public interface JobsFrgInterface {
-		public void pulltorefreshcall(String jobID);
-
-		public void loadcall(String jobID);
+		public void pullToRefreshCallCompleteForJob();
 		
-		public void firstLoadCall();
 	}
 	
 }

@@ -183,13 +183,17 @@ public class ActivityRegistration extends ActionBarActivity implements OnClickLi
 			
 			@Override
 			public void OnSuccess(UserDetails mDetails_) {
-				((OfCampusApplication)getApplication()).mDetails=mDetails_;
-				moveVerifyCode();
+				if (mDetails_!=null && !mDetails_.isVerify()) {
+					((OfCampusApplication)getApplication()).mDetails=mDetails_;
+					moveVerifyCode();
+				}else {
+					Util.ShowToast(context, "Login error.");
+				}
 			}
 			
 			@Override
 			public void OnError() {
-				
+				Util.ShowToast(context, "Login error.");
 			}
 		}); 
 		mParser.parse(context, postBody);

@@ -99,7 +99,7 @@ public class ActivityVerifyCode extends Activity implements OnClickListener{
 					moveToHome();
 					mUserDetails.saveInPreferense(context);
 				}else {
-					onBackPressed();
+					Util.ShowToast(context, "Your email is not verified!"); 
 				}
 			}
 			

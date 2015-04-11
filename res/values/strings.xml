@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">OfCampus</string>
-    <string name="build_vers_">Build version 1.0.0</string>
+    <string name="build_vers_">Build version 1.0.1</string>
 
     <!-- DataBase Name And Version -->
     <string name="DataBaseName_Version">1</string>

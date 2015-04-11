@@ -5,7 +5,6 @@
  */
 package com.ofcampus.activity;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -51,21 +49,14 @@ import android.widget.TextView;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.Util.JobDataReturnFor;
 import com.ofcampus.activity.FragmentJobs.JobsFrgInterface;
 import com.ofcampus.activity.FragmentNewsFeeds.FragmentNewsInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
-import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.FilterDataSets;
-import com.ofcampus.model.JobDetails;
-import com.ofcampus.model.JobList;
 import com.ofcampus.model.UserDetails;
-import com.ofcampus.parser.CountSyncParser;
 import com.ofcampus.parser.FilterJobParser;
-import com.ofcampus.parser.JobListParserNew;
-import com.ofcampus.parser.JobListParserNew.JobListParserNewInterface;
 import com.ofcampus.ui.FilterDialog;
 
 public class ActivityHome extends ActionBarActivity implements OnClickListener,viewCLickEvent,OnPageChangeListener,JobsFrgInterface,FragmentNewsInterface{
@@ -79,7 +70,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 //	private int PROFILE = R.drawable.ic_profilepic;
 
     private Toolbar toolbar;                            
-
     private RecyclerView mRecyclerView;                         
     private SlideMenuAdapter mAdapter;                   
     private RecyclerView.LayoutManager mLayoutManager;            
@@ -101,7 +91,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	private FragmentClassifieds mClassifiedsFragment;
 	private FragmentMeetups fragmentMeetups; 
 
-	private TextView txt_countjob,txt_countclass ,txt_countmetup;
+	private TextView txt_countJobs,txt_countNews ,txt_countmetup;
 	
 	/**Filter Data***/
 	private  FilterDataSets mFilterDataSets=null;
@@ -143,7 +133,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		super.onResume();
 		try {
 			if (((OfCampusApplication)getApplication()).isHidePostModify || ((OfCampusApplication)getApplication()).editPostSuccessForHome) {
-				loadJobList(false);
+				fragmentJobs.loadData(false);
 				((OfCampusApplication)getApplication()).isHidePostModify=false;
 				((OfCampusApplication)getApplication()).editPostSuccessForHome=false;
 			}
@@ -343,86 +333,18 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	public void onPageScrollStateChanged(int arg0) {
 		
 	}
-	
-	/**
-	 * For Job Fragment Pull to refresh calling.
-	 */
-	@Override
-	public void pulltorefreshcall(String jobID) {
-		try {
-			ArrayList<JobDetails> jobs = JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.syncdata);
-			if (jobs != null && jobs.size() >= 1) {
-				try {
-					if (txt_countjob.getVisibility() == View.VISIBLE) {
-						int cout = Integer.parseInt(txt_countjob.getText().toString());
-						if (jobs.size() == cout) {
-							txt_countjob.setVisibility(View.GONE);
-						} else if (cout >= 1 && cout > jobs.size()) {
-							txt_countjob.setVisibility(View.VISIBLE);
-							txt_countjob.setText((cout - jobs.size()) + "");
-						}
-					}
-				} catch (Exception e) {
-					Log.e("pulltorefreshcall success", e.toString());
-					e.printStackTrace();
-				}
-				fragmentJobs.refreshSwipeDataInAdapter(jobs);
-				JOBListTable.getInstance(mContext).deleteoutDatedPost(jobs.size());
-			} else {
-				Util.ShowToast(mContext, "No more job updated.");
-				fragmentJobs.refreshComplete();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
-	/**
-	 * For Job Fragment Pull to refresh calling.
-	 */
-	
 	@Override
-	public void loadcall(String jobID) {
-		JobListParserNew mParserNew=new JobListParserNew();
-		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
-			
-			@Override
-			public void OnSuccess(JobList mJobList) {
-				if (mJobList != null) {
-					ArrayList<JobDetails> jobs = mJobList.getJobs();
-					if (jobs != null && jobs.size() >= 1) {
-						fragmentJobs.refreshLoadMoreDataInAdapter(jobs);
-					}else {
-						Util.ShowToast(mContext, "No more job available.");
-						fragmentJobs.refreshComplete();
-					}
-				}
-			}
-
-			@Override
-			public void OnError() {
-				fragmentJobs.refreshComplete();
-			}
-		});
-		
-		mParserNew.isShowingPG_=false;
-		mParserNew.parse(mContext, mParserNew.getBody(jobID, 2+""), tocken);
+	public void pullToRefreshCallCompleteForNews() {
+		count[0]="";
+		txt_countNews.setVisibility(View.GONE); 
 	}
 	
-	
 	@Override
-	public void firstLoadCall() {
-		new loadExistDataFromDB().execute();
-	}
-	
-
-
-	@Override
-	public void pulltorefreshcallComplete() {
+	public void pullToRefreshCallCompleteForJob() {
 		count[1]="";
-		txt_countclass.setVisibility(View.GONE);
+		txt_countJobs.setVisibility(View.GONE); 
 	}
-    
 	
 	private void initilizActionBarDrawer() {
 		toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -433,7 +355,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		mRecyclerView.setHasFixedSize(true);
 		img_composejob = (ImageView)findViewById(R.id.activity_home_img_composejob);
 		img_composejob.setOnClickListener(this);
-//		img_composejob.setVisibility(View.GONE);
 		
 		mAdapter = new SlideMenuAdapter(ActivityHome.this,Util.TITLES, Util.ICONS, NAME, EMAIL,picUrl);
 		mAdapter.setViewclickevent(this);
@@ -483,20 +404,20 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     private void initilizePagerview(){
     	GradientDrawable bgShape = null;
     	
-    	txt_countjob = (TextView) findViewById(R.id.activity_home_jobcount);
-    	bgShape = (GradientDrawable)txt_countjob.getBackground();
+    	txt_countJobs = (TextView) findViewById(R.id.activity_home_jobcount);
+    	bgShape = (GradientDrawable)txt_countJobs.getBackground();
     	bgShape.setColor(Color.parseColor("#5498C7"));
     	
-    	txt_countclass = (TextView) findViewById(R.id.activity_home_classcount);
-    	bgShape = (GradientDrawable)txt_countclass.getBackground();
+    	txt_countNews = (TextView) findViewById(R.id.activity_home_classcount);
+    	bgShape = (GradientDrawable)txt_countNews.getBackground();
     	bgShape.setColor(Color.parseColor("#E84C3D"));
     	
     	txt_countmetup = (TextView) findViewById(R.id.activity_home_meetcount);
     	bgShape = (GradientDrawable)txt_countmetup.getBackground();
     	bgShape.setColor(Color.parseColor("#18BC9A"));
     	
-    	txt_countjob.setVisibility(View.GONE);
-    	txt_countclass.setVisibility(View.GONE);
+    	txt_countJobs.setVisibility(View.GONE);
+    	txt_countNews.setVisibility(View.GONE);
     	txt_countmetup.setVisibility(View.GONE);
     	
     	tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -516,40 +437,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			Drawer.closeDrawers();
 		}
     }
-    
-    
-    
-    public void loadJobList(boolean isShowingPG) {
 
-		if (!Util.hasConnection(mContext)) {
-			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
-			return;
-		}
-
-		JobListParserNew mParserNew=new JobListParserNew();
-		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
-			
-			@Override
-			public void OnSuccess(JobList mJobList) {
-				if (mJobList != null) {
-					ArrayList<JobDetails> jobs = mJobList.getJobs();
-					if (jobs != null && jobs.size() >= 1) {
-						fragmentJobs.refreshDataInAdapter(jobs);
-					}
-				}
-			}
-
-			@Override
-			public void OnError() {
-
-			}
-		});
-		mParserNew.isShowingPG_=isShowingPG;
-		mParserNew.parse(mContext, mParserNew.getBody(), tocken);
-	}
-    
-    
-    
     private void showLogutDialog(){
     	AlertDialog.Builder alert=new AlertDialog.Builder(mContext);
     	alert.setTitle("Logout");
@@ -579,7 +467,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     
     public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
-//		private final String[] TITLES = { "Jobs", "Classifieds","Meetups"};
     	private final String[] TITLES = { "Newsfeed", "Jobs","Classifieds"};
 
 		public MyPagerAdapter(FragmentManager fm) {
@@ -629,7 +516,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
     
 	private Timer timer;
 	private MyTask mTask;
-	private String[] count={"","",""};
+	private String[] count={"","",""};//News,Jobs,MeetUp.
 	
 	public void stopservice() {
 		try {
@@ -676,27 +563,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			try {
 				
 				if (Util.hasConnection(mContext)) {
-					ArrayList<JobDetails> arrJOb = JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.syncdata); 
-					if (arrJOb!=null && arrJOb.size()>=1) {
-						count[0]=""+arrJOb.size();
-						count[1]="";
-						count[2]="";
-					}else {
-						if (fragmentJobs.firsttJobID!=null && !fragmentJobs.firsttJobID.equals("")) {
-							CountSyncParser countSyncParser=new CountSyncParser();
-							arrJOb = countSyncParser.parse(mContext, countSyncParser.getBody(fragmentJobs.firsttJobID, 1+""), tocken);
-							if (arrJOb!=null && arrJOb.size()>=1) {
-								count[0]=""+arrJOb.size();
-								count[1]="";
-								count[2]="";
-							}else {
-								count[0]="";
-								count[1]="";
-								count[2]="";
-							}
-						}
-						
-					}
 					
 					try {
 						mFilterDataSets =	new FilterJobParser().parse(mContext, tocken);
@@ -705,9 +571,15 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 					}
 					
 					/***For News Feed Sync**/
-					count[1]=(fragmentNewsFeeds!=null)?fragmentNewsFeeds.getUpdateNewsCount():"";
+					count[0]=(fragmentNewsFeeds!=null)?fragmentNewsFeeds.getUpdateNewsCount():"";
 					/***For News Feed Sync**/
 					
+					/***For Jobs Feed Sync**/
+					count[1]=(fragmentJobs!=null)?fragmentJobs.getUpdateJobsCount():"";
+					/***For Jobs Feed Sync**/
+					
+					count[2]="0";
+							
 					handler.sendEmptyMessage(0);
 				}
 				
@@ -723,21 +595,24 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			super.handleMessage(msg);
 			try {
 				if (count!=null) {
-					String jobcount = count[0] ;
-					String classcount = count[1] ;
+					String newsCount = count[0] ;
+					String jobCount = count[1] ; 
 					String meetupcount = count[2] ;
-					if (jobcount!=null && !jobcount.equals("") && !jobcount.equals("0")) {
-						txt_countjob.setVisibility(View.VISIBLE);
-						txt_countjob.setText(jobcount);
+					
+					if (newsCount!=null && !newsCount.equals("") && !newsCount.equals("0")) {
+						txt_countNews.setVisibility(View.VISIBLE);
+						txt_countNews.setText(newsCount);
 					}else {
-						txt_countjob.setVisibility(View.GONE);
+						txt_countNews.setVisibility(View.GONE);
 					}
-					if (classcount!=null && !classcount.equals("") && !classcount.equals("0")) {
-						txt_countclass.setVisibility(View.VISIBLE);
-						txt_countclass.setText(classcount);
+					
+					if (jobCount!=null && !jobCount.equals("") && !jobCount.equals("0")) {
+						txt_countJobs.setVisibility(View.VISIBLE);
+						txt_countJobs.setText(jobCount);
 					}else {
-						txt_countclass.setVisibility(View.GONE);
+						txt_countJobs.setVisibility(View.GONE);
 					}
+					
 					if (meetupcount!=null && !meetupcount.equals("") && !meetupcount.equals("0")) {
 						txt_countmetup.setVisibility(View.VISIBLE);
 						txt_countmetup.setText(meetupcount);
@@ -752,47 +627,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	};
 
 	 /**********************************************  End Sync service ***********************************************************/
-	
-	private class loadExistDataFromDB extends AsyncTask<Void, Void, Void> {
 
-		private ArrayList<JobDetails> arrayJob;
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			
-			try {
-				arrayJob = JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.Normal);
-			} catch (Exception e) {
-				e.printStackTrace();
-				Log.e("Fatching Data from DB", e.getMessage().toString());
-			}
-			
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-			
-			try {
-//				if (arrayJob!=null && arrayJob.size()>=1) {
-//					mJobsFragment.refreshDataInAdapter(arrayJob);
-//				}else {
-					loadJobList(true);
-//				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				Log.e("Load Data in list", e.getMessage().toString());
-			}
-			loadFilterData();
-		}
-
-	}
-	
 	
 	private void loadFilterData() {
 		if (Util.hasConnection(mContext)) {
