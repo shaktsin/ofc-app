@@ -1,8 +1,6 @@
 package com.ofcampus.parser;
 
 import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,23 +10,35 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.view.View;
+import android.view.Window;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 
+import com.ofcampus.R;
+import com.ofcampus.component.ProgressBarDeterminate;
 import com.ofcampus.model.DocumentPath;
 
 public class PdfDocLoader {
 
 	private Context mContext;
 	private View v;
+	private Async mAsync;
 
 	public void load(Context mContext_, String url_, View v_) {
 		this.mContext = mContext_;
 		this.v = v_;
-		Async mAsync = new Async(url_);
+		mAsync = new Async(url_);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
@@ -88,24 +98,24 @@ public class PdfDocLoader {
 		}
 
 		@Override
-		protected void onProgressUpdate(String... progress) {
+		protected void onProgressUpdate(final String... progress) {
 			super.onProgressUpdate(progress);
-			if (loadlistner!=null) {
-				loadlistner.OnProgress(Integer.parseInt(progress[0]));
+			try {
+				int pgValue = Integer.parseInt(progress[0]);
+				pg.setProgress(pgValue);
+				txt_parcentage.setText(pgValue + "%");
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
 			}
 		}
 
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			if (loadlistner != null) {
-				if (isSuccess) {
-					loadlistner.OnComplete(v);
-				} else {
-					loadlistner.OnCancel(v);
-				}
-			} else {
-				loadlistner.OnErroe(v);
+			if (mDialog != null && mDialog.isShowing()) {
+				mDialog.dismiss();
+				mDialog = null;
+				OnCompleteCall();
 			}
 		}
 	}
@@ -120,6 +130,72 @@ public class PdfDocLoader {
 		return (file.getAbsolutePath() + "/" + fileName);
 	}
 
+	
+	
+	private Dialog mDialog = null;
+	private ProgressBarDeterminate pg = null;
+	private TextView txt_parcentage;
+
+	public void downloadDialog(Context mContext_, String name , String url_, View v_) {
+		mDialog = new Dialog(mContext_,R.style.Theme_Dialog_Translucent);
+		mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		mDialog.getWindow().setLayout(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
+		mDialog.setContentView(R.layout.inflate_downloaddialog);
+		TextView txt_name = (TextView) mDialog.findViewById(R.id.txt_attachementName);
+		
+		txt_name.setText(name);
+		txt_parcentage = (TextView) mDialog.findViewById(R.id.txt_parsentage);
+		pg = (ProgressBarDeterminate) mDialog.findViewById(R.id.progressDeterminate);
+
+		mDialog.setCancelable(true);
+		mDialog.show();
+
+		load(mContext_, url_, v_);
+		mDialog.setOnCancelListener(new OnCancelListener() {
+
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				if (mAsync != null) {
+					mAsync.cancel(true);
+					OnCancelCall();
+				}
+			}
+		});
+		mDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				if (mAsync != null) {
+					mAsync.cancel(true); 
+					OnCancelCall();
+				}
+
+			}
+		});
+	}
+	
+	private void OnCancelCall(){
+		if (loadlistner!=null) {
+			loadlistner.OnCancel(v);
+		}
+	}
+	
+	private void OnCompleteCall(){
+		if (loadlistner!=null) {
+			loadlistner.OnCancel(v);
+		}
+	}
+	
+	private void OnErroeCall(){
+		if (loadlistner!=null) {
+			loadlistner.OnCancel(v);
+		}
+	}
+	
+	
+	
+	
 	public LoadListner loadlistner;
 
 	public LoadListner getLoadlistner() {
@@ -134,8 +210,6 @@ public class PdfDocLoader {
 		public void OnComplete(View v);
 
 		public void OnErroe(View v);
-		
-		public void OnProgress(int value); 
 
 		public void OnCancel(View v);
 	}

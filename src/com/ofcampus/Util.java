@@ -40,6 +40,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ofcampus.model.DocumentPath;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -49,6 +51,7 @@ import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
@@ -842,5 +845,32 @@ public class Util {
 		}else {
 			return false;
 		}
+	}
+	
+	public static void viewerOpen(Context mContext,String filePath){
+		try {
+			if (Util.isDocFile(filePath)) {  
+				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+				String path = mDocumentPath.mapPath.get(filePath); 
+				Intent intent = new Intent();
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.setAction(Intent.ACTION_VIEW);
+				String type = "application/msword";
+				intent.setDataAndType(Uri.fromFile(new File(path)), type);
+				mContext.startActivity(intent);
+			}else if (Util.isPdfFile(filePath)) {
+				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+				String path = mDocumentPath.mapPath.get(filePath);
+				Intent intent = new Intent();
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.setAction(Intent.ACTION_VIEW);
+				String type = "application/pdf";
+				intent.setDataAndType(Uri.fromFile(new File(path)), type);
+				mContext.startActivity(intent);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 	}
 }

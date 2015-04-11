@@ -137,36 +137,21 @@
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
                 android:src="@drawable/no_postimage" />
-
-            <RelativeLayout
-                android:id="@+id/rel_meter"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_margin="10dp"
-                android:background="@android:color/transparent"
-                android:visibility="gone" >
-
-                <com.ofcampus.component.CircularCounter
-                    xmlns:meter="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/meter"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_centerInParent="true"
-                    android:padding="5dp"
-                    android:visibility="gone"
-                    meter:metricSize="20sp"
-                    meter:metricText=""
-                    meter:range="100"
-                    meter:textColor="#008000"
-                    meter:textSize="50sp" />
-            </RelativeLayout>
         </android.support.v7.widget.CardView>
+
+        <include
+            android:id="@+id/inflate_docview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_below="@+id/joblistview_img_post_rel"
+            layout="@layout/inflate_doclayout" />
 
         <LinearLayout
             android:id="@+id/joblistview_linear_buttonsection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/joblistview_img_post_rel"
+            android:layout_below="@+id/inflate_docview"
             android:layout_marginTop="5dp"
             android:orientation="horizontal" >
 

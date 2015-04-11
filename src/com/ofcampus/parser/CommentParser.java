@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
+import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
@@ -46,8 +47,11 @@ public class CommentParser {
 	private String SHAREDTO="shareDto";
 
 	private String POSTIMAGES="attachmentDtoList";
-	private String IMAGES_ID="id";
-	private String IMAGES_URL="url";
+	private String ATTACHMENTTYPE="attachmentType";
+	private String ATTACHEDKEYIMAGE="image";
+	private String ATTACHEDKEYDOC="docs";
+	private String ATTACHMENT_ID="id";
+	private String ATTACHMENT_URL="url"; 
 	
 	private String REPLYEMAIL="replyEmail";
 	private String REPLYPHONE="replyPhone";
@@ -198,16 +202,27 @@ public class CommentParser {
 			mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
 			
 			try {
-				JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
-				if (imageJSONArray!=null && imageJSONArray.length()>=1) {
+				JSONArray attachmentJSONArray = jsonobject.getJSONArray(POSTIMAGES); 
+				if (attachmentJSONArray!=null && attachmentJSONArray.length()>=1) {
 					ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
-					for (int i = 0; i < imageJSONArray.length(); i++) {
-						JSONObject imgJSONObject = imageJSONArray.getJSONObject(i);
-						ImageDetails mImageDetails=new ImageDetails();
-						mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(imgJSONObject, IMAGES_ID)));
-						mImageDetails.setImageURL(Util.getJsonValue(imgJSONObject, IMAGES_URL));
-						images.add(mImageDetails);
+					ArrayList<DocDetails> docList=new ArrayList<DocDetails>();
+					
+					for (int i1 = 0; i1 < attachmentJSONArray.length(); i1++) {
+						JSONObject attachmentObj = attachmentJSONArray.getJSONObject(i1);
+						if (Util.getJsonValue(attachmentObj, ATTACHMENTTYPE).equals(ATTACHEDKEYIMAGE)) {
+							ImageDetails mImageDetails=new ImageDetails();
+							mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(attachmentObj, ATTACHMENT_ID)));
+							mImageDetails.setImageURL(Util.getJsonValue(attachmentObj, ATTACHMENT_URL));
+							images.add(mImageDetails);
+						}else if (Util.getJsonValue(attachmentObj, ATTACHMENTTYPE).equals(ATTACHEDKEYDOC)) { 
+							DocDetails mDetails=new DocDetails();
+							mDetails.setDocID(Integer.parseInt(Util.getJsonValue(attachmentObj, ATTACHMENT_ID)));
+							mDetails.setDocURL(Util.getJsonValue(attachmentObj, ATTACHMENT_URL));
+//							mDetails.setDocsize(docsize);
+							docList.add(mDetails);
+						}
 					}
+					mJobDetails.setDoclist(docList);
 					mJobDetails.setImages(images);
 				}
 			} catch (Exception e) {
