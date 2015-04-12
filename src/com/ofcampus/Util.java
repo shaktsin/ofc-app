@@ -69,6 +69,8 @@ public class Util {
 	public static long period = 30 * 1000;
 
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
+	
+	private static String SDCardPath="OfCampus/Document";
 
 	public static String TITLES[] = { "My Profile", "My Posts", "Important Mail", "Hide Post", "Clubs", "Settings", "Logout" };
 	
@@ -93,6 +95,9 @@ public class Util {
 		Normal, syncdata
 	}
 
+	public static String getSDCardPath(){
+		return SDCardPath;
+	}
 	/********************URl List**********************/
 	public static String getLoginUrl() {
 		return baseUrl + "user/login";
@@ -877,8 +882,10 @@ public class Util {
 	
 	public static boolean isFileExist(String filePath){
 		try {
+			String[] splt = filePath.split("/");
+			final String fileNAme = splt[splt.length - 1];
 			File extStore = Environment.getExternalStorageDirectory();
-			File myFile = new File(extStore.getAbsolutePath() + "/book1/page2.html");
+			File myFile = new File(extStore.getAbsolutePath() + ("/"+SDCardPath+"/"+fileNAme));
 			return (myFile.exists())?true:false;
 		} catch (Exception e) {
 			e.printStackTrace();
