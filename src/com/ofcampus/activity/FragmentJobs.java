@@ -306,6 +306,7 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 				jobs = notifyJObs = mJobListParserNew.bgSyncCalling(context, mJobListParserNew.getBody(firsttJobID, 1+""), tocken); 
 			}
 			count=(jobs!=null && jobs.size()>=1)?jobs.size()+"":""; 
+			notifyJObs=(notifyJObs!=null && notifyJObs.size()==0)?null:notifyJObs;
 			mJobListParserNew=null;
 		} catch (Exception e) {
 			e.printStackTrace();
