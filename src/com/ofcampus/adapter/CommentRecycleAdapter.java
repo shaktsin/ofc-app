@@ -451,9 +451,6 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			final ImageView doc_dnd = (ImageView) imageLayout.findViewById(R.id.doc_downloadIcon);	
 			TextView doc_name = (TextView) imageLayout.findViewById(R.id.doc_name);	
 			
-			ViewGroup.LayoutParams pram=new LayoutParams((int)(width),ViewGroup.LayoutParams.MATCH_PARENT);
-			imageLayout.setLayoutParams(pram);
-			
 			final String DocPath = arrDocDetails_.get(position).getDocURL();
 			String[] splt = DocPath.split("/");
 			final String fileNAme = splt[splt.length - 1];
@@ -469,7 +466,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
 				if (mDocumentPath!=null && mDocumentPath.mapPath.containsKey(DocPath)) {
 					doc_dnd.setImageResource(R.drawable.doc_green);
-					view.setOnClickListener(new OnClickListener() {
+					imageLayout.setOnClickListener(new OnClickListener() {
 						
 						@Override
 						public void onClick(View v) {
@@ -480,7 +477,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 					});
 				}else {
 					doc_dnd.setImageResource(R.drawable.docload_g);
-					doc_dnd.setOnClickListener(new OnClickListener() {
+					imageLayout.setOnClickListener(new OnClickListener() {
 						
 						@Override
 						public void onClick(View v) {

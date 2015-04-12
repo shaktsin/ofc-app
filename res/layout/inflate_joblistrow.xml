@@ -143,9 +143,12 @@
             android:id="@+id/inflate_docview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_below="@+id/joblistview_img_post_rel"
-            layout="@layout/inflate_doclayout" />
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="5dp"
+            layout="@layout/inflate_doclayout"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/joblistview_linear_buttonsection"

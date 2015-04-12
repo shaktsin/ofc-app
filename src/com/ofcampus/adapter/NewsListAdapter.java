@@ -344,66 +344,66 @@ public class NewsListAdapter extends BaseAdapter{
 	}
 	
 	
-private void showDoc(final String DocPath,final ImageView doc_dnd,ImageView doc_icon,TextView doc_name,CardView view){
-		
-		String[] splt = DocPath.split("/");
-		final String fileNAme = splt[splt.length - 1];
-		doc_name.setText(fileNAme);
-		
-		if (Util.isPdfFile(DocPath)) {
-			doc_icon.setImageResource(R.drawable.pdf);
-		}else {
-			doc_icon.setImageResource(R.drawable.doc);
-		}
-		
-		
-		if (Util.isContainDocFile(DocPath)) { 
-			DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
-			if (mDocumentPath!=null && mDocumentPath.mapPath.containsKey(DocPath)) {
-				doc_dnd.setImageResource(R.drawable.doc_green);
-				view.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
-						String path = mDocumentPath.mapPath.get(DocPath);
-						Util.viewerOpen(mContext, path);
-					}
-				});
+	private void showDoc(final String DocPath,final ImageView doc_dnd,ImageView doc_icon,TextView doc_name,CardView view){
+			
+			String[] splt = DocPath.split("/");
+			final String fileNAme = splt[splt.length - 1];
+			doc_name.setText(fileNAme);
+			
+			if (Util.isPdfFile(DocPath)) {
+				doc_icon.setImageResource(R.drawable.pdf);
 			}else {
-				doc_dnd.setImageResource(R.drawable.docload_g);
-				doc_dnd.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						PdfDocLoader mDocLoader=new PdfDocLoader();
-						mDocLoader.setLoadlistner(new LoadListner() {
-							
-							@Override
-							public void OnErroe(View v) {
-								doc_dnd.setImageResource(R.drawable.docload_g);
-							}
-							
-							@Override
-							public void OnComplete(View v) {
-								doc_dnd.setImageResource(R.drawable.doc_green);
-								notifyDataSetChanged();
-							}
-							
-							@Override
-							public void OnCancel(View v) {
-								doc_dnd.setImageResource(R.drawable.docload_g);
-							}
-						});
-						mDocLoader.downloadDialog(mContext, fileNAme, DocPath, doc_dnd);
-						
-					}
-				});
+				doc_icon.setImageResource(R.drawable.doc);
 			}
 			
-		}else {
-			view.setVisibility(View.GONE);
-		}
+			
+			if (Util.isContainDocFile(DocPath)) { 
+				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+				if (mDocumentPath!=null && mDocumentPath.mapPath.containsKey(DocPath)) {
+					doc_dnd.setImageResource(R.drawable.doc_green);
+					view.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
+							String path = mDocumentPath.mapPath.get(DocPath);
+							Util.viewerOpen(mContext, path);
+						}
+					});
+				}else {
+					doc_dnd.setImageResource(R.drawable.docload_g);
+					view.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							PdfDocLoader mDocLoader=new PdfDocLoader();
+							mDocLoader.setLoadlistner(new LoadListner() {
+								
+								@Override
+								public void OnErroe(View v) {
+									doc_dnd.setImageResource(R.drawable.docload_g);
+								}
+								
+								@Override
+								public void OnComplete(View v) {
+									doc_dnd.setImageResource(R.drawable.doc_green);
+									notifyDataSetChanged();
+								}
+								
+								@Override
+								public void OnCancel(View v) {
+									doc_dnd.setImageResource(R.drawable.docload_g);
+								}
+							});
+							mDocLoader.downloadDialog(mContext, fileNAme, DocPath, doc_dnd);
+							
+						}
+					});
+				}
+				
+			}else {
+				view.setVisibility(View.GONE);
+			}
 	}
 
 	public NewsListInterface newslistinterface;

@@ -16,8 +16,11 @@
     <!-- Comment Pager -->
     <dimen name="comment_pager_hight">220dp</dimen>
     <dimen name="comment_pager_Pading">30dp</dimen>
-    
+
     <!-- CIRCLE -->
     <dimen name="circle_post_details">14sp</dimen>
+
+    <!-- doc-pager -->
+    <dimen name="docpager">47dp</dimen>
 
 </resources>

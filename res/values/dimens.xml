@@ -25,4 +25,7 @@
     <dimen name="second">15dp</dimen>
     <dimen name="third">20dp</dimen>
 
+    <!-- doc-pager -->
+    <dimen name="docpager">47dp</dimen>
+
 </resources>

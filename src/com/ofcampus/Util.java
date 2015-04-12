@@ -850,22 +850,18 @@ public class Util {
 	public static void viewerOpen(Context mContext,String filePath){
 		try {
 			if (Util.isDocFile(filePath)) {  
-				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
-				String path = mDocumentPath.mapPath.get(filePath); 
 				Intent intent = new Intent();
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.setAction(Intent.ACTION_VIEW);
 				String type = "application/msword";
-				intent.setDataAndType(Uri.fromFile(new File(path)), type);
+				intent.setDataAndType(Uri.fromFile(new File(filePath)), type); 
 				mContext.startActivity(intent);
 			}else if (Util.isPdfFile(filePath)) {
-				DocumentPath mDocumentPath=DocumentPath.getPath(mContext);
-				String path = mDocumentPath.mapPath.get(filePath);
 				Intent intent = new Intent();
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.setAction(Intent.ACTION_VIEW);
 				String type = "application/pdf";
-				intent.setDataAndType(Uri.fromFile(new File(path)), type);
+				intent.setDataAndType(Uri.fromFile(new File(filePath)), type);
 				mContext.startActivity(intent);
 			}
 			

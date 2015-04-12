@@ -16,15 +16,18 @@
     <dimen name="Comment_postdate">12sp</dimen>
     <dimen name="Comment_Comment">12sp</dimen>
     <dimen name="Comment_Header">24sp</dimen>
-    
+
     <!-- MY PROFILE -->
     <dimen name="myprofile_view_graborder">60dp</dimen>
 
     <!-- Comment Pager -->
     <dimen name="comment_pager_hight">280dp</dimen>
     <dimen name="comment_pager_Pading">40dp</dimen>
-    
+
     <!-- Filter Tab Text Size -->
     <dimen name="filter_text_size">18sp</dimen>
+
+    <!-- doc-pager -->
+    <dimen name="docpager">47dp</dimen>
 
 </resources>

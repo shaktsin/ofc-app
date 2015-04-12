@@ -19,7 +19,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -29,7 +28,6 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
-import com.ofcampus.component.CircularCounter;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.ImageDetails;
@@ -371,7 +369,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 				});
 			}else {
 				doc_dnd.setImageResource(R.drawable.docload_g);
-				doc_dnd.setOnClickListener(new OnClickListener() {
+				view.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {

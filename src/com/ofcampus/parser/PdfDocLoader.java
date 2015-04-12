@@ -14,7 +14,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -115,7 +114,11 @@ public class PdfDocLoader {
 			if (mDialog != null && mDialog.isShowing()) {
 				mDialog.dismiss();
 				mDialog = null;
+			}
+			if (isSuccess) {
 				OnCompleteCall();
+			}else {
+				OnCancelCall();
 			}
 		}
 	}
@@ -162,17 +165,6 @@ public class PdfDocLoader {
 				}
 			}
 		});
-		mDialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				if (mAsync != null) {
-					mAsync.cancel(true); 
-					OnCancelCall();
-				}
-
-			}
-		});
 	}
 	
 	private void OnCancelCall(){
@@ -183,13 +175,13 @@ public class PdfDocLoader {
 	
 	private void OnCompleteCall(){
 		if (loadlistner!=null) {
-			loadlistner.OnCancel(v);
+			loadlistner.OnComplete(v);
 		}
 	}
 	
 	private void OnErroeCall(){
 		if (loadlistner!=null) {
-			loadlistner.OnCancel(v);
+			loadlistner.OnErroe(v);
 		}
 	}
 	

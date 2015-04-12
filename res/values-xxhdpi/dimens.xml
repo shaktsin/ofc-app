@@ -27,4 +27,7 @@
     <!-- Filter Tab Text Size -->
     <dimen name="filter_text_size">18sp</dimen>
 
+    <!-- doc-pager -->
+    <dimen name="docpager">53dp</dimen>
+
 </resources>
