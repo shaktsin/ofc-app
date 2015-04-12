@@ -52,6 +52,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
@@ -250,6 +251,10 @@ public class Util {
 	}
 	public static String getEditNewsUrl() {
 		return baseUrl + "feed/edit";
+	}
+	
+	public static String getSearchURL(){
+		return baseUrl + "search/all";
 	}
 	
 	/********************URl List**********************/
@@ -868,5 +873,16 @@ public class Util {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+	}
+	
+	public static boolean isFileExist(String filePath){
+		try {
+			File extStore = Environment.getExternalStorageDirectory();
+			File myFile = new File(extStore.getAbsolutePath() + "/book1/page2.html");
+			return (myFile.exists())?true:false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return false;
 	}
 }

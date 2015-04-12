@@ -142,10 +142,10 @@ public class CircleListParser {
 						circlelistparserinterface.OnSuccess(circlerList);   
 					}
 				} else {
-					Util.ShowToast(mContext, "No circle available");
+					Util.ShowToast(mContext, "No more Join circle available");
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, "No more circle available");
+				Util.ShowToast(mContext, "No more Join circle available");
 				error();
 			} else {
 				Util.ShowToast(mContext, "Error occure.");
