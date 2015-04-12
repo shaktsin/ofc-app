@@ -165,6 +165,7 @@ public class SearchParser {
 			searchparserinterface.OnError();
 		}
 	}
+	
 	public ArrayList<JobDetails> parseJSONData(JSONObject obj) {
 
 		ArrayList<JobDetails> jobarray = new ArrayList<JobDetails>();

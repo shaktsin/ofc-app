@@ -172,7 +172,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 
 		if (searchView != null) {
 			searchView.setIconifiedByDefault(true);
-			searchView.setQueryHint("Search job");
+			searchView.setQueryHint("Search job,circle,user");
 			searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
 				@Override
