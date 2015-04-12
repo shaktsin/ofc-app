@@ -1,2 +1,13 @@
 /bin/
 /gen/
+
+# Eclipse project files
+.classpath
+.project
+.settings
+
+# generated files
+bin/
+gen/
+
+
