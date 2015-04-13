@@ -12,6 +12,15 @@ public class CircleProfile {
 	private String circlename = "name";
 	private String circlemembers = "members";
 	private String circlejoined = "joined";
+	private String circledesc = "desc";
+
+	public String getCircledesc() {
+		return circledesc;
+	}
+
+	public void setCircledesc(String circledesc) {
+		this.circledesc = circledesc;
+	}
 
 	private ArrayList<JobDetails> arrayPost = new ArrayList<JobDetails>();
 	private ArrayList<CircleUserDetails> arrayCircle = new ArrayList<CircleUserDetails>();
@@ -23,6 +32,8 @@ public class CircleProfile {
 	public void setCirclename(String circlename) {
 		this.circlename = circlename;
 	}
+	
+	
 
 	public String getCirclemembers() {
 		return circlemembers;

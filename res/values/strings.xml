@@ -112,6 +112,8 @@
     <!-- Circle -->
     <string name="enter_circlename_title">Please enter a circle name to create your own circle.</string>
     <string name="enter_circlename">Name of circle</string>
+	<string name="enter_circledesc">Enter short description</string>
+	<string name="enter_circledesc_limit">Enter description(Max 200 characters)</string>
     <string name="enter_msg_circlename">Please enter Circle Name.</string>
     <string name="createcircle_txtmodarator">Public</string>
     <string name="create_circlebtn">Create Circle</string>

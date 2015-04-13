@@ -120,12 +120,12 @@ public class CircleActivateParser {
 						circleactivateparserinterface.OnSuccess();   
 					}
 				} else {
-					Util.ShowToast(mContext, "Error occure.");
+					Util.ShowToast(mContext, "Error occured.");
 				}
 			} else if (responsecode.equals("500")) {
 				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, "Error occure.");
+				Util.ShowToast(mContext, "Error occured.");
 			}
 
 		}

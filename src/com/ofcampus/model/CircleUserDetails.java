@@ -12,12 +12,25 @@ public class CircleUserDetails {
 	private String userimage="";
 	private String usercircles="";
 	private String useryearofgrad ="";
+	private String emailId ="";
+	private String memberSince ="";
+	
+	
+	
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 	public String getUserid() {
 		return userid;
 	}
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+	
+	
 
 	public String getUsername() {
 		return username;
@@ -42,6 +55,12 @@ public class CircleUserDetails {
 	}
 	public void setUseryearofgrad(String useryearofgrad) {
 		this.useryearofgrad = useryearofgrad;
+	}
+	public String getMemberSince() {
+		return memberSince;
+	}
+	public void setMemberSince(String memberSince) {
+		this.memberSince = memberSince;
 	}
 	
 }

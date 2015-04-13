@@ -55,6 +55,7 @@ public class CircleProfileParser {
 	private String IMAGE="image";
 	
 	private String CIRCLENAME="name";
+	private String CIRCLEDESC="desc";
 	private String CIRCLEMEMBERS="members";
 	private String CIRCLEJOINED="joined";
 	
@@ -62,6 +63,8 @@ public class CircleProfileParser {
 	private String USERID="id";
 	private String USERNAME="name";
 	private String USERIMAGE="image";
+	private String USEREMAIL="emailId";
+	private String MEMBERSINCE="memberSince";
 	private String USERCIRCLES="circles";
 	private String USERYEAROFGRAD="yearOfGrad";
 	
@@ -157,7 +160,7 @@ public class CircleProfileParser {
 			} else if (responsecode.equals("500")) {
 				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, "Error occure.");
+				Util.ShowToast(mContext, "Error occured");
 			}
 
 		}
@@ -187,6 +190,7 @@ public class CircleProfileParser {
 			
 			mCircleProfile.setCirclejoined(Util.getJsonValue(jsObj, CIRCLEJOINED));
 			mCircleProfile.setCirclename(Util.getJsonValue(jsObj, CIRCLENAME));
+			mCircleProfile.setCircledesc(Util.getJsonValue(jsObj, CIRCLEDESC));
 			mCircleProfile.setCirclemembers(Util.getJsonValue(jsObj, CIRCLEMEMBERS));
 
 			
@@ -226,6 +230,8 @@ public class CircleProfileParser {
 					mCircleUserDetails.setUserid(Util.getJsonValue(usereObj, USERID));
 					mCircleUserDetails.setUsername(Util.getJsonValue(usereObj, USERNAME));
 					mCircleUserDetails.setUserimage(Util.getJsonValue(usereObj, USERIMAGE));
+					mCircleUserDetails.setEmailId(Util.getJsonValue(usereObj, USEREMAIL));
+					mCircleUserDetails.setMemberSince(Util.getJsonValue(usereObj, MEMBERSINCE));
 					mCircleUserDetails.setUsercircles(Util.getJsonValue(usereObj, USERCIRCLES));
 					mCircleUserDetails.setUseryearofgrad(Util.getJsonValue(usereObj, USERYEAROFGRAD));
 

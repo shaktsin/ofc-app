@@ -28,6 +28,7 @@ public class ActivityCreateCircle extends ActionBarActivity implements OnClickLi
 	private static Context context;
 	private static String Authtoken="";
 	private CustomEditText edt_CircleName;
+	private CustomEditText edt_CircleDesc;
 	private CustomTextView txt_modarator;
 	private String isModarator="";
 	
@@ -66,6 +67,7 @@ public class ActivityCreateCircle extends ActionBarActivity implements OnClickLi
 	
 	private void initilizView() {
 		edt_CircleName=(CustomEditText)findViewById(R.id.fragm_createcircle_edt_verifyCode);
+		edt_CircleDesc=(CustomEditText)findViewById(R.id.txt_createCircle_desc);
 		((CustomTextView)findViewById(R.id.fragm_createcircle_btn_submit)).setOnClickListener(this);
 		txt_modarator =(CustomTextView)findViewById(R.id.fragm_createcircle_txtmodarator);
 		txt_modarator.setOnClickListener(this);
@@ -90,9 +92,15 @@ public class ActivityCreateCircle extends ActionBarActivity implements OnClickLi
 	private void createCircleEvent(){
 		
 		String circleName=edt_CircleName.getText().toString().trim();
+		String circleDesc = edt_CircleDesc.getText().toString().trim();
 		
 		if (circleName!=null && circleName.equals("")) {
 			Util.ShowToast(context,getResources().getString(R.string.enter_circlename));
+			return;
+		}
+		
+		if (circleDesc!=null && circleDesc.equals("")) {
+			Util.ShowToast(context,getResources().getString(R.string.enter_circledesc));
 			return;
 		}
 		
@@ -116,6 +124,6 @@ public class ActivityCreateCircle extends ActionBarActivity implements OnClickLi
 				Util.ShowToast(context,"Circle Create Error.");
 			}
 		});
-		mCircleParser.parse(context, mCircleParser.getBody(circleName, isModarator, "3"), Authtoken);
+		mCircleParser.parse(context, mCircleParser.getBody(circleName, circleDesc, isModarator, "3"), Authtoken);
 	}
 }

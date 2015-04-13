@@ -7,6 +7,11 @@ package com.ofcampus.adapter;
 
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
@@ -181,7 +186,11 @@ public class CommentRecycleAdapter extends BaseAdapter{
 					imageLoader.displayImage(url, mHolder.img_prfpic, options);
 				}
 				mHolder.txt_name.setText(mJobDetails.getName());
-				mHolder.txt_date.setText("Posted on "+mJobDetails.getPostedon());
+				
+				
+				String postedOn = Util.getPostedOnText(mJobDetails.getPostedon());
+				
+				mHolder.txt_date.setText(postedOn);
 				mHolder.txt_subject.setText(mJobDetails.getSubject());
 				mHolder.txt_jobdetails.setText(mJobDetails.getContent());
 				mHolder.img_arrow.setVisibility(View.GONE);
@@ -280,6 +289,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		
 		return convertView;
 	}
+
 	
 	private class ViewHolder {
 		public ImageView img_prfpic,img_commentprfpic;

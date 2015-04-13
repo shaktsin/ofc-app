@@ -432,8 +432,9 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			if (url!=null && !url.equals("") && !url.equals("null")) {
 				imageLoader.displayImage(url, mHolder.img_commentprfpic, options);
 			}
-			mHolder.txt_commentname.setText(mJobDetails.getName());
-			mHolder.txt_commentdate.setText("Posted on "+mJobDetails.getPostedon());
+			mHolder.txt_commentname.setText(Util.capitalize(mJobDetails.getName()));
+			String postedOn = Util.getPostedOnText(mJobDetails.getPostedon());
+			mHolder.txt_commentdate.setText(postedOn);
 			mHolder.txt_commenteddetails.setText(mJobDetails.getContent());
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			
@@ -508,6 +509,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 				
 				mHolder.img_commentprfpic=(ImageView)convertView.findViewById(R.id.inflate_comment_img_pic);
 				mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_name);
+				mHolder.txt_member_since=(CustomTextView)convertView.findViewById(R.id.inflate_member_since);
 				mHolder.txt_email=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_email);
 				mHolder.txt_grdyear=(CustomTextView)convertView.findViewById(R.id.inflate_comment_txt_yeargrd);
 			
@@ -523,16 +525,21 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 				imageLoader.displayImage(url, mHolder.img_commentprfpic, options);
 			}
 			
-			mHolder.txt_name.setText(mCircleUserDetails.getUsername());
-			mHolder.txt_email.setText(mCircleUserDetails.getUseryearofgrad());
-			mHolder.txt_grdyear.setText(mCircleUserDetails.getUseryearofgrad()); 
+			mHolder.txt_name.setText(Util.capitalize(mCircleUserDetails.getUsername()));
+			mHolder.txt_email.setText(mCircleUserDetails.getEmailId());
+			if(!(mCircleUserDetails.getMemberSince()== null || mCircleUserDetails.getMemberSince().length() == 0)){
+				mHolder.txt_member_since.setText("Member Since: "+ mCircleUserDetails.getMemberSince());
+			}
+			if(Integer.parseInt(mCircleUserDetails.getUseryearofgrad()) > 0){
+				mHolder.txt_grdyear.setText(mCircleUserDetails.getUseryearofgrad()); 
+			}
 			
 			return convertView;
 		}
 		
 		private class ViewHolder{
 			public ImageView img_commentprfpic;
-			public CustomTextView txt_name,txt_email,txt_grdyear;
+			public CustomTextView txt_name,txt_email,txt_member_since, txt_grdyear;
 		}
 	}
 	

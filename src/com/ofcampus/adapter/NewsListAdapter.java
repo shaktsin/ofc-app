@@ -7,6 +7,11 @@ package com.ofcampus.adapter;
 
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -185,7 +190,10 @@ public class NewsListAdapter extends BaseAdapter{
 				imageLoader.displayImage(url, mHolder.profilepic, options);
 			}
 			mHolder.txt_name.setText(mJobDetails.getName());
-			mHolder.txt_postdate.setText("Posted on "+mJobDetails.getPostedon());
+
+			String postedOnText = Util.getPostedOnText(mJobDetails.getPostedon());
+			
+			mHolder.txt_postdate.setText(postedOnText);
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			mHolder.txt_contain.setText(mJobDetails.getContent());
 			mHolder.img_important.setVisibility(View.VISIBLE);

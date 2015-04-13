@@ -132,10 +132,11 @@ public class CreateCircleParser {
 		}
 	}
 
-	public JSONObject getBody(String name, String moderate , String circleId) {
+	public JSONObject getBody(String name, String desc, String moderate , String circleId) {
 		JSONObject jsObj = new JSONObject();
 		try {
 			jsObj.put("name", name);
+			jsObj.put("desc", desc);
 			jsObj.put("moderate", moderate);
 			jsObj.put("circleId", circleId);
 			jsObj.put("appName", "ofCampus");

@@ -37,10 +37,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ofcampus.model.DocumentPath;
+import com.ofcampus.model.JobDetails;
 
 import android.app.Activity;
 import android.content.Context;
@@ -914,4 +919,48 @@ public class Util {
             .append(str.substring(1))
             .toString();
     }
+	
+	
+	public static String getPostedOnText(final String time) {
+		String postedOn = null;
+		try {
+			DateTimeFormatter formatter = DateTimeFormat
+					.forPattern("dd MMM yyyy, hh:mm a");
+			DateTime postedDateTime = formatter
+					.parseDateTime(time);
+			DateTime currentDateTime = new DateTime();
+			final Period period = new Period(postedDateTime,
+					currentDateTime);
+			if (period.getDays() >= 3) {
+				String splittime = time.substring(0, time.indexOf(","));
+				postedOn = "Posted on " + splittime;
+			} else if (period.getDays() >= 1 && period.getDays() < 3) {
+				if (period.getDays() == 1) {
+					postedOn = "Posted " + period.getDays()
+							+ " day ago";
+				} else {
+					postedOn = "Posted " + period.getDays()
+							+ " days ago";
+				}
+			} else if (period.getHours() < 24 && period.getHours() >= 1) {
+				if(period.getHours() == 1){
+					postedOn = "Posted " + period.getHours() + " hour ago";
+				} else {
+					postedOn = "Posted " + period.getHours() + " hours ago";
+				}
+			} else if (period.getHours() < 1
+					&& period.getMinutes() >= 1) {
+				postedOn = "Posted " + period.getMinutes()
+						+ " mins ago";
+			} else if (period.getMinutes() < 1) {
+				postedOn = "Just now";
+			} else {
+				postedOn = "Posted on " + time;
+			}
+		} catch (Exception ex) {
+			postedOn = "Posted on " + time;
+		}
+		return postedOn;
+	}
+	
 }

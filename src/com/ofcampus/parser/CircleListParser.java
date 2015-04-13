@@ -148,7 +148,7 @@ public class CircleListParser {
 				Util.ShowToast(mContext, "No more Join circle available");
 				error();
 			} else {
-				Util.ShowToast(mContext, "Error occure.");
+				Util.ShowToast(mContext, "Error occured");
 				error();
 			}
 

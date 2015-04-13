@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/inflate_comment_img_pic"
-            android:layout_width="@dimen/joblitview_picwd"
-            android:layout_height="@dimen/joblitview_picwd"
+            android:layout_width="@dimen/circle_user_picwd"
+            android:layout_height="@dimen/circle_user_picht"
             android:layout_alignParentTop="true"
             android:layout_margin="2dp"
             android:background="@drawable/joblist_row_rect"
@@ -37,6 +37,7 @@
                 android:id="@+id/inflate_comment_txt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
                 android:singleLine="true"
                 android:text=""
                 android:textColor="@color/primary_dark"
@@ -49,6 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/inflate_comment_txt_name"
+                android:layout_marginLeft="3dp"
                 android:layout_marginTop="2dp"
                 android:maxLines="4"
                 android:text=""
@@ -57,17 +59,29 @@
                 ofcampus:fontName="Helvetica.otf" />
 
             <com.ofcampus.ui.CustomTextView
-                android:id="@+id/inflate_comment_txt_yeargrd"
+                android:id="@+id/inflate_member_since"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/inflate_comment_txt_email"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="2dp"
+                android:singleLine="true"
+                android:textColor="@color/job_contain"
+                android:textSize="@dimen/Comment_Comment"
+                ofcampus:fontName="HelveticaBold.ttf" />
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/inflate_comment_txt_yeargrd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inflate_member_since"
+                android:layout_marginLeft="3dp"
                 android:layout_marginTop="2dp"
                 android:maxLines="4"
                 android:text=""
                 android:textColor="@color/job_contain"
                 android:textSize="@dimen/Comment_Comment"
                 ofcampus:fontName="Helvetica.otf" />
-
 
         </RelativeLayout>
     </RelativeLayout>
