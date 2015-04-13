@@ -67,6 +67,10 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions options;
+	
+	private enum SelectionTab{
+		POST,USER,PENDINGREQ
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,44 +112,16 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.circleprofile_postselection:
-			Selection(0);
-			post_list.setVisibility(View.VISIBLE);
-			user_list.setVisibility(View.GONE);
-			pendingrqs_list.setVisibility(View.GONE);
-			if (arraypost!=null && arraypost.size()>=1) {
-				nodata.setVisibility(View.GONE);
-			}else {
-				nodata.setText("No Post available");
-				nodata.setVisibility(View.VISIBLE);
-			}
+			selectTab(SelectionTab.POST);
 			break;
 
 		case R.id.circleprofile_circleselection:
-			Selection(1);
-			post_list.setVisibility(View.GONE);
-			user_list.setVisibility(View.VISIBLE);
-			pendingrqs_list.setVisibility(View.GONE);
-			if (arraycircle!=null && arraycircle.size()>=1) {
-				nodata.setVisibility(View.GONE);
-			}else {
-				nodata.setText("No Circle User available");
-				nodata.setVisibility(View.VISIBLE);
-			}
+			selectTab(SelectionTab.USER);
 			break;
 			
 		case R.id.circleprofile_pendingreq:
-			Selection(2);
-			post_list.setVisibility(View.GONE);
-			user_list.setVisibility(View.GONE);
-			pendingrqs_list.setVisibility(View.VISIBLE);
-			if (pendingUser!=null && pendingUser.size()>=1) {
-				nodata.setVisibility(View.GONE);
-			}else {
-				nodata.setText("No Pending User available");
-				nodata.setVisibility(View.VISIBLE);
-			}
+			selectTab(SelectionTab.PENDINGREQ);
 			break;
-			
 
 		default:
 			break;
@@ -209,7 +185,54 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		lin_main.setVisibility(View.GONE);
 		
 	}
+	
+	private void selectTab(SelectionTab tab){
+		switch (tab) {
+		case POST:
+			Selection(0);
+			post_list.setVisibility(View.VISIBLE);
+			user_list.setVisibility(View.GONE);
+			pendingrqs_list.setVisibility(View.GONE);
+			if (arraypost!=null && arraypost.size()>=1) {
+				nodata.setVisibility(View.GONE);
+			}else {
+				nodata.setText("No Post available");
+				nodata.setVisibility(View.VISIBLE);
+			}
+			break;
 
+		case USER:
+			Selection(1);
+			post_list.setVisibility(View.GONE);
+			user_list.setVisibility(View.VISIBLE);
+			pendingrqs_list.setVisibility(View.GONE);
+			if (arraycircle!=null && arraycircle.size()>=1) {
+				nodata.setVisibility(View.GONE);
+			}else {
+				nodata.setText("No Circle User available");
+				nodata.setVisibility(View.VISIBLE);
+			}
+			break;
+			
+		case PENDINGREQ:
+			Selection(2);
+			post_list.setVisibility(View.GONE);
+			user_list.setVisibility(View.GONE);
+			pendingrqs_list.setVisibility(View.VISIBLE);
+			if (pendingUser!=null && pendingUser.size()>=1) {
+				nodata.setVisibility(View.GONE);
+			}else {
+				nodata.setText("No Pending User available");
+				nodata.setVisibility(View.VISIBLE);
+			}
+			break;
+			
+
+		default:
+			break;
+		}
+	}
+	
 	private void setClicklistner() {
 		for (ImageView mImageView : textselection) {
 			mImageView.setOnClickListener(this);
@@ -321,10 +344,8 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	
 	private void processData(CircleProfile mCircleProfile){
 		try {
-			
 			arraycircle = mCircleProfile.getArrayCircle();
 			arraypost = mCircleProfile.getArrayPost();
-
 			
 			txt_name.setText(mCircleProfile.getCirclename());
 			txt_postno.setText(""+arraypost.size());
@@ -332,11 +353,11 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			
 			mpostAdapter.refreshView(mCircleProfile.getArrayPost());
 			mUsersAdapter.refreshData(mCircleProfile.getArrayCircle());
-			
-
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		selectTab(SelectionTab.POST);
 		lin_main.setVisibility(View.VISIBLE);
 		rel_pg.setVisibility(View.GONE);
 	}

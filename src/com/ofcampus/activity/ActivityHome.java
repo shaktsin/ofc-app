@@ -5,6 +5,7 @@
  */
 package com.ofcampus.activity;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,60 +56,61 @@ import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
 import com.ofcampus.model.FilterDataSets;
+import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.FilterJobParser;
+import com.ofcampus.parser.SearchParser;
+import com.ofcampus.parser.SearchParser.SearchParserInterface;
 import com.ofcampus.ui.FilterDialog;
 
-public class ActivityHome extends ActionBarActivity implements OnClickListener,viewCLickEvent,OnPageChangeListener,JobsFrgInterface,FragmentNewsInterface{
-
-	
+public class ActivityHome extends ActionBarActivity implements OnClickListener, viewCLickEvent, OnPageChangeListener, JobsFrgInterface, FragmentNewsInterface {
 
 	private String NAME = "";
 	private String EMAIL = "";
 	private String tocken = "";
 	private String picUrl = "";
-//	private int PROFILE = R.drawable.ic_profilepic;
+	// private int PROFILE = R.drawable.ic_profilepic;
 
-    private Toolbar toolbar;                            
-    private RecyclerView mRecyclerView;                         
-    private SlideMenuAdapter mAdapter;                   
-    private RecyclerView.LayoutManager mLayoutManager;            
-    private DrawerLayout Drawer;                                
-    private SearchView searchView = null;
-    private ImageView img_composejob;
-    
-    private ActionBarDrawerToggle mDrawerToggle;               
-    private Context mContext;
+	private Toolbar toolbar;
+	private RecyclerView mRecyclerView;
+	private SlideMenuAdapter mAdapter;
+	private RecyclerView.LayoutManager mLayoutManager;
+	private DrawerLayout Drawer;
+	private SearchView searchView = null;
+	private ImageView img_composejob;
 
-    
-    /*Pager section*/
-    private int currentSelection=1;
-    private PagerSlidingTabStrip tabs;
+	private ActionBarDrawerToggle mDrawerToggle;
+	private Context mContext;
+
+	/* Pager section */
+	private int currentSelection = 1;
+	private PagerSlidingTabStrip tabs;
 	private ViewPager pager;
 	private MyPagerAdapter adapter;
-	private FragmentNewsFeeds fragmentNewsFeeds; 
-	private FragmentJobs fragmentJobs; 
+	private FragmentNewsFeeds fragmentNewsFeeds;
+	private FragmentJobs fragmentJobs;
 	private FragmentClassifieds mClassifiedsFragment;
-	private FragmentMeetups fragmentMeetups; 
+	private FragmentMeetups fragmentMeetups;
 
-	private TextView txt_countJobs,txt_countNews ,txt_countmetup;
-	
-	/**Filter Data***/
-	private  FilterDataSets mFilterDataSets=null;
-	private boolean isChangedhideList=false;
-    
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        
-        mContext=ActivityHome.this;
-        loadProfileData();
-        initilizActionBarDrawer();
-        initilizePagerview();
-    }
+	private TextView txt_countJobs, txt_countNews, txt_countmetup;
 
-    @Override
+	/** Filter Data ***/
+	private FilterDataSets mFilterDataSets = null;
+	private boolean isChangedhideList = false;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_home);
+
+		mContext = ActivityHome.this;
+		loadProfileData();
+		initilizActionBarDrawer();
+		initilizePagerview();
+		loadFilterData();
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		try {
@@ -132,24 +134,24 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 	protected void onResume() {
 		super.onResume();
 		try {
-			if (((OfCampusApplication)getApplication()).isHidePostModify || ((OfCampusApplication)getApplication()).editPostSuccessForHome) {
+			if (((OfCampusApplication) getApplication()).isHidePostModify || ((OfCampusApplication) getApplication()).editPostSuccessForHome) {
 				fragmentJobs.loadData(false);
-				((OfCampusApplication)getApplication()).isHidePostModify=false;
-				((OfCampusApplication)getApplication()).editPostSuccessForHome=false;
+				((OfCampusApplication) getApplication()).isHidePostModify = false;
+				((OfCampusApplication) getApplication()).editPostSuccessForHome = false;
 			}
-			
-			if (((OfCampusApplication)getApplication()).editPostSuccessForNews) {
+
+			if (((OfCampusApplication) getApplication()).editPostSuccessForNews) {
 				fragmentNewsFeeds.loadData();
-				((OfCampusApplication)getApplication()).editPostSuccessForNews=false;
+				((OfCampusApplication) getApplication()).editPostSuccessForNews = false;
 			}
-			
-			if (fragmentJobs.mJobListAdapter!=null) {
+
+			if (fragmentJobs.mJobListAdapter != null) {
 				fragmentJobs.mJobListAdapter.notifyDataSetChanged();
 			}
-			
-			if (((OfCampusApplication)getApplication()).profileEditSuccess) {
+
+			if (((OfCampusApplication) getApplication()).profileEditSuccess) {
 				updateProfileData();
-				((OfCampusApplication)getApplication()).profileEditSuccess=false;
+				((OfCampusApplication) getApplication()).profileEditSuccess = false;
 			}
 			stopservice();
 			startService();
@@ -157,29 +159,29 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			e.printStackTrace();
 		}
 	}
-	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = getMenuInflater();
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_main, menu);
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 		if (searchItem != null) {
 			searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 		}
-		
+
 		if (searchView != null) {
 			searchView.setIconifiedByDefault(true);
-			searchView.setQueryHint("Search job");
+			searchView.setQueryHint("Search job,circle,user");
 			searchView.setOnQueryTextListener(new OnQueryTextListener() {
-				
+
 				@Override
 				public boolean onQueryTextSubmit(String s) {
 					searchView.clearFocus();
-				    Util.ShowToast(mContext, "TextSubmit : " + s);
+					searchEvent(s); 
 					return true;
 				}
-				
+
 				@Override
 				public boolean onQueryTextChange(String arg0) {
 					return false;
@@ -194,22 +196,22 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 					img_composejob.setVisibility(View.GONE);
 				}
 			});
-			
-			MenuItemCompat.setOnActionExpandListener(searchItem, new OnActionExpandListener() {
-			    @Override
-			    public boolean onMenuItemActionCollapse(MenuItem item) {
-			    	img_composejob.setVisibility(View.VISIBLE);
-			        return true;  
-			    }
 
-			    @Override
-			    public boolean onMenuItemActionExpand(MenuItem item) {
-			        return true; 
-			    }
+			MenuItemCompat.setOnActionExpandListener(searchItem, new OnActionExpandListener() {
+				@Override
+				public boolean onMenuItemActionCollapse(MenuItem item) {
+					img_composejob.setVisibility(View.VISIBLE);
+					return true;
+				}
+
+				@Override
+				public boolean onMenuItemActionExpand(MenuItem item) {
+					return true;
+				}
 			});
-			
+
 			searchView.setOnCloseListener(new OnCloseListener() {
-				
+
 				@Override
 				public boolean onClose() {
 					img_composejob.setVisibility(View.VISIBLE);
@@ -218,47 +220,46 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			});
 		}
 		return super.onCreateOptionsMenu(menu);
-    }
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_search) {
-            return true;
-        }else if (id == R.id.action_filter) {
-        	if (mFilterDataSets!=null) {
-        		FilterDialog mDialog=new FilterDialog(mContext,mFilterDataSets);
-            	mDialog.showDialog();
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_search) {
+			return true;
+		} else if (id == R.id.action_filter) {
+			if (mFilterDataSets != null) {
+				FilterDialog mDialog = new FilterDialog(mContext, mFilterDataSets);
+				mDialog.showDialog();
 			}
-        	return true;
+			return true;
 		}
-        return super.onOptionsItemSelected(item);
-    }
-    
-    
-    @Override
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_home_img_composejob:
-			Intent mIntent=new Intent(ActivityHome.this,ActivityCreatePost.class);
-			Bundle mBundle=new Bundle();
-			if (currentSelection==0) {
+			Intent mIntent = new Intent(ActivityHome.this, ActivityCreatePost.class);
+			Bundle mBundle = new Bundle();
+			if (currentSelection == 0) {
 				mBundle.putString("ToolBarTitle", "Create News");
 				mBundle.putInt("createFor", currentSelection);
-			}else {
+			} else {
 				mBundle.putString("ToolBarTitle", "Create Job");
 				mBundle.putInt("createFor", currentSelection);
 			}
 			mIntent.putExtras(mBundle);
 			startActivity(mIntent);
-			overridePendingTransition(0,0);
+			overridePendingTransition(0, 0);
 			break;
 
 		default:
 			break;
 		}
 	}
-    
+
 	@Override
 	public void OnViewItemClick(final int position) {
 		closeDraware();
@@ -268,28 +269,28 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 				switch (position) {
 
 				case 1:
-					startActivity(new Intent(ActivityHome.this,ActivityMyProfile.class));
-					overridePendingTransition(0,0);
+					startActivity(new Intent(ActivityHome.this, ActivityMyProfile.class));
+					overridePendingTransition(0, 0);
 					break;
 				case 2:
-					startActivity(new Intent(ActivityHome.this,ActivityMyPost.class));
-					overridePendingTransition(0,0);
+					startActivity(new Intent(ActivityHome.this, ActivityMyPost.class));
+					overridePendingTransition(0, 0);
 					break;
 				case 3:
-					startActivity(new Intent(ActivityHome.this,ActivityImportantmail.class));
-					overridePendingTransition(0,0);
+					startActivity(new Intent(ActivityHome.this, ActivityImportantmail.class));
+					overridePendingTransition(0, 0);
 					break;
 				case 4:
-					startActivity(new Intent(ActivityHome.this,ActivityHidePost.class));
-					overridePendingTransition(0,0);
+					startActivity(new Intent(ActivityHome.this, ActivityHidePost.class));
+					overridePendingTransition(0, 0);
 					break;
 				case 5:
-					startActivity(new Intent(ActivityHome.this,ActivityCircle.class));
-					overridePendingTransition(0,0);
+					startActivity(new Intent(ActivityHome.this, ActivityCircle.class));
+					overridePendingTransition(0, 0);
 					break;
 				case 6:
-					startActivity(new Intent(ActivityHome.this,ActivityResetPassword.class));
-					overridePendingTransition(0,0);
+					startActivity(new Intent(ActivityHome.this, ActivityResetPassword.class));
+					overridePendingTransition(0, 0);
 					break;
 				case 7:
 					showLogutDialog();
@@ -301,7 +302,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 			}
 		}, 200);
 	}
-    
+
 	/**
 	 * Pager Page Selected.
 	 */
@@ -321,31 +322,31 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		default:
 			break;
 		}
-		currentSelection=position;
+		currentSelection = position;
 	}
-	
+
 	@Override
 	public void onPageScrolled(int arg0, float arg1, int arg2) {
-		
+
 	}
-	
+
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
-		
+
 	}
 
 	@Override
 	public void pullToRefreshCallCompleteForNews() {
-		count[0]="";
-		txt_countNews.setVisibility(View.GONE); 
+		count[0] = "";
+		txt_countNews.setVisibility(View.GONE);
 	}
-	
+
 	@Override
 	public void pullToRefreshCallCompleteForJob() {
-		count[1]="";
-		txt_countJobs.setVisibility(View.GONE); 
+		count[1] = "";
+		txt_countJobs.setVisibility(View.GONE);
 	}
-	
+
 	private void initilizActionBarDrawer() {
 		toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle("OfCampus");
@@ -353,18 +354,17 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 
 		mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
 		mRecyclerView.setHasFixedSize(true);
-		img_composejob = (ImageView)findViewById(R.id.activity_home_img_composejob);
+		img_composejob = (ImageView) findViewById(R.id.activity_home_img_composejob);
 		img_composejob.setOnClickListener(this);
-		
-		mAdapter = new SlideMenuAdapter(ActivityHome.this,Util.TITLES, Util.ICONS, NAME, EMAIL,picUrl);
+
+		mAdapter = new SlideMenuAdapter(ActivityHome.this, Util.TITLES, Util.ICONS, NAME, EMAIL, picUrl);
 		mAdapter.setViewclickevent(this);
 		mRecyclerView.setAdapter(mAdapter);
 		mLayoutManager = new LinearLayoutManager(this);
 		mRecyclerView.setLayoutManager(mLayoutManager);
 
 		Drawer = (DrawerLayout) findViewById(R.id.DrawerLayout);
-		mDrawerToggle = new ActionBarDrawerToggle(this, Drawer, toolbar,
-				R.string.openDrawer, R.string.closeDrawer) {
+		mDrawerToggle = new ActionBarDrawerToggle(this, Drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
 			@Override
 			public void onDrawerOpened(View drawerView) {
@@ -381,46 +381,46 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		Drawer.setDrawerListener(mDrawerToggle);
 		mDrawerToggle.syncState();
 	}
-    
-    private void loadProfileData(){
-    	UserDetails mUserDetails = UserDetails.getLoggedInUser(mContext);
-    	EMAIL = mUserDetails.getEmail();
-    	NAME = mUserDetails.getName();
-    	tocken = mUserDetails.getAuthtoken();
-    	picUrl = mUserDetails.getImage();
-    }
-    
-    private void updateProfileData(){
-    	UserDetails mUserDetails = UserDetails.getLoggedInUser(mContext);
-    	EMAIL = mUserDetails.getEmail();
-    	NAME = mUserDetails.getName();
-    	tocken = mUserDetails.getAuthtoken();
-    	picUrl = mUserDetails.getImage();
-    	mAdapter = new SlideMenuAdapter(ActivityHome.this,Util.TITLES, Util.ICONS, NAME, EMAIL,picUrl);
+
+	private void loadProfileData() {
+		UserDetails mUserDetails = UserDetails.getLoggedInUser(mContext);
+		EMAIL = mUserDetails.getEmail();
+		NAME = mUserDetails.getName();
+		tocken = mUserDetails.getAuthtoken();
+		picUrl = mUserDetails.getImage();
+	}
+
+	private void updateProfileData() {
+		UserDetails mUserDetails = UserDetails.getLoggedInUser(mContext);
+		EMAIL = mUserDetails.getEmail();
+		NAME = mUserDetails.getName();
+		tocken = mUserDetails.getAuthtoken();
+		picUrl = mUserDetails.getImage();
+		mAdapter = new SlideMenuAdapter(ActivityHome.this, Util.TITLES, Util.ICONS, NAME, EMAIL, picUrl);
 		mAdapter.setViewclickevent(this);
 		mRecyclerView.setAdapter(mAdapter);
-    }
-    
-    private void initilizePagerview(){
-    	GradientDrawable bgShape = null;
-    	
-    	txt_countJobs = (TextView) findViewById(R.id.activity_home_jobcount);
-    	bgShape = (GradientDrawable)txt_countJobs.getBackground();
-    	bgShape.setColor(Color.parseColor("#5498C7"));
-    	
-    	txt_countNews = (TextView) findViewById(R.id.activity_home_classcount);
-    	bgShape = (GradientDrawable)txt_countNews.getBackground();
-    	bgShape.setColor(Color.parseColor("#E84C3D"));
-    	
-    	txt_countmetup = (TextView) findViewById(R.id.activity_home_meetcount);
-    	bgShape = (GradientDrawable)txt_countmetup.getBackground();
-    	bgShape.setColor(Color.parseColor("#18BC9A"));
-    	
-    	txt_countJobs.setVisibility(View.GONE);
-    	txt_countNews.setVisibility(View.GONE);
-    	txt_countmetup.setVisibility(View.GONE);
-    	
-    	tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+	}
+
+	private void initilizePagerview() {
+		GradientDrawable bgShape = null;
+
+		txt_countJobs = (TextView) findViewById(R.id.activity_home_jobcount);
+		bgShape = (GradientDrawable) txt_countJobs.getBackground();
+		bgShape.setColor(Color.parseColor("#5498C7"));
+
+		txt_countNews = (TextView) findViewById(R.id.activity_home_classcount);
+		bgShape = (GradientDrawable) txt_countNews.getBackground();
+		bgShape.setColor(Color.parseColor("#E84C3D"));
+
+		txt_countmetup = (TextView) findViewById(R.id.activity_home_meetcount);
+		bgShape = (GradientDrawable) txt_countmetup.getBackground();
+		bgShape.setColor(Color.parseColor("#18BC9A"));
+
+		txt_countJobs.setVisibility(View.GONE);
+		txt_countNews.setVisibility(View.GONE);
+		txt_countmetup.setVisibility(View.GONE);
+
+		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		pager = (ViewPager) findViewById(R.id.pager);
 		adapter = new MyPagerAdapter(getSupportFragmentManager());
 		pager.setAdapter(adapter);
@@ -430,44 +430,44 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		pager.setOffscreenPageLimit(3);
 		pager.setCurrentItem(1);
 		tabs.setOnPageChangeListener(this);
-    }
-    
-    private void closeDraware(){
-    	if (Drawer.isDrawerOpen(GravityCompat.START)) {
+	}
+
+	private void closeDraware() {
+		if (Drawer.isDrawerOpen(GravityCompat.START)) {
 			Drawer.closeDrawers();
 		}
-    }
+	}
 
-    private void showLogutDialog(){
-    	AlertDialog.Builder alert=new AlertDialog.Builder(mContext);
-    	alert.setTitle("Logout");
-    	alert.setMessage("Do you want to logout?");
-    	alert.setPositiveButton("No", new DialogInterface.OnClickListener() {
-			
+	private void showLogutDialog() {
+		AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+		alert.setTitle("Logout");
+		alert.setMessage("Do you want to logout?");
+		alert.setPositiveButton("No", new DialogInterface.OnClickListener() {
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
 		alert.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				Util.ShowToast(mContext,"Successfully logout.");
+				Util.ShowToast(mContext, "Successfully logout.");
 				UserDetails.logoutUser(mContext);
-				startActivity(new Intent(ActivityHome.this,ActivitySplash.class));
-				overridePendingTransition(0,0);
+				startActivity(new Intent(ActivityHome.this, ActivitySplash.class));
+				overridePendingTransition(0, 0);
 				finish();
 			}
 		});
 		alert.create();
 		alert.show();
-    }
-    
-    public class MyPagerAdapter extends FragmentStatePagerAdapter {
+	}
 
-    	private final String[] TITLES = { "Newsfeed", "Jobs","Classifieds"};
+	public class MyPagerAdapter extends FragmentStatePagerAdapter {
+
+		private final String[] TITLES = { "Newsfeed", "Jobs", "Classifieds" };
 
 		public MyPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -497,27 +497,27 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				fragmentNewsFeeds = FragmentNewsFeeds.newInstance(position,ActivityHome.this);
+				fragmentNewsFeeds = FragmentNewsFeeds.newInstance(position, ActivityHome.this);
 				fragmentNewsFeeds.setFragmentnewsinterface(ActivityHome.this);
 				return fragmentNewsFeeds;
 			case 1:
-				fragmentJobs = FragmentJobs.newInstance(position,ActivityHome.this);
+				fragmentJobs = FragmentJobs.newInstance(position, ActivityHome.this);
 				fragmentJobs.setJobsfrginterface(ActivityHome.this);
 				return fragmentJobs;
 			case 2:
-				mClassifiedsFragment = FragmentClassifieds.newInstance(position,ActivityHome.this);
+				mClassifiedsFragment = FragmentClassifieds.newInstance(position, ActivityHome.this);
 				return mClassifiedsFragment;
 			}
 			return null;
 		}
 	}
-    
-    /**********************************************   Sync service ***********************************************************/
-    
+
+	/********************************************** Sync service ***********************************************************/
+
 	private Timer timer;
 	private MyTask mTask;
-	private String[] count={"","",""};//News,Jobs,MeetUp.
-	
+	private String[] count = { "", "", "" };// News,Jobs,MeetUp.
+
 	public void stopservice() {
 		try {
 			if (timer != null) {
@@ -555,34 +555,32 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		}
 	}
 
-	
-	
 	private class MyTask extends TimerTask {
 		@Override
 		public void run() {
 			try {
-				
+
 				if (Util.hasConnection(mContext)) {
-					
+
 					try {
-						mFilterDataSets =	new FilterJobParser().parse(mContext, tocken);
+						mFilterDataSets = new FilterJobParser().parse(mContext, tocken);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
-					/***For News Feed Sync**/
-					count[0]=(fragmentNewsFeeds!=null)?fragmentNewsFeeds.getUpdateNewsCount():"";
-					/***For News Feed Sync**/
-					
-					/***For Jobs Feed Sync**/
-					count[1]=(fragmentJobs!=null)?fragmentJobs.getUpdateJobsCount():"";
-					/***For Jobs Feed Sync**/
-					
-					count[2]="0";
-							
+
+					/*** For News Feed Sync **/
+					count[0] = (fragmentNewsFeeds != null) ? fragmentNewsFeeds.getUpdateNewsCount() : "";
+					/*** For News Feed Sync **/
+
+					/*** For Jobs Feed Sync **/
+					count[1] = (fragmentJobs != null) ? fragmentJobs.getUpdateJobsCount() : "";
+					/*** For Jobs Feed Sync **/
+
+					count[2] = "0";
+
 					handler.sendEmptyMessage(0);
 				}
-				
+
 			} catch (Exception e) {
 				e.getMessage();
 			}
@@ -594,29 +592,29 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			try {
-				if (count!=null) {
-					String newsCount = count[0] ;
-					String jobCount = count[1] ; 
-					String meetupcount = count[2] ;
-					
-					if (newsCount!=null && !newsCount.equals("") && !newsCount.equals("0")) {
+				if (count != null) {
+					String newsCount = count[0];
+					String jobCount = count[1];
+					String meetupcount = count[2];
+
+					if (newsCount != null && !newsCount.equals("") && !newsCount.equals("0")) {
 						txt_countNews.setVisibility(View.VISIBLE);
 						txt_countNews.setText(newsCount);
-					}else {
+					} else {
 						txt_countNews.setVisibility(View.GONE);
 					}
-					
-					if (jobCount!=null && !jobCount.equals("") && !jobCount.equals("0")) {
+
+					if (jobCount != null && !jobCount.equals("") && !jobCount.equals("0")) {
 						txt_countJobs.setVisibility(View.VISIBLE);
 						txt_countJobs.setText(jobCount);
-					}else {
+					} else {
 						txt_countJobs.setVisibility(View.GONE);
 					}
-					
-					if (meetupcount!=null && !meetupcount.equals("") && !meetupcount.equals("0")) {
+
+					if (meetupcount != null && !meetupcount.equals("") && !meetupcount.equals("0")) {
 						txt_countmetup.setVisibility(View.VISIBLE);
 						txt_countmetup.setText(meetupcount);
-					}else {
+					} else {
 						txt_countmetup.setVisibility(View.GONE);
 					}
 				}
@@ -626,21 +624,54 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener,v
 		}
 	};
 
-	 /**********************************************  End Sync service ***********************************************************/
+	/********************************************** End Sync service ***********************************************************/
 
-	
 	private void loadFilterData() {
 		if (Util.hasConnection(mContext)) {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					try {
-						mFilterDataSets = new FilterJobParser().parse(mContext,tocken);
+						mFilterDataSets = new FilterJobParser().parse(mContext, tocken);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			}).start();
 		}
+	}
+	
+	/**
+	 * Searche Event
+	 */
+	private SearchParser mParser=null;
+	private void searchEvent(String searchString){
+		
+		if (searchString.length()==0) {
+			Util.ShowToast(mContext, "Please enter some character.");
+			return;
+		}
+		
+		if (!Util.hasConnection(mContext)) {
+			Util.ShowToast(mContext, getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+		
+		if (mParser==null) {
+			mParser=new SearchParser();
+		}
+		mParser.setSearchparserinterface(new SearchParserInterface() {
+			
+			@Override
+			public void OnSuccess(ArrayList<JobDetails> jobList) {
+				
+			}
+			
+			@Override
+			public void OnError() {
+				
+			}
+		});
+		mParser.parse(mContext, mParser.getBody(searchString),tocken, true);
 	}
 }

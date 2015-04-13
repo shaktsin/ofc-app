@@ -25,6 +25,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.ofcampus.R;
+import com.ofcampus.Util;
 import com.ofcampus.component.ProgressBarDeterminate;
 import com.ofcampus.model.DocumentPath;
 
@@ -124,7 +125,7 @@ public class PdfDocLoader {
 	}
 
 	public String getFilename(String url) {
-		File file = new File(Environment.getExternalStorageDirectory().getPath(), "OfCampus/Document");
+		File file = new File(Environment.getExternalStorageDirectory().getPath(), Util.getSDCardPath());
 		String[] spltURL = url.split("/");
 		String fileName = spltURL[spltURL.length - 1];
 		if (!file.exists()) {
