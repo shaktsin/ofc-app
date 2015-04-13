@@ -1005,6 +1005,24 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int measureWithLargestChild=0x7f0100a3;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int metricSize=0x7f0100d9;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int metricText=0x7f0100da;
         /**  The size of the middle bar when top and bottom bars merge into middle bar to form an arrow 
          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
@@ -1279,6 +1297,14 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int queryHint=0x7f010097;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int range=0x7f0100db;
         /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
 in (inches), mm (millimeters).
@@ -1546,6 +1572,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int textAppearanceSmallPopupMenu=0x7f010043;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int textColor=0x7f0100d6;
         /**  Text color for urls in search suggestions, used by things like global search 
          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -1553,6 +1588,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
          */
         public static final int textColorSearchUrl=0x7f01005a;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int textSize=0x7f0100d7;
         /**  Specifies a theme override for a view. When a theme override is set, the
              view will be inflated using a {@link android.content.Context} themed with
              the specified resource. During XML inflation, any child views under the
@@ -1686,6 +1731,14 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int track=0x7f0100be;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int typeface=0x7f0100d8;
         /**  in progress view indicate value of progress 
          <p>Must be an integer value, such as "<code>100</code>".
 <p>This may also be a reference to a resource (in the form
@@ -1938,13 +1991,13 @@ containing a value of this type.
         public static final int thumbColor=0x7f060001;
     }
     public static final class dimen {
-        public static final int Comment_Comment=0x7f070040;
-        public static final int Comment_Header=0x7f070041;
-        public static final int Comment_postdate=0x7f07003f;
+        public static final int Comment_Comment=0x7f070047;
+        public static final int Comment_Header=0x7f070048;
+        public static final int Comment_postdate=0x7f070046;
         /**  Comment 
  Comment 
          */
-        public static final int Comment_username=0x7f07003e;
+        public static final int Comment_username=0x7f070045;
         public static final int TextDimTop=0x7f070033;
         /**  Default height of an action bar. 
  Default height of an action bar. 
@@ -2053,7 +2106,7 @@ containing a value of this type.
         public static final int cardview_default_radius=0x7f070000;
         /**  CIRCLE 
          */
-        public static final int circle_post_details=0x7f07003d;
+        public static final int circle_post_details=0x7f070044;
         /**  JOB Home 
          */
         public static final int circle_rad=0x7f070034;
@@ -2101,24 +2154,33 @@ containing a value of this type.
         /**  Filter Tab Text Size 
  Filter Tab Text Size 
          */
-        public static final int filter_text_size=0x7f070042;
-        public static final int joblitview_Subject=0x7f07003a;
-        public static final int joblitview_contain=0x7f07003b;
-        public static final int joblitview_name=0x7f070038;
+        public static final int filter_text_size=0x7f070049;
+        public static final int first=0x7f07003b;
+        public static final int joblitview_Subject=0x7f070041;
+        public static final int joblitview_contain=0x7f070042;
+        public static final int joblitview_name=0x7f07003f;
         /**  JOBLITVIEW 
  JOBLITVIEW 
  JOBLITVIEW 
          */
-        public static final int joblitview_picwd=0x7f070037;
-        public static final int joblitview_postdate=0x7f070039;
+        public static final int joblitview_picwd=0x7f07003e;
+        public static final int joblitview_postdate=0x7f070040;
+        public static final int metricPaddingY=0x7f07003a;
+        public static final int metricSize=0x7f070039;
         /**  MY PROFILE 
  MY PROFILE 
  MY PROFILE 
          */
-        public static final int myprofile_view_graborder=0x7f07003c;
+        public static final int myprofile_view_graborder=0x7f070043;
         public static final int registration_scn_image_bghit=0x7f07002e;
         public static final int registration_scn_image_hight=0x7f07002f;
+        public static final int second=0x7f07003c;
+        public static final int textSize=0x7f070038;
+        public static final int third=0x7f07003d;
         public static final int tool_bar_top_padding=0x7f070030;
+        /**  Circluer 
+         */
+        public static final int width=0x7f070037;
     }
     public static final class drawable {
         public static final int abc_ab_share_pack_holo_dark=0x7f020000;
@@ -2196,92 +2258,104 @@ containing a value of this type.
         public static final int deselect_checkbox=0x7f020048;
         public static final int deselection=0x7f020049;
         public static final int dialog_background=0x7f02004a;
-        public static final int dropdown=0x7f02004b;
-        public static final int editbox_createjob_reply=0x7f02004c;
-        public static final int editbox_rect=0x7f02004d;
-        public static final int email_icon=0x7f02004e;
-        public static final int email_reg_icon=0x7f02004f;
-        public static final int filter_tab=0x7f020050;
-        public static final int float_button1_shadowp=0x7f020051;
-        public static final int float_button_shadow1=0x7f020052;
-        public static final int floating=0x7f020053;
-        public static final int floating_pressed=0x7f020054;
-        public static final int floating_states=0x7f020055;
-        public static final int gplus_button=0x7f020056;
-        public static final int ic_attached=0x7f020057;
-        public static final int ic_checked=0x7f020058;
-        public static final int ic_circle=0x7f020059;
-        public static final int ic_circleactive=0x7f02005a;
-        public static final int ic_circledeactive=0x7f02005b;
-        public static final int ic_circleicon=0x7f02005c;
-        public static final int ic_circlemypost=0x7f02005d;
-        public static final int ic_comment=0x7f02005e;
-        public static final int ic_count=0x7f02005f;
-        public static final int ic_createcrl=0x7f020060;
-        public static final int ic_cross=0x7f020061;
-        public static final int ic_deselcheck=0x7f020062;
-        public static final int ic_downarrow=0x7f020063;
-        public static final int ic_edit=0x7f020064;
-        public static final int ic_editpost=0x7f020065;
-        public static final int ic_filter=0x7f020066;
-        public static final int ic_gmailicon=0x7f020067;
-        public static final int ic_impmail=0x7f020068;
-        public static final int ic_important=0x7f020069;
-        public static final int ic_importantdese=0x7f02006a;
-        public static final int ic_launcher=0x7f02006b;
-        public static final int ic_loadall=0x7f02006c;
-        public static final int ic_logout=0x7f02006d;
-        public static final int ic_mypost=0x7f02006e;
-        public static final int ic_pendingreqsticon=0x7f02006f;
-        public static final int ic_phone=0x7f020070;
-        public static final int ic_plus=0x7f020071;
-        public static final int ic_profile=0x7f020072;
-        public static final int ic_profilepic=0x7f020073;
-        public static final int ic_recycle=0x7f020074;
-        public static final int ic_reloj_max=0x7f020075;
-        public static final int ic_reply=0x7f020076;
-        public static final int ic_replysms=0x7f020077;
-        public static final int ic_rploption=0x7f020078;
-        public static final int ic_search=0x7f020079;
-        public static final int ic_selcheck=0x7f02007a;
-        public static final int ic_send=0x7f02007b;
-        public static final int ic_settings=0x7f02007c;
-        public static final int ic_share=0x7f02007d;
-        public static final int ic_tick=0x7f02007e;
-        public static final int ic_unchecked=0x7f02007f;
-        public static final int ic_whatsapp=0x7f020080;
-        public static final int important_selector=0x7f020081;
-        public static final int joblist_button_rect=0x7f020082;
-        public static final int joblist_row_rect=0x7f020083;
-        public static final int key_icon=0x7f020084;
-        public static final int last_name_icon=0x7f020085;
-        public static final int layerlist=0x7f020086;
-        public static final int listview_row=0x7f020087;
-        public static final int no_postimage=0x7f020088;
-        public static final int profile_bg=0x7f020089;
-        public static final int radiobtn=0x7f02008a;
-        public static final int rect_box=0x7f02008b;
-        public static final int roundedshapedialogfortwitter=0x7f02008c;
-        public static final int scrollbar_custom=0x7f02008d;
-        public static final int seek_thumb_disabled=0x7f02008e;
-        public static final int seek_thumb_normal=0x7f02008f;
-        public static final int seek_thumb_pressed=0x7f020090;
-        public static final int select_checkbox=0x7f020091;
-        public static final int selection=0x7f020092;
-        public static final int shadow_down=0x7f020093;
-        public static final int shadow_right=0x7f020094;
-        public static final int shape_circle_bg=0x7f020095;
-        public static final int slidelist_item_selector=0x7f020096;
-        public static final int sprite_check=0x7f020097;
-        public static final int tab_bar_background=0x7f020098;
+        public static final int doc=0x7f02004b;
+        public static final int doc_blue=0x7f02004c;
+        public static final int doc_green=0x7f02004d;
+        public static final int docload_b=0x7f02004e;
+        public static final int docload_g=0x7f02004f;
+        public static final int dropdown=0x7f020050;
+        public static final int editbox_createjob_reply=0x7f020051;
+        public static final int editbox_rect=0x7f020052;
+        public static final int email_icon=0x7f020053;
+        public static final int email_reg_icon=0x7f020054;
+        public static final int filter_tab=0x7f020055;
+        public static final int float_button1_shadowp=0x7f020056;
+        public static final int float_button_shadow1=0x7f020057;
+        public static final int floating=0x7f020058;
+        public static final int floating_pressed=0x7f020059;
+        public static final int floating_states=0x7f02005a;
+        public static final int gplus_button=0x7f02005b;
+        public static final int ic_attached=0x7f02005c;
+        public static final int ic_checked=0x7f02005d;
+        public static final int ic_circle=0x7f02005e;
+        public static final int ic_circleactive=0x7f02005f;
+        public static final int ic_circledeactive=0x7f020060;
+        public static final int ic_circleicon=0x7f020061;
+        public static final int ic_circlemypost=0x7f020062;
+        public static final int ic_comment=0x7f020063;
+        public static final int ic_count=0x7f020064;
+        public static final int ic_createcrl=0x7f020065;
+        public static final int ic_cross=0x7f020066;
+        public static final int ic_deselcheck=0x7f020067;
+        public static final int ic_directory=0x7f020068;
+        public static final int ic_downarrow=0x7f020069;
+        public static final int ic_edit=0x7f02006a;
+        public static final int ic_editpost=0x7f02006b;
+        public static final int ic_external_storage=0x7f02006c;
+        public static final int ic_filter=0x7f02006d;
+        public static final int ic_gmailicon=0x7f02006e;
+        public static final int ic_impmail=0x7f02006f;
+        public static final int ic_important=0x7f020070;
+        public static final int ic_importantdese=0x7f020071;
+        public static final int ic_launcher=0x7f020072;
+        public static final int ic_loadall=0x7f020073;
+        public static final int ic_logout=0x7f020074;
+        public static final int ic_mypost=0x7f020075;
+        public static final int ic_pdfordoc=0x7f020076;
+        public static final int ic_pendingreqsticon=0x7f020077;
+        public static final int ic_phone=0x7f020078;
+        public static final int ic_plus=0x7f020079;
+        public static final int ic_profile=0x7f02007a;
+        public static final int ic_profilepic=0x7f02007b;
+        public static final int ic_recycle=0x7f02007c;
+        public static final int ic_reloj_max=0x7f02007d;
+        public static final int ic_reply=0x7f02007e;
+        public static final int ic_replysms=0x7f02007f;
+        public static final int ic_rploption=0x7f020080;
+        public static final int ic_search=0x7f020081;
+        public static final int ic_selcheck=0x7f020082;
+        public static final int ic_send=0x7f020083;
+        public static final int ic_settings=0x7f020084;
+        public static final int ic_share=0x7f020085;
+        public static final int ic_storage=0x7f020086;
+        public static final int ic_tick=0x7f020087;
+        public static final int ic_unchecked=0x7f020088;
+        public static final int ic_whatsapp=0x7f020089;
+        public static final int important_selector=0x7f02008a;
+        public static final int joblist_button_rect=0x7f02008b;
+        public static final int joblist_row_rect=0x7f02008c;
+        public static final int key_icon=0x7f02008d;
+        public static final int last_name_icon=0x7f02008e;
+        public static final int layerlist=0x7f02008f;
+        public static final int list_selector=0x7f020090;
+        public static final int listview_row=0x7f020091;
+        public static final int no_postimage=0x7f020092;
+        public static final int nophotos=0x7f020093;
+        public static final int pdf=0x7f020094;
+        public static final int profile_bg=0x7f020095;
+        public static final int radiobtn=0x7f020096;
+        public static final int rect_box=0x7f020097;
+        public static final int roundedshapedialogfortwitter=0x7f020098;
+        public static final int scrollbar_custom=0x7f020099;
+        public static final int seek_thumb_disabled=0x7f02009a;
+        public static final int seek_thumb_normal=0x7f02009b;
+        public static final int seek_thumb_pressed=0x7f02009c;
+        public static final int select_checkbox=0x7f02009d;
+        public static final int selection=0x7f02009e;
+        public static final int shadow_down=0x7f02009f;
+        public static final int shadow_right=0x7f0200a0;
+        public static final int shape_circle_bg=0x7f0200a1;
+        public static final int slidelist_item_selector=0x7f0200a2;
+        public static final int sprite_check=0x7f0200a3;
+        public static final int tab_bar_background=0x7f0200a4;
     }
     public static final class id {
-        public static final int DrawerLayout=0x7f0b0085;
-        public static final int LoginBox=0x7f0b00ab;
-        public static final int RecyclerView=0x7f0b008b;
-        public static final int act_forgotpasswrd_rel_veryfi=0x7f0b0080;
-        public static final int act_registration_rel_veryfi=0x7f0b00d9;
-        public static final int act_registration_scr=0x7f0b00c8;
+        public static final int DrawerLayout=0x7f0b0089;
+        public static final int LoginBox=0x7f0b00af;
+        public static final int RecyclerView=0x7f0b008f;
+        public static final int act_forgotpasswrd_rel_veryfi=0x7f0b0084;
+        public static final int act_registration_rel_veryfi=0x7f0b00dd;
+        public static final int act_registration_scr=0x7f0b00cc;
         public static final int action_bar=0x7f0b0031;
         public static final int action_bar_activity_content=0x7f0b0003;
         public static final int action_bar_container=0x7f0b0030;
@@ -2290,283 +2364,292 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f0b001f;
         public static final int action_bar_title=0x7f0b001e;
         public static final int action_context_bar=0x7f0b0032;
-        public static final int action_createcircle=0x7f0b0144;
-        public static final int action_editpost=0x7f0b0148;
-        public static final int action_filter=0x7f0b0147;
+        public static final int action_createcircle=0x7f0b014d;
+        public static final int action_editpost=0x7f0b0151;
+        public static final int action_filter=0x7f0b0150;
         public static final int action_menu_divider=0x7f0b0005;
         public static final int action_menu_presenter=0x7f0b0006;
         public static final int action_mode_bar=0x7f0b002e;
         public static final int action_mode_bar_stub=0x7f0b002d;
         public static final int action_mode_close_button=0x7f0b0020;
-        public static final int action_search=0x7f0b0146;
-        public static final int action_tick=0x7f0b0145;
+        public static final int action_search=0x7f0b014f;
+        public static final int action_tick=0x7f0b014e;
         public static final int activity_chooser_view_content=0x7f0b0021;
-        public static final int activity_circle_mainView=0x7f0b0041;
-        public static final int activity_circle_tabbelowline=0x7f0b0044;
-        public static final int activity_comment_btnsend=0x7f0b005c;
-        public static final int activity_comment_comntlist=0x7f0b0040;
-        public static final int activity_comment_edt_cmnt=0x7f0b005b;
-        public static final int activity_comment_edt_upline=0x7f0b005a;
-        public static final int activity_comment_rel_comnt=0x7f0b0059;
-        public static final int activity_create_edt_emailreply=0x7f0b007b;
-        public static final int activity_create_edt_phone=0x7f0b007c;
-        public static final int activity_create_edt_whatsapp=0x7f0b007d;
-        public static final int activity_createjob_attached=0x7f0b0074;
-        public static final int activity_createjob_bottombarmenu=0x7f0b006d;
-        public static final int activity_createjob_edit=0x7f0b0075;
-        public static final int activity_createjob_edit_jobdescrip=0x7f0b0070;
-        public static final int activity_createjob_edit_jobtitle=0x7f0b006f;
-        public static final int activity_createjob_edit_to=0x7f0b006e;
-        public static final int activity_createjob_expseekbar=0x7f0b0068;
-        public static final int activity_createjob_new_sendtolist=0x7f0b007e;
-        public static final int activity_createjob_new_txt_send=0x7f0b0079;
-        public static final int activity_createjob_rel_exp=0x7f0b0065;
-        public static final int activity_createjob_rel_salary=0x7f0b0069;
-        public static final int activity_createjob_rply=0x7f0b0076;
-        public static final int activity_createjob_salaryseekbar=0x7f0b006c;
-        public static final int activity_createjob_spn_industry=0x7f0b0061;
-        public static final int activity_createjob_spn_location=0x7f0b0064;
-        public static final int activity_createjob_spn_role=0x7f0b0063;
-        public static final int activity_createjob_txt_exp=0x7f0b0066;
-        public static final int activity_createjob_txt_industry=0x7f0b0062;
-        public static final int activity_createjob_txt_salary=0x7f0b006a;
-        public static final int activity_createjob_txt_valueexp=0x7f0b0067;
-        public static final int activity_createjob_txt_valuesalary=0x7f0b006b;
-        public static final int activity_filter_joblist=0x7f0b007f;
-        public static final int activity_home_classcount=0x7f0b00f0;
-        public static final int activity_home_footer_pg=0x7f0b00eb;
-        public static final int activity_home_img_composejob=0x7f0b008a;
-        public static final int activity_home_importantmaillist=0x7f0b008c;
-        public static final int activity_home_jobcount=0x7f0b00f1;
-        public static final int activity_home_joblist=0x7f0b00ec;
-        public static final int activity_home_mainView=0x7f0b0086;
-        public static final int activity_home_meetcount=0x7f0b00f2;
-        public static final int activity_home_myPostlist=0x7f0b00b1;
-        public static final int activity_home_newslist=0x7f0b00ee;
-        public static final int activity_home_tabbelowline=0x7f0b0088;
-        public static final int album_pager=0x7f0b0120;
+        public static final int activity_circle_mainView=0x7f0b0042;
+        public static final int activity_circle_tabbelowline=0x7f0b0045;
+        public static final int activity_comment_btnsend=0x7f0b005d;
+        public static final int activity_comment_comntlist=0x7f0b0041;
+        public static final int activity_comment_edt_cmnt=0x7f0b005c;
+        public static final int activity_comment_edt_upline=0x7f0b005b;
+        public static final int activity_comment_rel_comnt=0x7f0b005a;
+        public static final int activity_create_edt_emailreply=0x7f0b007e;
+        public static final int activity_create_edt_phone=0x7f0b007f;
+        public static final int activity_create_edt_whatsapp=0x7f0b0080;
+        public static final int activity_createjob_attached=0x7f0b0075;
+        public static final int activity_createjob_bottombarmenu=0x7f0b006e;
+        public static final int activity_createjob_docattached=0x7f0b0078;
+        public static final int activity_createjob_edit=0x7f0b0076;
+        public static final int activity_createjob_edit_jobdescrip=0x7f0b0071;
+        public static final int activity_createjob_edit_jobtitle=0x7f0b0070;
+        public static final int activity_createjob_edit_to=0x7f0b006f;
+        public static final int activity_createjob_expseekbar=0x7f0b0069;
+        public static final int activity_createjob_new_sendtolist=0x7f0b0081;
+        public static final int activity_createjob_new_txt_send=0x7f0b007c;
+        public static final int activity_createjob_rel_exp=0x7f0b0066;
+        public static final int activity_createjob_rel_salary=0x7f0b006a;
+        public static final int activity_createjob_rply=0x7f0b0077;
+        public static final int activity_createjob_salaryseekbar=0x7f0b006d;
+        public static final int activity_createjob_spn_industry=0x7f0b0062;
+        public static final int activity_createjob_spn_location=0x7f0b0065;
+        public static final int activity_createjob_spn_role=0x7f0b0064;
+        public static final int activity_createjob_txt_exp=0x7f0b0067;
+        public static final int activity_createjob_txt_industry=0x7f0b0063;
+        public static final int activity_createjob_txt_salary=0x7f0b006b;
+        public static final int activity_createjob_txt_valueexp=0x7f0b0068;
+        public static final int activity_createjob_txt_valuesalary=0x7f0b006c;
+        public static final int activity_filter_joblist=0x7f0b0083;
+        public static final int activity_home_classcount=0x7f0b00f7;
+        public static final int activity_home_footer_pg=0x7f0b00f2;
+        public static final int activity_home_img_composejob=0x7f0b008e;
+        public static final int activity_home_importantmaillist=0x7f0b0090;
+        public static final int activity_home_jobcount=0x7f0b00f8;
+        public static final int activity_home_joblist=0x7f0b00f3;
+        public static final int activity_home_mainView=0x7f0b008a;
+        public static final int activity_home_meetcount=0x7f0b00f9;
+        public static final int activity_home_myPostlist=0x7f0b00b5;
+        public static final int activity_home_newslist=0x7f0b00f5;
+        public static final int activity_home_tabbelowline=0x7f0b008c;
+        public static final int album_image=0x7f0b00e2;
+        public static final int album_pager=0x7f0b0127;
         public static final int always=0x7f0b0014;
         public static final int beginning=0x7f0b001b;
-        public static final int blue=0x7f0b00e3;
-        public static final int button_accept=0x7f0b00e9;
-        public static final int button_cancel=0x7f0b00e8;
-        public static final int buttonflat=0x7f0b013f;
-        public static final int checkBox=0x7f0b0078;
+        public static final int blue=0x7f0b00e8;
+        public static final int button_accept=0x7f0b00ee;
+        public static final int button_cancel=0x7f0b00ed;
+        public static final int buttonflat=0x7f0b0148;
+        public static final int checkBox=0x7f0b007b;
         public static final int checkbox=0x7f0b0029;
-        public static final int circleView=0x7f0b0137;
-        public static final int circle_tabpager=0x7f0b0045;
-        public static final int circle_tabs=0x7f0b0043;
-        public static final int circleprf_linearmain=0x7f0b0046;
-        public static final int circleprofile_circleselection=0x7f0b0051;
-        public static final int circleprofile_pendingreq=0x7f0b0052;
-        public static final int circleprofile_postselection=0x7f0b0050;
+        public static final int circleView=0x7f0b0140;
+        public static final int circle_tabpager=0x7f0b0046;
+        public static final int circle_tabs=0x7f0b0044;
+        public static final int circleprf_linearmain=0x7f0b0047;
+        public static final int circleprofile_circleselection=0x7f0b0052;
+        public static final int circleprofile_pendingreq=0x7f0b0053;
+        public static final int circleprofile_postselection=0x7f0b0051;
         public static final int collapseActionView=0x7f0b0015;
-        public static final int color_line=0x7f0b0042;
-        public static final int contentDialog=0x7f0b00e5;
-        public static final int contentSelector=0x7f0b00df;
-        public static final int cricle_name=0x7f0b0049;
-        public static final int cricle_pendingreq_list=0x7f0b0055;
-        public static final int cricle_post_list=0x7f0b0053;
-        public static final int cricle_user_list=0x7f0b0054;
-        public static final int criclecreated_date_name=0x7f0b004a;
-        public static final int cricleprofile_rel_name=0x7f0b0047;
+        public static final int color_line=0x7f0b0043;
+        public static final int contentDialog=0x7f0b00ea;
+        public static final int contentSelector=0x7f0b00e4;
+        public static final int cricle_name=0x7f0b004a;
+        public static final int cricle_pendingreq_list=0x7f0b0056;
+        public static final int cricle_post_list=0x7f0b0054;
+        public static final int cricle_user_list=0x7f0b0055;
+        public static final int criclecreated_date_name=0x7f0b004b;
+        public static final int cricleprofile_rel_name=0x7f0b0048;
         public static final int decor_content_parent=0x7f0b002f;
         public static final int default_activity_button=0x7f0b0024;
         public static final int dialog=0x7f0b0019;
-        public static final int dialog_rootView=0x7f0b00e4;
+        public static final int dialog_rootView=0x7f0b00e9;
         public static final int disableHome=0x7f0b000d;
         public static final int dropdown=0x7f0b001a;
         public static final int edit_query=0x7f0b0033;
-        public static final int editprofile_edt_accountName=0x7f0b00c6;
-        public static final int editprofile_edt_firstname=0x7f0b00c4;
-        public static final int editprofile_edt_lastname=0x7f0b00c5;
-        public static final int editprofile_edt_yearofGrad=0x7f0b00c7;
-        public static final int editprofile_txt_accountName=0x7f0b00c2;
-        public static final int editprofile_txt_firstname=0x7f0b00c0;
-        public static final int editprofile_txt_lastname=0x7f0b00c1;
-        public static final int editprofile_txt_yearofGrad=0x7f0b00c3;
-        public static final int email=0x7f0b0139;
+        public static final int editprofile_edt_accountName=0x7f0b00ca;
+        public static final int editprofile_edt_firstname=0x7f0b00c8;
+        public static final int editprofile_edt_lastname=0x7f0b00c9;
+        public static final int editprofile_edt_yearofGrad=0x7f0b00cb;
+        public static final int editprofile_txt_accountName=0x7f0b00c6;
+        public static final int editprofile_txt_firstname=0x7f0b00c4;
+        public static final int editprofile_txt_lastname=0x7f0b00c5;
+        public static final int editprofile_txt_yearofGrad=0x7f0b00c7;
+        public static final int email=0x7f0b0142;
         public static final int end=0x7f0b001c;
         public static final int expand_activities_button=0x7f0b0022;
         public static final int expanded_menu=0x7f0b0028;
-        public static final int filter_btn_Applyflt=0x7f0b012a;
-        public static final int filter_lay_linear_lower=0x7f0b0122;
-        public static final int filter_lay_linear_upper=0x7f0b0121;
-        public static final int filter_list=0x7f0b0128;
-        public static final int filter_otheroption=0x7f0b0129;
-        public static final int filter_txt_Clearflt=0x7f0b012b;
-        public static final int filter_txt_general=0x7f0b0123;
-        public static final int filter_txt_indus=0x7f0b0124;
-        public static final int filter_txt_location=0x7f0b0126;
-        public static final int filter_txt_other=0x7f0b0127;
-        public static final int filter_txt_role=0x7f0b0125;
-        public static final int forgotpasswrd_btn_Submit=0x7f0b0083;
-        public static final int forgotpasswrd_edt_email=0x7f0b0082;
-        public static final int forgotpasswrd_txt_title=0x7f0b0081;
-        public static final int fragm_createcircle_btn_submit=0x7f0b005f;
-        public static final int fragm_createcircle_edt_verifyCode=0x7f0b005d;
-        public static final int fragm_createcircle_txtmodarator=0x7f0b005e;
-        public static final int fragmentjoincircle_list=0x7f0b00ed;
-        public static final int fragmentyourcircle_list=0x7f0b00ef;
-        public static final int green=0x7f0b00e2;
-        public static final int hidepost=0x7f0b0142;
-        public static final int hlvCustomList=0x7f0b0077;
+        public static final int filter_btn_Applyflt=0x7f0b0131;
+        public static final int filter_lay_linear_lower=0x7f0b0129;
+        public static final int filter_lay_linear_upper=0x7f0b0128;
+        public static final int filter_list=0x7f0b012f;
+        public static final int filter_otheroption=0x7f0b0130;
+        public static final int filter_txt_Clearflt=0x7f0b0132;
+        public static final int filter_txt_general=0x7f0b012a;
+        public static final int filter_txt_indus=0x7f0b012b;
+        public static final int filter_txt_location=0x7f0b012d;
+        public static final int filter_txt_other=0x7f0b012e;
+        public static final int filter_txt_role=0x7f0b012c;
+        public static final int forgotpasswrd_btn_Submit=0x7f0b0087;
+        public static final int forgotpasswrd_edt_email=0x7f0b0086;
+        public static final int forgotpasswrd_txt_title=0x7f0b0085;
+        public static final int fragm_createcircle_btn_submit=0x7f0b0060;
+        public static final int fragm_createcircle_edt_verifyCode=0x7f0b005e;
+        public static final int fragm_createcircle_txtmodarator=0x7f0b005f;
+        public static final int fragment_container=0x7f0b0082;
+        public static final int fragmentjoincircle_list=0x7f0b00f4;
+        public static final int fragmentyourcircle_list=0x7f0b00f6;
+        public static final int green=0x7f0b00e7;
+        public static final int grid_view=0x7f0b0040;
+        public static final int hidepost=0x7f0b014b;
+        public static final int hlvCustomList=0x7f0b0079;
         public static final int home=0x7f0b0000;
         public static final int homeAsUp=0x7f0b000e;
         public static final int icon=0x7f0b0026;
         public static final int ifRoom=0x7f0b0016;
-        public static final int iflate_custdialog_email=0x7f0b011d;
-        public static final int iflate_custdialog_header=0x7f0b011b;
-        public static final int iflate_custdialog_line=0x7f0b011c;
-        public static final int iflate_custdialog_ph=0x7f0b011f;
-        public static final int iflate_custdialog_whatsapp=0x7f0b011e;
-        public static final int iflate_img_pager=0x7f0b0130;
-        public static final int iflate_pg=0x7f0b0131;
+        public static final int iflate_custdialog_email=0x7f0b0124;
+        public static final int iflate_custdialog_header=0x7f0b0122;
+        public static final int iflate_custdialog_line=0x7f0b0123;
+        public static final int iflate_custdialog_ph=0x7f0b0126;
+        public static final int iflate_custdialog_whatsapp=0x7f0b0125;
+        public static final int iflate_img_pager=0x7f0b0137;
+        public static final int iflate_pg=0x7f0b0138;
         public static final int image=0x7f0b0023;
-        public static final int inc_proxyview=0x7f0b0115;
-        public static final int inc_up_pager=0x7f0b0117;
-        public static final int infalte_createjob_pi=0x7f0b0118;
-        public static final int infalte_createjob_pi_cross=0x7f0b0119;
-        public static final int inflate_comment_img_pic=0x7f0b00f5;
-        public static final int inflate_comment_rel=0x7f0b0116;
-        public static final int inflate_comment_txt_contain=0x7f0b0111;
-        public static final int inflate_comment_txt_email=0x7f0b00f7;
-        public static final int inflate_comment_txt_name=0x7f0b00f6;
-        public static final int inflate_comment_txt_postdate=0x7f0b0112;
-        public static final int inflate_comment_txt_subject=0x7f0b0133;
-        public static final int inflate_comment_txt_yeargrd=0x7f0b00f8;
-        public static final int inflate_joblistview_rel=0x7f0b0113;
-        public static final int inflate_pendingrqst_btnaccept=0x7f0b0135;
-        public static final int inflate_pendingrqst_btnreject=0x7f0b0134;
-        public static final int inflt_circlerow_linearselection=0x7f0b004f;
-        public static final int inflt_circlerow_rel_nameandopp=0x7f0b00fa;
-        public static final int inflt_circlerow_txt_circleno=0x7f0b004d;
-        public static final int inflt_circlerow_txt_circletitle=0x7f0b004e;
-        public static final int inflt_circlerow_txt_membno=0x7f0b009c;
-        public static final int inflt_circlerow_txt_name=0x7f0b00fb;
-        public static final int inflt_circlerow_txt_postno=0x7f0b004b;
-        public static final int inflt_circlerow_txt_postnotitle=0x7f0b004c;
-        public static final int inflt_inst_txtname=0x7f0b012c;
-        public static final int inflt_last_posts_details=0x7f0b00fe;
-        public static final int institute_Header=0x7f0b008e;
-        public static final int institute_img_back=0x7f0b0091;
-        public static final int institute_list=0x7f0b008f;
-        public static final int institute_rel=0x7f0b008d;
-        public static final int institute_rel_loginbtn=0x7f0b0090;
-        public static final int jobdetails_album_pager=0x7f0b0109;
-        public static final int jobdetailsview_img_arrow=0x7f0b00a2;
-        public static final int jobdetailsview_img_pic=0x7f0b00a1;
-        public static final int jobdetailsview_main=0x7f0b009f;
-        public static final int jobdetailsview_relpicname=0x7f0b00a0;
-        public static final int jobdetailsview_txt_comment=0x7f0b00a9;
-        public static final int jobdetailsview_txt_contain=0x7f0b00a6;
-        public static final int jobdetailsview_txt_name=0x7f0b00a3;
-        public static final int jobdetailsview_txt_postdate=0x7f0b00a4;
-        public static final int jobdetailsview_txt_reply=0x7f0b00a7;
-        public static final int jobdetailsview_txt_share=0x7f0b00a8;
-        public static final int jobdetailsview_txt_subject=0x7f0b00a5;
-        public static final int joblistview_img_arrow=0x7f0b0106;
-        public static final int joblistview_img_imp=0x7f0b0103;
-        public static final int joblistview_img_pic=0x7f0b0102;
-        public static final int joblistview_img_post=0x7f0b0132;
-        public static final int joblistview_img_post_rel=0x7f0b012f;
-        public static final int joblistview_linear_buttonsection=0x7f0b010a;
-        public static final int joblistview_main=0x7f0b00f9;
-        public static final int joblistview_rel_upper=0x7f0b0100;
-        public static final int joblistview_relpicname=0x7f0b0114;
-        public static final int joblistview_relpicnamepic=0x7f0b0101;
-        public static final int joblistview_txt_comment=0x7f0b010d;
-        public static final int joblistview_txt_contain=0x7f0b0108;
-        public static final int joblistview_txt_loadAllComment=0x7f0b0110;
-        public static final int joblistview_txt_name=0x7f0b0104;
-        public static final int joblistview_txt_postdate=0x7f0b0105;
-        public static final int joblistview_txt_reply=0x7f0b010b;
-        public static final int joblistview_txt_share=0x7f0b010c;
-        public static final int joblistview_txt_subject=0x7f0b0107;
-        public static final int jobposteduser_circle_list=0x7f0b009e;
-        public static final int jobposteduser_linear_pg=0x7f0b0057;
-        public static final int jobposteduser_linearmain=0x7f0b0093;
-        public static final int jobposteduser_nodata=0x7f0b0056;
-        public static final int jobposteduser_post_list=0x7f0b009d;
-        public static final int join_circle=0x7f0b00fc;
+        public static final int inc_proxyview=0x7f0b011c;
+        public static final int inc_up_pager=0x7f0b011e;
+        public static final int infalte_createjob_pi=0x7f0b011f;
+        public static final int infalte_createjob_pi_cross=0x7f0b0120;
+        public static final int inflate_comment_img_pic=0x7f0b00fc;
+        public static final int inflate_comment_rel=0x7f0b011d;
+        public static final int inflate_comment_txt_contain=0x7f0b0118;
+        public static final int inflate_comment_txt_email=0x7f0b00fe;
+        public static final int inflate_comment_txt_name=0x7f0b00fd;
+        public static final int inflate_comment_txt_postdate=0x7f0b0119;
+        public static final int inflate_comment_txt_subject=0x7f0b013c;
+        public static final int inflate_comment_txt_yeargrd=0x7f0b00ff;
+        public static final int inflate_joblistview_rel=0x7f0b011a;
+        public static final int inflate_pendingrqst_btnaccept=0x7f0b013e;
+        public static final int inflate_pendingrqst_btnreject=0x7f0b013d;
+        public static final int inflt_circlerow_linearselection=0x7f0b0050;
+        public static final int inflt_circlerow_rel_nameandopp=0x7f0b0101;
+        public static final int inflt_circlerow_txt_circleno=0x7f0b004e;
+        public static final int inflt_circlerow_txt_circletitle=0x7f0b004f;
+        public static final int inflt_circlerow_txt_membno=0x7f0b00a0;
+        public static final int inflt_circlerow_txt_name=0x7f0b0102;
+        public static final int inflt_circlerow_txt_postno=0x7f0b004c;
+        public static final int inflt_circlerow_txt_postnotitle=0x7f0b004d;
+        public static final int inflt_inst_txtname=0x7f0b0133;
+        public static final int inflt_last_posts_details=0x7f0b0105;
+        public static final int institute_Header=0x7f0b0092;
+        public static final int institute_img_back=0x7f0b0095;
+        public static final int institute_list=0x7f0b0093;
+        public static final int institute_rel=0x7f0b0091;
+        public static final int institute_rel_loginbtn=0x7f0b0094;
+        public static final int jobdetails_album_pager=0x7f0b0110;
+        public static final int jobdetailsview_img_arrow=0x7f0b00a6;
+        public static final int jobdetailsview_img_pic=0x7f0b00a5;
+        public static final int jobdetailsview_main=0x7f0b00a3;
+        public static final int jobdetailsview_relpicname=0x7f0b00a4;
+        public static final int jobdetailsview_txt_comment=0x7f0b00ad;
+        public static final int jobdetailsview_txt_contain=0x7f0b00aa;
+        public static final int jobdetailsview_txt_name=0x7f0b00a7;
+        public static final int jobdetailsview_txt_postdate=0x7f0b00a8;
+        public static final int jobdetailsview_txt_reply=0x7f0b00ab;
+        public static final int jobdetailsview_txt_share=0x7f0b00ac;
+        public static final int jobdetailsview_txt_subject=0x7f0b00a9;
+        public static final int joblistview_img_arrow=0x7f0b010d;
+        public static final int joblistview_img_imp=0x7f0b010a;
+        public static final int joblistview_img_pic=0x7f0b0109;
+        public static final int joblistview_img_post=0x7f0b013b;
+        public static final int joblistview_img_post_rel=0x7f0b0136;
+        public static final int joblistview_linear_buttonsection=0x7f0b0111;
+        public static final int joblistview_main=0x7f0b0100;
+        public static final int joblistview_rel_upper=0x7f0b0107;
+        public static final int joblistview_relpicname=0x7f0b011b;
+        public static final int joblistview_relpicnamepic=0x7f0b0108;
+        public static final int joblistview_txt_comment=0x7f0b0114;
+        public static final int joblistview_txt_contain=0x7f0b010f;
+        public static final int joblistview_txt_loadAllComment=0x7f0b0117;
+        public static final int joblistview_txt_name=0x7f0b010b;
+        public static final int joblistview_txt_postdate=0x7f0b010c;
+        public static final int joblistview_txt_reply=0x7f0b0112;
+        public static final int joblistview_txt_share=0x7f0b0113;
+        public static final int joblistview_txt_subject=0x7f0b010e;
+        public static final int jobposteduser_circle_list=0x7f0b00a2;
+        public static final int jobposteduser_linear_pg=0x7f0b0058;
+        public static final int jobposteduser_linearmain=0x7f0b0097;
+        public static final int jobposteduser_nodata=0x7f0b0057;
+        public static final int jobposteduser_post_list=0x7f0b00a1;
+        public static final int join_circle=0x7f0b0103;
         public static final int listMode=0x7f0b000a;
+        public static final int listView=0x7f0b00ef;
         public static final int list_item=0x7f0b0025;
-        public static final int login_btn_GPllogin=0x7f0b0092;
-        public static final int login_btn_login=0x7f0b00ae;
-        public static final int login_btn_signup=0x7f0b00af;
-        public static final int login_edt_email=0x7f0b00ac;
-        public static final int login_edt_passw=0x7f0b00ad;
-        public static final int login_textlogo=0x7f0b00aa;
-        public static final int login_txt_forgotpass=0x7f0b00b0;
-        public static final int message=0x7f0b00e7;
-        public static final int message_scrollView=0x7f0b00e6;
+        public static final int login_btn_GPllogin=0x7f0b0096;
+        public static final int login_btn_login=0x7f0b00b2;
+        public static final int login_btn_signup=0x7f0b00b3;
+        public static final int login_edt_email=0x7f0b00b0;
+        public static final int login_edt_passw=0x7f0b00b1;
+        public static final int login_textlogo=0x7f0b00ae;
+        public static final int login_txt_forgotpass=0x7f0b00b4;
+        public static final int message=0x7f0b00ec;
+        public static final int message_scrollView=0x7f0b00eb;
+        public static final int meter=0x7f0b013a;
         public static final int middle=0x7f0b001d;
-        public static final int myprofile_view_img_gmail=0x7f0b00be;
-        public static final int myprofile_view_img_phone=0x7f0b00bc;
-        public static final int myprofile_view_img_whatsapp=0x7f0b00bd;
-        public static final int myprofile_view_pgbar=0x7f0b0098;
-        public static final int myprofile_view_shape=0x7f0b00bf;
-        public static final int name=0x7f0b0138;
+        public static final int myprofile_view_img_gmail=0x7f0b00c2;
+        public static final int myprofile_view_img_phone=0x7f0b00c0;
+        public static final int myprofile_view_img_whatsapp=0x7f0b00c1;
+        public static final int myprofile_view_pgbar=0x7f0b009c;
+        public static final int myprofile_view_shape=0x7f0b00c3;
+        public static final int name=0x7f0b0141;
         public static final int never=0x7f0b0017;
         public static final int none=0x7f0b000f;
         public static final int normal=0x7f0b000b;
-        public static final int number_indicator_spinner_content=0x7f0b0136;
-        public static final int pager=0x7f0b0089;
-        public static final int post_and_members_info=0x7f0b00fd;
-        public static final int profile_bottom_rel_btn=0x7f0b00b2;
-        public static final int profile_circleView=0x7f0b0048;
-        public static final int profile_class=0x7f0b009b;
-        public static final int profile_edt_Interests=0x7f0b00bb;
-        public static final int profile_edt_currentempl=0x7f0b00b8;
-        public static final int profile_edt_prevempl=0x7f0b00b9;
-        public static final int profile_edt_profInterest=0x7f0b00ba;
-        public static final int profile_email=0x7f0b009a;
-        public static final int profile_imageblur=0x7f0b0095;
-        public static final int profile_name=0x7f0b0099;
-        public static final int profile_rel_details=0x7f0b00b3;
-        public static final int profile_rel_imagedetails=0x7f0b0094;
-        public static final int profile_txt_Interests=0x7f0b00b7;
-        public static final int profile_txt_currentempl=0x7f0b00b4;
-        public static final int profile_txt_prevempl=0x7f0b00b5;
-        public static final int profile_txt_profInterest=0x7f0b00b6;
-        public static final int progressBar=0x7f0b011a;
-        public static final int progressBarCircularIndetermininate=0x7f0b0058;
+        public static final int number_indicator_spinner_content=0x7f0b013f;
+        public static final int pager=0x7f0b008d;
+        public static final int pdfattached_list=0x7f0b007a;
+        public static final int post_and_members_info=0x7f0b0104;
+        public static final int profile_bottom_rel_btn=0x7f0b00b6;
+        public static final int profile_circleView=0x7f0b0049;
+        public static final int profile_class=0x7f0b009f;
+        public static final int profile_edt_Interests=0x7f0b00bf;
+        public static final int profile_edt_currentempl=0x7f0b00bc;
+        public static final int profile_edt_prevempl=0x7f0b00bd;
+        public static final int profile_edt_profInterest=0x7f0b00be;
+        public static final int profile_email=0x7f0b009e;
+        public static final int profile_imageblur=0x7f0b0099;
+        public static final int profile_name=0x7f0b009d;
+        public static final int profile_rel_details=0x7f0b00b7;
+        public static final int profile_rel_imagedetails=0x7f0b0098;
+        public static final int profile_txt_Interests=0x7f0b00bb;
+        public static final int profile_txt_currentempl=0x7f0b00b8;
+        public static final int profile_txt_prevempl=0x7f0b00b9;
+        public static final int profile_txt_profInterest=0x7f0b00ba;
+        public static final int progressBar=0x7f0b0121;
+        public static final int progressBarCircularIndetermininate=0x7f0b0059;
         public static final int progress_circular=0x7f0b0007;
         public static final int progress_horizontal=0x7f0b0008;
-        public static final int proxyview_txt_contain=0x7f0b012e;
-        public static final int proxyview_txt_subject=0x7f0b012d;
+        public static final int proxyview_txt_contain=0x7f0b0135;
+        public static final int proxyview_txt_subject=0x7f0b0134;
         public static final int radio=0x7f0b002b;
-        public static final int red=0x7f0b00e1;
-        public static final int registration_btn_Codesubmit=0x7f0b00dc;
-        public static final int registration_btn_registration=0x7f0b00d3;
-        public static final int registration_btn_resend=0x7f0b00dd;
-        public static final int registration_edt_accname=0x7f0b00cc;
-        public static final int registration_edt_conpassword=0x7f0b00cf;
-        public static final int registration_edt_email=0x7f0b00cd;
-        public static final int registration_edt_firstname=0x7f0b00ca;
-        public static final int registration_edt_lastname=0x7f0b00cb;
-        public static final int registration_edt_password=0x7f0b00ce;
-        public static final int registration_edt_verifyCode=0x7f0b00db;
-        public static final int registration_rd_female=0x7f0b00d2;
-        public static final int registration_rd_male=0x7f0b00d1;
-        public static final int registration_rel_bottomlaout=0x7f0b00d4;
-        public static final int registration_rel_gender=0x7f0b00d0;
-        public static final int registration_rel_profile_pic=0x7f0b00c9;
-        public static final int registration_txt_title=0x7f0b00da;
-        public static final int rel_additional_main=0x7f0b0060;
-        public static final int rel_detailadd=0x7f0b0072;
-        public static final int rel_progress=0x7f0b010e;
-        public static final int rel_reply=0x7f0b0073;
-        public static final int rel_rplview_main=0x7f0b007a;
-        public static final int rel_tolist=0x7f0b0071;
-        public static final int reloaddata=0x7f0b010f;
-        public static final int resetpass_Box=0x7f0b00d5;
-        public static final int resetpass_btn_reset=0x7f0b00d8;
-        public static final int resetpass_edt_password=0x7f0b00d6;
-        public static final int resetpass_edt_retppassword=0x7f0b00d7;
-        public static final int rootSelector=0x7f0b00de;
-        public static final int rowIcon=0x7f0b013c;
-        public static final int rowText=0x7f0b013d;
+        public static final int red=0x7f0b00e6;
+        public static final int registration_btn_Codesubmit=0x7f0b00e0;
+        public static final int registration_btn_registration=0x7f0b00d7;
+        public static final int registration_btn_resend=0x7f0b00e1;
+        public static final int registration_edt_accname=0x7f0b00d0;
+        public static final int registration_edt_conpassword=0x7f0b00d3;
+        public static final int registration_edt_email=0x7f0b00d1;
+        public static final int registration_edt_firstname=0x7f0b00ce;
+        public static final int registration_edt_lastname=0x7f0b00cf;
+        public static final int registration_edt_password=0x7f0b00d2;
+        public static final int registration_edt_verifyCode=0x7f0b00df;
+        public static final int registration_rd_female=0x7f0b00d6;
+        public static final int registration_rd_male=0x7f0b00d5;
+        public static final int registration_rel_bottomlaout=0x7f0b00d8;
+        public static final int registration_rel_gender=0x7f0b00d4;
+        public static final int registration_rel_profile_pic=0x7f0b00cd;
+        public static final int registration_txt_title=0x7f0b00de;
+        public static final int rel_additional_main=0x7f0b0061;
+        public static final int rel_detailadd=0x7f0b0073;
+        public static final int rel_meter=0x7f0b0139;
+        public static final int rel_progress=0x7f0b0115;
+        public static final int rel_reply=0x7f0b0074;
+        public static final int rel_rplview_main=0x7f0b007d;
+        public static final int rel_tolist=0x7f0b0072;
+        public static final int reloaddata=0x7f0b0116;
+        public static final int resetpass_Box=0x7f0b00d9;
+        public static final int resetpass_btn_reset=0x7f0b00dc;
+        public static final int resetpass_edt_password=0x7f0b00da;
+        public static final int resetpass_edt_retppassword=0x7f0b00db;
+        public static final int rootSelector=0x7f0b00e3;
+        public static final int rowIcon=0x7f0b0145;
+        public static final int rowText=0x7f0b0146;
+        public static final int searchEmptyView=0x7f0b00f0;
         public static final int search_badge=0x7f0b0035;
         public static final int search_bar=0x7f0b0034;
         public static final int search_button=0x7f0b0036;
@@ -2577,32 +2660,32 @@ containing a value of this type.
         public static final int search_plate=0x7f0b0039;
         public static final int search_src_text=0x7f0b003a;
         public static final int search_voice_btn=0x7f0b003e;
-        public static final int shape_bacground=0x7f0b0141;
+        public static final int shape_bacground=0x7f0b014a;
         public static final int shortcut=0x7f0b002a;
         public static final int showCustom=0x7f0b0010;
         public static final int showHome=0x7f0b0011;
         public static final int showTitle=0x7f0b0012;
-        public static final int slide_image=0x7f0b0097;
-        public static final int slide_line=0x7f0b013a;
-        public static final int slide_name=0x7f0b0096;
-        public static final int slideritem_row=0x7f0b013b;
-        public static final int snackbar=0x7f0b013e;
-        public static final int spampost=0x7f0b0143;
+        public static final int slide_image=0x7f0b009b;
+        public static final int slide_line=0x7f0b0143;
+        public static final int slide_name=0x7f0b009a;
+        public static final int slideritem_row=0x7f0b0144;
+        public static final int snackbar=0x7f0b0147;
+        public static final int spampost=0x7f0b014c;
         public static final int split_action_bar=0x7f0b0004;
         public static final int submit_area=0x7f0b003c;
-        public static final int swipe_container=0x7f0b00ea;
+        public static final int swipe_container=0x7f0b00f1;
         public static final int tabMode=0x7f0b000c;
-        public static final int tabs=0x7f0b0087;
-        public static final int text=0x7f0b0140;
+        public static final int tabs=0x7f0b008b;
+        public static final int text=0x7f0b0149;
         public static final int title=0x7f0b0027;
         public static final int tool_bar=0x7f0b003f;
         public static final int up=0x7f0b0001;
         public static final int useLogo=0x7f0b0013;
-        public static final int view=0x7f0b0084;
-        public static final int viewColor=0x7f0b00e0;
-        public static final int view_comment=0x7f0b00f3;
-        public static final int view_jobdetails=0x7f0b00f4;
-        public static final int view_main=0x7f0b00ff;
+        public static final int view=0x7f0b0088;
+        public static final int viewColor=0x7f0b00e5;
+        public static final int view_comment=0x7f0b00fa;
+        public static final int view_jobdetails=0x7f0b00fb;
+        public static final int view_main=0x7f0b0106;
         public static final int withText=0x7f0b0018;
         public static final int wrap_content=0x7f0b0009;
     }
@@ -2656,65 +2739,69 @@ containing a value of this type.
         public static final int abc_search_view=0x7f030015;
         public static final int abc_simple_dropdown_hint=0x7f030016;
         public static final int actiontool_bar=0x7f030017;
-        public static final int activity_allcomment=0x7f030018;
-        public static final int activity_circle=0x7f030019;
-        public static final int activity_circleprofile=0x7f03001a;
-        public static final int activity_comment=0x7f03001b;
-        public static final int activity_createcircle=0x7f03001c;
-        public static final int activity_createjob_additionopt=0x7f03001d;
-        public static final int activity_createjob_new=0x7f03001e;
-        public static final int activity_createjob_new_sendto_row=0x7f03001f;
-        public static final int activity_createjob_replyview=0x7f030020;
-        public static final int activity_createjob_tosendlist=0x7f030021;
-        public static final int activity_filterjobs=0x7f030022;
-        public static final int activity_forgotpassword=0x7f030023;
-        public static final int activity_home=0x7f030024;
-        public static final int activity_importantmail=0x7f030025;
-        public static final int activity_institutelist=0x7f030026;
-        public static final int activity_jobposteduserdetails=0x7f030027;
-        public static final int activity_joddetails=0x7f030028;
-        public static final int activity_login=0x7f030029;
-        public static final int activity_mypost=0x7f03002a;
-        public static final int activity_myprofile=0x7f03002b;
-        public static final int activity_profileedit=0x7f03002c;
-        public static final int activity_registration=0x7f03002d;
-        public static final int activity_resetpassword=0x7f03002e;
-        public static final int activity_settings=0x7f03002f;
-        public static final int activity_splash=0x7f030030;
-        public static final int activity_verifycode=0x7f030031;
-        public static final int color_selector=0x7f030032;
-        public static final int dialog=0x7f030033;
-        public static final int filter_other_option=0x7f030034;
-        public static final int fragment_classifieds=0x7f030035;
-        public static final int fragment_jobs=0x7f030036;
-        public static final int fragment_joincircle=0x7f030037;
-        public static final int fragment_meetups=0x7f030038;
-        public static final int fragment_newsfeeds=0x7f030039;
-        public static final int fragment_yourcircle=0x7f03003a;
-        public static final int iclude_jobclsaameet_count=0x7f03003b;
-        public static final int include_color_line=0x7f03003c;
-        public static final int inflate_circle_user=0x7f03003d;
-        public static final int inflate_circledetails=0x7f03003e;
-        public static final int inflate_circledetails_jobposteduser=0x7f03003f;
-        public static final int inflate_comment_jobdetails=0x7f030040;
-        public static final int inflate_commentlist_row_new=0x7f030041;
-        public static final int inflate_createjob_pic=0x7f030042;
-        public static final int inflate_cusdialog_hideevent=0x7f030043;
-        public static final int inflate_dialog_album_pager=0x7f030044;
-        public static final int inflate_dialog_filter_layout=0x7f030045;
-        public static final int inflate_institutelist_row=0x7f030046;
-        public static final int inflate_jobdetails_job=0x7f030047;
-        public static final int inflate_jobdetails_pager_item=0x7f030048;
-        public static final int inflate_jobdetails_pager_view=0x7f030049;
-        public static final int inflate_joblistrow=0x7f03004a;
-        public static final int inflate_jobposteduser_postlistrow=0x7f03004b;
-        public static final int inflate_pager_imageview=0x7f03004c;
-        public static final int inflate_pendingreqst_row=0x7f03004d;
-        public static final int number_indicator_spinner=0x7f03004e;
-        public static final int slidemenu_pfpic_header=0x7f03004f;
-        public static final int slider_item_row=0x7f030050;
-        public static final int snackbar=0x7f030051;
-        public static final int support_simple_spinner_dropdown_item=0x7f030052;
+        public static final int activity_album=0x7f030018;
+        public static final int activity_allcomment=0x7f030019;
+        public static final int activity_circle=0x7f03001a;
+        public static final int activity_circleprofile=0x7f03001b;
+        public static final int activity_comment=0x7f03001c;
+        public static final int activity_createcircle=0x7f03001d;
+        public static final int activity_createjob_additionopt=0x7f03001e;
+        public static final int activity_createjob_new=0x7f03001f;
+        public static final int activity_createjob_new_sendto_row=0x7f030020;
+        public static final int activity_createjob_replyview=0x7f030021;
+        public static final int activity_createjob_tosendlist=0x7f030022;
+        public static final int activity_directory=0x7f030023;
+        public static final int activity_filterjobs=0x7f030024;
+        public static final int activity_forgotpassword=0x7f030025;
+        public static final int activity_home=0x7f030026;
+        public static final int activity_importantmail=0x7f030027;
+        public static final int activity_institutelist=0x7f030028;
+        public static final int activity_jobposteduserdetails=0x7f030029;
+        public static final int activity_joddetails=0x7f03002a;
+        public static final int activity_login=0x7f03002b;
+        public static final int activity_mypost=0x7f03002c;
+        public static final int activity_myprofile=0x7f03002d;
+        public static final int activity_profileedit=0x7f03002e;
+        public static final int activity_registration=0x7f03002f;
+        public static final int activity_resetpassword=0x7f030030;
+        public static final int activity_settings=0x7f030031;
+        public static final int activity_splash=0x7f030032;
+        public static final int activity_verifycode=0x7f030033;
+        public static final int album_image=0x7f030034;
+        public static final int color_selector=0x7f030035;
+        public static final int dialog=0x7f030036;
+        public static final int document_select_layout=0x7f030037;
+        public static final int filter_other_option=0x7f030038;
+        public static final int fragment_classifieds=0x7f030039;
+        public static final int fragment_jobs=0x7f03003a;
+        public static final int fragment_joincircle=0x7f03003b;
+        public static final int fragment_meetups=0x7f03003c;
+        public static final int fragment_newsfeeds=0x7f03003d;
+        public static final int fragment_yourcircle=0x7f03003e;
+        public static final int iclude_jobclsaameet_count=0x7f03003f;
+        public static final int include_color_line=0x7f030040;
+        public static final int inflate_circle_user=0x7f030041;
+        public static final int inflate_circledetails=0x7f030042;
+        public static final int inflate_circledetails_jobposteduser=0x7f030043;
+        public static final int inflate_comment_jobdetails=0x7f030044;
+        public static final int inflate_commentlist_row_new=0x7f030045;
+        public static final int inflate_createjob_pic=0x7f030046;
+        public static final int inflate_cusdialog_hideevent=0x7f030047;
+        public static final int inflate_dialog_album_pager=0x7f030048;
+        public static final int inflate_dialog_filter_layout=0x7f030049;
+        public static final int inflate_institutelist_row=0x7f03004a;
+        public static final int inflate_jobdetails_job=0x7f03004b;
+        public static final int inflate_jobdetails_pager_item=0x7f03004c;
+        public static final int inflate_jobdetails_pager_view=0x7f03004d;
+        public static final int inflate_joblistrow=0x7f03004e;
+        public static final int inflate_jobposteduser_postlistrow=0x7f03004f;
+        public static final int inflate_pager_imageview=0x7f030050;
+        public static final int inflate_pendingreqst_row=0x7f030051;
+        public static final int number_indicator_spinner=0x7f030052;
+        public static final int slidemenu_pfpic_header=0x7f030053;
+        public static final int slider_item_row=0x7f030054;
+        public static final int snackbar=0x7f030055;
+        public static final int support_simple_spinner_dropdown_item=0x7f030056;
     }
     public static final class menu {
         public static final int job_optionmenu=0x7f0d0000;
@@ -3063,6 +3150,7 @@ containing a value of this type.
         public static final int Platform_AppCompat_Dialog=0x7f0800ce;
         public static final int Platform_AppCompat_Light=0x7f0800cd;
         public static final int Platform_AppCompat_Light_Dialog=0x7f0800cf;
+        public static final int ProgressBarStyle=0x7f0800f0;
         public static final int RtlOverlay_Widget_AppCompat_ActionBar_TitleItem=0x7f0800b7;
         public static final int RtlOverlay_Widget_AppCompat_ActionButton_CloseMode=0x7f0800b8;
         public static final int RtlOverlay_Widget_AppCompat_ActionButton_Overflow=0x7f0800b9;
@@ -4199,6 +4287,119 @@ containing a value of this type.
           @attr name com.ofcampus:border_width
         */
         public static final int CircleImageView_border_width = 0;
+        /**  Circluerprogress 
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #CircularMeter_metricSize com.ofcampus:metricSize}</code></td><td></td></tr>
+           <tr><td><code>{@link #CircularMeter_metricText com.ofcampus:metricText}</code></td><td></td></tr>
+           <tr><td><code>{@link #CircularMeter_range com.ofcampus:range}</code></td><td></td></tr>
+           <tr><td><code>{@link #CircularMeter_textColor com.ofcampus:textColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #CircularMeter_textSize com.ofcampus:textSize}</code></td><td></td></tr>
+           <tr><td><code>{@link #CircularMeter_typeface com.ofcampus:typeface}</code></td><td></td></tr>
+           </table>
+           @see #CircularMeter_metricSize
+           @see #CircularMeter_metricText
+           @see #CircularMeter_range
+           @see #CircularMeter_textColor
+           @see #CircularMeter_textSize
+           @see #CircularMeter_typeface
+         */
+        public static final int[] CircularMeter = {
+            0x7f0100d6, 0x7f0100d7, 0x7f0100d8, 0x7f0100d9,
+            0x7f0100da, 0x7f0100db
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.ofcampus.R.attr#metricSize}
+          attribute's value can be found in the {@link #CircularMeter} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.ofcampus:metricSize
+        */
+        public static final int CircularMeter_metricSize = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.ofcampus.R.attr#metricText}
+          attribute's value can be found in the {@link #CircularMeter} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.ofcampus:metricText
+        */
+        public static final int CircularMeter_metricText = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.ofcampus.R.attr#range}
+          attribute's value can be found in the {@link #CircularMeter} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.ofcampus:range
+        */
+        public static final int CircularMeter_range = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.ofcampus.R.attr#textColor}
+          attribute's value can be found in the {@link #CircularMeter} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.ofcampus:textColor
+        */
+        public static final int CircularMeter_textColor = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.ofcampus.R.attr#textSize}
+          attribute's value can be found in the {@link #CircularMeter} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.ofcampus:textSize
+        */
+        public static final int CircularMeter_textSize = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.ofcampus.R.attr#typeface}
+          attribute's value can be found in the {@link #CircularMeter} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.ofcampus:typeface
+        */
+        public static final int CircularMeter_typeface = 2;
         /** Attributes that can be used with a CompatTextView.
            <p>Includes the following attributes:</p>
            <table>

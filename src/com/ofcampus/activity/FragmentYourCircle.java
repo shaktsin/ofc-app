@@ -143,7 +143,7 @@ public class FragmentYourCircle extends Fragment {
 			
 			@Override
 			public void OnSuccess() {
-				Util.ShowToast(context,"Succesfully UnJoin Circle.");
+				//Util.ShowToast(context,"Successfully unjoined club");
 				mYourCircleListAdapter.removepostion(position_); 
 				if (yourcircleinterface!=null) {
 					yourcircleinterface.CircleUnJoined();
