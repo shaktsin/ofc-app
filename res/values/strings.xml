@@ -41,12 +41,13 @@
     <string name="login_scr_btn_login">Login</string>
     <string name="login_scr_btn_gpllogin">Sign in with Google+</string>
     <string name="login_scr_txt_signup">Create an account</string>
+    <string name="login_or_txt">OR</string>
     <string name="login_scr_txt_forgotpass">Forgot password</string>
-    <string name="login_scr_email_msg">Enter an email address.</string>
-    <string name="login_scr_error_email_msg">Enter an valid email address.</string>
-    <string name="login_scr_edtpass_msg">Enter a password.</string>
-    <string name="login_scr_parse_success">Successfully login.</string>
-    <string name="login_scr_parse_error">Login Error.</string>
+    <string name="login_scr_email_msg">Enter an email address</string>
+    <string name="login_scr_error_email_msg">Enter a valid email address</string>
+    <string name="login_scr_edtpass_msg">Enter a password</string>
+    <string name="login_scr_parse_success">Successfully login</string>
+    <string name="login_scr_parse_error">Login error</string>
 
     <!-- Registration Screen -->
     <string name="registration_txt_hint_firstname">First Name</string>
@@ -109,8 +110,8 @@
     <string name="Filter_msg_chooseoption">Choose at least one option for filter.</string>
 
     <!-- Circle -->
-    <string name="enter_circlename_title">Please enter a circle name to craete your own circle.</string>
-    <string name="enter_circlename">Name of Circle</string>
+    <string name="enter_circlename_title">Please enter a circle name to create your own circle.</string>
+    <string name="enter_circlename">Name of circle</string>
     <string name="enter_msg_circlename">Please enter Circle Name.</string>
     <string name="createcircle_txtmodarator">Public</string>
     <string name="create_circlebtn">Create Circle</string>

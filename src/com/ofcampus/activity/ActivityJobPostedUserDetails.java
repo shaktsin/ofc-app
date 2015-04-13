@@ -66,6 +66,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 	
 	private ImageLoader imageLoader=ImageLoader.getInstance();
 	private DisplayImageOptions options;
+	private Toolbar toolbar;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -140,8 +141,8 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 	
 	private void initilize() {
 		
-		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("Post User");
+		toolbar = (Toolbar) findViewById(R.id.tool_bar);
+		toolbar.setTitle("");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -231,6 +232,20 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 	}
 	
 	private void loadUserDetails(){
+		String name = mDetails.getAccountname();
+		if (!(name == null || name.length() == 0)) {
+			String firstName = null;
+			if (name.contains(" ")) {
+				firstName = name.substring(0, name.indexOf(' ') - 1);
+			} else {
+				firstName = name;
+			}
+			String capitalized = Util.capitalize(firstName);
+			capitalized = capitalized.concat("'s");
+			if (toolbar != null) {
+				toolbar.setTitle(capitalized.trim() + " profile");
+			}
+		}
 		txt_name.setText(mDetails.getAccountname());
 		txt_email.setText(mDetails.getEmail());
 		txt_year.setText("Class "+mDetails.getGradyear());

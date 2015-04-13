@@ -67,9 +67,9 @@ public class Util {
 	public static long delay = 5 * 1000;
 	public static long period = 30 * 1000;
 
-	private static String baseUrl = "http://205.147.110.176:8080/api/";
+	private static String baseUrl = "http://192.168.0.101:8080/api/";
 
-	public static String TITLES[] = { "My Profile", "My Posts", "Important Mail", "Hide Post", "Clubs", "Settings", "Logout" };
+	public static String TITLES[] = { "My Profile", "My Posts", "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };
 	
 	
 	public static String sendto[] = { "Everyone", "Class of 2014","General Management Club", "Finance Club", "Hyderabad Chapter" };
@@ -869,4 +869,26 @@ public class Util {
 			e.printStackTrace();
 		} 
 	}
+	
+	/**
+	 * Returns capitalized string
+	 * 
+	 * Util.capitalize(null)  = null
+     * Util.capitalize("")    = ""
+     * Util.capitalize("cat") = "Cat"
+     * Util.capitalize("cAt") = "CAt"
+     * 
+	 * @param str
+	 * @return
+	 */
+	public static String capitalize(String str) {
+        int strLen;
+        if (str == null || (strLen = str.length()) == 0) {
+            return str;
+        }
+        return new StringBuilder(strLen)
+            .append(Character.toTitleCase(str.charAt(0)))
+            .append(str.substring(1))
+            .toString();
+    }
 }

@@ -95,7 +95,7 @@ public class ActivityMyProfile extends ActionBarActivity {
 	private void initilize() {
 		
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("MyProfile");
+		toolbar.setTitle("My Profile");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
