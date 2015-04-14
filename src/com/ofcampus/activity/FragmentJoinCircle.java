@@ -140,7 +140,7 @@ public class FragmentJoinCircle extends Fragment {
 			
 			@Override
 			public void OnSuccess() {
-				Util.ShowToast(context,"Succesfully Join Circle.");
+				//Util.ShowToast(context,"Successfully Joined Club");
 				mJoinCircleListAdapter.removepostion(position_); 
 				if (joincircleinterface!=null) {
 					joincircleinterface.CircleJoin();

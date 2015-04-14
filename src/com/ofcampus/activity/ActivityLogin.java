@@ -158,7 +158,7 @@ public class ActivityLogin extends Activity implements OnClickListener{
 				if (mDetails!=null) {
 					if (mDetails.isVerify()) {
 						mDetails.saveInPreferense(context);
-						Util.ShowToast(context, "Successfully loged in.");
+						//Util.ShowToast(context, "Login Successful");
 						moveToHome();
 					}else {
 						((OfCampusApplication)getApplication()).mDetails=mDetails;
@@ -169,7 +169,7 @@ public class ActivityLogin extends Activity implements OnClickListener{
 			
 			@Override
 			public void OnError() {
-				Util.ShowToast(context, "Server connection error.");
+				Util.ShowToast(context, "Server connection error");
 			}
 		});
 		mLoginParser.parse(context, email, Pass);
