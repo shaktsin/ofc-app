@@ -6,12 +6,17 @@
 package com.ofcampus.activity;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
@@ -30,7 +35,9 @@ public class ActivityCreateCircle extends ActionBarActivity implements OnClickLi
 	private CustomEditText edt_CircleName;
 	private CustomEditText edt_CircleDesc;
 	private CustomTextView txt_modarator;
+	private TextView charCountTextView;
 	private String isModarator="";
+	private int txtColor;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +75,41 @@ public class ActivityCreateCircle extends ActionBarActivity implements OnClickLi
 	private void initilizView() {
 		edt_CircleName=(CustomEditText)findViewById(R.id.fragm_createcircle_edt_verifyCode);
 		edt_CircleDesc=(CustomEditText)findViewById(R.id.txt_createCircle_desc);
+		edt_CircleDesc.addTextChangedListener(mTextEditorWatcher);
+		charCountTextView = (TextView)findViewById(R.id.txtview_char_count);
+		txtColor = charCountTextView.getCurrentTextColor();
 		((CustomTextView)findViewById(R.id.fragm_createcircle_btn_submit)).setOnClickListener(this);
 		txt_modarator =(CustomTextView)findViewById(R.id.fragm_createcircle_txtmodarator);
 		txt_modarator.setOnClickListener(this);
+		
 	}
+	
+	private final TextWatcher mTextEditorWatcher = new TextWatcher() {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+           //This sets a textview to the current length
+        	if(s.toString().trim().length() > 200){
+        		return;
+        	} else {
+        		Integer length = 200 - s.toString().length();
+        		charCountTextView.setText(length.toString());
+        		if(length == 0){
+        			charCountTextView.setTextColor(Color.RED);
+        			return;
+        		} else {
+        			charCountTextView.setTextColor(txtColor);
+        		}
+        	}
+        }
+
+		@Override
+		public void afterTextChanged(Editable arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+};
 
 	@Override
 	public void onClick(View v) {
