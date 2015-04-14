@@ -30,6 +30,7 @@ public class ReplyDialog {
 	
 	private UserDetails mUserDetails;
 	private String token="";
+	private String subject;
 	
 	public ReplyDialog(Context context, JobDetails mJobDetails_){
 		
@@ -106,6 +107,8 @@ public class ReplyDialog {
 			return;
 		}
 		
+		subject = mJobDetails.getSubject();
+		
 		ReplyJobPostParser mJobPostParser=new ReplyJobPostParser();		
 		mJobPostParser.setReplyjobpostparserinterface(new ReplyJobPostParserInterface() {
 			
@@ -149,8 +152,8 @@ public class ReplyDialog {
 			sendIntent.setType("plain/text");
 			sendIntent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
 			sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{replyto});
-			sendIntent.putExtra(Intent.EXTRA_SUBJECT, "OfCampus");
-			sendIntent.putExtra(Intent.EXTRA_TEXT, "Please see this post.");
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Re: "+subject);
+			sendIntent.putExtra(Intent.EXTRA_TEXT, "");
 			mContext.startActivity(sendIntent);
 		} catch (Exception e) {
 			e.printStackTrace();

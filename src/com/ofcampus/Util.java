@@ -73,7 +73,7 @@ public class Util {
 	public static long delay = 5 * 1000;
 	public static long period = 30 * 1000;
 
-	private static String baseUrl = "http://192.168.0.101:8080/api/";
+	private static String baseUrl = "http://192.168.0.104:8080/api/";
 	
 	private static String SDCardPath="OfCampus/Document";
 

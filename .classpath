@@ -15,6 +15,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/httpclient-4.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/httpcore-4.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/jackson-core-asl-1.9.1.jar"/>
-	<classpathentry kind="lib" path="libs/joda-time-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/joda-time-2.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
