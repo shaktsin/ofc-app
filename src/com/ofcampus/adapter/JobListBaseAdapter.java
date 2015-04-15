@@ -234,7 +234,6 @@ public class JobListBaseAdapter extends BaseAdapter{
 						mContext.startActivity(new Intent(mContext,ActivityJobPostedUserDetails.class));
 						((Activity) mContext).overridePendingTransition(0,0);
 					}
-					
 				}
 			});
 			
