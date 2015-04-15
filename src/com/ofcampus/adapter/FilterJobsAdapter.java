@@ -152,7 +152,7 @@ public class FilterJobsAdapter extends BaseAdapter{
 					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
 					Intent mIntent = new Intent(mContext,ActivityComment.class);
 					Bundle mBundle=new Bundle();
-					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
+					mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
 					mIntent.putExtras(mBundle);
 					mContext.startActivity(mIntent);
 					((Activity) mContext).overridePendingTransition(0, 0); 
@@ -182,7 +182,7 @@ public class FilterJobsAdapter extends BaseAdapter{
 					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
 					Intent mIntent = new Intent(mContext,ActivityComment.class);
 					Bundle mBundle=new Bundle();
-					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[0]);
+					mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
 					mIntent.putExtras(mBundle);
 					mContext.startActivity(mIntent);
 					((Activity) mContext).overridePendingTransition(0, 0); 

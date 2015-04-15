@@ -125,6 +125,15 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 			holder.Name.setText(name);
 			holder.email.setText(email);
 			imageLoader.displayImage(profile,holder.profile, options);
+			holder.profile.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (viewclickevent != null) {
+						viewclickevent.OnViewItemClick(position);
+					}
+				}
+			});
 		}
 	}
 

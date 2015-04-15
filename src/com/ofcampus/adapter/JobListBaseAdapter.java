@@ -7,14 +7,10 @@ package com.ofcampus.adapter;
 
 import java.util.ArrayList;
 
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
@@ -32,6 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.ActivityComment;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.DocumentPath;
@@ -40,7 +37,6 @@ import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.PdfDocLoader;
 import com.ofcampus.parser.PdfDocLoader.LoadListner;
-import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
 
 public class JobListBaseAdapter extends BaseAdapter{
@@ -225,7 +221,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 					
 					@Override
 					public void onClick(View v) {
-						new AlbumPagerDialog(mContext, Images,0);
+						viewOnClick(mJobDetails);
 					}
 				});
 				
@@ -234,24 +230,35 @@ public class JobListBaseAdapter extends BaseAdapter{
 			}
 			
 			mHolder.profilepic.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
-					if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
-						((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
-						mContext.startActivity(new Intent(mContext,ActivityJobPostedUserDetails.class));
-						((Activity) mContext).overridePendingTransition(0,0);
-					}
+					userProfile(mJobDetails);
 				}
 			});
+
+			mHolder.txt_name.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					userProfile(mJobDetails);
+				}
+			});
+
 			
 			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					if (joblistinterface!=null) {
-						joblistinterface.convertViewOnClick(mJobDetails);
-					}
+					viewOnClick(mJobDetails);
+				}
+			});
+			
+			mHolder.txt_contain.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					viewOnClick(mJobDetails);
 				}
 			});
 			
@@ -277,9 +284,7 @@ public class JobListBaseAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					if (joblistinterface != null) {
-						joblistinterface.commentClickEvent(mJobDetails);
-					}
+					viewOnClick(mJobDetails);
 				}
 			});
 			
@@ -415,27 +420,41 @@ public class JobListBaseAdapter extends BaseAdapter{
 		}
 	}
 	
+	public void viewOnClick(JobDetails mJobDetails) {
+		((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
+		Intent mIntent = new Intent(mContext,ActivityComment.class);
+		Bundle mBundle=new Bundle();
+		mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
+		mIntent.putExtras(mBundle);
+		((Activity) mContext).startActivity(mIntent);
+		((Activity) mContext).overridePendingTransition(0, 0);  
+	}
+	
+	public void userProfile(JobDetails mJobDetails) {
+		if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
+			((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
+			mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
+			((Activity) mContext).overridePendingTransition(0, 0); 
+		}
+	}
 	
 	public jobListInterface joblistinterface;
-	
 	
 	public jobListInterface getJoblistinterface() {
 		return joblistinterface;
 	}
-
 	public void setJoblistinterface(jobListInterface joblistinterface) {
 		this.joblistinterface = joblistinterface;
 	}
-
 	public interface jobListInterface{
-		public void convertViewOnClick(JobDetails mJobDetails); 
+//		public void viewOnClick(JobDetails mJobDetails);  
+//		public void userProfile(JobDetails mJobDetails);
 		public void firstIDAndlastID(String fstID, String lstID); 
 		public void arrowHideClieckEvent(JobDetails mJobDetails);  
 		public void arrowSpamClieckEvent(JobDetails mJobDetails);  
 		public void impClieckEvent(JobDetails mJobDetails);  
 		public void unimpClieckEvent(JobDetails mJobDetails);  
 		public void replyClickEvent(JobDetails mJobDetails);  
-		public void commentClickEvent(JobDetails mJobDetails);  
 	}
 
 	

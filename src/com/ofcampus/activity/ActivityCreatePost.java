@@ -958,9 +958,6 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 			}
 		}
 		
-		
-		
-		
 		if (jsObj != null) {
 			JobPostParser mJobPostParser = new JobPostParser();
 			mJobPostParser.setJobpostparserinterface(new JobPostParserInterface() {
@@ -971,7 +968,7 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 						((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
 						Intent mIntent = new Intent(context,ActivityComment.class);
 						Bundle mBundle=new Bundle();
-						mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
+						mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
 						mIntent.putExtras(mBundle);
 						startActivity(mIntent);
 						((Activity) context).overridePendingTransition(0, 0); 
@@ -1135,7 +1132,7 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 						((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
 						Intent mIntent = new Intent(context,ActivityNewsDetails.class);
 						Bundle mBundle=new Bundle();
-						mBundle.putString("key_dlorcmt", "News Details");
+						mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[1]);
 						mIntent.putExtras(mBundle);
 						startActivity(mIntent);
 						((Activity) context).overridePendingTransition(0, 0); 

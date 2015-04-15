@@ -89,18 +89,6 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 		}
 	}
 	
-	
-	@Override
-	public void convertViewOnClick(JobDetails mJobDetails) {
-		((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
-		Intent mIntent = new Intent(context,ActivityNewsDetails.class);
-		Bundle mBundle=new Bundle();
-		mBundle.putString("key_dlorcmt", "News Details");
-		mIntent.putExtras(mBundle);
-		startActivity(mIntent);
-		((Activity) context).overridePendingTransition(0, 0); 
-	}
-	
 	@Override
 	public void firstIDAndlastID(String fstID, String lstID) {
 		firsttJobID=fstID;
@@ -111,18 +99,6 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener,NewsL
 	public void replyClickEvent(JobDetails mJobDetails) {
 		new ReplyDialog(context, mJobDetails);
 	}
-
-	@Override
-	public void commentClickEvent(JobDetails mJobDetails) {
-		((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
-		Intent mIntent = new Intent(context,ActivityNewsDetails.class);
-		Bundle mBundle=new Bundle();
-		mBundle.putString("key_dlorcmt", "News Comments");
-		mIntent.putExtras(mBundle);
-		startActivity(mIntent);
-		((Activity) context).overridePendingTransition(0, 0);
-	}
-	
 	
 	@Override 
 	public void onRefresh() {

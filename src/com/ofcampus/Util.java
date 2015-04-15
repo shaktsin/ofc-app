@@ -74,16 +74,20 @@ public class Util {
 	
 	private static String SDCardPath="OfCampus/Document";
 
-	public static String TITLES[] = { "My Profile", "My Posts", "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };
-	
-	
+//	public static String TITLES[] = { "My Profile", "My Posts", "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };
+	public static String TITLES[] = { "My Posts", "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };
 	public static String sendto[] = { "Everyone", "Class of 2014","General Management Club", "Finance Club", "Hyderabad Chapter" };
 	
-	public static String TOOLTITLE[] = { "Comment", "Details" };
+	public static String TOOLTITLE[] = { "Post Details", "News Details" };
+	public static String BUNDLE_KEY[] = { "CAMEFROM","COMMENTORDETAILS" };
 
-	public static int ICONS[] = { R.drawable.ic_profile, R.drawable.ic_mypost,
-			R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle,
-			R.drawable.ic_settings, R.drawable.ic_logout };
+//	public static int ICONS[] = { R.drawable.ic_profile, R.drawable.ic_mypost,
+//			R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle,
+//			R.drawable.ic_settings, R.drawable.ic_logout };
+	public static int ICONS[] = {R.drawable.ic_mypost,
+		R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle,
+		R.drawable.ic_settings, R.drawable.ic_logout };
+
 
 	public static enum userType {
 		Normal, Gmail, Facebook
@@ -97,9 +101,12 @@ public class Util {
 		Normal, syncdata
 	}
 	
-	
 	public static enum SearchType {
 		USERS, CIRCLE, POSTS
+	}
+	
+	public static enum PostType{
+		NEWS,POST
 	}
 
 	public static String getSDCardPath(){

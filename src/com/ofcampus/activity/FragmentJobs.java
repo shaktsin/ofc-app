@@ -86,18 +86,6 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	}
 	
 	@Override
-	public void convertViewOnClick(JobDetails mJobDetails) {
-		
-		((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
-		Intent mIntent = new Intent(context,ActivityComment.class);
-		Bundle mBundle=new Bundle();
-		mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
-		mIntent.putExtras(mBundle);
-		startActivity(mIntent);
-		((Activity) context).overridePendingTransition(0, 0); 
-	}
-	
-	@Override
 	public void firstIDAndlastID(String fstID, String lstID){
 		firsttJobID=fstID;
 		lastJobID=lstID;
@@ -127,17 +115,6 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	@Override 
 	public void replyClickEvent(JobDetails mJobDetails){
 		new ReplyDialog(context, mJobDetails);
-	}
-	
-	@Override 
-	public void commentClickEvent(JobDetails mJobDetails) {
-		((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
-		Intent mIntent = new Intent(context,ActivityComment.class);
-		Bundle mBundle=new Bundle();
-		mBundle.putString("key_dlorcmt", Util.TOOLTITLE[0]);
-		mIntent.putExtras(mBundle);
-		startActivity(mIntent);
-		((Activity) context).overridePendingTransition(0, 0); 
 	}
 	
 	@Override 

@@ -28,8 +28,11 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityComment;
+import com.ofcampus.activity.ActivityJobPostedUserDetails;
+import com.ofcampus.activity.ActivityNewsDetails;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.model.UserDetails;
 import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
 import com.ofcampus.ui.ReplyDialog;
@@ -143,35 +146,53 @@ public class HideJobListAdapter extends BaseAdapter{
 			mHolder.img_important.setVisibility(View.GONE);
 			
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
-			if (Images!=null && Images.size()>=1) {
+			if (Images != null && Images.size() >= 1) {
 				mHolder.joblistview_img_post_rel.setVisibility(View.VISIBLE);
 				imageLoader.displayImage(Images.get(0).getImageURL(), mHolder.img_post, options_post);
 				mHolder.img_post.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-						new AlbumPagerDialog(mContext, Images,0);
+						gotToPostDetails(mJobDetails);
 					}
 				});
-				
-			}else {
+
+			} else {
 				mHolder.joblistview_img_post_rel.setVisibility(View.GONE);
 			}
-			
-			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
-				
+
+			mHolder.profilepic.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
-					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
-					Intent mIntent = new Intent(mContext,ActivityComment.class);
-					Bundle mBundle=new Bundle();
-					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
-					mIntent.putExtras(mBundle);
-					mContext.startActivity(mIntent);
-					((Activity) mContext).overridePendingTransition(0, 0); 
+					gotToUserDetails(mJobDetails);
 				}
 			});
+			mHolder.txt_name.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					gotToUserDetails(mJobDetails);
+				}
+			});
+
 			
+			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					gotToPostDetails(mJobDetails);
+				}
+			});
+
+			mHolder.txt_contain.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					gotToPostDetails(mJobDetails);
+				}
+			});
+
 			mHolder.btn_reply.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -184,7 +205,7 @@ public class HideJobListAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					Util.onShareClick(mContext,v,mJobDetails.getSubject(),mJobDetails.getContent()) ;
+					Util.onShareClick(mContext, v, mJobDetails.getSubject(), mJobDetails.getContent());
 				}
 			});
 
@@ -192,13 +213,7 @@ public class HideJobListAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					((OfCampusApplication)mContext.getApplicationContext()).jobdetails=mJobDetails;
-					Intent mIntent = new Intent(mContext,ActivityComment.class);
-					Bundle mBundle=new Bundle();
-					mBundle.putString("key_dlorcmt", Util.TOOLTITLE[0]);
-					mIntent.putExtras(mBundle);
-					mContext.startActivity(mIntent);
-					((Activity) mContext).overridePendingTransition(0, 0); 
+					gotToPostDetails(mJobDetails);
 				}
 			});
 			
@@ -246,7 +261,31 @@ public class HideJobListAdapter extends BaseAdapter{
 		CardView joblistview_img_post_rel;
 	}
 	
-	
+	private void gotToUserDetails(JobDetails mJobDetails) {
+		if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
+			((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
+			mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
+			((Activity) mContext).overridePendingTransition(0, 0); 
+		}
+	}
+
+	private void gotToPostDetails(JobDetails mJobDetails) {
+		String toolTitle = "";
+		Intent mIntent =null;
+		if (mJobDetails.getPostType().equals("3")) {
+			toolTitle = Util.TOOLTITLE[0];
+			mIntent = new Intent(mContext, ActivityNewsDetails.class);
+		} else {
+			toolTitle = Util.TOOLTITLE[1];
+			mIntent = new Intent(mContext, ActivityComment.class);
+		}
+		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
+		Bundle mBundle = new Bundle();
+		mBundle.putString(Util.BUNDLE_KEY[0], toolTitle);
+		mIntent.putExtras(mBundle);
+		mContext.startActivity(mIntent);
+		((Activity) mContext).overridePendingTransition(0, 0);
+	}
 	
 	
 	public HideJobListInterface hidejoblistinterface;

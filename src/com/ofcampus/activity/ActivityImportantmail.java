@@ -68,11 +68,6 @@ public class ActivityImportantmail  extends ActionBarActivity implements Importa
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	@Override
-	public void convertViewOnClick(JobDetails mJobDetails) {
-		
-	}
 
 	@Override
 	public void firstIDAndlastID(String fstID, String lstID) {

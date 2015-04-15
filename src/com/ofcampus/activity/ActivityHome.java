@@ -284,31 +284,31 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 			public void run() {
 				switch (position) {
 
-				case 1:
+				case 0:
 					startActivity(new Intent(ActivityHome.this, ActivityMyProfile.class));
 					overridePendingTransition(0, 0);
 					break;
-				case 2:
+				case 1:
 					startActivity(new Intent(ActivityHome.this, ActivityMyPost.class));
 					overridePendingTransition(0, 0);
 					break;
-				case 3:
+				case 2:
 					startActivity(new Intent(ActivityHome.this, ActivityImportantmail.class));
 					overridePendingTransition(0, 0);
 					break;
-				case 4:
+				case 3:
 					startActivity(new Intent(ActivityHome.this, ActivityHidePost.class));
 					overridePendingTransition(0, 0);
 					break;
-				case 5:
+				case 4:
 					startActivity(new Intent(ActivityHome.this, ActivityCircle.class));
 					overridePendingTransition(0, 0);
 					break;
-				case 6:
+				case 5:
 					startActivity(new Intent(ActivityHome.this, ActivityResetPassword.class));
 					overridePendingTransition(0, 0);
 					break;
-				case 7:
+				case 6:
 					showLogutDialog();
 					break;
 
@@ -818,7 +818,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 				((OfCampusApplication) mContext.getApplicationContext()).jobdetails = jdetails;
 				Intent mIntent = new Intent(mContext, ActivityComment.class);
 				Bundle mBundle = new Bundle();
-				mBundle.putString("key_dlorcmt", Util.TOOLTITLE[1]);
+				mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
 				mIntent.putExtras(mBundle);
 				startActivity(mIntent);
 				((Activity) mContext).overridePendingTransition(0, 0);
@@ -826,7 +826,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 				((OfCampusApplication) mContext.getApplicationContext()).jobdetails = jdetails;
 				Intent mIntent = new Intent(mContext, ActivityNewsDetails.class);
 				Bundle mBundle = new Bundle();
-				mBundle.putString("key_dlorcmt", "News Details");
+				mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[1]);
 				mIntent.putExtras(mBundle);
 				startActivity(mIntent);
 				((Activity) mContext).overridePendingTransition(0, 0);

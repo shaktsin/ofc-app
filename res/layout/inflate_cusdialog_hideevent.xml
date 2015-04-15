@@ -29,15 +29,8 @@
             android:background="@color/theme_color" >
         </RelativeLayout>
 
-        <!--
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_below="@+id/iflate_custdialog_ph" >
-        </RelativeLayout>
-        -->
-
         <LinearLayout
+            android:id="@+id/iflate_custdialog_linear_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/iflate_custdialog_header"
@@ -82,7 +75,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:visibility="visible" />
         </LinearLayout>
-
     </RelativeLayout>
 
 </RelativeLayout>

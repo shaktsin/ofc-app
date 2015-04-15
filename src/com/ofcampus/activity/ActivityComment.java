@@ -150,7 +150,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 	
 	private void loadBundleValue(){
 		try {
-			toolHeaderTitle = getIntent().getExtras().getString("key_dlorcmt");
+			toolHeaderTitle = getIntent().getExtras().getString(Util.BUNDLE_KEY[0]);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
