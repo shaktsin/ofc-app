@@ -5,6 +5,8 @@
  */
 package com.ofcampus.ui;
 
+import java.util.ArrayList;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,9 @@ import android.net.Uri;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ofcampus.R;
@@ -44,58 +49,68 @@ public class ReplyDialog {
 		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		dialog.setContentView(R.layout.inflate_cusdialog_hideevent);
 		dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-		final String emial = mJobDetails.getReplyEmail();
-		final String whatsapp = mJobDetails.getReplyWatsApp();
-		final String phno = mJobDetails.getReplyPhone();
-
-		TextView txt_email = (TextView) dialog.findViewById(R.id.iflate_custdialog_email);
-		txt_email.setVisibility(View.VISIBLE);
-		txt_email.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (emial != null && !emial.equals("") && Integer.parseInt(emial) >= 1) {
-					replyJobPost(mJobDetails, 4);
-					dialog.dismiss();
-				} else {
-					dialog.dismiss();
-				}
-			}
-		});
-
-		TextView txt_whatsapp = (TextView) dialog.findViewById(R.id.iflate_custdialog_whatsapp);
-		txt_whatsapp.setVisibility(View.VISIBLE);
-		txt_whatsapp.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (whatsapp != null && !whatsapp.equals("") && Integer.parseInt(whatsapp) >= 1) {
-					replyJobPost(mJobDetails, 5);
-					dialog.dismiss();
-				} else {
-					dialog.dismiss();
-				}
-			}
-		});
-
-		TextView txt_ph = (TextView) dialog.findViewById(R.id.iflate_custdialog_ph);
-		txt_ph.setVisibility(View.VISIBLE);
-		txt_ph.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (phno != null && !phno.equals("") && Integer.parseInt(phno) >= 1) {
-					replyJobPost(mJobDetails, 6);
-					dialog.dismiss();
-				} else {
-					dialog.dismiss();
-				}
-			}
-		});
+		createView();
 		dialog.setCancelable(true);
 		dialog.show();
 
 	}
 	
+	private class ShareDataSet{
+		String postID="";
+		int icon=0;
+		String tag="";
+		
+		public ShareDataSet(String postID_, int icon_, String tag_) {
+			super();
+			this.postID = postID_;
+			this.icon = icon_;
+			this.tag = tag_;
+		}
+	}
+	
+	ArrayList<ShareDataSet> arraSet=new ArrayList<ReplyDialog.ShareDataSet>();
+	ArrayList<ImageView> arraView=new ArrayList<ImageView>();
 	private void createView(){
+		String emial = mJobDetails.getReplyEmail();
+		String whatsapp = mJobDetails.getReplyWatsApp();
+		String phno = mJobDetails.getReplyPhone();
+		if (emial != null && !emial.equals("") && Integer.parseInt(emial) >= 1) {
+			arraSet.add(new ShareDataSet(emial, R.drawable.ic_gmailicon, 4+""));
+		}
+		if (whatsapp != null && !whatsapp.equals("") && Integer.parseInt(whatsapp) >= 1) {
+			arraSet.add(new ShareDataSet(emial, R.drawable.ic_replysms, 5+""));
+		}
+		if (phno != null && !phno.equals("") && Integer.parseInt(phno) >= 1) {
+			arraSet.add(new ShareDataSet(emial, R.drawable.ic_phone, 6+""));
+		}
+		
+		LinearLayout linear=(LinearLayout)dialog.findViewById(R.id.iflate_custdialog_linear_icon);
+		LinearLayout.LayoutParams pram=new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+		pram.weight = 1.0f;
+		
+		if (arraSet!=null && arraSet.size()>=1) {
+			for (int i = 0; i < arraSet.size(); i++) {
+				ShareDataSet mShareDataSet=arraSet.get(i);
+				ImageView mView=new ImageView(mContext);
+				mView.setImageResource(mShareDataSet.icon);
+				mView.setTag(mShareDataSet.tag);
+				mView.setScaleType(ScaleType.CENTER_INSIDE);
+				mView.setLayoutParams(pram);
+				linear.addView(mView);
+				arraView.add(mView);
+			}
+		}
+		
+		for (ImageView mView : arraView) {
+			mView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					replyJobPost(mJobDetails, Integer.parseInt(v.getTag().toString()));
+					dialog.dismiss();
+				}
+			});
+		}
 		
 	}
 

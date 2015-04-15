@@ -234,10 +234,10 @@ public class ImportantMailListAdapter extends BaseAdapter {
 		String toolTitle = "";
 		Intent mIntent =null;
 		if (mJobDetails.getPostType().equals("3")) {
-			toolTitle = Util.TOOLTITLE[0];
+			toolTitle = Util.TOOLTITLE[1];
 			mIntent = new Intent(mContext, ActivityNewsDetails.class);
 		} else {
-			toolTitle = Util.TOOLTITLE[1];
+			toolTitle = Util.TOOLTITLE[0];
 			mIntent = new Intent(mContext, ActivityComment.class);
 		}
 		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
