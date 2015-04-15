@@ -11,18 +11,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Build;
-
 import com.ofcampus.Util;
-import com.ofcampus.model.ImageDetails;
+import com.ofcampus.Util.SearchType;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.model.SearchData;
 
 public class SearchParser {
 
-	private Context mContext;
 
 	private String STATUS = "status";
 	private String RESULTS = "results";
@@ -30,207 +25,114 @@ public class SearchParser {
 	private String EXCEPTION = "exception";
 	private String MESSAGES = "messages";
 
-	/* Job List Key */
-	private String JOBCREATERESPONSELIST = "jobCreateResponseList";
-	private String POSTID = "postId";
-	private String SUBJECT = "subject";
-	private String ISB_JOBS = "ISB JOBS";
-	private String CONTENT = "content";
-	private String POSTEDON = "postedOn";
-	private String USERDTO = "userDto";
+	/* Job List Key */	
+	private String POSTS = "posts";
 	private String ID = "id";
-	private String NAME = "name";
-	private String IMAGE = "image";
-	private String REPLYDTO = "replyDto";
-
-	private String REPLYEMAIL = "replyEmail";
-	private String REPLYPHONE = "replyPhone";
-	private String REPLYWATSAPP = "replyWatsApp";
-
-	private String SHAREDTO = "shareDto";
-	private String IMPORTANT = "important";
-
-	private String POSTIMAGES = "attachmentDtoList";
-	private String IMAGES_ID = "id";
-	private String IMAGES_URL = "url";
+	private String SUBJECT = "subject";
+	private String TYPE = "type";
+	
+	private String CIRCLES = "circles";
+	private String CIRCLE_ID = "id";
+	private String CIRCLE_NAME = "name";
+	
+	
+	private String USERS = "users";
+	private String USER_ID = "id";
+	private String FIRSTNAME = "firstName";
+	private String LASTNAME = "lastName";
+	private String ACCOUNTNAME = "accountName";
+	
 
 	/* Response JSON key value */
 	private String responsecode = "";
 	private String responseDetails = "";
 
-	public void parse(Context context, JSONObject postData, String authorization, boolean isShowingPG) {
-		this.mContext = context;
-		Async mAsync = new Async(mContext, postData, authorization, isShowingPG);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			mAsync.execute(); 
-		}
-	}
+	private String authenticationJson;
+	private boolean isTimeOut = false;
+	public  ArrayList<SearchData> SearchDataList;
+	
+	public void doInBackground_(JSONObject postData, String authorization){
+		try {
+			String[] responsedata = Util.POSTWithJSONAuth(Util.getSearchURL(), postData, authorization);
+			authenticationJson = responsedata[1];
+			isTimeOut = (responsedata[0].equals("205")) ? true : false;
 
-	private class Async extends AsyncTask<Void, Void, Void> {
-		private Context context;
-		private String authenticationJson;
-		private JSONObject postData;
-		private boolean isTimeOut = false;
-		private ProgressDialog mDialog;
-		private ArrayList<JobDetails> JobList;
-		private String authToken;
-		private boolean isShowingPG_;
-
-		public Async(Context mContext, JSONObject postData_, String authToken_, boolean isShowingPG) {
-			this.context = mContext;
-			this.postData = postData_;
-			this.authToken = authToken_;
-			this.isShowingPG_ = isShowingPG;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			if (isShowingPG_) {
-				mDialog = new ProgressDialog(mContext);
-				mDialog.setMessage("Loading...");
-				mDialog.setCancelable(false);
-				mDialog.show();
-			}
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			try {
-				String[] responsedata = Util.POSTWithJSONAuth(Util.getSearchURL(), postData, authToken);
-				authenticationJson = responsedata[1];
-				isTimeOut = (responsedata[0].equals("205")) ? true : false;
-
-				if (authenticationJson != null && !authenticationJson.equals("")) {
-					JSONObject mObject = new JSONObject(authenticationJson);
-					responsecode = Util.getJsonValue(mObject, STATUS);
-					if (responsecode != null && responsecode.equals("200")) {
-						JSONObject Obj = mObject.getJSONObject(RESULTS);
-//						if (Obj != null && !Obj.equals("")) {
-//							String expt = Util.getJsonValue(Obj, EXCEPTION);
-//							if (expt.equals("false")) {
-//								JobList = parseJSONData(Obj);
-//							}
-//						}
-					} else if (responsecode != null && (responsecode.equals("500") || responsecode.equals("401"))) {
-						JSONObject userObj = mObject.getJSONObject(RESULTS);
-						if (userObj != null) {
-							responseDetails = userObj.getJSONArray("messages").get(0).toString();
+			if (authenticationJson != null && !authenticationJson.equals("")) {
+				JSONObject mObject = new JSONObject(authenticationJson);
+				responsecode = Util.getJsonValue(mObject, STATUS);
+				if (responsecode != null && responsecode.equals("200")) {
+					JSONObject Obj = mObject.getJSONObject(RESULTS);
+					if (Obj != null && !Obj.equals("")) {
+						String expt = Util.getJsonValue(Obj, EXCEPTION);
+						if (expt.equals("false")) {
+							parseJSONData(Obj);
 						}
 					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-
-			if (mDialog != null && mDialog.isShowing()) {
-				mDialog.cancel();
-				mDialog = null;
-			}
-
-			if (isTimeOut) {
-				if (searchparserinterface != null) {
-					searchparserinterface.OnError();
-				}
-			} else if (responsecode.equals("200")) {
-
-				if (JobList != null && JobList.size() >= 1) {
-					if (searchparserinterface != null) {
-						searchparserinterface.OnSuccess(JobList);
+				} else if (responsecode != null && (responsecode.equals("500") || responsecode.equals("401"))) {
+					JSONObject userObj = mObject.getJSONObject(RESULTS);
+					if (userObj != null) {
+						responseDetails = userObj.getJSONArray("messages").get(0).toString();
 					}
-				} else {
-					Util.ShowToast(mContext, "NO data availble.");
 				}
-			} else if (responsecode.equals("500") || responsecode.equals("401")) {
-				Util.ShowToast(mContext, responseDetails);
-				searchError();
-			} else {
-				Util.ShowToast(mContext, "Search Error.");
-				searchError();
 			}
-		}
-	}
-
-	private void searchError(){
-		if (searchparserinterface != null) {
-			searchparserinterface.OnError();
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public ArrayList<JobDetails> parseJSONData(JSONObject obj) {
+	
+	public void parseJSONData(JSONObject obj) {
 
-		ArrayList<JobDetails> jobarray = new ArrayList<JobDetails>();
+		SearchDataList = new ArrayList<SearchData>();
 
 		try {
-			JSONObject jsonobject = null;
+			JSONObject object = null;
+			
+			JSONArray postsJSONarray = obj.getJSONArray(POSTS);
+			JSONArray circlesJSONarray = obj.getJSONArray(CIRCLES);
+			JSONArray usersJSONarray = obj.getJSONArray(USERS);
 
-			JSONArray jobjsonarray = obj.getJSONArray(JOBCREATERESPONSELIST);
-
-			if (jobjsonarray != null && jobjsonarray.length() >= 1) {
-
-				for (int i = 0; i < jobjsonarray.length(); i++) {
-					JobDetails mJobDetails = new JobDetails();
-					jsonobject = jobjsonarray.getJSONObject(i);
-
-					mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID));
-					mJobDetails.setSubject(Util.getJsonValue(jsonobject, SUBJECT));
-					mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));
-					mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
-					mJobDetails.setPostedon(Util.getJsonValue(jsonobject, POSTEDON));
-					mJobDetails.setImportant((Util.getJsonValue(jsonobject, IMPORTANT).equals("true")) ? 1 : 0);
-					JSONObject userJSONobj = jsonobject.getJSONObject(USERDTO);
-					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
-					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
-					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
-
-					JSONObject rplJSONObj = jsonobject.getJSONObject(REPLYDTO);
-
-					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
-					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
-					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP));
-
-					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
-
-					try {
-						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
-						if (imageJSONArray != null && imageJSONArray.length() >= 1) {
-							ArrayList<ImageDetails> images = new ArrayList<ImageDetails>();
-							for (int i1 = 0; i1 < imageJSONArray.length(); i1++) {
-								JSONObject imgJSONObject = imageJSONArray.getJSONObject(i1);
-								ImageDetails mImageDetails = new ImageDetails();
-								mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(imgJSONObject, IMAGES_ID)));
-								mImageDetails.setImageURL(Util.getJsonValue(imgJSONObject, IMAGES_URL));
-								images.add(mImageDetails);
-							}
-							mJobDetails.setImages(images);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-					jobarray.add(mJobDetails);
-					mJobDetails = null;
+			if (postsJSONarray != null && postsJSONarray.length() >= 1) {
+				for (int i = 0; i < postsJSONarray.length(); i++) {
+					SearchData mSearchData = new SearchData();
+					object = postsJSONarray.getJSONObject(i);
+					mSearchData.setId(Util.getJsonValue(object, ID));
+					mSearchData.setData(Util.getJsonValue(object, SUBJECT));
+					mSearchData.setDatatype(Util.getJsonValue(object, TYPE)); 
+					mSearchData.setmSearchType(SearchType.POSTS);
+					SearchDataList.add(mSearchData);
+				}
+			}
+			
+			if (circlesJSONarray != null && circlesJSONarray.length() >= 1) {
+				for (int i = 0; i < circlesJSONarray.length(); i++) {
+					SearchData mSearchData = new SearchData();
+					object = circlesJSONarray.getJSONObject(i);
+					mSearchData.setId(Util.getJsonValue(object, CIRCLE_ID));
+					mSearchData.setData(Util.getJsonValue(object, CIRCLE_NAME));
+					mSearchData.setDatatype(""); 
+					mSearchData.setmSearchType(SearchType.CIRCLE);
+					SearchDataList.add(mSearchData); 
+				}
+			}
+			
+			if (usersJSONarray != null && usersJSONarray.length() >= 1) {
+				for (int i = 0; i < usersJSONarray.length(); i++) {
+					SearchData mSearchData = new SearchData();
+					object = usersJSONarray.getJSONObject(i);
+					mSearchData.setId(Util.getJsonValue(object, USER_ID));
+					mSearchData.setData(Util.getJsonValue(object, FIRSTNAME)+" "+Util.getJsonValue(object, LASTNAME));
+					mSearchData.setDatatype(""); 
+					mSearchData.setmSearchType(SearchType.USERS);
+					SearchDataList.add(mSearchData);
 				}
 			}
 
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-		return jobarray;
-
 	}
 
-//	{"token":"shakti", "appName":"ofCampus", "plateFormId":0}
 	public JSONObject getBody(String token) {
 		JSONObject jsObj = new JSONObject();
 		try {

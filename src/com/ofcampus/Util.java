@@ -99,6 +99,11 @@ public class Util {
 	public static enum JobDataReturnFor {
 		Normal, syncdata
 	}
+	
+	
+	public static enum SearchType {
+		USERS, CIRCLE, POSTS
+	}
 
 	public static String getSDCardPath(){
 		return SDCardPath;
