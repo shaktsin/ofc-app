@@ -44,9 +44,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ofcampus.model.DocumentPath;
-import com.ofcampus.model.JobDetails;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -73,7 +70,7 @@ public class Util {
 	public static long delay = 5 * 1000;
 	public static long period = 30 * 1000;
 
-	private static String baseUrl = "http://192.168.0.104:8080/api/";
+	private static String baseUrl = "http://205.147.110.176:8080/api/";
 	
 	private static String SDCardPath="OfCampus/Document";
 
