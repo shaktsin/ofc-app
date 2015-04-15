@@ -243,9 +243,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		int id = item.getItemId();
 		if (id == R.id.action_search) {
 			return true;
-		} else if (id == R.id.action_filter) {
+		} else if (id == R.id.action_filter && (currentSelection==0 || currentSelection==1)) {
 			if (mFilterDataSets != null) {
-				FilterDialog mDialog = new FilterDialog(mContext, mFilterDataSets);
+				FilterDialog mDialog = new FilterDialog(mContext, mFilterDataSets,currentSelection);
 				mDialog.showDialog();
 			}
 			return true;

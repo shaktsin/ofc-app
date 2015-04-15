@@ -146,9 +146,9 @@ public class JobListBaseAdapter extends BaseAdapter {
 			mHolder.img_like = (ImageView) convertView.findViewById(R.id.joblistview_img_like);
 			mHolder.img_important = (ImageView) convertView.findViewById(R.id.joblistview_img_imp);
 
-			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_replcount);
-			mHolder.txt_sharecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_sharecount);
-			mHolder.txt_commentcount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_commentcount);
+//			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_replcount);
+//			mHolder.txt_sharecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_sharecount);
+//			mHolder.txt_commentcount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_commentcount);
 
 			mHolder.txt_name = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_name);
 			mHolder.txt_postdate = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_postdate);

@@ -71,10 +71,12 @@ public class FilterDialog implements FilterBAdpInterface{
 	private LinearLayout otherOp;
 	private FilterBaseAdapter mAdapter;
 	private FilterDataSets mFilterDataSets;
+	private int selectedTab=0;
 	private Context context;
 	
-	public FilterDialog(Context mContext, FilterDataSets mFilterDataSets_) {
+	public FilterDialog(Context mContext, FilterDataSets mFilterDataSets_, int currentSelection) { 
 		this.mFilterDataSets=mFilterDataSets_;
+		this.selectedTab=currentSelection;
 		this.context=mContext;
 		mDialog = new Dialog(mContext, R.style.Theme_Dialog_Translucent);
 		mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -104,12 +106,20 @@ public class FilterDialog implements FilterBAdpInterface{
 		mAdapter=new FilterBaseAdapter(context, new ArrayList<FilterDataSet>(), 0);
 		mAdapter.setFilterbadpinterface(this);
 		filterlist.setAdapter(mAdapter);
+		if (selectedTab==0) {
+			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_general));
+			((TextView) mDialog.findViewById(R.id.filter_txt_indus)).setVisibility(View.INVISIBLE);
+			((TextView) mDialog.findViewById(R.id.filter_txt_role)).setVisibility(View.INVISIBLE);
+			((TextView) mDialog.findViewById(R.id.filter_txt_location)).setVisibility(View.INVISIBLE);
+			((TextView) mDialog.findViewById(R.id.filter_txt_other)).setVisibility(View.INVISIBLE);
+		}else {
+			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_general));
+			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_indus));
+			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_role));
+			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_location));
+			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_other));
+		}
 		
-		tab.add((TextView) mDialog.findViewById(R.id.filter_txt_general));
-		tab.add((TextView) mDialog.findViewById(R.id.filter_txt_indus));
-		tab.add((TextView) mDialog.findViewById(R.id.filter_txt_role));
-		tab.add((TextView) mDialog.findViewById(R.id.filter_txt_location));
-		tab.add((TextView) mDialog.findViewById(R.id.filter_txt_other));
 
 		for (TextView textView : tab) {
 			textView.setOnClickListener(new OnClickListener() {

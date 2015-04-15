@@ -50,7 +50,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	private String authorization = "", circleId = "";
 
 	private ProgressBar pgbar;
-	private CustomTextView txt_name, txt_postno, txt_circleno, nodata;
+	private CustomTextView txt_name, txt_postno, txt_circleno, nodata,txt_description;
 	private ListView post_list, user_list,pendingrqs_list;
 	private LinearLayout lin_main;
 	private RelativeLayout rel_pg;
@@ -142,8 +142,10 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 
 
 		txt_name = (CustomTextView) findViewById(R.id.cricle_name);
-		txt_postno = (CustomTextView) findViewById(R.id.inflt_circlerow_txt_postno); 
-		txt_circleno = (CustomTextView) findViewById(R.id.inflt_circlerow_txt_circleno); 
+		txt_description = (CustomTextView) findViewById(R.id.cricle_description); 
+		txt_postno = (CustomTextView) findViewById(R.id.circleprofile_postcount); 
+		txt_circleno = (CustomTextView) findViewById(R.id.circleprofile_memburcount); 
+		
 		pgbar = (ProgressBar) findViewById(R.id.myprofile_view_pgbar);
 
 		textselection = new ArrayList<ImageView>();
@@ -348,6 +350,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			arraypost = mCircleProfile.getArrayPost();
 			
 			txt_name.setText(mCircleProfile.getCirclename());
+			txt_description.setText(mCircleProfile.getCircledesc());
 			txt_postno.setText(""+arraypost.size());
 			txt_circleno.setText(""+arraycircle.size());
 			
