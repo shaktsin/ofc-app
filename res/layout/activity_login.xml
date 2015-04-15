@@ -3,7 +3,7 @@
     xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/joblist_bg_color" >
+    android:background="@drawable/splash" >
 
     <com.ofcampus.ui.CustomTextView
         android:id="@+id/login_textlogo"
@@ -106,7 +106,7 @@
             android:padding="3dp"
             android:text="@string/login_scr_txt_forgotpass"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/primary"
+            android:textColor="@android:color/white"
             ofcampus:fontName="Helvetica.otf" />
     </LinearLayout>
 

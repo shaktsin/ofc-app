@@ -27,7 +27,8 @@ public class ActivitySplash extends Activity {
 		setContentView(R.layout.activity_splash);
 
 		context=ActivitySplash.this;
-		checkIsUserAlreadyLogedin();
+//		checkIsUserAlreadyLogedin();
+		SplashDelay();
 	}
 	
 	
@@ -39,7 +40,8 @@ public class ActivitySplash extends Activity {
 		if (mUserDetails!=null && mUserDetails.getAuthtoken()!=null && !mUserDetails.getAuthtoken().equals("")) {
 			moveToHomeScreen();
 		}else {
-			SplashDelay();
+//			SplashDelay();
+			moveToNextScreen();
 		}
 	}
 
@@ -49,7 +51,8 @@ public class ActivitySplash extends Activity {
 	private void SplashDelay() {
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
-				moveToNextScreen();
+//				moveToNextScreen();
+				checkIsUserAlreadyLogedin();
 			}
 		}, Util.delaytime);
 	}
