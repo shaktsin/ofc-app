@@ -153,6 +153,7 @@ public class NewsListAdapter extends BaseAdapter{
 			convertView=inflater.inflate(R.layout.inflate_joblistrow, null);
 			mHolder.profilepic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
+			mHolder.img_like=(ImageView)convertView.findViewById(R.id.joblistview_img_like);
 			mHolder.img_important=(ImageView)convertView.findViewById(R.id.joblistview_img_imp);
 			mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_name);
 			mHolder.txt_postdate=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_postdate);
@@ -188,12 +189,13 @@ public class NewsListAdapter extends BaseAdapter{
 			mHolder.txt_name.setText(mJobDetails.getName());
 
 			String postedOnText = Util.getPostedOnText(mJobDetails.getPostedon());
-			
 			mHolder.txt_postdate.setText(postedOnText);
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			mHolder.txt_contain.setText(mJobDetails.getContent());
-			mHolder.img_important.setVisibility(View.VISIBLE);
 			
+			mHolder.img_important.setVisibility(View.VISIBLE);
+			mHolder.img_like.setVisibility(View.VISIBLE);
+			mHolder.img_arrow.setVisibility(View.VISIBLE);
 			if (mJobDetails.getImportant()==1) {
 				mHolder.img_important.setSelected(true);
 			}else {
@@ -342,7 +344,7 @@ public class NewsListAdapter extends BaseAdapter{
 	
 	private class ViewHolder{
 		ImageView profilepic,doc_icon,doc_dnd;
-		ImageView img_arrow,img_important;
+		ImageView img_arrow,img_important,img_like;
 		CustomTextView txt_name,txt_postdate,txt_subject,txt_contain,doc_name;
 		ImageView btn_reply,btn_share,btn_comment;
 		ImageView img_post;

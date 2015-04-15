@@ -109,6 +109,7 @@ public class HideJobListAdapter extends BaseAdapter{
 			convertView=inflater.inflate(R.layout.inflate_joblistrow, null);
 			mHolder.profilepic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
 			mHolder.img_arrow=(ImageView)convertView.findViewById(R.id.joblistview_img_arrow);
+			mHolder.img_like=(ImageView)convertView.findViewById(R.id.joblistview_img_like);
 			mHolder.img_important=(ImageView)convertView.findViewById(R.id.joblistview_img_imp);
 			mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_name);
 			mHolder.txt_postdate=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_postdate);
@@ -136,14 +137,16 @@ public class HideJobListAdapter extends BaseAdapter{
 			mHolder.txt_postdate.setText("Posted on "+mJobDetails.getPostedon());
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			mHolder.txt_contain.setText(mJobDetails.getContent());
-			mHolder.img_important.setVisibility(View.VISIBLE);
 			
+			mHolder.img_important.setVisibility(View.GONE);
+			mHolder.img_like.setVisibility(View.GONE);
+			mHolder.img_arrow.setVisibility(View.VISIBLE);
 			if (mJobDetails.getImportant()==1) {
 				mHolder.img_important.setSelected(true);
 			}else {
 				mHolder.img_important.setSelected(false);
 			}
-			mHolder.img_important.setVisibility(View.GONE);
+			mHolder.img_arrow.setSelected(true);
 			
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
 			if (Images != null && Images.size() >= 1) {
@@ -221,30 +224,33 @@ public class HideJobListAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-					try {
-						PopupMenu popup = new PopupMenu(mContext, v);
-						popup.getMenuInflater().inflate(R.menu.popupmenu_unhide, popup.getMenu());
-						popup.show();
-						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-							@Override
-							public boolean onMenuItemClick(MenuItem item) {
-
-								switch (item.getItemId()) {
-								case R.id.hidepost:
-									if (hidejoblistinterface != null) {
-										hidejoblistinterface.arrowUnHideClieckEvent(mJobDetails,position);
-									}
-									break;
-
-								default:
-									break;
-								}
-
-								return true;
-							}
-						});
-					} catch (Exception e) {
-						e.printStackTrace();
+//					try {
+//						PopupMenu popup = new PopupMenu(mContext, v);
+//						popup.getMenuInflater().inflate(R.menu.popupmenu_unhide, popup.getMenu());
+//						popup.show();
+//						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//							@Override
+//							public boolean onMenuItemClick(MenuItem item) {
+//
+//								switch (item.getItemId()) {
+//								case R.id.hidepost:
+//									if (hidejoblistinterface != null) {
+//										hidejoblistinterface.arrowUnHideClieckEvent(mJobDetails,position);
+//									}
+//									break;
+//
+//								default:
+//									break;
+//								}
+//
+//								return true;
+//							}
+//						});
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+					if (hidejoblistinterface != null) {
+						hidejoblistinterface.arrowUnHideClieckEvent(mJobDetails,position);
 					}
 				}
 			});
@@ -254,7 +260,7 @@ public class HideJobListAdapter extends BaseAdapter{
 	
 	private class ViewHolder{
 		ImageView profilepic;
-		ImageView img_arrow,img_important;
+		ImageView img_arrow,img_important,img_like;
 		CustomTextView txt_name,txt_postdate,txt_subject,txt_contain;
 		ImageView btn_reply,btn_share,btn_comment;
 		ImageView img_post;

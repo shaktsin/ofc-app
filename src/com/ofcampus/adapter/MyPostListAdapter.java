@@ -114,17 +114,9 @@ public class MyPostListAdapter extends BaseAdapter {
 			mHolder.txt_name.setText(mJobDetails.getName());
 
 			String postedOnText = Util.getPostedOnText(mJobDetails.getPostedon());
-
 			mHolder.txt_postdate.setText(postedOnText);
-
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			mHolder.txt_contain.setText(mJobDetails.getContent());
-
-			// if (mJobDetails.getImportant()==1) {
-			// mHolder.img_important.setVisibility(View.VISIBLE);
-			// }else {
-			// mHolder.img_important.setVisibility(View.GONE);
-			// }
 
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
 			if (Images != null && Images.size() >= 1) {

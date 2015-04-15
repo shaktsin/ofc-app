@@ -121,6 +121,7 @@ public class ImportantMailListAdapter extends BaseAdapter {
 			mHolder.txt_contain.setText(mJobDetails.getContent());
 
 			mHolder.img_important.setVisibility(View.VISIBLE);
+			mHolder.img_arrow.setVisibility(View.GONE);
 			mHolder.img_important.setSelected(true);
 			mHolder.img_important.setOnClickListener(new OnClickListener() {
 

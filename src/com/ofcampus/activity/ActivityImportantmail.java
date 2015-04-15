@@ -21,12 +21,11 @@ import com.ofcampus.Util;
 import com.ofcampus.adapter.ImportantMailListAdapter;
 import com.ofcampus.adapter.ImportantMailListAdapter.ImportantMailListAdapterInterface;
 import com.ofcampus.databasehelper.ImportantJobTable;
-import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.ImportantMailParser;
-import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.ImportantMailParser.ImportantMailParserInterface;
+import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 
 public class ActivityImportantmail  extends ActionBarActivity implements ImportantMailListAdapterInterface{
@@ -44,7 +43,7 @@ public class ActivityImportantmail  extends ActionBarActivity implements Importa
 		context=ActivityImportantmail.this;
 		token=UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("Important Mail");
+		toolbar.setTitle("Bookmarked Posts");
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
