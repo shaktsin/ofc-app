@@ -86,44 +86,44 @@ public class NewsListAdapter extends BaseAdapter{
 		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size()-1).getPostid());
 		notifyDataSetChanged();
 	}
-//	
-//	
-//	public void hideJob(JobDetails hideJob){
-//		ArrayList<JobDetails> currentJobList=new ArrayList<JobDetails>(this.jobs);
-//		ArrayList<JobDetails> modifyJobList=new ArrayList<JobDetails>();
-//		for (JobDetails jobDetails : currentJobList) {
-//			if (!hideJob.getPostid().equals(jobDetails.getPostid())) {
-//				modifyJobList.add(jobDetails);
-//			}
-//		}
-//		this.jobs=modifyJobList;
-//		if (jobs.size()>=1) {
-//			setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size()-1).getPostid());
-//		}else {
-//			setIDS("", "");
-//		}
-//		notifyDataSetChanged();
-//	}
-//	
-//	public void importantJob(JobDetails hideJob){
-//		for (JobDetails jobDetails : jobs) {
-//			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
-//				jobDetails.important=1;
-//			}
-//		}
-//		notifyDataSetChanged();
-//	}
-//	
-//	public void unimportantJob(JobDetails hideJob){
-//		for (JobDetails jobDetails : jobs) {
-//			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
-//				jobDetails.important=0;
-//			}
-//		}
-//		notifyDataSetChanged();
-//	}
-//	
-//	
+	
+	
+	public void hideNews(JobDetails hideJob){ 
+		ArrayList<JobDetails> currentJobList=new ArrayList<JobDetails>(this.jobs);
+		ArrayList<JobDetails> modifyJobList=new ArrayList<JobDetails>();
+		for (JobDetails jobDetails : currentJobList) {
+			if (!hideJob.getPostid().equals(jobDetails.getPostid())) {
+				modifyJobList.add(jobDetails);
+			}
+		}
+		this.jobs=modifyJobList;
+		if (jobs.size()>=1) {
+			setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size()-1).getPostid());
+		}else {
+			setIDS("", "");
+		}
+		notifyDataSetChanged();
+	}
+	
+	public void importantNews(JobDetails hideJob){ 
+		for (JobDetails jobDetails : jobs) {
+			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
+				jobDetails.important=1;
+			}
+		}
+		notifyDataSetChanged();
+	}
+	
+	public void unimportantNews(JobDetails hideJob){
+		for (JobDetails jobDetails : jobs) {
+			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
+				jobDetails.important=0;
+			}
+		}
+		notifyDataSetChanged();
+	}
+	
+	
 	public ArrayList<JobDetails> getJobData() {
 		return this.jobs;
 	}
@@ -220,7 +220,7 @@ public class NewsListAdapter extends BaseAdapter{
 					
 					@Override
 					public void onClick(View v) {
-						userProfile(mJobDetails); 
+						viewOnClick(mJobDetails);
 					}
 				});
 				
@@ -291,53 +291,27 @@ public class NewsListAdapter extends BaseAdapter{
 
 				@Override
 				public void onClick(View v) {
-//					if (newslistinterface != null) {
-//						if (mJobDetails.getImportant()==0) {
-//							newslistinterface.impClieckEvent(mJobDetails);
-//						}else {
-//							newslistinterface.unimpClieckEvent(mJobDetails);
-//						}
-//						
-//					}
+					if (newslistinterface != null) {
+						if (mJobDetails.getImportant()==0) {
+							newslistinterface.impClieckEvent(mJobDetails);
+						}else {
+							newslistinterface.unimpClieckEvent(mJobDetails);
+						}
+						
+					}
 				}
 			});
 			
-//			mHolder.img_arrow.setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View v) {
-//					try {
-//						PopupMenu popup = new PopupMenu(mContext, v);
-//						popup.getMenuInflater().inflate(R.menu.job_optionmenu, popup.getMenu());
-//						popup.show();
-//						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//							@Override
-//							public boolean onMenuItemClick(MenuItem item) {
-//
-//								switch (item.getItemId()) {
-//								case R.id.hidepost:
-//									if (newslistinterface != null) {
-//										newslistinterface.arrowHideClieckEvent(mJobDetails);
-//									}
-//									break;
-//								case R.id.spampost:
-//									if (newslistinterface != null) {
-//										newslistinterface.arrowSpamClieckEvent(mJobDetails);
-//									}
-//									break;
-//
-//								default:
-//									break;
-//								}
-//
-//								return true;
-//							}
-//						});
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			});
+			mHolder.img_arrow.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					if (newslistinterface != null) {
+						newslistinterface.hideClieckEvent(mJobDetails);
+					}
+				}
+			});
 		}
 		return convertView;
 	}
@@ -452,10 +426,10 @@ public class NewsListAdapter extends BaseAdapter{
 	public interface NewsListInterface{ 
 
 		public void firstIDAndlastID(String fstID, String lstID); 
-//		public void arrowHideClieckEvent(JobDetails mJobDetails);  
+		public void hideClieckEvent(JobDetails mJobDetails);   
 //		public void arrowSpamClieckEvent(JobDetails mJobDetails);  
-//		public void impClieckEvent(JobDetails mJobDetails);  
-//		public void unimpClieckEvent(JobDetails mJobDetails);  
+		public void impClieckEvent(JobDetails mJobDetails);  
+		public void unimpClieckEvent(JobDetails mJobDetails);  
 		public void replyClickEvent(JobDetails mJobDetails);  
 	}
 
