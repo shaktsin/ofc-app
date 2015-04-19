@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
+import com.ofcampus.Util;
 import com.ofcampus.adapter.FilterJobsAdapter;
 import com.ofcampus.model.JobDetails;
 
@@ -25,6 +26,7 @@ public class ActivityFilterJobs extends ActionBarActivity{
 	private FilterJobsAdapter mFilterJobsAdapter;  
 	public ArrayList<JobDetails> filterJobs_;
 	private Context context;
+	private String title="Filter";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,13 @@ public class ActivityFilterJobs extends ActionBarActivity{
 		setContentView(R.layout.activity_filterjobs);
 
 		context=ActivityFilterJobs.this;
+		try {
+			title = getIntent().getExtras().getString(Util.BUNDLE_KEY[0]);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle("Filter Jobs");
+		toolbar.setTitle(title);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		

@@ -1,8 +1,3 @@
-/*
- * This is the source code of OfCampus for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.ofcampus.parser;
 
 import java.util.ArrayList;
@@ -20,8 +15,7 @@ import com.ofcampus.Util;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
-public class ImportantMailParser {
-
+public class NewsFilterParser {
 	private Context mContext;
 	
 	private String STATUS="status";
@@ -32,7 +26,7 @@ public class ImportantMailParser {
 	private String MESSAGES="messages";
 
 	/*Job List Key*/
-	private String POSTS="posts";
+	private String NEWSFEEDLIST="newsfeedList"; 
 	private String POSTID="postId";
 	private String SUBJECT="subject";
 	private String ISB_JOBS="ISB JOBS";
@@ -43,64 +37,69 @@ public class ImportantMailParser {
 	private String NAME="name";
 	private String IMAGE="image";
 	private String REPLYDTO="replyDto";
-	private String SHAREDTO="shareDto";
-
+	
 	private String REPLYEMAIL="replyEmail";
 	private String REPLYPHONE="replyPhone";
 	private String REPLYWATSAPP="replyWatsApp";
 	
+	private String SHAREDTO="shareDto";
+	private String IMPORTANT="important";
+
 	private String POSTIMAGES="attachmentDtoList";
 	private String IMAGES_ID="id";
 	private String IMAGES_URL="url";
 	
 	private String POSTTYPE="postType";
-	
+
+
 	/*Response JSON key value*/
 	private String responsecode="";
 	private String responseDetails="";
 	
-	public void parse(Context context, JSONObject postData,String authorization) { 
+	public void parse(Context context, JSONObject postData,String authorization,boolean isShowingPG) { 
 		this.mContext = context;
-		ImportantMailAsync mImportantMailAsync = new ImportantMailAsync(mContext,postData,authorization);   
+		Async mAsync = new Async(mContext,postData,authorization,isShowingPG); 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mImportantMailAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			mAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
-			mImportantMailAsync.execute();  
+			mAsync.execute();  
 		}
-	}
+	} 
 	
 	
-	private class ImportantMailAsync extends AsyncTask<Void, Void, Void>{ 
+	private class Async extends AsyncTask<Void, Void, Void>{ 
 		private Context context;
 		private String authenticationJson;
-		private JSONObject postData;
-		private String authorization;
+		private JSONObject postData; 
 		private boolean isTimeOut=false;
 		private ProgressDialog mDialog;
-		private ArrayList<JobDetails> mJobList;
-		
-		
-		
-		public ImportantMailAsync(Context mContext, JSONObject postData_, String authorization_) {
+		private ArrayList<JobDetails> JobList;
+		private String authToken;
+		private boolean isShowingPG_;
+
+		public Async(Context mContext, JSONObject postData_,String authToken_,boolean isShowingPG) {
 			this.context = mContext;
 			this.postData = postData_;
-			this.authorization = authorization_;
+			this.authToken=authToken_;
+			this.isShowingPG_=isShowingPG;
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			mDialog=new ProgressDialog(mContext);
-			mDialog.setMessage("Loading...");
-			mDialog.setCancelable(false);
-			mDialog.show();
+			if (isShowingPG_) {
+				mDialog=new ProgressDialog(mContext);
+				mDialog.setMessage("Loading...");
+				mDialog.setCancelable(false);
+				mDialog.show();
+			}
 		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			
 			try {
-				String[] responsedata =   Util.POSTWithJSONAuth(Util.getImportantmailUrl(), postData, authorization);
+				String[] responsedata =  Util.POSTWithJSONAuth(Util.getNewsListUrl(), postData, authToken);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205"))?true:false;
 				
@@ -112,16 +111,15 @@ public class ImportantMailParser {
 						if (Obj!=null && !Obj.equals("")) {
 							String expt= Util.getJsonValue(Obj, EXCEPTION);
 							if (expt.equals("false")) {
-								mJobList = parseJSONData(Obj);
+								JobList = parseJSONData(Obj);
 							}
 						}
-					}else if(responsecode!=null && responsecode.equals("500")){
+					}else if(responsecode!=null && (responsecode.equals("500") || responsecode.equals("401"))){
 						JSONObject userObj = mObject.getJSONObject(RESULTS);
 						if (userObj!=null) {
 							responseDetails=userObj.getJSONArray("messages").get(0).toString();
 						}
 					}
-					
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -139,21 +137,22 @@ public class ImportantMailParser {
 			}
 			
 			if (isTimeOut) {
-				if (importantmailparserinterface != null) {
-					importantmailparserinterface.OnError(); 
+				if (newsfilterparserinterface != null) {
+					newsfilterparserinterface.OnError(); 
 				}
 			}else if (responsecode.equals("200")) {
-				if (mJobList!=null) {
-					if (importantmailparserinterface!=null) {
-						importantmailparserinterface.OnSuccess(mJobList); 
+
+				if (JobList!=null && JobList.size()>=1) {
+					if (newsfilterparserinterface!=null) {
+						newsfilterparserinterface.OnSuccess(JobList); 
 					}
 				}else {
-					Util.ShowToast(mContext, "No more Important Jobs.");
+					Util.ShowToast(mContext, "NO data availble.");
 				}
-			}else if (responsecode.equals("500")){
+			}else if (responsecode.equals("500") || responsecode.equals("401")){
 				Util.ShowToast(mContext, responseDetails);
 			}else {
-				Util.ShowToast(mContext, "Joblist parse error.");
+				Util.ShowToast(mContext, "Filter Error.");
 			}
 		}
 	}
@@ -163,16 +162,16 @@ public class ImportantMailParser {
 	
 	
 	
-	private ArrayList<JobDetails> parseJSONData(JSONObject obj){
+	public ArrayList<JobDetails> parseJSONData(JSONObject obj){
 
-		ArrayList<JobDetails> jobarray=null;
+		ArrayList<JobDetails> jobarray = new ArrayList<JobDetails>();
+		
 		try {
 			JSONObject jsonobject=null;
-			JSONArray jobjsonarray=obj.getJSONArray(POSTS) ;
+			
+			JSONArray jobjsonarray=obj.getJSONArray(NEWSFEEDLIST) ;
 			
 			if (jobjsonarray != null && jobjsonarray.length() >= 1) {
-				
-				jobarray = new ArrayList<JobDetails>();
 				
 				for (int i = 0; i < jobjsonarray.length(); i++) {
 					JobDetails mJobDetails=new JobDetails();
@@ -183,7 +182,7 @@ public class ImportantMailParser {
 					mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));
 					mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
 					mJobDetails.setPostedon(Util.getJsonValue(jsonobject, POSTEDON));
-					
+					mJobDetails.setImportant((Util.getJsonValue(jsonobject, IMPORTANT).equals("true"))?1:0);
 					JSONObject userJSONobj=jsonobject.getJSONObject(USERDTO);
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
@@ -191,11 +190,12 @@ public class ImportantMailParser {
 					mJobDetails.setPostType(Util.getJsonValue(jsonobject, POSTTYPE));
 					
 					JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
-					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
 					
 					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
 					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
 					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
+					
+					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
 					
 					try {
 						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
@@ -228,13 +228,19 @@ public class ImportantMailParser {
 		
 	}
 	
-	
-	public JSONObject getBody() {
+
+	public JSONObject getBody(String circle,String locationFilter, String industryFilter,String rolesFilter,String salaryFilter,String experienceFilter) {
 		JSONObject jsObj = new JSONObject();
 		try {
 			jsObj.put("plateFormId", "0");
 			jsObj.put("appName", "ofCampus");
-			jsObj.put("actionId", "2");
+			jsObj.put("circleFilter", circle);
+//			jsObj.put("locationFilter", locationFilter);
+//			jsObj.put("industryFilter", industryFilter);
+//			jsObj.put("rolesFilter", rolesFilter);
+//			jsObj.put("salaryFilter", salaryFilter);
+//			jsObj.put("experienceFilter", experienceFilter);
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -242,22 +248,20 @@ public class ImportantMailParser {
 	}
 	
 	
-	public ImportantMailParserInterface importantmailparserinterface;
+	
+	public NewsFilterParserInterface newsfilterparserinterface;
 
-	public ImportantMailParserInterface getImportantmailparserinterface() {
-		return importantmailparserinterface;
+	public NewsFilterParserInterface getNewsfilterparserinterface() {
+		return newsfilterparserinterface;
 	}
 
-	public void setImportantmailparserinterface(
-			ImportantMailParserInterface importantmailparserinterface) {
-		this.importantmailparserinterface = importantmailparserinterface;
+	public void setNewsfilterparserinterface(NewsFilterParserInterface newsfilterparserinterface) {
+		this.newsfilterparserinterface = newsfilterparserinterface;
 	}
 
-	public interface ImportantMailParserInterface {
-		public void OnSuccess(ArrayList<JobDetails> mJobList);
+	public interface NewsFilterParserInterface {
+		public void OnSuccess(ArrayList<JobDetails> jobList);
 
 		public void OnError();
 	}
-
 }
-

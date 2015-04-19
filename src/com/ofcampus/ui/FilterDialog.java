@@ -41,6 +41,8 @@ import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.FilterParser;
 import com.ofcampus.parser.FilterParser.FilterParserInterface;
+import com.ofcampus.parser.NewsFilterParser;
+import com.ofcampus.parser.NewsFilterParser.NewsFilterParserInterface;
 
 public class FilterDialog implements FilterBAdpInterface{
 	
@@ -421,36 +423,59 @@ public class FilterDialog implements FilterBAdpInterface{
 		}
 		
 		
-		
-		FilterParser mFilterParser=new FilterParser(); 
-		JSONObject postData = mFilterParser.getBody(circle,locationFilter, industryFilterr, rolesFilterr, salaryFilterr, experienceFilterr);
-		
 //		Log.i("postData", postData.toString());
-		
-		
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
 			return;
 		}
 		
-		mFilterParser.setFilterparserinterface(new FilterParserInterface() {
-			
-			@Override
-			public void OnSuccess(ArrayList<JobDetails> jobS) {
-				if (jobS!=null && jobS.size()>=1) {
-					dialogFinish();
-					((OfCampusApplication)context.getApplicationContext()).filterJobs=jobS;
-					context.startActivity(new Intent(context,ActivityFilterJobs.class));
-					((Activity)context).overridePendingTransition(0, 0);
-				}
-			}
-			
-			@Override
-			public void OnError() {
+		if (selectedTab==0) {
+			NewsFilterParser mNewsFilterParser=new NewsFilterParser(); 
+			JSONObject postData = mNewsFilterParser.getBody(circle,locationFilter, industryFilterr, rolesFilterr, salaryFilterr, experienceFilterr);
+			mNewsFilterParser.setNewsfilterparserinterface(new NewsFilterParserInterface() {
 				
-			}
-		});
-		mFilterParser.parse(context, postData, token, true);
+				@Override
+				public void OnSuccess(ArrayList<JobDetails> jobList) {
+					if (jobList!=null && jobList.size()>=1) {
+						dialogFinish();
+						((OfCampusApplication)context.getApplicationContext()).filterJobs=jobList;
+						Intent mIntent = new Intent(context,ActivityFilterJobs.class);
+						mIntent.putExtra(Util.BUNDLE_KEY[0], Util.TOOLTITLE_FILTER[1]);
+						context.startActivity(mIntent);
+						((Activity)context).overridePendingTransition(0, 0);
+					}
+				}
+				
+				@Override
+				public void OnError() {
+					
+				}
+			});
+			mNewsFilterParser.parse(context, postData, token, true);
+		}else {
+			FilterParser mFilterParser=new FilterParser(); 
+			JSONObject postData = mFilterParser.getBody(circle,locationFilter, industryFilterr, rolesFilterr, salaryFilterr, experienceFilterr);
+			mFilterParser.setFilterparserinterface(new FilterParserInterface() {
+				
+				@Override
+				public void OnSuccess(ArrayList<JobDetails> jobS) {
+					if (jobS!=null && jobS.size()>=1) {
+						dialogFinish();
+						((OfCampusApplication)context.getApplicationContext()).filterJobs=jobS;
+						Intent mIntent = new Intent(context,ActivityFilterJobs.class);
+						mIntent.putExtra(Util.BUNDLE_KEY[0], Util.TOOLTITLE_FILTER[0]);
+						context.startActivity(mIntent);
+						((Activity)context).overridePendingTransition(0, 0);
+					}
+				}
+				
+				@Override
+				public void OnError() {
+					
+				}
+			});
+			mFilterParser.parse(context, postData, token, true);
+		}
 	}
 	
 	

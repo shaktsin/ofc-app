@@ -64,6 +64,8 @@ public class NewsFeedListParser {
 	private String ATTACHEDKEYDOC="docs";
 	private String ATTACHMENT_ID="id";
 	private String ATTACHMENT_URL="url"; 
+	
+	private String POSTTYPE="postType";
 
 	/*Response JSON key value*/
 	private String responsecode="";
@@ -206,6 +208,7 @@ public class NewsFeedListParser {
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
+					mJobDetails.setPostType(Util.getJsonValue(jsonobject, POSTTYPE));
 					
 					JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
 					

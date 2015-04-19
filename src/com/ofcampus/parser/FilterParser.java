@@ -54,6 +54,7 @@ public class FilterParser {
 	private String IMAGES_ID="id";
 	private String IMAGES_URL="url";
 	
+	private String POSTTYPE="postType";
 
 
 
@@ -192,6 +193,7 @@ public class FilterParser {
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
+					mJobDetails.setPostType(Util.getJsonValue(jsonobject, POSTTYPE));
 					
 					JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
 					

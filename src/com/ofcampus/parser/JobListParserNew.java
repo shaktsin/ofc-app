@@ -64,6 +64,8 @@ private Context mContext;
 	private String ATTACHMENT_ID="id";
 	private String ATTACHMENT_URL="url"; 
 	
+	private String POSTTYPE="postType";
+	
 	/*City List Key*/
 	private String CITYDTOLIST="cityDtoList";
 	private String CITY_ID="id";
@@ -236,6 +238,7 @@ private Context mContext;
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
+					mJobDetails.setPostType(Util.getJsonValue(jsonobject, POSTTYPE));
 					
 					JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
 					

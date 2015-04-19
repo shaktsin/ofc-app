@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
+import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
 public class HideJobListParser {
@@ -47,6 +48,12 @@ public class HideJobListParser {
 	private String REPLYEMAIL="replyEmail";
 	private String REPLYPHONE="replyPhone";
 	private String REPLYWATSAPP="replyWatsApp";
+	
+	private String POSTIMAGES="attachmentDtoList";
+	private String IMAGES_ID="id";
+	private String IMAGES_URL="url";
+	
+	private String POSTTYPE="postType";
 	
 	/*Response JSON key value*/
 	private String responsecode="";
@@ -181,6 +188,7 @@ public class HideJobListParser {
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
+					mJobDetails.setPostType(Util.getJsonValue(jsonobject, POSTTYPE));
 					
 					JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
 					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
@@ -189,6 +197,22 @@ public class HideJobListParser {
 					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
 					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
 
+					try {
+						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
+						if (imageJSONArray!=null && imageJSONArray.length()>=1) {
+							ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
+							for (int i1 = 0; i1 < imageJSONArray.length(); i1++) {
+								JSONObject imgJSONObject = imageJSONArray.getJSONObject(i1);
+								ImageDetails mImageDetails=new ImageDetails();
+								mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(imgJSONObject, IMAGES_ID)));
+								mImageDetails.setImageURL(Util.getJsonValue(imgJSONObject, IMAGES_URL));
+								images.add(mImageDetails);
+							}
+							mJobDetails.setImages(images);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					jobarray.add(mJobDetails);
 					mJobDetails=null;
 				}

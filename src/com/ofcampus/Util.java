@@ -79,6 +79,7 @@ public class Util {
 	public static String sendto[] = { "Everyone", "Class of 2014","General Management Club", "Finance Club", "Hyderabad Chapter" };
 	
 	public static String TOOLTITLE[] = { "Post Details", "News Details" };
+	public static String TOOLTITLE_FILTER[] = { "Filter Posts", "Filter News" };
 	public static String BUNDLE_KEY[] = { "CAMEFROM","COMMENTORDETAILS" };
 
 //	public static int ICONS[] = { R.drawable.ic_profile, R.drawable.ic_mypost,
