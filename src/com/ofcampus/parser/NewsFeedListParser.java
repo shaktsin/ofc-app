@@ -56,7 +56,8 @@ public class NewsFeedListParser {
 
 	private String SHAREDTO = "shareDto";
 	private String IMPORTANT = "important";
-
+	private String LIKED="liked";
+	
 	private String POSTIMAGES = "attachmentDtoList";
 	private String ATTACHMENTTYPE = "attachmentType";
 	private String ATTACHEDKEYIMAGE = "image";
@@ -150,8 +151,7 @@ public class NewsFeedListParser {
 		}
 	}
 
-	public ArrayList<JobDetails> bgSyncCalling(Context context,
-			JSONObject postData_, String authToken_) {
+	public ArrayList<JobDetails> bgSyncCalling(Context context, JSONObject postData_, String authToken_) {
 		this.mContext = context;
 		this.postData = postData_;
 		this.authToken = authToken_;
@@ -161,8 +161,7 @@ public class NewsFeedListParser {
 
 	public void doingBGWork() {
 		try {
-			String[] responsedata = Util.POSTWithJSONAuth(
-					Util.getNewsListUrl(), postData, authToken);
+			String[] responsedata = Util.POSTWithJSONAuth(Util.getNewsListUrl(), postData, authToken);
 			authenticationJson = responsedata[1];
 			isTimeOut = (responsedata[0].equals("205")) ? true : false;
 
@@ -177,13 +176,10 @@ public class NewsFeedListParser {
 							newsList = parseJSONData(Obj);
 						}
 					}
-				} else if (responsecode != null
-						&& (responsecode.equals("500") || responsecode
-								.equals("401"))) {
+				} else if (responsecode != null && (responsecode.equals("500") || responsecode.equals("401"))) {
 					JSONObject userObj = mObject.getJSONObject(RESULTS);
 					if (userObj != null) {
-						responseDetails = userObj.getJSONArray("messages")
-								.get(0).toString();
+						responseDetails = userObj.getJSONArray("messages").get(0).toString();
 					}
 				}
 			}
@@ -209,81 +205,52 @@ public class NewsFeedListParser {
 					JobDetails mJobDetails = new JobDetails();
 					JSONObject jsonobject = jobjsonarray.getJSONObject(i);
 
-					mJobDetails
-							.setPostid(Util.getJsonValue(jsonobject, POSTID));
-					mJobDetails.setSubject(Util.getJsonValue(jsonobject,
-							SUBJECT));
-					mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject,
-							ISB_JOBS));
-					mJobDetails.setContent(Util.getJsonValue(jsonobject,
-							CONTENT));
-					mJobDetails.setPostedon(Util.getJsonValue(jsonobject,
-							POSTEDON));
-					mJobDetails.setImportant((Util.getJsonValue(jsonobject,
-							IMPORTANT).equals("true")) ? 1 : 0);
+					mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID));
+					mJobDetails.setSubject(Util.getJsonValue(jsonobject, SUBJECT));
+					mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));
+					mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
+					mJobDetails.setPostedon(Util.getJsonValue(jsonobject, POSTEDON));
+					mJobDetails.setImportant((Util.getJsonValue(jsonobject, IMPORTANT).equals("true")) ? 1 : 0);
+					mJobDetails.setLike((Util.getJsonValue(jsonobject, LIKED).equals("true")) ? 1 : 0);
+					
 					JSONObject userJSONobj = jsonobject.getJSONObject(USERDTO);
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
-					mJobDetails.setPostType(Util.getJsonValue(jsonobject,
-							POSTTYPE));
+					mJobDetails.setPostType(Util.getJsonValue(jsonobject, POSTTYPE));
 
 					JSONObject rplJSONObj = jsonobject.getJSONObject(REPLYDTO);
 
-					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj,
-							REPLYEMAIL));
-					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj,
-							REPLYPHONE));
-					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj,
-							REPLYWATSAPP));
+					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
+					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
+					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP));
 
-					mJobDetails.setSharedto(Util.getJsonValue(jsonobject,
-							SHAREDTO));
+					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
 
-					mJobDetails.setNumreplies(Util.getJsonValue(jsonobject,
-							NUMREPLIES));
-					mJobDetails.setNumshared(Util.getJsonValue(jsonobject,
-							NUMSHARED));
-					mJobDetails.setNumcomment(Util.getJsonValue(jsonobject,
-							NUMCOMMENT));
-					mJobDetails.setNumhides(Util.getJsonValue(jsonobject,
-							NUMHIDES));
-					mJobDetails.setNumimportant(Util.getJsonValue(jsonobject,
-							NUMIMPORTANT));
-					mJobDetails.setNumspam(Util.getJsonValue(jsonobject,
-							NUMSPAM));
+					mJobDetails.setNumreplies(Util.getJsonValue(jsonobject, NUMREPLIES));
+					mJobDetails.setNumshared(Util.getJsonValue(jsonobject, NUMSHARED));
+					mJobDetails.setNumcomment(Util.getJsonValue(jsonobject, NUMCOMMENT));
+					mJobDetails.setNumhides(Util.getJsonValue(jsonobject, NUMHIDES));
+					mJobDetails.setNumimportant(Util.getJsonValue(jsonobject, NUMIMPORTANT));
+					mJobDetails.setNumspam(Util.getJsonValue(jsonobject, NUMSPAM));
 
 					try {
-						JSONArray attachmentJSONArray = jsonobject
-								.getJSONArray(POSTIMAGES);
-						if (attachmentJSONArray != null
-								&& attachmentJSONArray.length() >= 1) {
+						JSONArray attachmentJSONArray = jsonobject.getJSONArray(POSTIMAGES);
+						if (attachmentJSONArray != null && attachmentJSONArray.length() >= 1) {
 							ArrayList<ImageDetails> images = new ArrayList<ImageDetails>();
 							ArrayList<DocDetails> docList = new ArrayList<DocDetails>();
 
 							for (int i1 = 0; i1 < attachmentJSONArray.length(); i1++) {
-								JSONObject attachmentObj = attachmentJSONArray
-										.getJSONObject(i1);
-								if (Util.getJsonValue(attachmentObj,
-										ATTACHMENTTYPE)
-										.equals(ATTACHEDKEYIMAGE)) {
+								JSONObject attachmentObj = attachmentJSONArray.getJSONObject(i1);
+								if (Util.getJsonValue(attachmentObj, ATTACHMENTTYPE).equals(ATTACHEDKEYIMAGE)) {
 									ImageDetails mImageDetails = new ImageDetails();
-									mImageDetails.setImageID(Integer
-											.parseInt(Util.getJsonValue(
-													attachmentObj,
-													ATTACHMENT_ID)));
-									mImageDetails.setImageURL(Util
-											.getJsonValue(attachmentObj,
-													ATTACHMENT_URL));
+									mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(attachmentObj, ATTACHMENT_ID)));
+									mImageDetails.setImageURL(Util.getJsonValue(attachmentObj, ATTACHMENT_URL));
 									images.add(mImageDetails);
-								} else if (Util.getJsonValue(attachmentObj,
-										ATTACHMENTTYPE).equals(ATTACHEDKEYDOC)) {
+								} else if (Util.getJsonValue(attachmentObj, ATTACHMENTTYPE).equals(ATTACHEDKEYDOC)) {
 									DocDetails mDetails = new DocDetails();
-									mDetails.setDocID(Integer.parseInt(Util
-											.getJsonValue(attachmentObj,
-													ATTACHMENT_ID)));
-									mDetails.setDocURL(Util.getJsonValue(
-											attachmentObj, ATTACHMENT_URL));
+									mDetails.setDocID(Integer.parseInt(Util.getJsonValue(attachmentObj, ATTACHMENT_ID)));
+									mDetails.setDocURL(Util.getJsonValue(attachmentObj, ATTACHMENT_URL));
 									// mDetails.setDocsize(docsize);
 									docList.add(mDetails);
 								}
@@ -309,8 +276,7 @@ public class NewsFeedListParser {
 	}
 
 	// {"plateFormId":0,"appName":"ofCampus","postId":,"operation":,"perPage":,"pageNo":}
-	public JSONObject getBody(String postId, String operation, String perPage,
-			String pageNo) {
+	public JSONObject getBody(String postId, String operation, String perPage, String pageNo) {
 		JSONObject jsObj = new JSONObject();
 		try {
 			jsObj.put("plateFormId", "0");
@@ -355,8 +321,7 @@ public class NewsFeedListParser {
 		return newsfeedlistparserinterface;
 	}
 
-	public void setNewsfeedlistparserinterface(
-			NewsFeedListParserInterface newsfeedlistparserinterface) {
+	public void setNewsfeedlistparserinterface(NewsFeedListParserInterface newsfeedlistparserinterface) {
 		this.newsfeedlistparserinterface = newsfeedlistparserinterface;
 	}
 

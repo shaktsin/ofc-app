@@ -113,16 +113,16 @@ public class JobListBaseAdapter extends BaseAdapter {
 		}
 		notifyDataSetChanged();
 	}
-	
-	public void likRefreshJob(JobDetails postLiked) { 
+
+	public void likRefreshJob(JobDetails postLiked) {
 		for (JobDetails postDetails : jobs) {
-			if (postLiked.getPostid().equals(postDetails.getPostid())) { 
-				postDetails.like = (postDetails.getLike()==0)?1:0;
+			if (postLiked.getPostid().equals(postDetails.getPostid())) {
+//				postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
+				postDetails.like = 1;
 			}
 		}
 		notifyDataSetChanged();
 	}
-	
 
 	public ArrayList<JobDetails> getJobData() {
 		return this.jobs;
@@ -199,9 +199,9 @@ public class JobListBaseAdapter extends BaseAdapter {
 			mHolder.img_important.setVisibility(View.VISIBLE);
 			mHolder.img_like.setVisibility(View.VISIBLE);
 			mHolder.img_arrow.setVisibility(View.VISIBLE);
-			
-			mHolder.img_like.setSelected((mJobDetails.like == 1)?true:false);
-			mHolder.img_important.setSelected((mJobDetails.getImportant() == 1)?true:false);
+
+			mHolder.img_like.setSelected((mJobDetails.like == 1) ? true : false);
+			mHolder.img_important.setSelected((mJobDetails.getImportant() == 1) ? true : false);
 
 			String replycount = mJobDetails.getNumreplies();
 			String sharecount = mJobDetails.getNumshared();
@@ -325,18 +325,17 @@ public class JobListBaseAdapter extends BaseAdapter {
 					}
 				}
 			});
-			
-			
+
 			mHolder.img_like.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					if (joblistinterface != null) {
+					if (joblistinterface != null && mJobDetails.getLike() == 0) {
 						joblistinterface.likeCliekEvent(mJobDetails);
 					}
 				}
 			});
-
+			
 			mHolder.img_arrow.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -470,7 +469,7 @@ public class JobListBaseAdapter extends BaseAdapter {
 		public void unimpClieckEvent(JobDetails mJobDetails);
 
 		public void replyClickEvent(JobDetails mJobDetails);
-		
+
 		public void likeCliekEvent(JobDetails mJobDetails);
 	}
 

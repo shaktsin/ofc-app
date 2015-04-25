@@ -113,10 +113,11 @@ public class NewsListAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 
-	public void likRefreshJob(JobDetails postLiked) {
-		for (JobDetails postDetails : jobs) {
-			if (postLiked.getPostid().equals(postDetails.getPostid())) {
-				postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
+	public void likRefreshJob(JobDetails newsLiked) {
+		for (JobDetails newsDetails : jobs) {
+			if (newsLiked.getPostid().equals(newsDetails.getPostid())) {
+//				postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
+				newsDetails.like = 1;  
 			}
 		}
 		notifyDataSetChanged();
@@ -195,10 +196,10 @@ public class NewsListAdapter extends BaseAdapter {
 			mHolder.img_important.setVisibility(View.VISIBLE);
 			mHolder.img_like.setVisibility(View.VISIBLE);
 			mHolder.img_arrow.setVisibility(View.VISIBLE);
-			
-			mHolder.img_like.setSelected((mJobDetails.like == 1)?true:false);
-			mHolder.img_important.setSelected((mJobDetails.getImportant() == 1)?true:false);
-			
+
+			mHolder.img_like.setSelected((mJobDetails.like == 1) ? true : false);
+			mHolder.img_important.setSelected((mJobDetails.getImportant() == 1) ? true : false);
+
 			String replycount = mJobDetails.getNumreplies();
 			String sharecount = mJobDetails.getNumshared();
 			String commentcount = mJobDetails.getNumcomment();
@@ -326,7 +327,7 @@ public class NewsListAdapter extends BaseAdapter {
 
 				@Override
 				public void onClick(View v) {
-					if (newslistinterface != null) {
+					if (newslistinterface != null && mJobDetails.getLike() == 0) {
 						newslistinterface.likeCliekEvent(mJobDetails);
 					}
 				}
