@@ -56,6 +56,7 @@ public class MyPostParser  {
 	private String NUMHIDES="numHides";
 	private String NUMIMPORTANT="numImportant";
 	private String NUMSPAM="numSpam";
+	private String NUMLIKES="numLikes";
 
 	private String POSTIMAGES="attachmentDtoList";
 	private String IMAGES_ID="id";
@@ -215,6 +216,7 @@ public class MyPostParser  {
 					mJobDetails.setNumhides(Util.getJsonValue(jsonobject, NUMHIDES));
 					mJobDetails.setNumimportant(Util.getJsonValue(jsonobject, NUMIMPORTANT));
 					mJobDetails.setNumspam(Util.getJsonValue(jsonobject, NUMSPAM));
+					mJobDetails.setNumlikes(Util.getJsonValue(jsonobject, NUMLIKES));
 					
 					try {
 						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);

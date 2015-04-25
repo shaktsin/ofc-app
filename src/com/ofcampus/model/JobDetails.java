@@ -12,6 +12,7 @@ public class JobDetails {
 	private String postid = "";
 	private String subject = "";
 	public int important = 0;
+	public int like = 0;
 	private String isb_jobs = "";
 
 	private String content = "";
@@ -44,6 +45,15 @@ public class JobDetails {
 	private String numhides = "";
 	private String numimportant = "";
 	private String numspam = "";
+	private String numlikes = "";
+
+	public String getNumlikes() {
+		return numlikes;
+	}
+
+	public void setNumlikes(String numlikes) {
+		this.numlikes = numlikes;
+	}
 
 	public String getPostType() {
 		return postType;
@@ -176,6 +186,14 @@ public class JobDetails {
 
 	public void setImportant(int important) {
 		this.important = important;
+	}
+
+	public int getLike() {
+		return like;
+	}
+
+	public void setLike(int like) {
+		this.like = like;
 	}
 
 	public String getReplyEmail() {

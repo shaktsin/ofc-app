@@ -7,9 +7,7 @@ package com.ofcampus.activity;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,7 +21,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.JobListBaseAdapter;
@@ -111,6 +108,13 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	public void unimpClieckEvent(JobDetails mJobDetails){
 		UnImptCalling(mJobDetails,11);	
 	}
+	
+	@Override 
+	public void likeCliekEvent(JobDetails mJobDetails){
+		HideCalling(mJobDetails,13);	
+	}
+	
+	
 	
 	@Override 
 	public void replyClickEvent(JobDetails mJobDetails){
@@ -350,6 +354,13 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 					JOBListTable.getInstance(context).inserJobData(arr);
 					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 					mJobListAdapter.unimportantJob(mJobDetails);
+				}else if (state==13 ) {
+//					ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
+//					mJobDetails.like=0;
+//					arr.add(mJobDetails);
+//					JOBListTable.getInstance(context).inserJobData(arr);
+//					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+					mJobListAdapter.likRefreshJob(mJobDetails);
 				}
 			}
 			

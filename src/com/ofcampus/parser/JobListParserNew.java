@@ -56,6 +56,8 @@ private Context mContext;
 	
 	private String SHAREDTO="shareDto";
 	private String IMPORTANT="important";
+	private String LIKED="liked";
+	
 
 	private String POSTIMAGES="attachmentDtoList";
 	private String ATTACHMENTTYPE="attachmentType";
@@ -93,7 +95,7 @@ private Context mContext;
 	private String NUMHIDES="numHides";
 	private String NUMIMPORTANT="numImportant";
 	private String NUMSPAM="numSpam";
-
+	private String NUMLIKES="numLikes";
 
 	/*Response JSON key value*/
 	private String responsecode="";
@@ -242,6 +244,10 @@ private Context mContext;
 					mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
 					mJobDetails.setPostedon(Util.getJsonValue(jsonobject, POSTEDON));
 					mJobDetails.setImportant((Util.getJsonValue(jsonobject, IMPORTANT).equals("true"))?1:0);
+					mJobDetails.setLike((Util.getJsonValue(jsonobject, LIKED).equals("true"))?1:0);
+					
+					
+					
 					JSONObject userJSONobj=jsonobject.getJSONObject(USERDTO);
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
@@ -263,7 +269,7 @@ private Context mContext;
 					mJobDetails.setNumhides(Util.getJsonValue(jsonobject, NUMHIDES));
 					mJobDetails.setNumimportant(Util.getJsonValue(jsonobject, NUMIMPORTANT));
 					mJobDetails.setNumspam(Util.getJsonValue(jsonobject, NUMSPAM));
-					
+					mJobDetails.setNumlikes(Util.getJsonValue(jsonobject, NUMLIKES));
 					
 					try {
 						JSONArray attachmentJSONArray = jsonobject.getJSONArray(POSTIMAGES); 

@@ -298,7 +298,12 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 	public void unimpClieckEvent(JobDetails mJobDetails) {
 		UnImptCalling(mJobDetails, 11);
 	}
-
+	
+	@Override 
+	public void likeCliekEvent(JobDetails mJobDetails){
+		HideCalling(mJobDetails,13);	
+	}
+	
 	private void HideCalling(final JobDetails mJobDetails, final int state) {
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
@@ -327,6 +332,13 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 					JOBListTable.getInstance(context).inserJobData(arr);
 					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 					mNewsListAdapter.unimportantNews(mJobDetails);
+				}else if (state==13 ) {
+//					ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
+//					mJobDetails.like=0;
+//					arr.add(mJobDetails);
+//					JOBListTable.getInstance(context).inserJobData(arr);
+//					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+					mNewsListAdapter.likRefreshJob(mJobDetails);
 				}
 			}
 

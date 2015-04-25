@@ -54,6 +54,7 @@ public class FilterParser {
 	private String NUMHIDES="numHides";
 	private String NUMIMPORTANT="numImportant";
 	private String NUMSPAM="numSpam";
+	private String NUMLIKES="numLikes";
 	
 	private String SHAREDTO="shareDto";
 	private String IMPORTANT="important";
@@ -216,6 +217,8 @@ public class FilterParser {
 					mJobDetails.setNumhides(Util.getJsonValue(jsonobject, NUMHIDES));
 					mJobDetails.setNumimportant(Util.getJsonValue(jsonobject, NUMIMPORTANT));
 					mJobDetails.setNumspam(Util.getJsonValue(jsonobject, NUMSPAM));
+					mJobDetails.setNumlikes(Util.getJsonValue(jsonobject, NUMLIKES));
+					
 					
 					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
 					
