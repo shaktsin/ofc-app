@@ -198,30 +198,28 @@ public class JobListBaseAdapter extends BaseAdapter {
 			String replycount = mJobDetails.getNumreplies();
 			String sharecount = mJobDetails.getNumshared();
 			String commentcount = mJobDetails.getNumcomment();
-			
-			
-			if (replycount!=null && replycount.length()>=1 && !replycount.equalsIgnoreCase("0")) {
+
+			if (replycount != null && replycount.length() >= 1 && !replycount.equalsIgnoreCase("0")) {
 				mHolder.txt_replycount.setVisibility(View.VISIBLE);
 				mHolder.txt_replycount.setText(replycount + " replys");
-			}else {
+			} else {
 				mHolder.txt_replycount.setVisibility(View.GONE);
 			}
-			
-			if (sharecount!=null && sharecount.length()>=1 && !sharecount.equalsIgnoreCase("0")) {
+
+			if (sharecount != null && sharecount.length() >= 1 && !sharecount.equalsIgnoreCase("0")) {
 				mHolder.txt_sharecount.setVisibility(View.VISIBLE);
 				mHolder.txt_sharecount.setText(sharecount + " shareed");
-			}else {
+			} else {
 				mHolder.txt_sharecount.setVisibility(View.GONE);
 			}
-			
-			if (commentcount!=null && commentcount.length()>=1 && !commentcount.equalsIgnoreCase("0")) {
+
+			if (commentcount != null && commentcount.length() >= 1 && !commentcount.equalsIgnoreCase("0")) {
 				mHolder.txt_commentcount.setVisibility(View.VISIBLE);
 				mHolder.txt_commentcount.setText(commentcount + " comments");
-			}else {
+			} else {
 				mHolder.txt_commentcount.setVisibility(View.GONE);
 			}
-			
-			
+
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
 			ArrayList<DocDetails> Docs = mJobDetails.getDoclist();
 

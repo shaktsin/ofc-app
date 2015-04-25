@@ -103,6 +103,10 @@ public class ImportantMailListAdapter extends BaseAdapter {
 			mHolder.btn_share = (ImageView) convertView.findViewById(R.id.joblistview_txt_share);
 			mHolder.btn_comment = (ImageView) convertView.findViewById(R.id.joblistview_txt_comment);
 
+			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_reply_count);
+			mHolder.txt_sharecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_share_count);
+			mHolder.txt_commentcount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_comment_count);
+
 			mHolder.img_post = (ImageView) convertView.findViewById(R.id.joblistview_img_post);
 			mHolder.joblistview_img_post_rel = (CardView) convertView.findViewById(R.id.joblistview_img_post_rel);
 
@@ -132,6 +136,31 @@ public class ImportantMailListAdapter extends BaseAdapter {
 					}
 				}
 			});
+
+			String replycount = mJobDetails.getNumreplies();
+			String sharecount = mJobDetails.getNumshared();
+			String commentcount = mJobDetails.getNumcomment();
+
+			if (replycount != null && replycount.length() >= 1 && !replycount.equalsIgnoreCase("0")) {
+				mHolder.txt_replycount.setVisibility(View.VISIBLE);
+				mHolder.txt_replycount.setText(replycount + " replys");
+			} else {
+				mHolder.txt_replycount.setVisibility(View.GONE);
+			}
+
+			if (sharecount != null && sharecount.length() >= 1 && !sharecount.equalsIgnoreCase("0")) {
+				mHolder.txt_sharecount.setVisibility(View.VISIBLE);
+				mHolder.txt_sharecount.setText(sharecount + " shareed");
+			} else {
+				mHolder.txt_sharecount.setVisibility(View.GONE);
+			}
+
+			if (commentcount != null && commentcount.length() >= 1 && !commentcount.equalsIgnoreCase("0")) {
+				mHolder.txt_commentcount.setVisibility(View.VISIBLE);
+				mHolder.txt_commentcount.setText(commentcount + " comments");
+			} else {
+				mHolder.txt_commentcount.setVisibility(View.GONE);
+			}
 
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
 			if (Images != null && Images.size() >= 1) {
@@ -164,7 +193,6 @@ public class ImportantMailListAdapter extends BaseAdapter {
 				}
 			});
 
-			
 			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -213,6 +241,7 @@ public class ImportantMailListAdapter extends BaseAdapter {
 		ImageView profilepic;
 		ImageView img_arrow, img_important, img_post;
 		CustomTextView txt_name, txt_postdate, txt_subject, txt_contain;
+		CustomTextView txt_replycount, txt_sharecount, txt_commentcount;
 		ImageView btn_reply, btn_share, btn_comment;
 		CardView joblistview_img_post_rel;
 	}
@@ -227,13 +256,13 @@ public class ImportantMailListAdapter extends BaseAdapter {
 		if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
 			((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
 			mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
-			((Activity) mContext).overridePendingTransition(0, 0); 
+			((Activity) mContext).overridePendingTransition(0, 0);
 		}
 	}
 
 	private void gotToPostDetails(JobDetails mJobDetails) {
 		String toolTitle = "";
-		Intent mIntent =null;
+		Intent mIntent = null;
 		if (mJobDetails.getPostType().equals("3")) {
 			toolTitle = Util.TOOLTITLE[1];
 			mIntent = new Intent(mContext, ActivityNewsDetails.class);

@@ -219,9 +219,10 @@ public class CommentRecycleAdapter extends BaseAdapter{
 					mHolder.txt_sharecount.setVisibility(View.GONE);
 				}
 				
-				if (commentcount!=null && commentcount.length()>=1 && !commentcount.equalsIgnoreCase("0")) {
+				int commentCount_=(getCount()>=1)?(getCount()-1):0;
+				if (commentCount_>=1) {
 					mHolder.txt_commentcount.setVisibility(View.VISIBLE);
-					mHolder.txt_commentcount.setText(commentcount + " comments");
+					mHolder.txt_commentcount.setText(commentCount_ + " comments");
 				}else {
 					mHolder.txt_commentcount.setVisibility(View.GONE);
 				}

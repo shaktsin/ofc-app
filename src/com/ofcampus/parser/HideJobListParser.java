@@ -49,6 +49,14 @@ public class HideJobListParser {
 	private String REPLYPHONE="replyPhone";
 	private String REPLYWATSAPP="replyWatsApp";
 	
+	//* No of comment reply share count *//
+	private String NUMREPLIES="numReplies";
+	private String NUMSHARED="numShared";
+	private String NUMCOMMENT="numComment";
+	private String NUMHIDES="numHides";
+	private String NUMIMPORTANT="numImportant";
+	private String NUMSPAM="numSpam";
+	
 	private String POSTIMAGES="attachmentDtoList";
 	private String IMAGES_ID="id";
 	private String IMAGES_URL="url";
@@ -196,6 +204,14 @@ public class HideJobListParser {
 					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
 					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
 					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
+					
+					//*No of count */
+					mJobDetails.setNumreplies(Util.getJsonValue(jsonobject, NUMREPLIES));
+					mJobDetails.setNumshared(Util.getJsonValue(jsonobject, NUMSHARED));
+					mJobDetails.setNumcomment(Util.getJsonValue(jsonobject, NUMCOMMENT));
+					mJobDetails.setNumhides(Util.getJsonValue(jsonobject, NUMHIDES));
+					mJobDetails.setNumimportant(Util.getJsonValue(jsonobject, NUMIMPORTANT));
+					mJobDetails.setNumspam(Util.getJsonValue(jsonobject, NUMSPAM));
 
 					try {
 						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);

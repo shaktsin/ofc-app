@@ -39,48 +39,37 @@ import com.ofcampus.parser.PdfDocLoader.LoadListner;
 import com.ofcampus.ui.CustomTextView;
 import com.ofcampus.ui.ReplyDialog;
 
-public class FilterJobsAdapter extends BaseAdapter{
+public class FilterJobsAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private LayoutInflater inflater;
-	private ArrayList<JobDetails> jobs=null;
-	private ImageLoader imageLoader=ImageLoader.getInstance();
+	private ArrayList<JobDetails> jobs = null;
+	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private DisplayImageOptions options;
 	private DisplayImageOptions options_post;
-	
-	public FilterJobsAdapter(Context context,ArrayList<JobDetails> arrJobs){
-		
-		this.mContext=context; 
-		this.jobs=arrJobs; 
-		this.inflater=LayoutInflater.from(context);
-		
-		
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_profilepic)
-				.showImageForEmptyUri(R.drawable.ic_profilepic)
-				.showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
-		options_post = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.no_postimage)
-				.showImageForEmptyUri(R.drawable.no_postimage)
-				.showImageOnFail(R.drawable.no_postimage).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
-		
+
+	public FilterJobsAdapter(Context context, ArrayList<JobDetails> arrJobs) {
+
+		this.mContext = context;
+		this.jobs = arrJobs;
+		this.inflater = LayoutInflater.from(context);
+
+		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_profilepic).showImageForEmptyUri(R.drawable.ic_profilepic).showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
+		options_post = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.no_postimage).showImageForEmptyUri(R.drawable.no_postimage).showImageOnFail(R.drawable.no_postimage).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
+
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-		
-		
+
 	}
-	
-	public void refreshData(ArrayList<JobDetails> arrJobs){
-		this.jobs= arrJobs;
+
+	public void refreshData(ArrayList<JobDetails> arrJobs) {
+		this.jobs = arrJobs;
 		notifyDataSetChanged();
 	}
-	
-	public ArrayList<JobDetails> getJobData(){
+
+	public ArrayList<JobDetails> getJobData() {
 		return this.jobs;
 	}
-	
-	
+
 	@Override
 	public int getCount() {
 		return jobs.size();
@@ -98,40 +87,44 @@ public class FilterJobsAdapter extends BaseAdapter{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
+
 		ViewHolder mHolder;
-		if (convertView==null) {
-			mHolder=new ViewHolder();
-			convertView=inflater.inflate(R.layout.inflate_joblistrow, null);
-			mHolder.profilepic=(ImageView)convertView.findViewById(R.id.joblistview_img_pic);
-			
+		if (convertView == null) {
+			mHolder = new ViewHolder();
+			convertView = inflater.inflate(R.layout.inflate_joblistrow, null);
+			mHolder.profilepic = (ImageView) convertView.findViewById(R.id.joblistview_img_pic);
+
 			mHolder.img_arrow = (ImageView) convertView.findViewById(R.id.joblistview_img_arrow);
 			mHolder.img_like = (ImageView) convertView.findViewById(R.id.joblistview_img_like);
 			mHolder.img_important = (ImageView) convertView.findViewById(R.id.joblistview_img_imp);
-			
-			mHolder.txt_name=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_name);
-			mHolder.txt_postdate=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_postdate);
-			mHolder.txt_subject=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_subject);
-			mHolder.txt_contain=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
+
+			mHolder.txt_name = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_name);
+			mHolder.txt_postdate = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_postdate);
+			mHolder.txt_subject = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_subject);
+			mHolder.txt_contain = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_contain);
+
+			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_reply_count);
+			mHolder.txt_sharecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_share_count);
+			mHolder.txt_commentcount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_comment_count);
 
 			mHolder.inflate_doc = (CardView) convertView.findViewById(R.id.inflate_docview);
 			mHolder.doc_icon = (ImageView) convertView.findViewById(R.id.doc_icon);
 			mHolder.doc_dnd = (ImageView) convertView.findViewById(R.id.doc_downloadIcon);
 			mHolder.doc_name = (CustomTextView) convertView.findViewById(R.id.doc_name);
 
-			mHolder.btn_reply=(ImageView)convertView.findViewById(R.id.joblistview_txt_reply);
-			mHolder.btn_share=(ImageView)convertView.findViewById(R.id.joblistview_txt_share);
-			mHolder.btn_comment=(ImageView)convertView.findViewById(R.id.joblistview_txt_comment);
-			mHolder.img_post=(ImageView)convertView.findViewById(R.id.joblistview_img_post);
-			mHolder.joblistview_img_post_rel=(CardView)convertView.findViewById(R.id.joblistview_img_post_rel);
-			
+			mHolder.btn_reply = (ImageView) convertView.findViewById(R.id.joblistview_txt_reply);
+			mHolder.btn_share = (ImageView) convertView.findViewById(R.id.joblistview_txt_share);
+			mHolder.btn_comment = (ImageView) convertView.findViewById(R.id.joblistview_txt_comment);
+			mHolder.img_post = (ImageView) convertView.findViewById(R.id.joblistview_img_post);
+			mHolder.joblistview_img_post_rel = (CardView) convertView.findViewById(R.id.joblistview_img_post_rel);
+
 			convertView.setTag(mHolder);
-		}else {
-			mHolder=(ViewHolder) convertView.getTag();
+		} else {
+			mHolder = (ViewHolder) convertView.getTag();
 		}
-		
+
 		final JobDetails mJobDetails = jobs.get(position);
-		
+
 		if (mJobDetails != null) {
 			String url = mJobDetails.getImage();
 			if (url != null && !url.equals("") && !url.equals("null")) {
@@ -151,6 +144,31 @@ public class FilterJobsAdapter extends BaseAdapter{
 				mHolder.img_important.setSelected(true);
 			} else {
 				mHolder.img_important.setSelected(false);
+			}
+
+			String replycount = mJobDetails.getNumreplies();
+			String sharecount = mJobDetails.getNumshared();
+			String commentcount = mJobDetails.getNumcomment();
+
+			if (replycount != null && replycount.length() >= 1 && !replycount.equalsIgnoreCase("0")) {
+				mHolder.txt_replycount.setVisibility(View.VISIBLE);
+				mHolder.txt_replycount.setText(replycount + " replys");
+			} else {
+				mHolder.txt_replycount.setVisibility(View.GONE);
+			}
+
+			if (sharecount != null && sharecount.length() >= 1 && !sharecount.equalsIgnoreCase("0")) {
+				mHolder.txt_sharecount.setVisibility(View.VISIBLE);
+				mHolder.txt_sharecount.setText(sharecount + " shareed");
+			} else {
+				mHolder.txt_sharecount.setVisibility(View.GONE);
+			}
+
+			if (commentcount != null && commentcount.length() >= 1 && !commentcount.equalsIgnoreCase("0")) {
+				mHolder.txt_commentcount.setVisibility(View.VISIBLE);
+				mHolder.txt_commentcount.setText(commentcount + " comments");
+			} else {
+				mHolder.txt_commentcount.setVisibility(View.GONE);
 			}
 
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
@@ -177,7 +195,7 @@ public class FilterJobsAdapter extends BaseAdapter{
 			} else {
 				mHolder.joblistview_img_post_rel.setVisibility(View.GONE);
 			}
-			
+
 			mHolder.profilepic.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -193,7 +211,6 @@ public class FilterJobsAdapter extends BaseAdapter{
 				}
 			});
 
-			
 			mHolder.txt_subject.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -237,7 +254,7 @@ public class FilterJobsAdapter extends BaseAdapter{
 		}
 		return convertView;
 	}
-	
+
 	private class ViewHolder {
 		ImageView profilepic, doc_icon, doc_dnd;
 		ImageView img_arrow, img_important, img_like;
@@ -247,18 +264,18 @@ public class FilterJobsAdapter extends BaseAdapter{
 		ImageView img_post;
 		CardView joblistview_img_post_rel, inflate_doc;
 	}
-	
+
 	private void gotToUserDetails(JobDetails mJobDetails) {
 		if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
 			((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
 			mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
-			((Activity) mContext).overridePendingTransition(0, 0); 
+			((Activity) mContext).overridePendingTransition(0, 0);
 		}
 	}
 
 	private void gotToPostDetails(JobDetails mJobDetails) {
 		String toolTitle = "";
-		Intent mIntent =null;
+		Intent mIntent = null;
 		if (mJobDetails.getPostType().equals("3")) {
 			toolTitle = Util.TOOLTITLE[1];
 			mIntent = new Intent(mContext, ActivityNewsDetails.class);
@@ -273,7 +290,7 @@ public class FilterJobsAdapter extends BaseAdapter{
 		mContext.startActivity(mIntent);
 		((Activity) mContext).overridePendingTransition(0, 0);
 	}
-	
+
 	private void showDoc(final String DocPath, final ImageView doc_dnd, ImageView doc_icon, TextView doc_name, CardView view) {
 
 		String[] splt = DocPath.split("/");
