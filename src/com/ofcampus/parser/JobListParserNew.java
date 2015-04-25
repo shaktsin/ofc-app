@@ -85,6 +85,14 @@ private Context mContext;
 	private String INDUSTRY_ID="id";
 	private String INDUSTRY_NAME="name";
 	private String INDUSTRY_SELECTED="selected";
+	
+	//* No of comment reply share count *//
+	private String NUMREPLIES="numReplies";
+	private String NUMSHARED="numShared";
+	private String NUMCOMMENT="numComment";
+	private String NUMHIDES="numHides";
+	private String NUMIMPORTANT="numImportant";
+	private String NUMSPAM="numSpam";
 
 
 	/*Response JSON key value*/
@@ -247,6 +255,15 @@ private Context mContext;
 					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
 					
 					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
+					
+					//*No of count */
+					mJobDetails.setNumreplies(Util.getJsonValue(jsonobject, NUMREPLIES));
+					mJobDetails.setNumshared(Util.getJsonValue(jsonobject, NUMSHARED));
+					mJobDetails.setNumcomment(Util.getJsonValue(jsonobject, NUMCOMMENT));
+					mJobDetails.setNumhides(Util.getJsonValue(jsonobject, NUMHIDES));
+					mJobDetails.setNumimportant(Util.getJsonValue(jsonobject, NUMIMPORTANT));
+					mJobDetails.setNumspam(Util.getJsonValue(jsonobject, NUMSPAM));
+					
 					
 					try {
 						JSONArray attachmentJSONArray = jsonobject.getJSONArray(POSTIMAGES); 

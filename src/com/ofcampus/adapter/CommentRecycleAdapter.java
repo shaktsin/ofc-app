@@ -150,6 +150,10 @@ public class CommentRecycleAdapter extends BaseAdapter{
 			mHolder.txt_subject=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_subject);
 			mHolder.txt_jobdetails=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
 			
+			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_reply_count);
+			mHolder.txt_sharecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_share_count);
+			mHolder.txt_commentcount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_comment_count);
+			
 			mHolder.viewPager=(ViewPager)convertView.findViewById(R.id.jobdetails_album_pager);
 			mHolder.docPager=(ViewPager)convertView.findViewById(R.id.jobdetails_doc_pager);
 			
@@ -195,6 +199,32 @@ public class CommentRecycleAdapter extends BaseAdapter{
 				mHolder.txt_jobdetails.setText(mJobDetails.getContent());
 				mHolder.img_arrow.setVisibility(View.GONE);
 				
+				
+				String replycount = mJobDetails.getNumreplies();
+				String sharecount = mJobDetails.getNumshared();
+				String commentcount = mJobDetails.getNumcomment();
+				
+				
+				if (replycount!=null && replycount.length()>=1 && !replycount.equalsIgnoreCase("0")) {
+					mHolder.txt_replycount.setVisibility(View.VISIBLE);
+					mHolder.txt_replycount.setText(replycount + " replys");
+				}else {
+					mHolder.txt_replycount.setVisibility(View.GONE);
+				}
+				
+				if (sharecount!=null && sharecount.length()>=1 && !sharecount.equalsIgnoreCase("0")) {
+					mHolder.txt_sharecount.setVisibility(View.VISIBLE);
+					mHolder.txt_sharecount.setText(sharecount + " shareed");
+				}else {
+					mHolder.txt_sharecount.setVisibility(View.GONE);
+				}
+				
+				if (commentcount!=null && commentcount.length()>=1 && !commentcount.equalsIgnoreCase("0")) {
+					mHolder.txt_commentcount.setVisibility(View.VISIBLE);
+					mHolder.txt_commentcount.setText(commentcount + " comments");
+				}else {
+					mHolder.txt_commentcount.setVisibility(View.GONE);
+				}
 				
 				ArrayList<ImageDetails> Images = mJobDetails.getImages();
 				ArrayList<DocDetails> Docs = mJobDetails.getDoclist();
@@ -295,6 +325,7 @@ public class CommentRecycleAdapter extends BaseAdapter{
 		public ImageView img_prfpic,img_commentprfpic;
 		public ImageView  img_arrow;
 		public CustomTextView txt_name, txt_date, txt_subject, txt_jobdetails,txt_commentname,txt_commentdate,txt_commenteddetails,txt_load;
+		CustomTextView txt_replycount, txt_sharecount, txt_commentcount;
 		public ImageView txt_btn_comment,txt_btn_share,txt_btn_reply;
 		public RelativeLayout rel_jobdetails,rel_comment,rel_progress;
 		

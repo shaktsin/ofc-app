@@ -158,11 +158,63 @@
                 android:visibility="gone" >
             </android.support.v4.view.ViewPager>
 
+            <RelativeLayout
+                android:id="@+id/joblistview_rel_countview"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/jobdetails_doc_pager"
+                android:padding="6dp" >
+
+                <com.ofcampus.ui.CustomTextView
+                    android:id="@+id/joblistview_txt_reply_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="left"
+                    android:paddingLeft="4dp"
+                    android:text=""
+                    android:textColor="@color/job_contain"
+                    android:textSize="@dimen/joblitview_contain"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    ofcampus:fontName="Helvetica.otf" />
+
+                <com.ofcampus.ui.CustomTextView
+                    android:id="@+id/joblistview_txt_share_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/joblistview_txt_reply_count"
+                    android:gravity="left"
+                    android:paddingLeft="6dp"
+                    android:text=""
+                    android:textColor="@color/job_contain"
+                    android:textSize="@dimen/joblitview_contain"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    ofcampus:fontName="Helvetica.otf" />
+
+                <com.ofcampus.ui.CustomTextView
+                    android:id="@+id/joblistview_txt_comment_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/joblistview_txt_share_count"
+                    android:gravity="left"
+                    android:paddingLeft="6dp"
+                    android:text=""
+                    android:textColor="@color/job_contain"
+                    android:textSize="@dimen/joblitview_contain"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    ofcampus:fontName="Helvetica.otf" />
+            </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/joblistview_linear_buttonsection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/jobdetails_doc_pager"
+                android:layout_below="@+id/joblistview_rel_countview"
                 android:layout_marginLeft="6dp"
                 android:layout_marginRight="6dp"
                 android:layout_marginTop="8dp"

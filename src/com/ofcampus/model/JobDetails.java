@@ -38,6 +38,13 @@ public class JobDetails {
 	private ArrayList<ImageDetails> images = new ArrayList<ImageDetails>();
 	private ArrayList<DocDetails> Doclist = new ArrayList<DocDetails>();
 
+	private String numreplies = "";
+	private String numshared = "";
+	private String numcomment = "";
+	private String numhides = "";
+	private String numimportant = "";
+	private String numspam = "";
+
 	public String getPostType() {
 		return postType;
 	}
@@ -201,5 +208,53 @@ public class JobDetails {
 
 	public void setCommentID(String commentID) {
 		this.commentID = commentID;
+	}
+
+	public String getNumreplies() {
+		return numreplies;
+	}
+
+	public void setNumreplies(String numreplies) {
+		this.numreplies = numreplies;
+	}
+
+	public String getNumshared() {
+		return numshared;
+	}
+
+	public void setNumshared(String numshared) {
+		this.numshared = numshared;
+	}
+
+	public String getNumcomment() {
+		return numcomment;
+	}
+
+	public void setNumcomment(String numcomment) {
+		this.numcomment = numcomment;
+	}
+
+	public String getNumhides() {
+		return numhides;
+	}
+
+	public void setNumhides(String numhides) {
+		this.numhides = numhides;
+	}
+
+	public String getNumimportant() {
+		return numimportant;
+	}
+
+	public void setNumimportant(String numimportant) {
+		this.numimportant = numimportant;
+	}
+
+	public String getNumspam() {
+		return numspam;
+	}
+
+	public void setNumspam(String numspam) {
+		this.numspam = numspam;
 	}
 }

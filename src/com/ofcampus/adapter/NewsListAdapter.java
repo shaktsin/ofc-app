@@ -160,6 +160,12 @@ public class NewsListAdapter extends BaseAdapter{
 			mHolder.txt_subject=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_subject);
 			mHolder.txt_contain=(CustomTextView)convertView.findViewById(R.id.joblistview_txt_contain);
 			
+			
+			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_reply_count);
+			mHolder.txt_sharecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_share_count);
+			mHolder.txt_commentcount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_comment_count);
+			
+			
 			mHolder.inflate_doc=(CardView)convertView.findViewById(R.id.inflate_docview);
 			mHolder.doc_icon = (ImageView) convertView.findViewById(R.id.doc_icon);
 			mHolder.doc_dnd = (ImageView) convertView.findViewById(R.id.doc_downloadIcon);	
@@ -201,7 +207,31 @@ public class NewsListAdapter extends BaseAdapter{
 			}else {
 				mHolder.img_important.setSelected(false);
 			}
-
+			String replycount = mJobDetails.getNumreplies();
+			String sharecount = mJobDetails.getNumshared();
+			String commentcount = mJobDetails.getNumcomment();
+			
+			
+			if (replycount!=null && replycount.length()>=1 && !replycount.equalsIgnoreCase("0")) {
+				mHolder.txt_replycount.setVisibility(View.VISIBLE);
+				mHolder.txt_replycount.setText(replycount + " replys");
+			}else {
+				mHolder.txt_replycount.setVisibility(View.GONE);
+			}
+			
+			if (sharecount!=null && sharecount.length()>=1 && !sharecount.equalsIgnoreCase("0")) {
+				mHolder.txt_sharecount.setVisibility(View.VISIBLE);
+				mHolder.txt_sharecount.setText(sharecount + " shareed");
+			}else {
+				mHolder.txt_sharecount.setVisibility(View.GONE);
+			}
+			
+			if (commentcount!=null && commentcount.length()>=1 && !commentcount.equalsIgnoreCase("0")) {
+				mHolder.txt_commentcount.setVisibility(View.VISIBLE);
+				mHolder.txt_commentcount.setText(commentcount + " comments");
+			}else {
+				mHolder.txt_commentcount.setVisibility(View.GONE);
+			}
 			
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
 			ArrayList<DocDetails> Docs = mJobDetails.getDoclist();
@@ -320,6 +350,7 @@ public class NewsListAdapter extends BaseAdapter{
 		ImageView profilepic,doc_icon,doc_dnd;
 		ImageView img_arrow,img_important,img_like;
 		CustomTextView txt_name,txt_postdate,txt_subject,txt_contain,doc_name;
+		CustomTextView txt_replycount, txt_sharecount, txt_commentcount;
 		ImageView btn_reply,btn_share,btn_comment;
 		ImageView img_post;
 		CardView joblistview_img_post_rel,inflate_doc;

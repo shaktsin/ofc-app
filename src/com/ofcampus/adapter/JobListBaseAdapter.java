@@ -146,9 +146,9 @@ public class JobListBaseAdapter extends BaseAdapter {
 			mHolder.img_like = (ImageView) convertView.findViewById(R.id.joblistview_img_like);
 			mHolder.img_important = (ImageView) convertView.findViewById(R.id.joblistview_img_imp);
 
-//			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_replcount);
-//			mHolder.txt_sharecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_sharecount);
-//			mHolder.txt_commentcount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_commentcount);
+			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_reply_count);
+			mHolder.txt_sharecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_share_count);
+			mHolder.txt_commentcount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_comment_count);
 
 			mHolder.txt_name = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_name);
 			mHolder.txt_postdate = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_postdate);
@@ -195,6 +195,33 @@ public class JobListBaseAdapter extends BaseAdapter {
 				mHolder.img_important.setSelected(false);
 			}
 
+			String replycount = mJobDetails.getNumreplies();
+			String sharecount = mJobDetails.getNumshared();
+			String commentcount = mJobDetails.getNumcomment();
+			
+			
+			if (replycount!=null && replycount.length()>=1 && !replycount.equalsIgnoreCase("0")) {
+				mHolder.txt_replycount.setVisibility(View.VISIBLE);
+				mHolder.txt_replycount.setText(replycount + " replys");
+			}else {
+				mHolder.txt_replycount.setVisibility(View.GONE);
+			}
+			
+			if (sharecount!=null && sharecount.length()>=1 && !sharecount.equalsIgnoreCase("0")) {
+				mHolder.txt_sharecount.setVisibility(View.VISIBLE);
+				mHolder.txt_sharecount.setText(sharecount + " shareed");
+			}else {
+				mHolder.txt_sharecount.setVisibility(View.GONE);
+			}
+			
+			if (commentcount!=null && commentcount.length()>=1 && !commentcount.equalsIgnoreCase("0")) {
+				mHolder.txt_commentcount.setVisibility(View.VISIBLE);
+				mHolder.txt_commentcount.setText(commentcount + " comments");
+			}else {
+				mHolder.txt_commentcount.setVisibility(View.GONE);
+			}
+			
+			
 			final ArrayList<ImageDetails> Images = mJobDetails.getImages();
 			ArrayList<DocDetails> Docs = mJobDetails.getDoclist();
 
