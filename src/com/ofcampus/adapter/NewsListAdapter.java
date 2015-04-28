@@ -435,11 +435,11 @@ public class NewsListAdapter extends BaseAdapter {
 	}
 
 	public void userProfile(JobDetails mJobDetails) {
-		if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
-			((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
-			mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
-			((Activity) mContext).overridePendingTransition(0, 0);
-		}
+		Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
+		mIntent.putExtra("isUserCame", (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
+		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
+		mContext.startActivity(mIntent);
+		((Activity) mContext).overridePendingTransition(0, 0);
 	}
 
 	public NewsListInterface newslistinterface;

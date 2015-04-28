@@ -438,9 +438,10 @@ public class JobListBaseAdapter extends BaseAdapter {
 	}
 
 	public void userProfile(JobDetails mJobDetails) {
-		((OfCampusApplication) mContext.getApplicationContext()).isUserCame = (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false;
+		Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
+		mIntent.putExtra("isUserCame", (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
 		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
-		mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
+		mContext.startActivity(mIntent);
 		((Activity) mContext).overridePendingTransition(0, 0);
 	}
 

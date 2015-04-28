@@ -29,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -41,6 +40,7 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.component.CircleImageView;
+import com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.JobPostedUserDetails;
@@ -57,7 +57,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 	private ImageView profile_imageblur;
 	private ListView post_list, circle_list;
 	private LinearLayout lin_main;
-	private RelativeLayout rel_pg;
+	private ProgressBarCircularIndeterminate indicator_pg;
 
 	private Context context;
 	private JobPostedUserDetails mDetails;
@@ -86,7 +86,11 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;
 		mUserDetails = UserDetails.getLoggedInUser(context);
 		Authtoken = mUserDetails.getAuthtoken();
-		isUserCame = ((OfCampusApplication) context.getApplicationContext()).isUserCame;
+		try {
+			isUserCame = getIntent().getExtras().getBoolean("isUserCame");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		initilize();
 		if (isUserCame) {
@@ -196,11 +200,14 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		circle_list.setAdapter(mCircleAdapter);
 
 		lin_main = (LinearLayout) findViewById(R.id.jobposteduser_linearmain);
-		rel_pg = (RelativeLayout) findViewById(R.id.jobposteduser_linear_pg);
+		indicator_pg = (ProgressBarCircularIndeterminate) findViewById(R.id.progressBarCircularIndetermininate);
 
 		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_profilepic).showImageForEmptyUri(R.drawable.ic_profilepic).showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		Selection(0);
+		
+		textselection.get(0).setText("0 Posts");
+		textselection.get(1).setText("0 Circles");
 	}
 
 	private void setClicklistner() {
@@ -228,14 +235,14 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 			return;
 		}
 
-		rel_pg.setVisibility(View.VISIBLE);
+		indicator_pg.setVisibility(View.VISIBLE);
 		GetJobPostedUserProfileParser mParser = new GetJobPostedUserProfileParser();
 		mParser.setGetjobposteduserprofileparserinterface(new GetJobPostedUserProfileParserInterface() {
 
 			@Override
 			public void OnSuccess(JobPostedUserDetails mJobPostedUserDetails) {
 				mDetails = mJobPostedUserDetails;
-				rel_pg.setVisibility(View.GONE);
+				indicator_pg.setVisibility(View.GONE);
 				if (!isUserCame) {
 					loadUserDetailsFromJob();
 				}
@@ -245,12 +252,12 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 
 			@Override
 			public void OnError() {
-				rel_pg.setVisibility(View.GONE);
+				indicator_pg.setVisibility(View.GONE);
 			}
 
 			@Override
 			public void NoData() {
-				rel_pg.setVisibility(View.GONE);
+				indicator_pg.setVisibility(View.GONE); 
 			}
 
 		});

@@ -243,9 +243,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		int id = item.getItemId();
 		if (id == R.id.action_search) {
 			return true;
-		} else if (id == R.id.action_filter && (currentSelection==0 || currentSelection==1)) {
+		} else if (id == R.id.action_filter && (currentSelection == 0 || currentSelection == 1)) {
 			if (mFilterDataSets != null) {
-				FilterDialog mDialog = new FilterDialog(mContext, mFilterDataSets,currentSelection);
+				FilterDialog mDialog = new FilterDialog(mContext, mFilterDataSets, currentSelection);
 				mDialog.showDialog();
 			}
 			return true;
@@ -285,13 +285,11 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 				switch (position) {
 
 				case 0:
-//					startActivity(new Intent(ActivityHome.this, ActivityMyProfile.class));
-					((OfCampusApplication) mContext.getApplicationContext()).isUserCame = true ;
+					Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
+					mIntent.putExtra("isUserCame", true);
 					((OfCampusApplication) mContext.getApplicationContext()).jobdetails = null;
-					mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
+					mContext.startActivity(mIntent);
 					((Activity) mContext).overridePendingTransition(0, 0);
-					overridePendingTransition(0, 0);
-					overridePendingTransition(0, 0);
 					break;
 				case 1:
 					startActivity(new Intent(ActivityHome.this, ActivityMyPost.class));
@@ -684,7 +682,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 
 			@Override
 			public void run() {
-//				Thread.sleep(200);
+				// Thread.sleep(200);
 				if (mParser == null) {
 					mParser = new SearchParser();
 				}
@@ -699,12 +697,11 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	private ExampleAdapter mExampleAdapter = null;
 	private String[] columns = new String[] { "_id", "_data", "_type", "_state" };
 	private Object[] temp = new Object[] { 0, "", "", SearchType.CIRCLE };
-//	private MatrixCursor cursor = new MatrixCursor(columns);
-	private MatrixCursor cursor =null;
-	
+	// private MatrixCursor cursor = new MatrixCursor(columns);
+	private MatrixCursor cursor = null;
+
 	private void initialcall() {
-		
-		
+
 	}
 
 	Handler searchHandler = new Handler() {
@@ -800,9 +797,13 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		case USERS:
 			JobDetails mJobDetails = new JobDetails();
 			mJobDetails.setId(mSearchData.getId());
+
+			Intent mIntent_ = new Intent(mContext, ActivityJobPostedUserDetails.class);
+			mIntent_.putExtra("isUserCame", (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
 			((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
-			mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
-			overridePendingTransition(0, 0);
+			mContext.startActivity(mIntent_);
+			((Activity) mContext).overridePendingTransition(0, 0);
+
 			searchView.clearFocus();
 			break;
 
