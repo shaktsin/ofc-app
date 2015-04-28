@@ -45,6 +45,9 @@ public class CommentParser {
 	private String IMAGE="image";
 	private String REPLYDTO="replyDto";
 	private String SHAREDTO="shareDto";
+	
+	private String IMPORTANT="important";
+	private String LIKED="liked";
 
 	private String POSTIMAGES="attachmentDtoList";
 	private String ATTACHMENTTYPE="attachmentType";
@@ -196,6 +199,9 @@ public class CommentParser {
 			mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));
 			mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
 			mJobDetails.setPostedon(Util.getJsonValue(jsonobject, POSTEDON));
+			
+			mJobDetails.setImportant((Util.getJsonValue(jsonobject, IMPORTANT).equals("true"))?1:0);
+			mJobDetails.setLike((Util.getJsonValue(jsonobject, LIKED).equals("true"))?1:0);
 			
 			JSONObject userJSONobj=jsonobject.getJSONObject(USERDTO);
 			mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));

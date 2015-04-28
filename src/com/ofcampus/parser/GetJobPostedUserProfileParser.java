@@ -170,9 +170,7 @@ public class GetJobPostedUserProfileParser {
 			}
 
 			if (isTimeOut) {
-				if (getjobposteduserprofileparserinterface != null) {
-					getjobposteduserprofileparserinterface.OnError();
-				}
+				error();
 			} else if (responsecode.equals("200")) {
 				if (mJobPostedUserDetails != null) {
 					if (getjobposteduserprofileparserinterface != null) {
@@ -183,9 +181,17 @@ public class GetJobPostedUserProfileParser {
 				}
 			} else if (responsecode.equals("500")) {
 				Util.ShowToast(mContext, responseDetails);
+				error();
 			} else {
 				Util.ShowToast(mContext, "Error occured");
+				error();
 			}
+		}
+	}
+
+	private void error() {
+		if (getjobposteduserprofileparserinterface != null) {
+			getjobposteduserprofileparserinterface.OnError();
 		}
 	}
 

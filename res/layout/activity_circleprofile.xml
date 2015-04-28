@@ -51,6 +51,19 @@
                         android:layout_centerInParent="true"
                         android:padding="2dp"
                         android:src="@drawable/ic_circleicon" />
+
+                    <Button
+                        android:id="@+id/status_circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/btn_rectangular"
+                        android:clickable="true"
+                        android:visibility="gone"
+                        android:text="@string/join_circle_normal_btn"
+                        android:textColor="@drawable/btn_color_selector" />
                 </RelativeLayout>
 
                 <LinearLayout

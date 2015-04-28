@@ -143,7 +143,7 @@ public class FragmentYourCircle extends Fragment {
 			
 			@Override
 			public void OnSuccess() {
-				//Util.ShowToast(context,"Successfully unjoined club");
+				Util.ShowToast(context,"Successfully unjoined club");
 				mYourCircleListAdapter.removepostion(position_); 
 				if (yourcircleinterface!=null) {
 					yourcircleinterface.CircleUnJoined();
@@ -361,11 +361,8 @@ public class FragmentYourCircle extends Fragment {
 				@Override
 				public void onClick(View v) {
 					Intent mIntent=new Intent(mContext,ActivityCircleProfile.class);
-//					Bundle mBundle=new Bundle();
-//					mBundle.putString("CircleID", circleID);
-//					mIntent.putExtras(mBundle);
 					((OfCampusApplication)mContext.getApplicationContext()).mCircleDetails_=circles.get(position);
-					mContext.startActivity(mIntent);
+					((Activity)mContext).startActivityForResult(mIntent,91);
 					((Activity) mContext).overridePendingTransition(0,0);
 				}
 			});
@@ -394,5 +391,6 @@ public class FragmentYourCircle extends Fragment {
 
 	public interface YourCircleInterface {
 		public void CircleUnJoined();
+//		public void refreshAllFromUnJoined();
 	}
 }

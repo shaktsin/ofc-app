@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class CircleProfile {
 
-	private String circlename = "name";
-	private String circlemembers = "members";
-	private String circlejoined = "joined";
-	private String circledesc = "desc";
+	private String circlename = "";
+	private String circlemembers = "";
+	public String circlejoined = "";
+	private String circledesc = "";
 
 	public String getCircledesc() {
 		return circledesc;

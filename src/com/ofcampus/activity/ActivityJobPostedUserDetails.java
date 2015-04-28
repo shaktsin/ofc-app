@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -141,6 +142,23 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 	}
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 91 && resultCode == RESULT_OK && data != null) {
+			boolean isModify = data.getExtras().getBoolean("isDataModify");
+			if (isModify && isUserCame) {
+
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						loadData();
+					}
+				}, 500);
+			}
+		}
+	}
+
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.inflt_circlerow_txt_postno:
@@ -205,7 +223,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_profilepic).showImageForEmptyUri(R.drawable.ic_profilepic).showImageOnFail(R.drawable.ic_profilepic).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		Selection(0);
-		
+
 		textselection.get(0).setText("0 Posts");
 		textselection.get(1).setText("0 Circles");
 	}
@@ -257,7 +275,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 
 			@Override
 			public void NoData() {
-				indicator_pg.setVisibility(View.GONE); 
+				indicator_pg.setVisibility(View.GONE);
 			}
 
 		});
@@ -563,7 +581,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				public void onClick(View v) {
 					Intent mIntent = new Intent(mContext, ActivityCircleProfile.class);
 					((OfCampusApplication) mContext.getApplicationContext()).mCircleDetails_ = circles.get(position);
-					mContext.startActivity(mIntent);
+					((Activity) mContext).startActivityForResult(mIntent, 91);
 					((Activity) mContext).overridePendingTransition(0, 0);
 				}
 			});

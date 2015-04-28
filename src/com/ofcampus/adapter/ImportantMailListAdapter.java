@@ -104,7 +104,7 @@ public class ImportantMailListAdapter extends BaseAdapter {
 			mHolder.btn_comment = (ImageView) convertView.findViewById(R.id.joblistview_txt_comment);
 
 			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_reply_count);
-			mHolder.txt_sharecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_share_count);
+			mHolder.txt_likecount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_share_count); 
 			mHolder.txt_commentcount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_comment_count);
 
 			mHolder.img_post = (ImageView) convertView.findViewById(R.id.joblistview_img_post);
@@ -137,22 +137,22 @@ public class ImportantMailListAdapter extends BaseAdapter {
 				}
 			});
 
-			String replycount = mJobDetails.getNumreplies();
-			String sharecount = mJobDetails.getNumshared();
+//			String replycount = mJobDetails.getNumreplies();
+			String likecount = mJobDetails.getNumlikes();
 			String commentcount = mJobDetails.getNumcomment();
 
-			if (replycount != null && replycount.length() >= 1 && !replycount.equalsIgnoreCase("0")) {
-				mHolder.txt_replycount.setVisibility(View.VISIBLE);
-				mHolder.txt_replycount.setText(replycount + " replys");
-			} else {
-				mHolder.txt_replycount.setVisibility(View.GONE);
-			}
+//			if (replycount != null && replycount.length() >= 1 && !replycount.equalsIgnoreCase("0")) {
+//				mHolder.txt_replycount.setVisibility(View.VISIBLE);
+//				mHolder.txt_replycount.setText(replycount + " replys");
+//			} else {
+//				mHolder.txt_replycount.setVisibility(View.GONE);
+//			}
 
-			if (sharecount != null && sharecount.length() >= 1 && !sharecount.equalsIgnoreCase("0")) {
-				mHolder.txt_sharecount.setVisibility(View.VISIBLE);
-				mHolder.txt_sharecount.setText(sharecount + " shareed");
+			if (likecount != null && likecount.length() >= 1 && !likecount.equalsIgnoreCase("0")) {
+				mHolder.txt_likecount.setVisibility(View.VISIBLE);
+				mHolder.txt_likecount.setText(likecount + " likes");
 			} else {
-				mHolder.txt_sharecount.setVisibility(View.GONE);
+				mHolder.txt_likecount.setVisibility(View.GONE);
 			}
 
 			if (commentcount != null && commentcount.length() >= 1 && !commentcount.equalsIgnoreCase("0")) {
@@ -241,7 +241,7 @@ public class ImportantMailListAdapter extends BaseAdapter {
 		ImageView profilepic;
 		ImageView img_arrow, img_important, img_post;
 		CustomTextView txt_name, txt_postdate, txt_subject, txt_contain;
-		CustomTextView txt_replycount, txt_sharecount, txt_commentcount;
+		CustomTextView txt_replycount, txt_likecount, txt_commentcount;
 		ImageView btn_reply, btn_share, btn_comment;
 		CardView joblistview_img_post_rel;
 	}

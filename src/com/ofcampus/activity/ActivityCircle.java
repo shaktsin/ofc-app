@@ -29,20 +29,19 @@ import com.ofcampus.activity.FragmentYourCircle.YourCircleInterface;
 import com.ofcampus.component.PagerSlidingTabStripForCircle;
 import com.ofcampus.model.UserDetails;
 
-public class ActivityCircle extends ActionBarActivity implements OnPageChangeListener,YourCircleInterface,JoinCircleInterface{
+public class ActivityCircle extends ActionBarActivity implements OnPageChangeListener, YourCircleInterface, JoinCircleInterface {
 
-	
 	private Context context;
-	private static String Authtoken="";
-	private int postDelayTime=700;
-	
+	private static String Authtoken = "";
+	private int postDelayTime = 700;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_circle);
 
-		context=ActivityCircle.this;
-		
+		context = ActivityCircle.this;
+
 		Authtoken = UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle("Clubs");
@@ -61,20 +60,20 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (((OfCampusApplication)context.getApplicationContext()).isNewCircleCreated) {
-			((OfCampusApplication)context.getApplicationContext()).isNewCircleCreated=false;
+		if (((OfCampusApplication) context.getApplicationContext()).isNewCircleCreated) {
+			((OfCampusApplication) context.getApplicationContext()).isNewCircleCreated = false;
 			CircleJoin();
 		}
-		
+
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_circle, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	 
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -82,13 +81,13 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 			onBackPressed();
 			return true;
 		case R.id.action_createcircle:
-			startActivity(new Intent(ActivityCircle.this,ActivityCreateCircle.class));
-			overridePendingTransition(0,0);
+			startActivity(new Intent(ActivityCircle.this, ActivityCreateCircle.class));
+			overridePendingTransition(0, 0);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/**
 	 * Pager Page Selected.
 	 */
@@ -96,25 +95,37 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	public void onPageSelected(int position) {
 		switch (position) {
 		case 0:
-			
+
 			break;
 		case 1:
-			
+
 			break;
 
 		default:
 			break;
 		}
 	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 91 && resultCode == RESULT_OK && data!=null) {
+			boolean isModify = data.getExtras().getBoolean("isDataModify");
+			if (isModify) {
+				refreshView();
+			}
+		}
+	}
+	
 	
 	@Override
 	public void onPageScrolled(int arg0, float arg1, int arg2) {
-		
+
 	}
-	
+
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
-		
+
 	}
 
 	private void initiliz() {
@@ -129,13 +140,13 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		tabs.setOnPageChangeListener(this);
 	}
 
-    /*Pager section*/
-    private PagerSlidingTabStripForCircle tabs;
+	/* Pager section */
+	private PagerSlidingTabStripForCircle tabs;
 	private ViewPager pager;
 	private SelectionPagerAdapter adapter;
 	private FragmentYourCircle mYourCircle;
 	private FragmentJoinCircle mJoinCircle;
-	
+
 	public class SelectionPagerAdapter extends FragmentStatePagerAdapter {
 
 		private final String[] TITLES = { "Your Clubs", "Join Clubs" };
@@ -168,9 +179,9 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 0:
-				mYourCircle = FragmentYourCircle.newInstance(position,ActivityCircle.this);
+				mYourCircle = FragmentYourCircle.newInstance(position, ActivityCircle.this);
 				mYourCircle.setYourcircleinterface(ActivityCircle.this);
-				return mYourCircle; 
+				return mYourCircle;
 			case 1:
 				mJoinCircle = FragmentJoinCircle.newInstance(position, ActivityCircle.this);
 				mJoinCircle.setJoincircleinterface(ActivityCircle.this);
@@ -199,7 +210,16 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 				mJoinCircle.firstCalling(false);
 			}
 		}, postDelayTime);
-		
+
 	}
 
+	public void refreshView() {
+		CircleJoin();
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				CircleUnJoined();
+			}
+		}, postDelayTime);
+	}
 }
