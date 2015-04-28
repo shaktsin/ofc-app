@@ -285,7 +285,12 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 				switch (position) {
 
 				case 0:
-					startActivity(new Intent(ActivityHome.this, ActivityMyProfile.class));
+//					startActivity(new Intent(ActivityHome.this, ActivityMyProfile.class));
+					((OfCampusApplication) mContext.getApplicationContext()).isUserCame = true ;
+					((OfCampusApplication) mContext.getApplicationContext()).jobdetails = null;
+					mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
+					((Activity) mContext).overridePendingTransition(0, 0);
+					overridePendingTransition(0, 0);
 					overridePendingTransition(0, 0);
 					break;
 				case 1:

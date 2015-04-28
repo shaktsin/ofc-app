@@ -117,7 +117,7 @@ public class JobListBaseAdapter extends BaseAdapter {
 	public void likRefreshJob(JobDetails postLiked) {
 		for (JobDetails postDetails : jobs) {
 			if (postLiked.getPostid().equals(postDetails.getPostid())) {
-//				postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
+				// postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
 				postDetails.like = 1;
 			}
 		}
@@ -335,7 +335,7 @@ public class JobListBaseAdapter extends BaseAdapter {
 					}
 				}
 			});
-			
+
 			mHolder.img_arrow.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -438,11 +438,10 @@ public class JobListBaseAdapter extends BaseAdapter {
 	}
 
 	public void userProfile(JobDetails mJobDetails) {
-		if (!mJobDetails.getName().equals(UserDetails.getLoggedInUser(mContext).getAccountname())) {
-			((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
-			mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
-			((Activity) mContext).overridePendingTransition(0, 0);
-		}
+		((OfCampusApplication) mContext.getApplicationContext()).isUserCame = (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false;
+		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
+		mContext.startActivity(new Intent(mContext, ActivityJobPostedUserDetails.class));
+		((Activity) mContext).overridePendingTransition(0, 0);
 	}
 
 	public jobListInterface joblistinterface;

@@ -32,7 +32,8 @@ public class LoginParser {
 	private String NAME="name";
 	private String EMAIL="email";
 	private String AUTHTOKEN="authToken";
-
+	private String USERID="userId";
+	
 	
 	private String PROFILEIMAGELINK="image";
 	private String FIRSTNAME="firstName";
@@ -91,6 +92,7 @@ public class LoginParser {
 					if (responsecode!=null && responsecode.equals("200")) {
 						JSONObject userObj = mObject.getJSONObject(RESULTS);
 						mDetails=new UserDetails();
+						mDetails.setUserID(Util.getJsonValue(userObj, USERID));
 						mDetails.setName(Util.getJsonValue(userObj, NAME));
 						mDetails.setEmail(Util.getJsonValue(userObj, EMAIL));
 						mDetails.setAuthtoken(Util.getJsonValue(userObj, AUTHTOKEN));

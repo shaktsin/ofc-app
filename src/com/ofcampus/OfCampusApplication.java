@@ -46,6 +46,7 @@ public class OfCampusApplication extends Application {
 	public boolean editPostSuccessForNews=false;
 	public boolean profileEditSuccess=false;
 	public boolean isNewCircleCreated=false;
+	public boolean isUserCame=false;
 	
 	/******For Gallery********/
 	

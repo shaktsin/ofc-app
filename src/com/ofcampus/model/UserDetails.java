@@ -13,6 +13,7 @@ import com.ofcampus.Util;
 
 public class UserDetails {
 
+	public String userID = "";
 	public String name = "";
 	public String email = "";
 	public String authtoken = "";
@@ -24,6 +25,14 @@ public class UserDetails {
 
 	public String yearPass = "";
 	public String image = "";
+
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
 
 	public String getImage() {
 		return image;

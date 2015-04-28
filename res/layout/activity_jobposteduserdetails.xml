@@ -174,7 +174,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:cacheColorHint="@android:color/transparent"
-                android:divider="@null"
+                android:divider="#d7eff2"
+                android:dividerHeight="1dp"
                 android:fadingEdge="none"
                 android:listSelector="@android:color/transparent"
                 android:visibility="gone" >
@@ -185,7 +186,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:cacheColorHint="@android:color/transparent"
-                android:divider="@null"
+                android:divider="#d7eff2"
+                android:dividerHeight="1dp"
                 android:fadingEdge="none"
                 android:listSelector="@android:color/transparent"
                 android:visibility="gone" >
@@ -193,7 +195,6 @@
 
             <com.ofcampus.ui.CustomTextView
                 android:id="@+id/jobposteduser_nodata"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -206,6 +207,7 @@
                 android:textColor="@color/theme_color"
                 android:textSize="@dimen/joblitview_Subject"
                 android:textStyle="bold"
+                android:visibility="gone"
                 ofcampus:fontName="Helvetica.otf" />
         </RelativeLayout>
     </LinearLayout>

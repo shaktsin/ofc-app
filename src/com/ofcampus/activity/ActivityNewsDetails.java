@@ -64,7 +64,7 @@ public class ActivityNewsDetails extends ActionBarActivity implements OnClickLis
 	}
 	
 	@Override
-	protected void onPostResume() {
+	protected void onResume() {
 		super.onPostResume();
 		loadData();
 	}

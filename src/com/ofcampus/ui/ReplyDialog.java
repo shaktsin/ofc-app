@@ -58,12 +58,14 @@ public class ReplyDialog {
 		String postID="";
 		int icon=0;
 		String tag="";
+		boolean isEnable=false;
 		
-		public ShareDataSet(String postID_, int icon_, String tag_) {
+		public ShareDataSet(String postID_, int icon_, String tag_,boolean isEnable_) {
 			super();
 			this.postID = postID_;
 			this.icon = icon_;
 			this.tag = tag_;
+			this.isEnable = isEnable_;
 		}
 	}
 	
@@ -71,16 +73,22 @@ public class ReplyDialog {
 	ArrayList<ImageView> arraView=new ArrayList<ImageView>();
 	private void createView(){
 		String emial = mJobDetails.getReplyEmail();
-		String whatsapp = mJobDetails.getReplyWatsApp();
+		String smsNo = mJobDetails.getReplyWatsApp();
 		String phno = mJobDetails.getReplyPhone();
 		if (emial != null && !emial.equals("") && Integer.parseInt(emial) >= 1) {
-			arraSet.add(new ShareDataSet(emial, R.drawable.ic_gmailicon, 4+""));
+			arraSet.add(new ShareDataSet(emial, R.drawable.ic_gmailicon, 4+"",true));
+		}else {
+			arraSet.add(new ShareDataSet(emial, R.drawable.ic_gmailicon_disable, 4+"",false));
 		}
-		if (whatsapp != null && !whatsapp.equals("") && Integer.parseInt(whatsapp) >= 1) {
-			arraSet.add(new ShareDataSet(emial, R.drawable.ic_replysms, 5+""));
+		if (smsNo != null && !smsNo.equals("") && Integer.parseInt(smsNo) >= 1) {
+			arraSet.add(new ShareDataSet(smsNo, R.drawable.ic_replysms, 5+"",true)); 
+		}else {
+			arraSet.add(new ShareDataSet(smsNo, R.drawable.ic_replysms_disable, 5+"",false)); 
 		}
 		if (phno != null && !phno.equals("") && Integer.parseInt(phno) >= 1) {
-			arraSet.add(new ShareDataSet(emial, R.drawable.ic_phone, 6+""));
+			arraSet.add(new ShareDataSet(phno, R.drawable.ic_phone, 6+"",true));
+		}else {
+			arraSet.add(new ShareDataSet(phno, R.drawable.ic_phone_disable, 6+"",false));
 		}
 		
 		LinearLayout linear=(LinearLayout)dialog.findViewById(R.id.iflate_custdialog_linear_icon);
@@ -96,20 +104,21 @@ public class ReplyDialog {
 				mView.setScaleType(ScaleType.CENTER_INSIDE);
 				mView.setLayoutParams(pram);
 				linear.addView(mView);
+				
+				if (mShareDataSet.isEnable) {
+					mView.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							replyJobPost(mJobDetails, Integer.parseInt(v.getTag().toString()));
+							dialog.dismiss();
+						}
+					});
+				}
 				arraView.add(mView);
 			}
 		}
-		
-		for (ImageView mView : arraView) {
-			mView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					replyJobPost(mJobDetails, Integer.parseInt(v.getTag().toString()));
-					dialog.dismiss();
-				}
-			});
-		}
+
 		
 	}
 

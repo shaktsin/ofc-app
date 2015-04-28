@@ -36,67 +36,63 @@ import com.ofcampus.parser.CommentParser.CommentParserInterface;
 import com.ofcampus.parser.CommentPostParser;
 import com.ofcampus.parser.CommentPostParser.CommentPostParserInterface;
 
-public class ActivityComment extends ActionBarActivity implements OnClickListener,commentItemClickListner{
-
-    @Override
-	protected void onPostResume() {
-		super.onPostResume();
-		loadData();
-	}
+public class ActivityComment extends ActionBarActivity implements OnClickListener, commentItemClickListner {
 
 	private ListView commentListView;
 	private CommentRecycleAdapter mCommentRecycleAdapter;
 	private JobDetails mJobDetails;
 	private UserDetails mUserDetails;
-	private String JObID="";
+	private String JObID = "";
 	private EditText edt_comment;
 	private RelativeLayout rel_comnt;
 	private Context mContext;
-	
-	private String toolHeaderTitle="";
-	private boolean isFromDetails=false;
-	public boolean fromMYPost_=false;
-	
-	
+
+	private String toolHeaderTitle = "";
+	private boolean isFromDetails = false;
+	public boolean fromMYPost_ = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_comment);
 
-	
-		
 		loadBundleValue();
-		mContext=ActivityComment.this;
+		mContext = ActivityComment.this;
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle(toolHeaderTitle);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		fromMYPost_ = ((OfCampusApplication) getApplication()).fromMYPost;
-		
+
 		initilize();
-//		loadData();
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		((OfCampusApplication) mContext.getApplicationContext()).fromMYPost=false;
+		((OfCampusApplication) mContext.getApplicationContext()).fromMYPost = false;
 		overridePendingTransition(0, 0);
 		finish();
 	}
-	
+
+	@Override
+	protected void onResume() {
+		super.onPostResume();
+		loadData();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (fromMYPost_) {
 			MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.menu_postedit, menu);
 			return super.onCreateOptionsMenu(menu);
-		}else {
+		} else {
 			return true;
 		}
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -104,20 +100,18 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 			onBackPressed();
 			return true;
 		case R.id.action_editpost:
-			((OfCampusApplication) getApplication()).jobdetails=mJobDetails;	
-			Intent mIntent = new Intent(ActivityComment.this,ActivityPostEdit.class);
-			Bundle mBundle=new Bundle();
+			((OfCampusApplication) getApplication()).jobdetails = mJobDetails;
+			Intent mIntent = new Intent(ActivityComment.this, ActivityPostEdit.class);
+			Bundle mBundle = new Bundle();
 			mBundle.putInt("createFor", 1);
 			mIntent.putExtras(mBundle);
 			startActivity(mIntent);
-			overridePendingTransition(0,0);
+			overridePendingTransition(0, 0);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
-	
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -130,152 +124,147 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 			break;
 		}
 	}
-	
+
 	@Override
 	public void loadoldData(String commentId) {
 		reloadOldData(commentId);
 	}
-	
+
 	@Override
 	public void commentbuttonCliek() {
-		if (!isFromDetails) { 
+		if (!isFromDetails) {
 			return;
 		}
-		if (rel_comnt.getVisibility()==View.GONE) {
+		if (rel_comnt.getVisibility() == View.GONE) {
 			rel_comnt.setVisibility(View.VISIBLE);
 			edt_comment.setFocusable(true);
 		}
-		
+
 	}
-	
-	private void loadBundleValue(){
+
+	private void loadBundleValue() {
 		try {
 			toolHeaderTitle = getIntent().getExtras().getString(Util.BUNDLE_KEY[0]);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		isFromDetails=toolHeaderTitle.equals(Util.TOOLTITLE[1])?true:false;
+		isFromDetails = toolHeaderTitle.equals(Util.TOOLTITLE[1]) ? true : false;
 	}
-	
-	
+
 	private void initilize() {
-		((ImageView)findViewById(R.id.activity_comment_btnsend)).setOnClickListener(this);
-		rel_comnt=(RelativeLayout)findViewById(R.id.activity_comment_rel_comnt);
-		edt_comment=(EditText)findViewById(R.id.activity_comment_edt_cmnt);
-		commentListView=(ListView)findViewById(R.id.activity_comment_comntlist);
-		mCommentRecycleAdapter=new CommentRecycleAdapter(mContext, new ArrayList<JobDetails>());
+		((ImageView) findViewById(R.id.activity_comment_btnsend)).setOnClickListener(this);
+		rel_comnt = (RelativeLayout) findViewById(R.id.activity_comment_rel_comnt);
+		edt_comment = (EditText) findViewById(R.id.activity_comment_edt_cmnt);
+		commentListView = (ListView) findViewById(R.id.activity_comment_comntlist);
+		mCommentRecycleAdapter = new CommentRecycleAdapter(mContext, new ArrayList<JobDetails>());
 		mCommentRecycleAdapter.setCommentitemclicklistner(this);
 		commentListView.setAdapter(mCommentRecycleAdapter);
 	}
-	
+
 	private void loadData() {
 
 		mUserDetails = UserDetails.getLoggedInUser(mContext);
-		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;		
-		JObID=mJobDetails.getPostid();
-		
-		rel_comnt.setVisibility(isFromDetails?View.GONE:View.VISIBLE);
-		
-		ArrayList<JobDetails> arrayList=new ArrayList<JobDetails>();
-		if (mJobDetails!=null) {
+		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;
+		JObID = mJobDetails.getPostid();
+
+		rel_comnt.setVisibility(isFromDetails ? View.GONE : View.VISIBLE);
+
+		ArrayList<JobDetails> arrayList = new ArrayList<JobDetails>();
+		if (mJobDetails != null) {
 			arrayList.add(mJobDetails);
-			mCommentRecycleAdapter.refreshView(arrayList,0);
+			mCommentRecycleAdapter.refreshView(arrayList, 0);
 		}
-		
 
 		if (!Util.hasConnection(mContext)) {
-			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
-//			onBackPressed();
+			Util.ShowToast(mContext, getResources().getString(R.string.internetconnection_msg));
+			// onBackPressed();
 			return;
 		}
 
 		CommentParser mCommentParser = new CommentParser();
 		mCommentParser.setCommentparserinterface(new CommentParserInterface() {
-			
+
 			@Override
-			public void OnSuccess(ArrayList<JobDetails> arrayJobsComment,int totalCommentCount) {
-				if (arrayJobsComment!=null && arrayJobsComment.size()>=1) {
-					mJobDetails=arrayJobsComment.get(0);
-					mCommentRecycleAdapter.refreshView(arrayJobsComment,totalCommentCount);
+			public void OnSuccess(ArrayList<JobDetails> arrayJobsComment, int totalCommentCount) {
+				if (arrayJobsComment != null && arrayJobsComment.size() >= 1) {
+					mJobDetails = arrayJobsComment.get(0);
+					mCommentRecycleAdapter.refreshView(arrayJobsComment, totalCommentCount);
 				}
-				
+
 			}
-			
+
 			@Override
 			public void OnError() {
-				
+
 			}
 		});
 		mCommentParser.parse(mContext, JObID, mUserDetails.getAuthtoken());
 	}
-	
-	
-	private void commentPostProcess(){
-		String comment=edt_comment.getText().toString();
-		
-		if (comment!=null && comment.length()==0) {
-			Util.ShowToast(mContext,"Enter comment and then click on send button.");
+
+	private void commentPostProcess() {
+		String comment = edt_comment.getText().toString();
+
+		if (comment != null && comment.length() == 0) {
+			Util.ShowToast(mContext, "Enter comment and then click on send button.");
 			return;
 		}
-		
-		
+
 		if (!Util.hasConnection(mContext)) {
-			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
+			Util.ShowToast(mContext, getResources().getString(R.string.internetconnection_msg));
 			onBackPressed();
 			return;
 		}
-		
-		CommentPostParser mCommentPostParser=new CommentPostParser();
+
+		CommentPostParser mCommentPostParser = new CommentPostParser();
 		mCommentPostParser.setCommentpostparserinterface(new CommentPostParserInterface() {
-			
+
 			@Override
 			public void OnSuccess(JobDetails mJobDetails) {
-				if (mJobDetails!=null) {
+				if (mJobDetails != null) {
 					mCommentRecycleAdapter.refreshView(mJobDetails);
 					edt_comment.setText("");
-					Util.ShowToast(mContext, "Comment Posted successfully."); 
-					commentListView.setSelection(commentListView.getAdapter().getCount()-1);
+					Util.ShowToast(mContext, "Comment Posted successfully.");
+					commentListView.setSelection(commentListView.getAdapter().getCount() - 1);
 				}
 			}
-			
+
 			@Override
 			public void OnError() {
-				
+
 			}
 		});
-		
-		mCommentPostParser.parse(mContext, mCommentPostParser.getBody("4", JObID,comment), mUserDetails.getAuthtoken());
+
+		mCommentPostParser.parse(mContext, mCommentPostParser.getBody("4", JObID, comment), mUserDetails.getAuthtoken());
 
 	}
 
-	private void reloadOldData(String commentID){
-		if (commentID!=null && commentID.equals("")) {
+	private void reloadOldData(String commentID) {
+		if (commentID != null && commentID.equals("")) {
 			mCommentRecycleAdapter.loadOldCommentError();
 			return;
 		}
-		
+
 		if (!Util.hasConnection(mContext)) {
-			Util.ShowToast(mContext,getResources().getString(R.string.internetconnection_msg));
+			Util.ShowToast(mContext, getResources().getString(R.string.internetconnection_msg));
 			onBackPressed();
 			return;
 		}
-		
-		
-		CommentAllParser mAllParser=new CommentAllParser();
+
+		CommentAllParser mAllParser = new CommentAllParser();
 		mAllParser.setCommentallparserinterface(new CommentAllParserInterface() {
-			
+
 			@Override
 			public void OnSuccess(ArrayList<JobDetails> arrayJobsComment) {
-				if (arrayJobsComment!=null && arrayJobsComment.size()>=1) {
+				if (arrayJobsComment != null && arrayJobsComment.size() >= 1) {
 					mCommentRecycleAdapter.loadOldCommentView(arrayJobsComment);
 				}
 			}
-			
+
 			@Override
 			public void OnError() {
 				mCommentRecycleAdapter.loadOldCommentError();
 			}
 		});
-		mAllParser.parse(mContext,mAllParser.getBody("", JObID, commentID), mUserDetails.getAuthtoken());
+		mAllParser.parse(mContext, mAllParser.getBody("", JObID, commentID), mUserDetails.getAuthtoken());
 	}
 }
