@@ -70,7 +70,7 @@ public class FilterJobsAdapter extends BaseAdapter {
 	public ArrayList<JobDetails> getJobData() {
 		return this.jobs;
 	}
-	
+
 	public void importantJob(JobDetails hideJob) {
 		for (JobDetails jobDetails : jobs) {
 			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
@@ -169,23 +169,11 @@ public class FilterJobsAdapter extends BaseAdapter {
 			mHolder.img_important.setVisibility(View.VISIBLE);
 			mHolder.img_like.setVisibility(View.VISIBLE);
 			mHolder.img_arrow.setVisibility(View.GONE);
-			if (mJobDetails.getImportant() == 1) {
-				mHolder.img_important.setSelected(true);
-			} else {
-				mHolder.img_important.setSelected(false);
-			}
+			mHolder.img_like.setSelected((mJobDetails.like == 1) ? true : false);
+			mHolder.img_important.setSelected((mJobDetails.getImportant() == 1) ? true : false);
 
-			// String replycount = mJobDetails.getNumreplies();
 			String likecount = mJobDetails.getNumlikes();
 			String commentcount = mJobDetails.getNumcomment();
-
-			// if (replycount != null && replycount.length() >= 1 &&
-			// !replycount.equalsIgnoreCase("0")) {
-			// mHolder.txt_replycount.setVisibility(View.VISIBLE);
-			// mHolder.txt_replycount.setText(replycount + " replys");
-			// } else {
-			// mHolder.txt_replycount.setVisibility(View.GONE);
-			// }
 
 			if (likecount != null && likecount.length() >= 1 && !likecount.equalsIgnoreCase("0")) {
 				mHolder.txt_likecount.setVisibility(View.VISIBLE);
@@ -280,7 +268,7 @@ public class FilterJobsAdapter extends BaseAdapter {
 					gotToPostDetails(mJobDetails);
 				}
 			});
-			
+
 			mHolder.img_important.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -289,7 +277,7 @@ public class FilterJobsAdapter extends BaseAdapter {
 						if (mJobDetails.getImportant() == 0) {
 							filterlistinterface.impClieckEvent(mJobDetails);
 						} else {
-							filterlistinterface.unimpClieckEvent(mJobDetails); 
+							filterlistinterface.unimpClieckEvent(mJobDetails);
 						}
 
 					}
@@ -305,8 +293,6 @@ public class FilterJobsAdapter extends BaseAdapter {
 					}
 				}
 			});
-			
-			
 
 		}
 		return convertView;
@@ -409,8 +395,6 @@ public class FilterJobsAdapter extends BaseAdapter {
 		}
 	}
 
-	
-	
 	public filterListInterface filterlistinterface;
 
 	public filterListInterface getFilterlistinterface() {
