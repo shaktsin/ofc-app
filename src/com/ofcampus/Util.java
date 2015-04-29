@@ -71,24 +71,25 @@ public class Util {
 	public static long period = 30 * 1000;
 
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
-	
-	private static String SDCardPath="OfCampus/Document";
 
-//	public static String TITLES[] = { "My Profile", "My Posts", "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };
+	private static String SDCardPath = "OfCampus/Document";
+
+	// public static String TITLES[] = { "My Profile", "My Posts",
+	// "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };
 	public static String TITLES[] = { "My Posts", "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };
-	public static String sendto[] = { "Everyone", "Class of 2014","General Management Club", "Finance Club", "Hyderabad Chapter" };
-	
+	public static String sendto[] = { "Everyone", "Class of 2014", "General Management Club", "Finance Club", "Hyderabad Chapter" };
+
 	public static String TOOLTITLE[] = { "Post Details", "News Details" };
 	public static String TOOLTITLE_FILTER[] = { "Filter Posts", "Filter News" };
-	public static String BUNDLE_KEY[] = { "CAMEFROM","COMMENTORDETAILS" };
+	public static String BUNDLE_KEY[] = { "CAMEFROM", "COMMENTORDETAILS" };
 
-//	public static int ICONS[] = { R.drawable.ic_profile, R.drawable.ic_mypost,
-//			R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle,
-//			R.drawable.ic_settings, R.drawable.ic_logout };
-	public static int ICONS[] = {R.drawable.ic_mypost,
-		R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle,
-		R.drawable.ic_settings, R.drawable.ic_logout };
+	// public static int ICONS[] = { R.drawable.ic_profile,
+	// R.drawable.ic_mypost,
+	// R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle,
+	// R.drawable.ic_settings, R.drawable.ic_logout };
+	public static int ICONS[] = { R.drawable.ic_mypost, R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle, R.drawable.ic_settings, R.drawable.ic_logout };
 
+	public static String shareVia = "\nShared via ofCampus";
 
 	public static enum userType {
 		Normal, Gmail, Facebook
@@ -101,19 +102,20 @@ public class Util {
 	public static enum JobDataReturnFor {
 		Normal, syncdata
 	}
-	
+
 	public static enum SearchType {
 		USERS, CIRCLE, POSTS
 	}
-	
-	public static enum PostType{
-		NEWS,POST
+
+	public static enum PostType {
+		NEWS, POST
 	}
 
-	public static String getSDCardPath(){
+	public static String getSDCardPath() {
 		return SDCardPath;
 	}
-	/********************URl List**********************/
+
+	/******************** URl List **********************/
 	public static String getLoginUrl() {
 		return baseUrl + "user/login";
 	}
@@ -169,13 +171,14 @@ public class Util {
 	public static String getReverseProcePostUrl() {
 		return baseUrl + "post/react/reverse";
 	}
-	
+
 	/*
 	 * Job Filter Data
 	 */
 	public static String getFilterJobUrl() {
 		return baseUrl + "post/filters/all";
 	}
+
 	public static String getFilterUrl() {
 		return baseUrl + "jobs/list?";
 	}
@@ -183,102 +186,102 @@ public class Util {
 	public static String getVerifyUrl() {
 		return baseUrl + "user/verify";
 	}
-	
+
 	public static String getRegenerateTokenUrl() {
 		return baseUrl + "user/generate/token";
 	}
-	
+
 	public static String getJobEditUrl() {
 		return baseUrl + "jobs/edit";
 	}
-	
+
 	public static String getProfileUpdateUrl() {
 		return baseUrl + "user/update";
 	}
-	
+
 	public static String getCreateCircleUrl() {
 		return baseUrl + "circle/create";
 	}
-	
+
 	public static String getJoinCircleUrl() {
 		return baseUrl + "circle/join";
 	}
-	
+
 	public static String getUnJoinCircleUrl() {
 		return baseUrl + "circle/unjoin";
 	}
-	
+
 	public static String getUnJoinListCircleUrl() {
 		return baseUrl + "circle/all";
 	}
-	
+
 	public static String getJoinListCircleUrl() {
 		return baseUrl + "circle/user/all";
 	}
-	
-	
+
 	public static String getJOBPostedProfileUrl() {
 		return baseUrl + "post/user/profile";
 	}
-	
+
 	public static String getCircleProfileUrl() {
 		return baseUrl + "post/circle/profile";
 	}
-	
+
 	public static String getCircleActivateUrl() {
 		return baseUrl + "circle/activate";
 	}
-	
+
 	public static String getCircleDeActivateUrl() {
 		return baseUrl + "circle/deactivate";
 	}
-	
+
 	public static String getAcceptRequestUrl() {
 		return baseUrl + "circle/authorize";
 	}
-	
+
 	public static String getRejectRequestUrl() {
 		return baseUrl + "circle/authorize/revoke";
 	}
-	
+
 	public static String getAllPendingRequestUrl() {
 		return baseUrl + "circle/requests";
 	}
-	
+
 	public static String getForGotPasswordUrl() {
 		return baseUrl + "user/forgot/password";
 	}
-	
+
 	public static String getResetPasswordUrl() {
 		return baseUrl + "user/change/password";
 	}
-	
-	//News Section
+
+	// News Section
 	public static String getNewsListUrl() {
 		return baseUrl + "feed/list";
 	}
-	
+
 	public static String getPrepareNewsUrl() {
 		return baseUrl + "feed/prepare";
 	}
-	
+
 	public static String getCreateNewsUrl() {
 		return baseUrl + "feed/create";
 	}
-	
+
 	public static String getGetNewsfeedUrl(String postId) {
-		return baseUrl + "feed/"+postId;
+		return baseUrl + "feed/" + postId;
 	}
+
 	public static String getEditNewsUrl() {
 		return baseUrl + "feed/edit";
 	}
-	
-	public static String getSearchURL(){
+
+	public static String getSearchURL() {
 		return baseUrl + "search/all";
 	}
-	
-	/********************URl List**********************/
-	
+
+	/******************** URl List **********************/
+
 	/**
 	 * Show Alert Toast message.
 	 */
@@ -296,16 +299,13 @@ public class Util {
 	 * Check device Internet connection.
 	 */
 	public static boolean hasConnection(Context context) {
-		ConnectivityManager cm = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo wifiNetwork = cm
-				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo wifiNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		if (wifiNetwork != null && wifiNetwork.isConnected()) {
 			return true;
 		}
 
-		NetworkInfo mobileNetwork = cm
-				.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		NetworkInfo mobileNetwork = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 		if (mobileNetwork != null && mobileNetwork.isConnected()) {
 			return true;
 		}
@@ -318,8 +318,7 @@ public class Util {
 	}
 
 	public static void HideKeyBoard(Context context, View v) {
-		InputMethodManager imm = (InputMethodManager) context
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 	}
 
@@ -332,8 +331,7 @@ public class Util {
 	}
 
 	public final static boolean isValidEmail_again(String email) {
-		String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-				+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
@@ -355,14 +353,11 @@ public class Util {
 		String[] responData = { "", "" };
 		try {
 			HttpPost httppost = new HttpPost(url);
-			httppost.setHeader("Content-Type",
-					"application/x-www-form-urlencoded");
+			httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 			httppost.setEntity(new UrlEncodedFormEntity(postData, HTTP.UTF_8));
 			HttpClient httpclient = new DefaultHttpClient();
-			httpclient.getParams().setParameter(
-					CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-			httpclient.getParams().setParameter(
-					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
 			HttpResponse httpResponse = httpclient.execute(httppost);
 			// httpResponse.getStatusLine();
 			// HttpEntity entity = httpResponse.getEntity();
@@ -401,15 +396,11 @@ public class Util {
 		String[] responData = { "", "" };
 		try {
 			HttpGet httpget = new HttpGet(url);
-			httpget.setHeader("Content-Type",
-					"application/x-www-form-urlencoded");
-			httpget.setHeader(postData.get(0).getName(), postData.get(0)
-					.getValue());
+			httpget.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			httpget.setHeader(postData.get(0).getName(), postData.get(0).getValue());
 			HttpClient httpclient = new DefaultHttpClient();
-			httpclient.getParams().setParameter(
-					CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-			httpclient.getParams().setParameter(
-					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
 			HttpResponse httpResponse = httpclient.execute(httpget);
 			// httpResponse.getStatusLine();
 			// HttpEntity entity = httpResponse.getEntity();
@@ -441,7 +432,7 @@ public class Util {
 	}
 
 	// HTTP GET request
-	public static String[] sendGet(String url){
+	public static String[] sendGet(String url) {
 		String Response = "";
 
 		String[] responData = { "", "" };
@@ -458,8 +449,7 @@ public class Util {
 			System.out.println("\nSending 'GET' request to URL : " + url);
 			System.out.println("Response Code : " + responseCode);
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					con.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String inputLine;
 			StringBuffer response = new StringBuffer();
 
@@ -482,7 +472,7 @@ public class Util {
 
 		return responData;
 	}
-	
+
 	/**
 	 * 
 	 * @param url
@@ -496,13 +486,11 @@ public class Util {
 
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
-			httpclient.getParams().setParameter(
-					CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-			httpclient.getParams().setParameter(
-					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
 			HttpPost httpPost = new HttpPost(url);
 			String json = "";
-			if (jsonObject!=null) {
+			if (jsonObject != null) {
 				json = jsonObject.toString();
 			}
 			StringEntity se = new StringEntity(json);
@@ -541,20 +529,18 @@ public class Util {
 	 * @param auth
 	 * @return
 	 */
-	public static String[] POSTWithJSONAuth(String url, JSONObject jsonObject,String auth) { 
+	public static String[] POSTWithJSONAuth(String url, JSONObject jsonObject, String auth) {
 		InputStream inputStream = null;
 		String result = "";
 		String[] responData = { "", "" };
 
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
-			httpclient.getParams().setParameter(
-					CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
-			httpclient.getParams().setParameter(
-					CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
+			httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
 			HttpPost httpPost = new HttpPost(url);
 			String json = "";
-			if (jsonObject!=null) {
+			if (jsonObject != null) {
 				json = jsonObject.toString();
 			}
 			StringEntity se = new StringEntity(json);
@@ -585,10 +571,8 @@ public class Util {
 
 		return responData;
 	}
-	
-	
-	
-	public static String[] POSTWithAuthJSONFile(String url, JSONObject jsonObject,String auth,ArrayList<String> paths,String JSONTAG, ArrayList<String> docpdfPaths) {
+
+	public static String[] POSTWithAuthJSONFile(String url, JSONObject jsonObject, String auth, ArrayList<String> paths, String JSONTAG, ArrayList<String> docpdfPaths) {
 		InputStream inputStream = null;
 		String result = "";
 		String[] responData = { "", "" };
@@ -598,15 +582,13 @@ public class Util {
 			httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
 			httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
 			HttpPost httpPost = new HttpPost(url);
-			
-			
+
 			String json = "";
 			json = jsonObject.toString();
-			
+
 			httpPost.setHeader("Authorization", auth);
-//			httpPost.setHeader("Content-type", "application/json");
-			
-			
+			// httpPost.setHeader("Content-type", "application/json");
+
 			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 			File lfile = null;
 			reqEntity.addPart(JSONTAG, new StringBody(json));
@@ -629,7 +611,7 @@ public class Util {
 					}
 				}
 			}
-			
+
 			httpPost.setEntity(reqEntity);
 			HttpResponse httpResponse = httpclient.execute(httpPost);
 			inputStream = httpResponse.getEntity().getContent();
@@ -639,7 +621,7 @@ public class Util {
 				result = "Did not work!";
 			responData[0] = "200";
 			responData[1] = result;
-			
+
 		} catch (UnsupportedEncodingException e) {
 			responData[0] = "205";
 			e.printStackTrace();
@@ -656,7 +638,7 @@ public class Util {
 
 		return responData;
 	}
-	 
+
 	/**
 	 * 
 	 * @param url
@@ -665,7 +647,7 @@ public class Util {
 	 * @param path
 	 * @return
 	 */
-	public static String[] ProfileUpdte(String url, JSONObject jsonObject,String auth,String path) {
+	public static String[] ProfileUpdte(String url, JSONObject jsonObject, String auth, String path) {
 		InputStream inputStream = null;
 		String result = "";
 		String[] responData = { "", "" };
@@ -675,7 +657,7 @@ public class Util {
 			httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, connectTimeout);
 			httpclient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, socketTimeout);
 			HttpPost httpPost = new HttpPost(url);
-			
+
 			String json = "";
 			json = jsonObject.toString();
 			httpPost.setHeader("Authorization", auth);
@@ -684,10 +666,10 @@ public class Util {
 			reqEntity.addPart("prof", new StringBody(json));
 			if (path != null && !path.equals("")) {
 				lfile = new File(path);
-				FileBody lFileBody_ = new FileBody(lfile); 
+				FileBody lFileBody_ = new FileBody(lfile);
 				reqEntity.addPart("iFile", lFileBody_);
 			}
-			
+
 			httpPost.setEntity(reqEntity);
 			HttpResponse httpResponse = httpclient.execute(httpPost);
 			inputStream = httpResponse.getEntity().getContent();
@@ -697,7 +679,7 @@ public class Util {
 				result = "Did not work!";
 			responData[0] = "200";
 			responData[1] = result;
-			
+
 		} catch (UnsupportedEncodingException e) {
 			responData[0] = "205";
 			e.printStackTrace();
@@ -715,10 +697,8 @@ public class Util {
 		return responData;
 	}
 
-	private static String convertInputStreamToString(InputStream inputStream)
-			throws IOException {
-		BufferedReader bufferedReader = new BufferedReader(
-				new InputStreamReader(inputStream));
+	private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line = "";
 		String result = "";
 		while ((line = bufferedReader.readLine()) != null)
@@ -743,8 +723,7 @@ public class Util {
 		return value;
 	}
 
-	public static void shareIntent(Context mContext, String subject,
-			String content) {
+	public static void shareIntent(Context mContext, String subject, String content) {
 		try {
 			Intent intent = new Intent(Intent.ACTION_SEND);
 			intent.setType("text/plain");
@@ -756,35 +735,28 @@ public class Util {
 		}
 	}
 
-	public static void onShareClick(Context mcContext, View v, String subject,
-			String content) {
+	public static void onShareClick(Context mcContext, View v, String subject, String content) {
 
 		try {
 			List<String> PackageName = getShareApplication();
 			List<Intent> targetedShareIntents = new ArrayList<Intent>();
 			Intent share = new Intent(android.content.Intent.ACTION_SEND);
 			share.setType("text/plain");
-			List<ResolveInfo> resInfo = mcContext.getPackageManager()
-					.queryIntentActivities(share, 0);
+			List<ResolveInfo> resInfo = mcContext.getPackageManager().queryIntentActivities(share, 0);
 			if (!resInfo.isEmpty()) {
 				for (ResolveInfo info : resInfo) {
-					Intent targetedShare = new Intent(
-							android.content.Intent.ACTION_SEND);
+					Intent targetedShare = new Intent(android.content.Intent.ACTION_SEND);
 					targetedShare.setType("text/plain"); // put here your mime//
 															// type
-					if (PackageName.contains(info.activityInfo.packageName
-							.toLowerCase())) {
+					if (PackageName.contains(info.activityInfo.packageName.toLowerCase())) {
 						targetedShare.putExtra(Intent.EXTRA_SUBJECT, subject);
-						targetedShare.putExtra(Intent.EXTRA_TEXT, content);
-						targetedShare.setPackage(info.activityInfo.packageName
-								.toLowerCase());
+						targetedShare.putExtra(Intent.EXTRA_TEXT, content + shareVia);
+						targetedShare.setPackage(info.activityInfo.packageName.toLowerCase());
 						targetedShareIntents.add(targetedShare);
 					}
 				}
-				Intent chooserIntent = Intent.createChooser(
-						targetedShareIntents.remove(0), "Share using...");
-				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
-						targetedShareIntents.toArray(new Parcelable[] {}));
+				Intent chooserIntent = Intent.createChooser(targetedShareIntents.remove(0), "Share using...");
+				chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetedShareIntents.toArray(new Parcelable[] {}));
 				mcContext.startActivity(chooserIntent);
 			}
 		} catch (Exception e) {
@@ -803,85 +775,61 @@ public class Util {
 		return mList;
 	}
 
-	/**
-	 * Reply Text via Email.
-	 * 
-	 * @param mcContext
-	 * @param SUBJECT
-	 * @param TEXT
-	 * @param to
-	 */
-	private void replyViaEmailCalling(Context mcContext, String SUBJECT,
-			String TEXT, String to) {
-		try {
-			Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-			sendIntent.setType("plain/text");
-			sendIntent.setClassName("com.google.android.gm",
-					"com.google.android.gm.ComposeActivityGmail");
-			sendIntent.putExtra(Intent.EXTRA_CC, new String[] { to });
-			sendIntent.putExtra(Intent.EXTRA_SUBJECT, "My Incident Report");
-			sendIntent.putExtra(Intent.EXTRA_TEXT, TEXT);
-			mcContext.startActivity(sendIntent);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-	public static boolean isContainDocFile(String url){
+	public static boolean isContainDocFile(String url) {
 		if (url.contains(".doc")) {
 			return true;
-		}else if(url.contains(".DOC")){
+		} else if (url.contains(".DOC")) {
 			return true;
-		}if (url.contains(".docx")) {
-			return true;
-		}else if(url.contains(".DOCX")){
-			return true;
-		}if (url.contains(".pdf")) {
-			return true;
-		}else if(url.contains(".PDF")){
-			return true;
-		}else {
-			return false;
 		}
-	}
-	
-	
-	
-	public static boolean isDocFile(String url){
-		if (url.contains(".doc")) {
+		if (url.contains(".docx")) {
 			return true;
-		}else if(url.contains(".DOC")){
+		} else if (url.contains(".DOCX")) {
 			return true;
-		}if (url.contains(".docx")) {
-			return true;
-		}else if(url.contains(".DOCX")){
-			return true;
-		}else {
-			return false;
 		}
-	}
-	
-	public static boolean isPdfFile(String url){
 		if (url.contains(".pdf")) {
 			return true;
-		}else if(url.contains(".PDF")){
+		} else if (url.contains(".PDF")) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
-	
-	public static void viewerOpen(Context mContext,String filePath){
+
+	public static boolean isDocFile(String url) {
+		if (url.contains(".doc")) {
+			return true;
+		} else if (url.contains(".DOC")) {
+			return true;
+		}
+		if (url.contains(".docx")) {
+			return true;
+		} else if (url.contains(".DOCX")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean isPdfFile(String url) {
+		if (url.contains(".pdf")) {
+			return true;
+		} else if (url.contains(".PDF")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static void viewerOpen(Context mContext, String filePath) {
 		try {
-			if (Util.isDocFile(filePath)) {  
+			if (Util.isDocFile(filePath)) {
 				Intent intent = new Intent();
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.setAction(Intent.ACTION_VIEW);
 				String type = "application/msword";
-				intent.setDataAndType(Uri.fromFile(new File(filePath)), type); 
+				intent.setDataAndType(Uri.fromFile(new File(filePath)), type);
 				mContext.startActivity(intent);
-			}else if (Util.isPdfFile(filePath)) {
+			} else if (Util.isPdfFile(filePath)) {
 				Intent intent = new Intent();
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.setAction(Intent.ACTION_VIEW);
@@ -889,79 +837,66 @@ public class Util {
 				intent.setDataAndType(Uri.fromFile(new File(filePath)), type);
 				mContext.startActivity(intent);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
-	
-	public static boolean isFileExist(String filePath){
+
+	public static boolean isFileExist(String filePath) {
 		try {
 			String[] splt = filePath.split("/");
 			final String fileNAme = splt[splt.length - 1];
 			File extStore = Environment.getExternalStorageDirectory();
-			File myFile = new File(extStore.getAbsolutePath() + ("/"+SDCardPath+"/"+fileNAme));
-			return (myFile.exists())?true:false;
+			File myFile = new File(extStore.getAbsolutePath() + ("/" + SDCardPath + "/" + fileNAme));
+			return (myFile.exists()) ? true : false;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns capitalized string
 	 * 
-	 * Util.capitalize(null)  = null
-     * Util.capitalize("")    = ""
-     * Util.capitalize("cat") = "Cat"
-     * Util.capitalize("cAt") = "CAt"
-     * 
+	 * Util.capitalize(null) = null Util.capitalize("") = ""
+	 * Util.capitalize("cat") = "Cat" Util.capitalize("cAt") = "CAt"
+	 * 
 	 * @param str
 	 * @return
 	 */
 	public static String capitalize(String str) {
-        int strLen;
-        if (str == null || (strLen = str.length()) == 0) {
-            return str;
-        }
-        return new StringBuilder(strLen)
-            .append(Character.toTitleCase(str.charAt(0)))
-            .append(str.substring(1))
-            .toString();
-    }
-	
-	
+		int strLen;
+		if (str == null || (strLen = str.length()) == 0) {
+			return str;
+		}
+		return new StringBuilder(strLen).append(Character.toTitleCase(str.charAt(0))).append(str.substring(1)).toString();
+	}
+
 	public static String getPostedOnText(final String time) {
 		String postedOn = null;
 		try {
-			DateTimeFormatter formatter = DateTimeFormat
-					.forPattern("dd MMM yyyy, hh:mm a");
-			DateTime postedDateTime = formatter
-					.parseDateTime(time);
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("dd MMM yyyy, hh:mm a");
+			DateTime postedDateTime = formatter.parseDateTime(time);
 			DateTime currentDateTime = new DateTime();
-			final Period period = new Period(postedDateTime,
-					currentDateTime);
+			final Period period = new Period(postedDateTime, currentDateTime);
 			if (period.getDays() >= 3) {
 				String splittime = time.substring(0, time.indexOf(","));
 				postedOn = "Posted on " + splittime;
 			} else if (period.getDays() >= 1 && period.getDays() < 3) {
 				if (period.getDays() == 1) {
-					postedOn = "Posted " + period.getDays()
-							+ " day ago";
+					postedOn = "Posted " + period.getDays() + " day ago";
 				} else {
-					postedOn = "Posted " + period.getDays()
-							+ " days ago";
+					postedOn = "Posted " + period.getDays() + " days ago";
 				}
 			} else if (period.getHours() < 24 && period.getHours() >= 1) {
-				if(period.getHours() == 1){
+				if (period.getHours() == 1) {
 					postedOn = "Posted " + period.getHours() + " hour ago";
 				} else {
 					postedOn = "Posted " + period.getHours() + " hours ago";
 				}
-			} else if (period.getHours() < 1
-					&& period.getMinutes() >= 1) {
-				postedOn = "Posted " + period.getMinutes()
-						+ " mins ago";
+			} else if (period.getHours() < 1 && period.getMinutes() >= 1) {
+				postedOn = "Posted " + period.getMinutes() + " mins ago";
 			} else if (period.getMinutes() < 1) {
 				postedOn = "Just now";
 			} else {
@@ -972,5 +907,5 @@ public class Util {
 		}
 		return postedOn;
 	}
-	
+
 }

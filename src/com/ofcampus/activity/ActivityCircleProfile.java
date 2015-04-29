@@ -661,6 +661,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 				Util.ShowToast(context, "Successfully Joined Club");
 				isDataModify=true;
 				status_circle.setText("Unjoin");
+				isAlreadyJoined=true;
 			}
 
 			@Override
@@ -686,7 +687,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 				Util.ShowToast(context, "Successfully unjoined club");
 				isDataModify=true;
 				status_circle.setText("Join");
-				
+				isAlreadyJoined=false;
 			}
 
 			@Override
