@@ -29,6 +29,7 @@ import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityComment;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
 import com.ofcampus.activity.ActivityNewsDetails;
+import com.ofcampus.adapter.JobListBaseAdapter.jobListInterface;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.ImageDetails;
@@ -68,6 +69,34 @@ public class FilterJobsAdapter extends BaseAdapter {
 
 	public ArrayList<JobDetails> getJobData() {
 		return this.jobs;
+	}
+	
+	public void importantJob(JobDetails hideJob) {
+		for (JobDetails jobDetails : jobs) {
+			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
+				jobDetails.important = 1;
+			}
+		}
+		notifyDataSetChanged();
+	}
+
+	public void unimportantJob(JobDetails hideJob) {
+		for (JobDetails jobDetails : jobs) {
+			if (hideJob.getPostid().equals(jobDetails.getPostid())) {
+				jobDetails.important = 0;
+			}
+		}
+		notifyDataSetChanged();
+	}
+
+	public void likRefreshJob(JobDetails postLiked) {
+		for (JobDetails postDetails : jobs) {
+			if (postLiked.getPostid().equals(postDetails.getPostid())) {
+				// postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
+				postDetails.like = 1;
+			}
+		}
+		notifyDataSetChanged();
 	}
 
 	@Override
@@ -139,7 +168,7 @@ public class FilterJobsAdapter extends BaseAdapter {
 
 			mHolder.img_important.setVisibility(View.VISIBLE);
 			mHolder.img_like.setVisibility(View.VISIBLE);
-			mHolder.img_arrow.setVisibility(View.VISIBLE);
+			mHolder.img_arrow.setVisibility(View.GONE);
 			if (mJobDetails.getImportant() == 1) {
 				mHolder.img_important.setSelected(true);
 			} else {
@@ -251,6 +280,33 @@ public class FilterJobsAdapter extends BaseAdapter {
 					gotToPostDetails(mJobDetails);
 				}
 			});
+			
+			mHolder.img_important.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (filterlistinterface != null) {
+						if (mJobDetails.getImportant() == 0) {
+							filterlistinterface.impClieckEvent(mJobDetails);
+						} else {
+							filterlistinterface.unimpClieckEvent(mJobDetails); 
+						}
+
+					}
+				}
+			});
+
+			mHolder.img_like.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (filterlistinterface != null && mJobDetails.getLike() == 0) {
+						filterlistinterface.likeCliekEvent(mJobDetails);
+					}
+				}
+			});
+			
+			
 
 		}
 		return convertView;
@@ -353,4 +409,24 @@ public class FilterJobsAdapter extends BaseAdapter {
 		}
 	}
 
+	
+	
+	public filterListInterface filterlistinterface;
+
+	public filterListInterface getFilterlistinterface() {
+		return filterlistinterface;
+	}
+
+	public void setFilterlistinterface(filterListInterface filterlistinterface) {
+		this.filterlistinterface = filterlistinterface;
+	}
+
+	public interface filterListInterface {
+
+		public void impClieckEvent(JobDetails mJobDetails);
+
+		public void unimpClieckEvent(JobDetails mJobDetails);
+
+		public void likeCliekEvent(JobDetails mJobDetails);
+	}
 }

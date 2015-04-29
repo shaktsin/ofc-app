@@ -322,6 +322,25 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		}, 200);
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 1091 && resultCode == RESULT_OK && data!=null) {
+			boolean isModify = data.getExtras().getBoolean("isDataModify");
+			if (isModify) {
+				fragmentJobs.loadData(false);
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						fragmentNewsFeeds.loadData();
+					}
+				}, 700);
+				
+			}
+		}
+	}
+	
+	
 	/**
 	 * Pager Page Selected.
 	 */
