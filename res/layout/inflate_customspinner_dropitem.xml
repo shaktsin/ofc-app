@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true" >
+
+        <ImageView
+            android:id="@+id/custm_spinner_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/checkbox_selection" />
+
+        <com.ofcampus.ui.CustomTextView
+            android:id="@+id/custm_spinner_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/custm_spinner_checkbox"
+            android:layout_toStartOf="@+id/custm_spinner_checkbox"
+            android:gravity="center_vertical|left"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:text="ewsrwerwer"
+            android:textColor="@color/primary_dark"
+            android:textColorHint="@color/primary_dark"
+            android:textSize="@dimen/joblitview_Subject"
+            android:textStyle="normal"
+            ofcampus:fontName="Helvetica.otf" />
+    </RelativeLayout>
+
+</RelativeLayout>

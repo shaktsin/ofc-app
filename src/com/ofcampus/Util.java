@@ -79,7 +79,7 @@ public class Util {
 	public static String TITLES[] = { "My Posts", "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };
 	public static String sendto[] = { "Everyone", "Class of 2014", "General Management Club", "Finance Club", "Hyderabad Chapter" };
 
-	public static String TOOLTITLE[] = { "Post Details", "News Details" };
+	public static String TOOLTITLE[] = { "Post Details", "News Details", "Classified Details" };
 	public static String TOOLTITLE_FILTER[] = { "Filter Posts", "Filter News" };
 	public static String BUNDLE_KEY[] = { "CAMEFROM", "COMMENTORDETAILS" };
 
@@ -109,6 +109,10 @@ public class Util {
 
 	public static enum PostType {
 		NEWS, POST
+	}
+
+	public static enum ClassifSpinnerType {
+		SINGLESELECTION, MULTISELECTION
 	}
 
 	public static String getSDCardPath() {
@@ -278,6 +282,22 @@ public class Util {
 
 	public static String getSearchURL() {
 		return baseUrl + "search/all";
+	}
+
+	public static String getPreparClassifiedeUrl() {
+		return baseUrl + "classified/prepare";
+	}
+
+	public static String getCreateClassifiedeUrl() {
+		return baseUrl + "classified/create";
+	}
+
+	public static String getGetClassifiedDetailsUrl(String postId) {
+		return baseUrl + "classified/" + postId;
+	}
+
+	public static String getGetClassifiedListUrl() {
+		return baseUrl + "classified/list";
 	}
 
 	/******************** URl List **********************/
@@ -906,6 +926,15 @@ public class Util {
 			postedOn = "Posted on " + time;
 		}
 		return postedOn;
+	}
+
+	public static int getStatusBarHeight(Context context) {
+		int result = 0;
+		int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0) {
+			result = context.getResources().getDimensionPixelSize(resourceId);
+		}
+		return result;
 	}
 
 }

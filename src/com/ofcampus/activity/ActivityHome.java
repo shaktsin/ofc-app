@@ -57,6 +57,7 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.Util.SearchType;
+import com.ofcampus.activity.FragmentClassifieds.FgClassifiedInterface;
 import com.ofcampus.activity.FragmentJobs.JobsFrgInterface;
 import com.ofcampus.activity.FragmentNewsFeeds.FragmentNewsInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
@@ -71,7 +72,7 @@ import com.ofcampus.parser.FilterJobParser;
 import com.ofcampus.parser.SearchParser;
 import com.ofcampus.ui.FilterDialog;
 
-public class ActivityHome extends ActionBarActivity implements OnClickListener, viewCLickEvent, OnPageChangeListener, JobsFrgInterface, FragmentNewsInterface {
+public class ActivityHome extends ActionBarActivity implements OnClickListener, viewCLickEvent, OnPageChangeListener, JobsFrgInterface, FragmentNewsInterface, FgClassifiedInterface {
 
 	private String NAME = "";
 	private String EMAIL = "";
@@ -99,9 +100,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	private FragmentNewsFeeds fragmentNewsFeeds;
 	private FragmentJobs fragmentJobs;
 	private FragmentClassifieds mClassifiedsFragment;
-	private FragmentMeetups fragmentMeetups;
 
-	private TextView txt_countJobs, txt_countNews, txt_countmetup;
+	private TextView txt_countJobs, txt_countNews, txt_countclass;
 
 	/** Filter Data ***/
 	private FilterDataSets mFilterDataSets = null;
@@ -257,17 +257,22 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.activity_home_img_composejob:
-			Intent mIntent = new Intent(ActivityHome.this, ActivityCreatePost.class);
-			Bundle mBundle = new Bundle();
-			if (currentSelection == 0) {
-				mBundle.putString("ToolBarTitle", "Create News");
-				mBundle.putInt("createFor", currentSelection);
+			if (currentSelection == 2) {
+				Intent mIntent = new Intent(ActivityHome.this, ActivityCreateClassified.class);
+				startActivity(mIntent);
 			} else {
-				mBundle.putString("ToolBarTitle", "Create Job");
-				mBundle.putInt("createFor", currentSelection);
+				Intent mIntent = new Intent(ActivityHome.this, ActivityCreatePost.class);
+				Bundle mBundle = new Bundle();
+				if (currentSelection == 0) {
+					mBundle.putString("ToolBarTitle", "Create News");
+					mBundle.putInt("createFor", currentSelection);
+				} else {
+					mBundle.putString("ToolBarTitle", "Create Job");
+					mBundle.putInt("createFor", currentSelection);
+				}
+				mIntent.putExtras(mBundle);
+				startActivity(mIntent);
 			}
-			mIntent.putExtras(mBundle);
-			startActivity(mIntent);
 			overridePendingTransition(0, 0);
 			break;
 
@@ -325,7 +330,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 1091 && resultCode == RESULT_OK && data!=null) {
+		if (requestCode == 1091 && resultCode == RESULT_OK && data != null) {
 			boolean isModify = data.getExtras().getBoolean("isDataModify");
 			if (isModify) {
 				fragmentJobs.loadData(false);
@@ -335,12 +340,11 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 						fragmentNewsFeeds.loadData();
 					}
 				}, 700);
-				
+
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * Pager Page Selected.
 	 */
@@ -354,7 +358,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 			img_composejob.setVisibility(View.VISIBLE);
 			break;
 		case 2:
-			img_composejob.setVisibility(View.GONE);
+			img_composejob.setVisibility(View.VISIBLE);
 			break;
 
 		default:
@@ -383,6 +387,12 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	public void pullToRefreshCallCompleteForJob() {
 		count[1] = "";
 		txt_countJobs.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void pullToRefreshCallCompleteForClass() {
+		count[2] = "";
+		txt_countclass.setVisibility(View.GONE); 
 	}
 
 	private void initilizActionBarDrawer() {
@@ -450,13 +460,13 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		bgShape = (GradientDrawable) txt_countNews.getBackground();
 		bgShape.setColor(Color.parseColor("#E84C3D"));
 
-		txt_countmetup = (TextView) findViewById(R.id.activity_home_meetcount);
-		bgShape = (GradientDrawable) txt_countmetup.getBackground();
+		txt_countclass = (TextView) findViewById(R.id.activity_home_meetcount);
+		bgShape = (GradientDrawable) txt_countclass.getBackground();
 		bgShape.setColor(Color.parseColor("#18BC9A"));
 
 		txt_countJobs.setVisibility(View.GONE);
 		txt_countNews.setVisibility(View.GONE);
-		txt_countmetup.setVisibility(View.GONE);
+		txt_countclass.setVisibility(View.GONE);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		pager = (ViewPager) findViewById(R.id.pager);
@@ -544,6 +554,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 				return fragmentJobs;
 			case 2:
 				mClassifiedsFragment = FragmentClassifieds.newInstance(position, ActivityHome.this);
+				mClassifiedsFragment.setFgclassifiedinterface(ActivityHome.this);
 				return mClassifiedsFragment;
 			}
 			return null;
@@ -614,7 +625,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					count[1] = (fragmentJobs != null) ? fragmentJobs.getUpdateJobsCount() : "";
 					/*** For Jobs Feed Sync **/
 
-					count[2] = "0";
+					/*** For Classified Sync **/
+					count[2] = (mClassifiedsFragment != null) ? mClassifiedsFragment.getUpdateClassifiedCount() : "";
+					/*** For Classified Sync **/
 
 					handler.sendEmptyMessage(0);
 				}
@@ -650,10 +663,10 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					}
 
 					if (meetupcount != null && !meetupcount.equals("") && !meetupcount.equals("0")) {
-						txt_countmetup.setVisibility(View.VISIBLE);
-						txt_countmetup.setText(meetupcount);
+						txt_countclass.setVisibility(View.VISIBLE);
+						txt_countclass.setText(meetupcount);
 					} else {
-						txt_countmetup.setVisibility(View.GONE);
+						txt_countclass.setVisibility(View.GONE);
 					}
 				}
 			} catch (Exception e) {

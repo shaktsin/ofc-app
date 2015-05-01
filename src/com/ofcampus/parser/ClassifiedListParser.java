@@ -1,8 +1,3 @@
-/*
- * This is the source code of OfCampus for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.ofcampus.parser;
 
 import java.util.ArrayList;
@@ -21,7 +16,7 @@ import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
-public class NewsFeedListParser {
+public class ClassifiedListParser {
 
 	private Context mContext;
 
@@ -32,7 +27,7 @@ public class NewsFeedListParser {
 	private String MESSAGES = "messages";
 
 	/* Job List Key */
-	private String NEWSFEEDLIST = "newsfeedList";
+	private String NEWSFEEDLIST = "posts";
 	private String POSTID = "postId";
 	private String SUBJECT = "subject";
 	private String ISB_JOBS = "ISB JOBS";
@@ -126,22 +121,22 @@ public class NewsFeedListParser {
 			}
 
 			if (isTimeOut) {
-				if (newsfeedlistparserinterface != null) {
-					newsfeedlistparserinterface.OnError();
+				if (classifiedlistparserinterface != null) {
+					classifiedlistparserinterface.OnError();
 				}
 			} else if (responsecode.equals("200")) {
-				if (newsfeedlistparserinterface != null) {
-					newsfeedlistparserinterface.OnSuccess(newsList);
+				if (classifiedlistparserinterface != null) {
+					classifiedlistparserinterface.OnSuccess(newsList);
 				}
 			} else if (responsecode.equals("500") || responsecode.equals("401")) {
-				Util.ShowToast(mContext, "No more News.");
-				if (newsfeedlistparserinterface != null) {
-					newsfeedlistparserinterface.OnError();
+				Util.ShowToast(mContext, "No more Classifieds.");
+				if (classifiedlistparserinterface != null) {
+					classifiedlistparserinterface.OnError();
 				}
 			} else {
-				Util.ShowToast(mContext, "News parse error.");
-				if (newsfeedlistparserinterface != null) {
-					newsfeedlistparserinterface.OnError();
+				Util.ShowToast(mContext, "Classified parse error.");
+				if (classifiedlistparserinterface != null) {
+					classifiedlistparserinterface.OnError();
 				}
 			}
 		}
@@ -157,7 +152,7 @@ public class NewsFeedListParser {
 
 	public void doingBGWork() {
 		try {
-			String[] responsedata = Util.POSTWithJSONAuth(Util.getNewsListUrl(), postData, authToken);
+			String[] responsedata = Util.POSTWithJSONAuth(Util.getGetClassifiedListUrl(), postData, authToken);
 			authenticationJson = responsedata[1];
 			isTimeOut = (responsedata[0].equals("205")) ? true : false;
 
@@ -312,17 +307,17 @@ public class NewsFeedListParser {
 		return jsObj;
 	}
 
-	public NewsFeedListParserInterface newsfeedlistparserinterface;
+	public ClassifiedListParserInterface classifiedlistparserinterface; 
 
-	public NewsFeedListParserInterface getNewsfeedlistparserinterface() {
-		return newsfeedlistparserinterface;
+	public ClassifiedListParserInterface getNewsfeedlistparserinterface() {
+		return classifiedlistparserinterface;
 	}
 
-	public void setNewsfeedlistparserinterface(NewsFeedListParserInterface newsfeedlistparserinterface) {
-		this.newsfeedlistparserinterface = newsfeedlistparserinterface;
+	public void setNewsfeedlistparserinterface(ClassifiedListParserInterface newsfeedlistparserinterface) {
+		this.classifiedlistparserinterface = newsfeedlistparserinterface;
 	}
 
-	public interface NewsFeedListParserInterface {
+	public interface ClassifiedListParserInterface {
 		public void OnSuccess(ArrayList<JobDetails> newsList);
 
 		public void OnError();

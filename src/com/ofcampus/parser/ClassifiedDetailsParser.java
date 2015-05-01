@@ -1,8 +1,3 @@
-/*
- * This is the source code of OfCampus for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.ofcampus.parser;
 
 import java.util.ArrayList;
@@ -24,27 +19,26 @@ import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
-public class NewsDetailsParser {
+public class ClassifiedDetailsParser {
 	private Context mContext;
-	private String STATUS="status";
-	private String RESULTS="results";
-//	private String EXCEPTION="exception";
-//	private String MESSAGES="messages";
+	private String STATUS = "status";
+	private String RESULTS = "results";
+	// private String EXCEPTION="exception";
+	// private String MESSAGES="messages";
 
-
-	/*Job List Key*/
-	private String POSTID="postId";
-	private String SUBJECT="subject";
-	private String ISB_JOBS="ISB JOBS";
-	private String CONTENT="content";
-	private String POSTEDON="postedOn";
-	private String USERDTO="userDto";
-	private String ID="id";
-	private String NAME="name";
-	private String IMAGE="image";
-	private String REPLYDTO="replyDto";
-	private String SHAREDTO="shareDto";
-
+	/* Job List Key */
+	private String POSTID = "postId";
+	private String SUBJECT = "subject";
+	private String ISB_JOBS = "ISB JOBS";
+	private String CONTENT = "content";
+	private String POSTEDON = "postedOn";
+	private String USERDTO = "userDto";
+	private String ID = "id";
+	private String NAME = "name";
+	private String IMAGE = "image";
+	private String REPLYDTO = "replyDto";
+	private String SHAREDTO = "shareDto";
+	
 	private String IMPORTANT="important";
 	private String LIKED="liked";
 
@@ -55,65 +49,63 @@ public class NewsDetailsParser {
 	private String ATTACHMENT_ID="id";
 	private String ATTACHMENT_URL="url"; 
 	
-	private String REPLYEMAIL="replyEmail";
-	private String REPLYPHONE="replyPhone";
-	private String REPLYWATSAPP="replyWatsApp";
-	
-	
-	//* No of comment reply share count *//
-	private String NUMREPLIES="numReplies";
-	private String NUMSHARED="numShared";
-	private String NUMCOMMENT="numComment";
-	private String NUMHIDES="numHides";
-	private String NUMIMPORTANT="numImportant";
-	private String NUMSPAM="numSpam";
-	private String NUMLIKES="numLikes";
-	
-	/**CommentList Key*/
-	private String COMMENTLISTRESPONSE="commentListResponse";
-	private String COMMENTRESPONSELIST="commentResponseList";
-	private String COMMENTEDON="commentedOn";
-	private String COMMENTID="commentId";
-	private String TOTALRESULTS="totalResults";
-	
-	/*Response JSON key value*/
-	private String responsecode="";
-	private String responseDetails="";
-	
-	
-	private int totalCommentCount=0;
-	
-	public void parse(Context context,String id,String auth) {  
+
+	private String REPLYEMAIL = "replyEmail";
+	private String REPLYPHONE = "replyPhone";
+	private String REPLYWATSAPP = "replyWatsApp";
+
+	// * No of comment reply share count *//
+	private String NUMREPLIES = "numReplies";
+	private String NUMSHARED = "numShared";
+	private String NUMCOMMENT = "numComment";
+	private String NUMHIDES = "numHides";
+	private String NUMIMPORTANT = "numImportant";
+	private String NUMSPAM = "numSpam";
+	private String NUMLIKES = "numLikes";
+
+	/** CommentList Key */
+	private String COMMENTLISTRESPONSE = "commentListResponse";
+	private String COMMENTRESPONSELIST = "commentResponseList";
+	private String COMMENTEDON = "commentedOn";
+	private String COMMENTID = "commentId";
+	private String TOTALRESULTS = "totalResults";
+
+	/* Response JSON key value */
+	private String responsecode = "";
+	private String responseDetails = "";
+
+	private int totalCommentCount = 0;
+
+	public void parse(Context context, String id, String auth) {
 		this.mContext = context;
 		List<NameValuePair> postData = getparamBody(auth);
-		Async mAsync = new Async(mContext,postData,id); 
+		Async mAsync = new Async(mContext, postData, id);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
-			mAsync.execute();   
+			mAsync.execute();
 		}
 	}
-	
-	
-	private class Async extends AsyncTask<Void, Void, Void>{
+
+	private class Async extends AsyncTask<Void, Void, Void> {
 		private Context context;
 		private String authenticationJson;
-		private boolean isTimeOut=false;
+		private boolean isTimeOut = false;
 		private ArrayList<JobDetails> arrayJobsComment;
 		private ProgressDialog mDialog;
 		private List<NameValuePair> postData;
-		private String id="";
-		
+		private String id = "";
+
 		public Async(Context mContext, List<NameValuePair> postData_, String id_) {
 			this.context = mContext;
-			this.postData = postData_; 
-			this.id=id_; 
+			this.postData = postData_;
+			this.id = id_;
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			mDialog=new ProgressDialog(mContext);
+			mDialog = new ProgressDialog(mContext);
 			mDialog.setMessage("Loading...");
 			mDialog.setCancelable(false);
 			mDialog.show();
@@ -121,28 +113,28 @@ public class NewsDetailsParser {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			
+
 			try {
-				
-				String[] responsedata =	Util.GetRequest(postData,Util.getGetNewsfeedUrl(id));
+
+				String[] responsedata = Util.GetRequest(postData, Util.getGetClassifiedDetailsUrl(id));
 				authenticationJson = responsedata[1];
-				isTimeOut = (responsedata[0].equals("205"))?true:false;
-				
-				if (authenticationJson!=null && !authenticationJson.equals("")) {
-					JSONObject mObject=new JSONObject(authenticationJson);
+				isTimeOut = (responsedata[0].equals("205")) ? true : false;
+
+				if (authenticationJson != null && !authenticationJson.equals("")) {
+					JSONObject mObject = new JSONObject(authenticationJson);
 					responsecode = Util.getJsonValue(mObject, STATUS);
-					if (responsecode!=null && responsecode.equals("200")) {
+					if (responsecode != null && responsecode.equals("200")) {
 						JSONObject Obj = mObject.getJSONObject(RESULTS);
-						if (Obj!=null) {
+						if (Obj != null) {
 							arrayJobsComment = getParseData(Obj);
 						}
-					}else if(responsecode!=null && responsecode.equals("500")){
+					} else if (responsecode != null && responsecode.equals("500")) {
 						JSONObject userObj = mObject.getJSONObject(RESULTS);
-						if (userObj!=null) {
-							responseDetails=userObj.getJSONArray("messages").get(0).toString();
+						if (userObj != null) {
+							responseDetails = userObj.getJSONArray("messages").get(0).toString();
 						}
 					}
-					
+
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -153,42 +145,41 @@ public class NewsDetailsParser {
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			
-			if (mDialog!=null && mDialog.isShowing()) {
+
+			if (mDialog != null && mDialog.isShowing()) {
 				mDialog.cancel();
-				mDialog=null;
+				mDialog = null;
 			}
-			
+
 			if (isTimeOut) {
-				if (newsdetailsparserinterface != null) { 
-					newsdetailsparserinterface.OnError(); 
+				if (classifieddetailsparserinterface != null) {
+					classifieddetailsparserinterface.OnError();
 				}
-			}else if (responsecode.equals("200")) {
-				if (arrayJobsComment!=null) {
-					if (newsdetailsparserinterface!=null) {
-						newsdetailsparserinterface.OnSuccess(arrayJobsComment,totalCommentCount);  
+			} else if (responsecode.equals("200")) {
+				if (arrayJobsComment != null) {
+					if (classifieddetailsparserinterface != null) {
+						classifieddetailsparserinterface.OnSuccess(arrayJobsComment, totalCommentCount);
 					}
-				}else {
+				} else {
 					Util.ShowToast(mContext, "News Details parser error.");
-					if (newsdetailsparserinterface != null) {
-						newsdetailsparserinterface.OnError(); 
+					if (classifieddetailsparserinterface != null) {
+						classifieddetailsparserinterface.OnError();
 					}
 				}
-			}else if (responsecode.equals("500")){
+			} else if (responsecode.equals("500")) {
 				Util.ShowToast(mContext, responseDetails);
-			}else {
+			} else {
 				Util.ShowToast(mContext, "News Details parser error.");
 			}
 		}
 	}
-	
-	
+
 	public static List<NameValuePair> getparamBody(String authorization) {
 		List<NameValuePair> pairsofEducation = new ArrayList<NameValuePair>();
 		pairsofEducation.add(new BasicNameValuePair("Authorization", authorization));
 		return pairsofEducation;
 	}
-	
+
 	private ArrayList<JobDetails> getParseData(JSONObject jsonobject){
 
 
@@ -302,21 +293,19 @@ public class NewsDetailsParser {
 		return arrayJobsComment;
 		
 	}
-	
-	public NewsDetailsParserInterface newsdetailsparserinterface;
 
-	
-	public NewsDetailsParserInterface getNewsdetailsparserinterface() {
-		return newsdetailsparserinterface;
+	public ClassifiedDetailsParserInterface classifieddetailsparserinterface;
+
+	public ClassifiedDetailsParserInterface getClassifieddetailsparserinterface() {
+		return classifieddetailsparserinterface;
 	}
 
-	public void setNewsdetailsparserinterface(
-			NewsDetailsParserInterface newsdetailsparserinterface) {
-		this.newsdetailsparserinterface = newsdetailsparserinterface;
+	public void setClassifieddetailsparserinterface(ClassifiedDetailsParserInterface classifieddetailsparserinterface) {
+		this.classifieddetailsparserinterface = classifieddetailsparserinterface;
 	}
 
-	public interface NewsDetailsParserInterface {
-		public void OnSuccess(ArrayList<JobDetails> arrayJobsComment, int totalCommentCount);  
+	public interface ClassifiedDetailsParserInterface {
+		public void OnSuccess(ArrayList<JobDetails> arrayJobsComment, int totalCommentCount);
 
 		public void OnError();
 	}

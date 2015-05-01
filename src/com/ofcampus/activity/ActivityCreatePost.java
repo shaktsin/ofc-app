@@ -307,10 +307,8 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 		((ImageView)findViewById(R.id.activity_createjob_attached)).setOnClickListener(this);
 		if (createFor==0) {
 			((ImageView)findViewById(R.id.activity_createjob_edit)).setVisibility(View.GONE);
-//			((ImageView)findViewById(R.id.activity_createjob_docattached)).setVisibility(View.GONE);
 		}else {
 			((ImageView)findViewById(R.id.activity_createjob_edit)).setOnClickListener(this);
-//			((ImageView)findViewById(R.id.activity_createjob_docattached)).setOnClickListener(this);
 		}
 		((ImageView)findViewById(R.id.activity_createjob_docattached)).setOnClickListener(this);
 		((ImageView)findViewById(R.id.activity_createjob_rply)).setOnClickListener(this);
@@ -1147,34 +1145,7 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 			});
 			mPostParser.parse(context, newsObj, mDetails.getAuthtoken(),paths,docpdfPaths);
 		}
-	
 	}
-
-	
-//	http://205.147.110.176:8080/api/feed/create
-//	{
-//		  "replyWatsApp": "",
-//		  "shareDto": {
-//		    "shareWatsApp": "-1",
-//		    "sharePhone": "-1",
-//		    "shareEmail": "-1"
-//		  },
-//		  "replyPhone": "",
-//		  "plateFormId": "0",
-//		  "subject": "bn",
-//		  "appName": "ofCampus",
-//		  "content": "bbb",
-//		  "replyEmail": "dibakar@ofcampus.com",
-//		  "circleList": [
-//		    "21"
-//		  ]
-//		}
-	
-//	{"replyEmail":"dibakar@ofcampus.com","replyPhone":"",
-//		"replyWatsApp":"985455777","plateFormId":"0",
-//		"appName":"ofCampus","subject":"news post",
-//		"content":"news post test","shareDto":
-//		{"shareEmail":"-1","sharePhone":"-1","shareWatsApp":"-1"},"circleList":["22"]}
 	
 	private JSONObject getBody(String headline,String headlinedetails, String email_, String ph_, String whats_, String Circle_id) { 
 		
