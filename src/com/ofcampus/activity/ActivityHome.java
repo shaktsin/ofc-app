@@ -352,12 +352,15 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	public void onPageSelected(int position) {
 		switch (position) {
 		case 0:
+			img_composejob.setImageResource(R.drawable.floating_news);
 			img_composejob.setVisibility(View.VISIBLE);
 			break;
 		case 1:
+			img_composejob.setImageResource(R.drawable.floating_job);
 			img_composejob.setVisibility(View.VISIBLE);
 			break;
 		case 2:
+			img_composejob.setImageResource(R.drawable.floating_classified);
 			img_composejob.setVisibility(View.VISIBLE);
 			break;
 
