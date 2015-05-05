@@ -38,6 +38,9 @@ import com.ofcampus.parser.CommentPostParser.CommentPostParserInterface;
 
 public class ActivityClassifiedDetails extends ActionBarActivity implements OnClickListener, commentItemClickListner {
 
+	public static int REQUEST_CODEFOREDITCLASSIFIED = 20001;
+	public static String DATAMODIFY = "DataModify";
+
 	private ListView commentListView;
 	private CommentRecycleAdapter mCommentRecycleAdapter;
 	private JobDetails mJobDetails;
@@ -65,11 +68,6 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 
 		fromMYPost_ = ((OfCampusApplication) getApplication()).fromMYPost;
 		initilize();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onPostResume();
 		loadData();
 	}
 
@@ -100,11 +98,8 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 			return true;
 		case R.id.action_editpost:
 			((OfCampusApplication) getApplication()).jobdetails = mJobDetails;
-			Intent mIntent = new Intent(ActivityClassifiedDetails.this, ActivityPostEdit.class);
-			Bundle mBundle = new Bundle();
-			mBundle.putInt("createFor", 0);
-			mIntent.putExtras(mBundle);
-			startActivity(mIntent);
+			Intent mIntent = new Intent(ActivityClassifiedDetails.this, ActivityEditClassified.class);
+			startActivityForResult(mIntent, REQUEST_CODEFOREDITCLASSIFIED);
 			overridePendingTransition(0, 0);
 			return true;
 		}
@@ -139,6 +134,17 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 			edt_comment.setFocusable(true);
 		}
 
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_CODEFOREDITCLASSIFIED && resultCode == RESULT_OK && data != null) {
+			boolean isModify = data.getExtras().getBoolean(DATAMODIFY);
+			if (isModify) {
+				loadData();
+			}
+		}
 	}
 
 	private void loadBundleValue() {

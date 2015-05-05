@@ -7,11 +7,6 @@ package com.ofcampus.adapter;
 
 import java.util.ArrayList;
 
-import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
@@ -199,8 +194,8 @@ public class CommentRecycleAdapter extends BaseAdapter {
 
 				// String replycount = mJobDetails.getNumreplies();
 				String likecount = mJobDetails.getNumlikes();
-				String commentcount = mJobDetails.getNumcomment();
-
+//				String commentcount = mJobDetails.getNumcomment();
+				String commentcount = ((arraJobComment.size() == 1) ? 0 : arraJobComment.size()) +"";
 				// if (replycount != null && replycount.length() >= 1 &&
 				// !replycount.equalsIgnoreCase("0")) {
 				// mHolder.txt_replycount.setVisibility(View.VISIBLE);

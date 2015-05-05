@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
+import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
@@ -33,36 +34,42 @@ public class HideJobListParser {
 
 	/*Job List Key*/
 	private String POSTS="posts";
-	private String POSTID="postId";
-	private String SUBJECT="subject";
-	private String ISB_JOBS="ISB JOBS";
-	private String CONTENT="content";
-	private String POSTEDON="postedOn";
-	private String USERDTO="userDto";
-	private String ID="id";
-	private String NAME="name";
-	private String IMAGE="image";
-	private String REPLYDTO="replyDto";
-	private String SHAREDTO="shareDto";
+	private String POSTID = "postId";
+	private String SUBJECT = "subject";
+	private String ISB_JOBS = "ISB JOBS";
+	private String CONTENT = "content";
+	private String POSTEDON = "postedOn";
+	private String USERDTO = "userDto";
+	private String ID = "id";
+	private String NAME = "name";
+	private String IMAGE = "image";
+	private String REPLYDTO = "replyDto";
 
-	private String REPLYEMAIL="replyEmail";
-	private String REPLYPHONE="replyPhone";
-	private String REPLYWATSAPP="replyWatsApp";
-	
-	//* No of comment reply share count *//
-	private String NUMREPLIES="numReplies";
-	private String NUMSHARED="numShared";
-	private String NUMCOMMENT="numComment";
-	private String NUMHIDES="numHides";
-	private String NUMIMPORTANT="numImportant";
-	private String NUMSPAM="numSpam";
-	private String NUMLIKES="numLikes";
-	
-	private String POSTIMAGES="attachmentDtoList";
-	private String IMAGES_ID="id";
-	private String IMAGES_URL="url";
-	
-	private String POSTTYPE="postType";
+	private String SHAREDTO = "shareDto";
+	private String IMPORTANT = "important";
+	private String LIKED = "liked";
+
+	private String REPLYEMAIL = "replyEmail";
+	private String REPLYPHONE = "replyPhone";
+	private String REPLYWATSAPP = "replyWatsApp";
+
+	// * No of comment reply share count *//
+	private String NUMREPLIES = "numReplies";
+	private String NUMSHARED = "numShared";
+	private String NUMCOMMENT = "numComment";
+	private String NUMHIDES = "numHides";
+	private String NUMIMPORTANT = "numImportant";
+	private String NUMSPAM = "numSpam";
+	private String NUMLIKES = "numLikes";
+
+	private String POSTIMAGES = "attachmentDtoList";
+	private String ATTACHMENTTYPE = "attachmentType";
+	private String ATTACHEDKEYIMAGE = "image";
+	private String ATTACHEDKEYDOC = "docs";
+	private String ATTACHMENT_ID = "id";
+	private String ATTACHMENT_URL = "url";
+
+	private String POSTTYPE = "postType";
 	
 	/*Response JSON key value*/
 	private String responsecode="";
@@ -187,26 +194,29 @@ public class HideJobListParser {
 					JobDetails mJobDetails=new JobDetails();
 					jsonobject = jobjsonarray.getJSONObject(i);
 					
-					mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID)); 
+					mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID));
 					mJobDetails.setSubject(Util.getJsonValue(jsonobject, SUBJECT));
 					mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));
 					mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
 					mJobDetails.setPostedon(Util.getJsonValue(jsonobject, POSTEDON));
-					
-					JSONObject userJSONobj=jsonobject.getJSONObject(USERDTO);
+					mJobDetails.setImportant((Util.getJsonValue(jsonobject, IMPORTANT).equals("true")) ? 1 : 0);
+					mJobDetails.setLike((Util.getJsonValue(jsonobject, LIKED).equals("true")) ? 1 : 0);
+
+					JSONObject userJSONobj = jsonobject.getJSONObject(USERDTO);
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));
 					mJobDetails.setName(Util.getJsonValue(userJSONobj, NAME));
 					mJobDetails.setImage(Util.getJsonValue(userJSONobj, IMAGE));
 					mJobDetails.setPostType(Util.getJsonValue(jsonobject, POSTTYPE));
-					
-					JSONObject rplJSONObj=jsonobject.getJSONObject(REPLYDTO);
-					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
-					
+
+					JSONObject rplJSONObj = jsonobject.getJSONObject(REPLYDTO);
+
 					mJobDetails.setReplyEmail(Util.getJsonValue(rplJSONObj, REPLYEMAIL));
 					mJobDetails.setReplyPhone(Util.getJsonValue(rplJSONObj, REPLYPHONE));
-					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP)); 
-					
-					//*No of count */
+					mJobDetails.setReplyWatsApp(Util.getJsonValue(rplJSONObj, REPLYWATSAPP));
+
+					mJobDetails.setSharedto(Util.getJsonValue(jsonobject, SHAREDTO));
+
+					// *No of count */
 					mJobDetails.setNumreplies(Util.getJsonValue(jsonobject, NUMREPLIES));
 					mJobDetails.setNumshared(Util.getJsonValue(jsonobject, NUMSHARED));
 					mJobDetails.setNumcomment(Util.getJsonValue(jsonobject, NUMCOMMENT));
@@ -216,16 +226,27 @@ public class HideJobListParser {
 					mJobDetails.setNumlikes(Util.getJsonValue(jsonobject, NUMLIKES));
 
 					try {
-						JSONArray imageJSONArray = jsonobject.getJSONArray(POSTIMAGES);
-						if (imageJSONArray!=null && imageJSONArray.length()>=1) {
-							ArrayList<ImageDetails> images=new ArrayList<ImageDetails>();
-							for (int i1 = 0; i1 < imageJSONArray.length(); i1++) {
-								JSONObject imgJSONObject = imageJSONArray.getJSONObject(i1);
-								ImageDetails mImageDetails=new ImageDetails();
-								mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(imgJSONObject, IMAGES_ID)));
-								mImageDetails.setImageURL(Util.getJsonValue(imgJSONObject, IMAGES_URL));
-								images.add(mImageDetails);
+						JSONArray attachmentJSONArray = jsonobject.getJSONArray(POSTIMAGES);
+						if (attachmentJSONArray != null && attachmentJSONArray.length() >= 1) {
+							ArrayList<ImageDetails> images = new ArrayList<ImageDetails>();
+							ArrayList<DocDetails> docList = new ArrayList<DocDetails>();
+
+							for (int i1 = 0; i1 < attachmentJSONArray.length(); i1++) {
+								JSONObject attachmentObj = attachmentJSONArray.getJSONObject(i1);
+								if (Util.getJsonValue(attachmentObj, ATTACHMENTTYPE).equals(ATTACHEDKEYIMAGE)) {
+									ImageDetails mImageDetails = new ImageDetails();
+									mImageDetails.setImageID(Integer.parseInt(Util.getJsonValue(attachmentObj, ATTACHMENT_ID)));
+									mImageDetails.setImageURL(Util.getJsonValue(attachmentObj, ATTACHMENT_URL));
+									images.add(mImageDetails);
+								} else if (Util.getJsonValue(attachmentObj, ATTACHMENTTYPE).equals(ATTACHEDKEYDOC)) {
+									DocDetails mDetails = new DocDetails();
+									mDetails.setDocID(Integer.parseInt(Util.getJsonValue(attachmentObj, ATTACHMENT_ID)));
+									mDetails.setDocURL(Util.getJsonValue(attachmentObj, ATTACHMENT_URL));
+									// mDetails.setDocsize(docsize);
+									docList.add(mDetails);
+								}
 							}
+							mJobDetails.setDoclist(docList);
 							mJobDetails.setImages(images);
 						}
 					} catch (Exception e) {

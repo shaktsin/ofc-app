@@ -292,6 +292,10 @@ public class Util {
 		return baseUrl + "classified/create";
 	}
 
+	public static String getEditClassifiedeUrl() {
+		return baseUrl + "classified/edit";
+	}
+
 	public static String getGetClassifiedDetailsUrl(String postId) {
 		return baseUrl + "classified/" + postId;
 	}

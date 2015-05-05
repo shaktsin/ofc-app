@@ -25,6 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.ActivityClassifiedDetails;
 import com.ofcampus.activity.ActivityComment;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
 import com.ofcampus.activity.ActivityNewsDetails;
@@ -252,6 +253,9 @@ public class MyPostListAdapter extends BaseAdapter {
 			if (mJobDetails.getPostType().equals("3")) {
 				toolTitle = Util.TOOLTITLE[1];
 				mIntent = new Intent(mContext, ActivityNewsDetails.class);
+			}else if (mJobDetails.getPostType().equals("1")) {
+				toolTitle = Util.TOOLTITLE[2];
+				mIntent = new Intent(mContext, ActivityClassifiedDetails.class);
 			} else {
 				toolTitle = Util.TOOLTITLE[0];
 				mIntent = new Intent(mContext, ActivityComment.class);

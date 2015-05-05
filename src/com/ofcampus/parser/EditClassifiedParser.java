@@ -1,8 +1,3 @@
-/*
- * This is the source code of OfCampus for Android v. 1.0.0.
- * You should have received a copy of the license in this archive (see LICENSE).
- * Copyright @Dibakar_Mistry, 2015.
- */
 package com.ofcampus.parser;
 
 import java.util.ArrayList;
@@ -21,17 +16,16 @@ import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 
-public class NewsPostParser {
+public class EditClassifiedParser {
 
-	
+
 	private Context mContext;
-	private String STATUS="status";
-	private String RESULTS="results";
-//	private String EXCEPTION="exception";
-//	private String MESSAGES="messages";
+	private String STATUS = "status";
+	private String RESULTS = "results";
+	// private String EXCEPTION="exception";
+	// private String MESSAGES="messages";
 
-
-	/*Job List Key*/
+	/* Job List Key */
 	private String POSTID="postId";
 	private String SUBJECT="subject";
 	private String ISB_JOBS="ISB JOBS";
@@ -70,47 +64,44 @@ public class NewsPostParser {
 	private String NUMIMPORTANT="numImportant";
 	private String NUMSPAM="numSpam";
 	private String NUMLIKES="numLikes";
-	
-	
 
-	/*Response JSON key value*/
-	private String responsecode="";
-	private String responseDetails="";
-	
-	public void parse(Context context, JSONObject obj,String auth, ArrayList<String> paths, ArrayList<String> docpdfPaths) {    
+	/* Response JSON key value */
+	private String responsecode = "";
+	private String responseDetails = "";
+
+	public void parse(Context context, JSONObject obj, String auth, ArrayList<String> paths, ArrayList<String> docpdfPaths) {
 		this.mContext = context;
-		Async mAsync = new Async(mContext,obj,auth,paths,docpdfPaths);  
+		Async mAsync = new Async(mContext, obj, auth, paths, docpdfPaths);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
-			mAsync.execute(); 
+			mAsync.execute();
 		}
 	}
-	
-	
-	private class Async extends AsyncTask<Void, Void, Void>{
+
+	private class Async extends AsyncTask<Void, Void, Void> {
 		private Context context;
 		private String authenticationJson;
-		private boolean isTimeOut=false;
+		private boolean isTimeOut = false;
 		private JobDetails mJobDetails;
 		private ProgressDialog mDialog;
-		private JSONObject obj_=null;
+		private JSONObject obj_ = null;
 		private ArrayList<String> paths;
 		private ArrayList<String> docpdfPaths;
-		private String auth="";
-		
-		public Async(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_, ArrayList<String> docpdfPaths_) {  
+		private String auth = "";
+
+		public Async(Context mContext, JSONObject obj, String auth_, ArrayList<String> paths_, ArrayList<String> docpdfPaths_) {
 			this.context = mContext;
-			this.obj_ = obj; 
-			this.auth=auth_;
-			this.paths=paths_;
-			this.docpdfPaths=docpdfPaths_;
+			this.obj_ = obj;
+			this.auth = auth_;
+			this.paths = paths_;
+			this.docpdfPaths = docpdfPaths_;
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			mDialog=new ProgressDialog(mContext);
+			mDialog = new ProgressDialog(mContext);
 			mDialog.setMessage("Loading...");
 			mDialog.setCancelable(false);
 			mDialog.show();
@@ -118,28 +109,28 @@ public class NewsPostParser {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			
+
 			try {
-				
-				String[] responsedata =	Util.POSTWithAuthJSONFile(Util.getCreateNewsUrl(), obj_,auth,paths,"feed",docpdfPaths);
+
+				String[] responsedata = Util.POSTWithAuthJSONFile(Util.getEditClassifiedeUrl(), obj_, auth, paths, "classified", docpdfPaths);
 				authenticationJson = responsedata[1];
-				isTimeOut = (responsedata[0].equals("205"))?true:false;
-				
-				if (authenticationJson!=null && !authenticationJson.equals("")) {
-					JSONObject mObject=new JSONObject(authenticationJson);
+				isTimeOut = (responsedata[0].equals("205")) ? true : false;
+
+				if (authenticationJson != null && !authenticationJson.equals("")) {
+					JSONObject mObject = new JSONObject(authenticationJson);
 					responsecode = Util.getJsonValue(mObject, STATUS);
-					if (responsecode!=null && responsecode.equals("200")) {
+					if (responsecode != null && responsecode.equals("200")) {
 						JSONObject Obj = mObject.getJSONObject(RESULTS);
-						if (Obj!=null) {
+						if (Obj != null) {
 							mJobDetails = getParseData(Obj);
 						}
-					}else if(responsecode!=null && responsecode.equals("500")){
+					} else if (responsecode != null && responsecode.equals("500")) {
 						JSONObject userObj = mObject.getJSONObject(RESULTS);
-						if (userObj!=null) {
-							responseDetails=userObj.getJSONArray("messages").get(0).toString();
+						if (userObj != null) {
+							responseDetails = userObj.getJSONArray("messages").get(0).toString();
 						}
 					}
-					
+
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -150,41 +141,40 @@ public class NewsPostParser {
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			
-			if (mDialog!=null && mDialog.isShowing()) {
+
+			if (mDialog != null && mDialog.isShowing()) {
 				mDialog.cancel();
-				mDialog=null;
+				mDialog = null;
 			}
-			
+
 			if (isTimeOut) {
-				if (newspostparserinterface != null) {
-					newspostparserinterface.OnError(); 
+				if (editclassifiedparserinterface != null) {
+					editclassifiedparserinterface.OnError(); 
 				}
-			}else if (responsecode.equals("200")) {
-				if (mJobDetails!=null) {
-					if (newspostparserinterface!=null) {
-						newspostparserinterface.OnSuccess(mJobDetails);
-						Util.ShowToast(mContext, "News Posted successfully.");
+			} else if (responsecode.equals("200")) {
+				if (mJobDetails != null) {
+					if (editclassifiedparserinterface != null) {
+						editclassifiedparserinterface.OnSuccess(mJobDetails);
+						Util.ShowToast(mContext, "Classified Modify successfully.");
 					}
-				}else {
-					Util.ShowToast(mContext, "News Post error.");
-					if (newspostparserinterface != null) {
-						newspostparserinterface.OnError(); 
+				} else {
+					Util.ShowToast(mContext, "Classified Modify error.");
+					if (editclassifiedparserinterface != null) {
+						editclassifiedparserinterface.OnError();
 					}
 				}
-			}else if (responsecode.equals("500")){
-				Util.ShowToast(mContext, "News Post error.");
-			}else {
-				Util.ShowToast(mContext, "News Post error.");
+			} else if (responsecode.equals("500")) {
+				Util.ShowToast(mContext, responseDetails);
+			} else {
+				Util.ShowToast(mContext, "Classified Modify error.");
 			}
 		}
 	}
-	
-	
-	private JobDetails getParseData(JSONObject jsonobject){
 
-		JobDetails mJobDetails =null;
-		
+	private JobDetails getParseData(JSONObject jsonobject) {
+
+		JobDetails mJobDetails = null;
+
 		try {
 			mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID));
 			mJobDetails.setSubject(Util.getJsonValue(jsonobject, SUBJECT));
@@ -243,26 +233,27 @@ public class NewsPostParser {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return mJobDetails;
-		
-	}
-	
-	public NewsPostParserInterface newspostparserinterface;
 
-	public NewsPostParserInterface getNewspostparserinterface() {
-		return newspostparserinterface;
 	}
 
-	public void setNewspostparserinterface(
-			NewsPostParserInterface newspostparserinterface) {
-		this.newspostparserinterface = newspostparserinterface;
+	public EditClassifiedParserInterface editclassifiedparserinterface;
+
+
+	public EditClassifiedParserInterface getEditclassifiedparserinterface() {
+		return editclassifiedparserinterface;
 	}
 
-	public interface NewsPostParserInterface {
+
+	public void setEditclassifiedparserinterface(EditClassifiedParserInterface editclassifiedparserinterface) {
+		this.editclassifiedparserinterface = editclassifiedparserinterface;
+	}
+
+	public interface EditClassifiedParserInterface { 
 		public void OnSuccess(JobDetails mJobDetails);
 
 		public void OnError();

@@ -130,10 +130,10 @@ public class CreateClassifiedParser {
 				if (mJobDetails != null) {
 					if (createclassifiedinterface != null) {
 						createclassifiedinterface.OnSuccess(mJobDetails);
-						Util.ShowToast(mContext, "Job Posted successfully.");
+						Util.ShowToast(mContext, "Classified Posted successfully.");
 					}
 				} else {
-					Util.ShowToast(mContext, "Job Post error.");
+					Util.ShowToast(mContext, "Classified Post error.");
 					if (createclassifiedinterface != null) {
 						createclassifiedinterface.OnError();
 					}
@@ -141,7 +141,7 @@ public class CreateClassifiedParser {
 			} else if (responsecode.equals("500")) {
 				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, "Job Post error.");
+				Util.ShowToast(mContext, "Classified Post error.");
 			}
 		}
 	}
