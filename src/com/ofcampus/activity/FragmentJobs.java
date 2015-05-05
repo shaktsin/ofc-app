@@ -37,33 +37,28 @@ import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 import com.ofcampus.ui.ReplyDialog;
 
-public class FragmentJobs extends Fragment  implements jobListInterface,OnRefreshListener{
+public class FragmentJobs extends Fragment implements jobListInterface, OnRefreshListener {
 
 	private static final String ARG_POSITION = "position";
 	private static Context context;
-    private ListView joblist;
-    private RelativeLayout footer_pg;
-    public JobListBaseAdapter mJobListAdapter;
-    private String tocken = "";
-    
-    /***For Load more****/
-    private int minimumofsets = 5,mLastFirstVisibleItem = 0;
-    private boolean loadingMore = false;
-    
-	/**/
+	private ListView joblist;
+	private RelativeLayout footer_pg;
+	public JobListBaseAdapter mJobListAdapter;
+	private String tocken = "";
+
 	private SwipeRefreshLayout swipeLayout;
-	
-	
-	public String firsttJobID = "", lastJobID = "";
-	public ArrayList<JobDetails> notifyJObs = null;
-	
-    
-	public static FragmentJobs newInstance(int position,Context mContext) {
+
+	private int pageNo = 0;
+	private int pagecount = 8;
+	private int minimumofsets = 7, mLastFirstVisibleItem = 0;
+	private boolean loadingMore = false;
+
+	public static FragmentJobs newInstance(int position, Context mContext) {
 		FragmentJobs f = new FragmentJobs();
 		Bundle b = new Bundle();
 		b.putInt(ARG_POSITION, position);
 		f.setArguments(b);
-		context=mContext;
+		context = mContext;
 		return f;
 	}
 
@@ -74,57 +69,52 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		
-		View view=inflater.inflate(R.layout.fragment_jobs, null);
+
+		tocken = UserDetails.getLoggedInUser(context).getAuthtoken();
+		View view = inflater.inflate(R.layout.fragment_jobs, null);
 		initilizView(view);
 		initilizeSwipeRefresh(view);
-		loadData(true);
+		firstCalling(true);
 		return view;
 	}
 	
 	@Override
-	public void firstIDAndlastID(String fstID, String lstID){
-		firsttJobID=fstID;
-		lastJobID=lstID;
+	public void arrowHideClieckEvent(JobDetails mJobDetails) {
+		HideCalling(mJobDetails, 1);
 	}
-	
-	
-	@Override 
-	public void arrowHideClieckEvent(JobDetails mJobDetails){
-		HideCalling(mJobDetails,1);
+
+	@Override
+	public void arrowSpamClieckEvent(JobDetails mJobDetails) {
+		HideCalling(mJobDetails, 3);
 	}
-	
-	@Override 
-	public void arrowSpamClieckEvent(JobDetails mJobDetails){
-		HideCalling(mJobDetails,3);
+
+	@Override
+	public void impClieckEvent(JobDetails mJobDetails) {
+		HideCalling(mJobDetails, 2);
 	}
-	
-	@Override 
-	public void impClieckEvent(JobDetails mJobDetails){
-		HideCalling(mJobDetails,2);	
+
+	@Override
+	public void unimpClieckEvent(JobDetails mJobDetails) {
+		UnImptCalling(mJobDetails, 11);
 	}
-	
-	@Override 
-	public void unimpClieckEvent(JobDetails mJobDetails){
-		UnImptCalling(mJobDetails,11);	
+
+	@Override
+	public void likeCliekEvent(JobDetails mJobDetails) {
+		HideCalling(mJobDetails, 13);
 	}
-	
-	@Override 
-	public void likeCliekEvent(JobDetails mJobDetails){
-		HideCalling(mJobDetails,13);	
-	}
-	
-	
-	
-	@Override 
-	public void replyClickEvent(JobDetails mJobDetails){
+
+	@Override
+	public void replyClickEvent(JobDetails mJobDetails) {
 		new ReplyDialog(context, mJobDetails);
 	}
-	
-	@Override 
+
+	@Override
 	public void onRefresh() {
-		if (jobsfrginterface!=null) {
-			pulltorefreshcall();
+		String jobCount = ((ActivityHome) context).count[1];
+		if (jobCount != null && !jobCount.equals("") && !jobCount.equals("0")) {
+			firstCalling(false);
+		} else {
+			refreshComplete();
 		}
 	}
 
@@ -134,12 +124,11 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 	private void initilizView(View view) {
 		joblist = (ListView) view.findViewById(R.id.activity_home_joblist);
 		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
-		
-		mJobListAdapter=new JobListBaseAdapter(context, new ArrayList<JobDetails>());
+
+		mJobListAdapter = new JobListBaseAdapter(context, new ArrayList<JobDetails>());
 		mJobListAdapter.setJoblistinterface(this);
 		joblist.setAdapter(mJobListAdapter);
-		
-		
+
 		joblist.setOnScrollListener(new OnScrollListener() {
 
 			@Override
@@ -147,22 +136,19 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 			}
 
 			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 				int lastInScreen = firstVisibleItem + visibleItemCount;
-				if (mJobListAdapter != null
-						&& totalItemCount > minimumofsets
-						&& (lastInScreen == totalItemCount) && !(loadingMore)) {
+				if (mJobListAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
 					if (mLastFirstVisibleItem < firstVisibleItem) {
 						if (!Util.hasConnection(context)) {
-							Util.ShowToast(context,context.getResources().getString(R.string.internetconnection_msg));
+							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
 							return;
 						}
 						Log.i("SCROLLING DOWN", "TRUE");
 						footer_pg.setVisibility(View.VISIBLE);
 						loadingMore = true;
-						loadMore(lastJobID);
+						loadData(false, pageNo, pagecount);
 					}
 				}
 				mLastFirstVisibleItem = firstVisibleItem;
@@ -170,235 +156,163 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 		});
 
 	}
-	
+
 	/**
 	 * Initialize PullToRefresh:
 	 */
 	private void initilizeSwipeRefresh(View v) {
 		swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
 		swipeLayout.setOnRefreshListener(this);
-		swipeLayout.setColorScheme(R.color.pull_blue_bright,R.color.pull_green_light, R.color.pull_orange_light,R.color.pull_red_light);
+		swipeLayout.setColorScheme(R.color.pull_blue_bright, R.color.pull_green_light, R.color.pull_orange_light, R.color.pull_red_light);
 	}
-	
+
+	public void firstCalling(boolean b) {
+		resetAllCond();
+		loadData(b, 0, 8);
+	}
+
+	private void resetAllCond() {
+		pageNo = 0;
+		pagecount = 8;
+		minimumofsets = 7;
+		mLastFirstVisibleItem = 0;
+	}
+
 	/**
 	 * Initial Load Job Calling.
+	 * 
+	 * @param j
+	 * @param i
 	 */
-	public void loadData(boolean isShowingPG) { 
+	public void loadData(boolean isShowingPG, final int pageNo_, int pagecount_) {
+
 		
-		tocken=UserDetails.getLoggedInUser(context).getAuthtoken();
 		if (!Util.hasConnection(context)) {
-			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
 			return;
 		}
 
-		JobListParserNew mParserNew=new JobListParserNew();
+		JobListParserNew mParserNew = new JobListParserNew();
 		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
-			
+
 			@Override
 			public void OnSuccess(ArrayList<JobDetails> jobList) {
 				if (jobList != null && jobList.size() >= 1) {
-					refreshDataInAdapter(jobList); 
+					if (pageNo == 0) {
+						mJobListAdapter.refreshData(jobList);
+						pageNo = pageNo_ + 1;
+					} else {
+						mJobListAdapter.refreshloadmoreData(jobList);
+						pageNo = pageNo_ + 1;
+						minimumofsets = minimumofsets + pagecount;
+					}
 				}
+				try {
+					if (pageNo_==0 && jobList.size()==0) {
+//						Util.ShowToast(context, "No more Jobs.");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				refreshComplete();
 			}
 
-			@Override
-			public void OnError() {
-
-			}
-		});
-		mParserNew.isShowingPG_=isShowingPG;
-		mParserNew.parse(context, mParserNew.getBody(), tocken);
-	}
-	
-	
-	public void loadMore(String jobID) { 
-		JobListParserNew mParserNew=new JobListParserNew();
-		mParserNew.setJoblistparsernewinterface(new JobListParserNewInterface() {
-			
-			@Override
-			public void OnSuccess(ArrayList<JobDetails> jobList) {
-				if (jobList != null && jobList.size() >= 1) {
-					refreshLoadMoreDataInAdapter(jobList);
-				}else {
-					Util.ShowToast(context, "No more job available.");
-					refreshComplete();
-				}
-			}
-	
 			@Override
 			public void OnError() {
 				refreshComplete();
 			}
 		});
-		
-		mParserNew.isShowingPG_=false;
-		mParserNew.parse(context, mParserNew.getBody(jobID, 2+""), tocken);
+		mParserNew.isShowingPG_ = isShowingPG;
+		mParserNew.parse(context, mParserNew.getBody(pageNo_, pagecount_), tocken);
 	}
-	
 
-	private void pulltorefreshcall(){
-		if (notifyJObs != null && notifyJObs.size() >= 1) {
-			mJobListAdapter.refreshSwipeData(notifyJObs);
-			notifyJObs=null;
-			if (jobsfrginterface!=null) {
-				jobsfrginterface.pullToRefreshCallCompleteForJob(); 
-			}
-		} else {
-			Util.ShowToast(context, "No more News updated.");
-		}
-		refreshComplete();
-	}
-	
-	
-	/** JOB SYNC PROCESS  7TH APRIL 2015 **/
-	public boolean isJobComming() { 
-		if (!firsttJobID.equals("") && notifyJObs == null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public boolean isJobCommingFstTime() { 
-		if (firsttJobID.equals("") && lastJobID.equals("") && getAdapterCount()==0) { 
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public int getAdapterCount(){
-		if (mJobListAdapter==null) {
-			return 0;
-		}else {
-			return mJobListAdapter.getCount(); 
-		}
-	}
-	
-	private JobListParserNew mJobListParserNew=null; 
-	public String getUpdateJobsCount(){
-		String count="";
-		try {
-			if (mJobListParserNew==null) { 
-				mJobListParserNew=new JobListParserNew();
-			}
-			ArrayList<JobDetails> jobs=null;
-			if (isJobCommingFstTime() || isJobComming()) {
-				jobs = notifyJObs = mJobListParserNew.bgSyncCalling(context, mJobListParserNew.getBody(firsttJobID, 1+""), tocken); 
-			}
-			count=(jobs!=null && jobs.size()>=1)?jobs.size()+"":""; 
-			notifyJObs=(notifyJObs!=null && notifyJObs.size()==0)?null:notifyJObs;
-			mJobListParserNew=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
-	/** News Sync Process**/
-	
-	
 	public void refreshComplete() {
 		if (swipeLayout.isRefreshing()) {
 			swipeLayout.setRefreshing(false);
+//			Util.ShowToast(context, "No more Jobs updated.");
 		}
-		if (footer_pg.getVisibility()==View.VISIBLE) {
+		if (footer_pg.getVisibility() == View.VISIBLE) {
 			footer_pg.setVisibility(View.GONE);
 			loadingMore = false;
+//			Util.ShowToast(context, "No more Jobs.");
 		}
 		
-	}
-	
-	
-	public void refreshDataInAdapter(ArrayList<JobDetails> jobs){
-		firsttJobID=jobs.get(0).getPostid();
-		mJobListAdapter.refreshData(jobs);
-	}
-	
-	public void refreshSwipeDataInAdapter(ArrayList<JobDetails> jobs){
-		refreshComplete();
-		firsttJobID=jobs.get(0).getPostid();
-		mJobListAdapter.refreshSwipeData(jobs);
-	}
-	
-	public void refreshLoadMoreDataInAdapter(ArrayList<JobDetails> jobs){
-		refreshComplete();
-		firsttJobID=jobs.get(0).getPostid();
-		mJobListAdapter.refreshloadmoreData(jobs);
 	}
 
-	private void HideCalling(final JobDetails mJobDetails, final int state){   
+	private void HideCalling(final JobDetails mJobDetails, final int state) {
 		if (!Util.hasConnection(context)) {
-			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
 			return;
 		}
-		
-		PostJobHideMarkedParser markedParser=new PostJobHideMarkedParser();
+
+		PostJobHideMarkedParser markedParser = new PostJobHideMarkedParser();
 		markedParser.setPostjobhidemarkedparserinterface(new PostJobHideMarkedParserInterface() {
-			
+
 			@Override
 			public void OnSuccess() {
-				if (state==1 || state==3) {
+				if (state == 1 || state == 3) {
 					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mJobListAdapter.hideJob(mJobDetails);
-				}else if (state==2 ) {
-					ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
-					mJobDetails.important=1;
+					minimumofsets = minimumofsets - 1;
+				} else if (state == 2) {
+					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
+					mJobDetails.important = 1;
 					arr.add(mJobDetails);
 					JOBListTable.getInstance(context).inserJobData(arr);
 					ImportantJobTable.getInstance(context).inserJobData(mJobDetails);
 					mJobListAdapter.importantJob(mJobDetails);
-				}else if (state==11 ) {
-					ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
-					mJobDetails.important=0;
+				} else if (state == 11) {
+					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
+					mJobDetails.important = 0;
 					arr.add(mJobDetails);
 					JOBListTable.getInstance(context).inserJobData(arr);
 					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 					mJobListAdapter.unimportantJob(mJobDetails);
-				}else if (state==13 ) {
-//					ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
-//					mJobDetails.like=0;
-//					arr.add(mJobDetails);
-//					JOBListTable.getInstance(context).inserJobData(arr);
-//					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+				} else if (state == 13) {
+					// ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
+					// mJobDetails.like=0;
+					// arr.add(mJobDetails);
+					// JOBListTable.getInstance(context).inserJobData(arr);
+					// ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 					mJobListAdapter.likRefreshJob(mJobDetails);
 				}
 			}
-			
+
 			@Override
 			public void OnError() {
-			
+
 			}
 		});
-		markedParser.parse(context, markedParser.getBody(state+"", mJobDetails.getPostid()), tocken);  
+		markedParser.parse(context, markedParser.getBody(state + "", mJobDetails.getPostid()), tocken);
 	}
 
-	private void UnImptCalling(final JobDetails mJobDetails, final int state){   
+	private void UnImptCalling(final JobDetails mJobDetails, final int state) {
 		if (!Util.hasConnection(context)) {
-			Util.ShowToast(context,getResources().getString(R.string.internetconnection_msg));
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
 			return;
 		}
-		
-		PostUnHideUnImpParser PostUnHideUnImpParser=new PostUnHideUnImpParser();
+
+		PostUnHideUnImpParser PostUnHideUnImpParser = new PostUnHideUnImpParser();
 		PostUnHideUnImpParser.setPostunhideunimpparserinterface(new PostUnHideUnImpParserInterface() {
-			
+
 			@Override
 			public void OnSuccess() {
-				ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
-				mJobDetails.important=0;
+				ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
+				mJobDetails.important = 0;
 				arr.add(mJobDetails);
 				JOBListTable.getInstance(context).inserJobData(arr);
 				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 				mJobListAdapter.unimportantJob(mJobDetails);
 			}
-			
+
 			@Override
 			public void OnError() {
-				
+
 			}
 		});
-		PostUnHideUnImpParser.parse(context, PostUnHideUnImpParser.getBody(state+"", mJobDetails.getPostid()), tocken);  
+		PostUnHideUnImpParser.parse(context, PostUnHideUnImpParser.getBody(state + "", mJobDetails.getPostid()), tocken);
 	}
-	
+
 	public JobsFrgInterface jobsfrginterface;
 
 	public JobsFrgInterface getJobsfrginterface() {
@@ -411,7 +325,7 @@ public class FragmentJobs extends Fragment  implements jobListInterface,OnRefres
 
 	public interface JobsFrgInterface {
 		public void pullToRefreshCallCompleteForJob();
-		
+
 	}
-	
+
 }

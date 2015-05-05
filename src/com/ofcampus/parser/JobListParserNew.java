@@ -398,6 +398,20 @@ private Context mContext;
 	}
 	
 	
+	public JSONObject getBody(int pageNo,int pagecount) {
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+			jsObj.put("pageNo", pageNo+"");
+			jsObj.put("perPage", pagecount+"");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
+	}
+	
+	
 	public JobListParserNewInterface joblistparsernewinterface;
 
 	public JobListParserNewInterface getJoblistparsernewinterface() {

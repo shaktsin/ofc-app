@@ -61,7 +61,7 @@ public class JobListBaseAdapter extends BaseAdapter {
 
 	public void refreshData(ArrayList<JobDetails> arrJobs) {
 		this.jobs = arrJobs;
-		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
+//		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
 		notifyDataSetChanged();
 	}
 
@@ -69,13 +69,13 @@ public class JobListBaseAdapter extends BaseAdapter {
 		ArrayList<JobDetails> Jobs_ = new ArrayList<JobDetails>(arrJobs);
 		Jobs_.addAll(jobs);
 		this.jobs = Jobs_;
-		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
+//		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
 		notifyDataSetChanged();
 	}
 
 	public void refreshloadmoreData(ArrayList<JobDetails> arrJobs) {
 		jobs.addAll(arrJobs);
-		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
+//		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
 		notifyDataSetChanged();
 	}
 
@@ -89,9 +89,9 @@ public class JobListBaseAdapter extends BaseAdapter {
 		}
 		this.jobs = modifyJobList;
 		if (jobs.size() >= 1) {
-			setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
+//			setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
 		} else {
-			setIDS("", "");
+//			setIDS("", "");
 		}
 		notifyDataSetChanged();
 	}
@@ -421,11 +421,11 @@ public class JobListBaseAdapter extends BaseAdapter {
 		}
 	}
 
-	public void setIDS(String fstID, String lstID) {
-		if (joblistinterface != null) {
-			joblistinterface.firstIDAndlastID(fstID, lstID);
-		}
-	}
+//	public void setIDS(String fstID, String lstID) {
+//		if (joblistinterface != null) {
+//			joblistinterface.firstIDAndlastID(fstID, lstID);
+//		}
+//	}
 
 	public void viewOnClick(JobDetails mJobDetails) {
 		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
@@ -458,7 +458,7 @@ public class JobListBaseAdapter extends BaseAdapter {
 	public interface jobListInterface {
 		// public void viewOnClick(JobDetails mJobDetails);
 		// public void userProfile(JobDetails mJobDetails);
-		public void firstIDAndlastID(String fstID, String lstID);
+//		public void firstIDAndlastID(String fstID, String lstID);
 
 		public void arrowHideClieckEvent(JobDetails mJobDetails);
 

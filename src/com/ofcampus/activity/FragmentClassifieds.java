@@ -49,14 +49,12 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 	private ClassifiedListBaseAdapter mClassifiedListAdapter;
 	private String tocken = "";
 
-	/*** For Load more ****/
-	public String firsttID = "", lastID = "";
-	private int minimumofsets = 5, mLastFirstVisibleItem = 0;
-	private boolean loadingMore = false;
-
 	private SwipeRefreshLayout swipeLayout;
 
-	public ArrayList<JobDetails> notifyfeeds = null;
+	private int pageNo = 0;
+	private int pagecount = 8;
+	private int minimumofsets = 7, mLastFirstVisibleItem = 0;
+	private boolean loadingMore = false;
 
 	public static FragmentClassifieds newInstance(int position, Context mContext) {
 		FragmentClassifieds f = new FragmentClassifieds();
@@ -78,7 +76,7 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 		View view = inflater.inflate(R.layout.fragment_classifieds, null);
 		initilizView(view);
 		initilizeSwipeRefresh(view);
-		loadData();
+		firstCalling(true);
 		return view;
 	}
 
@@ -92,19 +90,18 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 	}
 
 	@Override
-	public void firstIDAndlastID(String fstID, String lstID) {
-		firsttID = fstID;
-		lastID = lstID;
-	}
-
-	@Override
 	public void replyClickEvent(JobDetails mJobDetails) {
 		new ReplyDialog(context, mJobDetails);
 	}
 
 	@Override
 	public void onRefresh() {
-		pulltorefreshcall();
+		String jobCount = ((ActivityHome) context).count[2];
+		if (jobCount != null && !jobCount.equals("") && !jobCount.equals("0")) {
+			firstCalling(false);
+		} else {
+			refreshComplete();
+		}
 	}
 
 	private void initilizView(View view) {
@@ -134,7 +131,7 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 						Log.i("SCROLLING DOWN", "TRUE");
 						footer_pg.setVisibility(View.VISIBLE);
 						loadingMore = true;
-						loadMore(lastID);
+						loadData(false, pageNo, pagecount);
 					}
 				}
 				mLastFirstVisibleItem = firstVisibleItem;
@@ -149,18 +146,26 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 		swipeLayout.setColorScheme(R.color.pull_blue_bright, R.color.pull_green_light, R.color.pull_orange_light, R.color.pull_red_light);
 	}
 
-	public int getAdapterCount() {
-		if (mClassifiedListAdapter == null) {
-			return 0;
-		} else {
-			return mClassifiedListAdapter.getCount();
-		}
+	public void firstCalling(boolean b) {
+		resetAllCond();
+		loadData(b, 0, 8);
+	}
+
+	private void resetAllCond() {
+		pageNo = 0;
+		pagecount = 8;
+		minimumofsets = 7;
+		mLastFirstVisibleItem = 0;
 	}
 
 	/**
 	 * Initial Load News Calling.
+	 * 
+	 * @param j
+	 * @param i
+	 * @param b
 	 */
-	public void loadData() {
+	public void loadData(boolean isShowingPG, final int pageNo_, int pagecount_) {
 		UserDetails mUserDetails = UserDetails.getLoggedInUser(context);
 		tocken = mUserDetails.getAuthtoken();
 
@@ -175,8 +180,24 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 			@Override
 			public void OnSuccess(ArrayList<JobDetails> classifiedsList) {
 				if (classifiedsList != null && classifiedsList.size() >= 1) {
-					mClassifiedListAdapter.refreshData(classifiedsList);
+					if (pageNo == 0) {
+						mClassifiedListAdapter.refreshData(classifiedsList);
+						pageNo = pageNo_ + 1;
+					} else {
+						mClassifiedListAdapter.refreshloadmoreData(classifiedsList);
+						pageNo = pageNo_ + 1;
+						minimumofsets = minimumofsets + pagecount;
+					}
 				}
+				try {
+					if (pageNo_ == 0 && classifiedsList.size() == 0) {
+						// Util.ShowToast(context, "No more Jobs.");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				refreshComplete();
+
 			}
 
 			@Override
@@ -184,91 +205,8 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 				refreshComplete();
 			}
 		});
+		mClassifiedListParser.isShowingPG_ = isShowingPG;
 		mClassifiedListParser.parse(context, mClassifiedListParser.getBody(), tocken);
-	}
-
-	/** News Sync Process 07 April 20015 **/
-	public boolean isNewsComming() {
-		if (!firsttID.equals("") && notifyfeeds == null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean isNewsCommingFstTime() {
-		if (firsttID.equals("") && lastID.equals("") && getAdapterCount() == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private ClassifiedListParser mClassifiedListParser = null;
-
-	public String getUpdateClassifiedCount() {
-		String count = "";
-		try {
-			if (mClassifiedListParser == null) {
-				mClassifiedListParser = new ClassifiedListParser();
-			}
-			ArrayList<JobDetails> news = null;
-			if (isNewsCommingFstTime() || isNewsComming()) {
-				news = notifyfeeds = mClassifiedListParser.bgSyncCalling(context, mClassifiedListParser.getBody(firsttID, 1 + ""), tocken);
-			}
-			count = (news != null && news.size() >= 1) ? news.size() + "" : "";
-			mClassifiedListParser = null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
-
-	/** News Sync Process **/
-
-	private void pulltorefreshcall() {
-		if (notifyfeeds != null && notifyfeeds.size() >= 1) {
-			mClassifiedListAdapter.refreshSwipeData(notifyfeeds);
-			notifyfeeds = null;
-			if (fgclassifiedinterface != null) {
-				fgclassifiedinterface.pullToRefreshCallCompleteForClass();
-			}
-		} else {
-			Util.ShowToast(context, "No more News updated.");
-		}
-		refreshComplete();
-	}
-
-	/**
-	 * Load more Refresh Load News Calling.
-	 */
-	private void loadMore(String JobID) {
-
-		if (!Util.hasConnection(context)) {
-			Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
-			return;
-		}
-
-		ClassifiedListParser mClassifiedListParser = new ClassifiedListParser();
-		mClassifiedListParser.setNewsfeedlistparserinterface(new ClassifiedListParserInterface() {
-
-			@Override
-			public void OnSuccess(ArrayList<JobDetails> classifiedList) {
-				if (classifiedList != null && classifiedList.size() >= 1) {
-					mClassifiedListAdapter.refreshloadmoreData(classifiedList);
-				} else {
-					Util.ShowToast(context, "No more Classifieds available.");
-				}
-				refreshComplete();
-			}
-
-			@Override
-			public void OnError() {
-				refreshComplete();
-			}
-		});
-		mClassifiedListParser.isShowingPG_ = false;
-		mClassifiedListParser.parse(context, mClassifiedListParser.getBody(JobID, 2 + ""), tocken);
 	}
 
 	/**
@@ -277,11 +215,14 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 	public void refreshComplete() {
 		if (swipeLayout.isRefreshing()) {
 			swipeLayout.setRefreshing(false);
+			// Util.ShowToast(context, "No more Jobs updated.");
 		}
 		if (footer_pg.getVisibility() == View.VISIBLE) {
 			footer_pg.setVisibility(View.GONE);
 			loadingMore = false;
+			// Util.ShowToast(context, "No more Jobs.");
 		}
+
 	}
 
 	@Override
@@ -318,6 +259,7 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 				if (state == 1 || state == 3) {
 					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mClassifiedListAdapter.hideNews(mJobDetails);
+					minimumofsets = minimumofsets - 1;
 				} else if (state == 2) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 1;

@@ -185,6 +185,7 @@ public class JobPostParser {
 		JobDetails mJobDetails =null;
 		
 		try {
+			mJobDetails=new JobDetails();
 			mJobDetails.setPostid(Util.getJsonValue(jsonobject, POSTID));
 			mJobDetails.setSubject(Util.getJsonValue(jsonobject, SUBJECT));
 			mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));

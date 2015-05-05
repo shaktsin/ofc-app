@@ -15,7 +15,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +46,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.ofcampus.databasehelper.JOBListTable;
+import com.ofcampus.model.JobDetails;
 
 import android.app.Activity;
 import android.content.Context;
@@ -302,6 +308,10 @@ public class Util {
 
 	public static String getGetClassifiedListUrl() {
 		return baseUrl + "classified/list";
+	}
+
+	public static String getSyncUrl() {
+		return baseUrl + "post/sync";
 	}
 
 	/******************** URl List **********************/
@@ -939,6 +949,53 @@ public class Util {
 			result = context.getResources().getDimensionPixelSize(resourceId);
 		}
 		return result;
+	}
+
+	/* Sync purpose */
+	public static String getCurrentDateTime() {
+		// 2015/05/05 22:15:06
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		return sdf.format(new Date());
+	}
+
+	public static JSONObject getBody() {
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+			jsObj.put("postDate", getCurrentDateTime());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
+	}
+
+	public static String[] getSyncCount(String tocken) {
+		String[] count = { "", "", "" };
+
+		try {
+			String[] responsedata = Util.POSTWithJSONAuth(Util.getSyncUrl(), Util.getBody(), tocken);
+			String authenticationJson = responsedata[1];
+			if (authenticationJson != null && !authenticationJson.equals("")) {
+				JSONObject mObject = new JSONObject(authenticationJson);
+				String responsecode = Util.getJsonValue(mObject, "status");
+				if (responsecode != null && responsecode.equals("200")) {
+					JSONObject Obj = mObject.getJSONObject("results");
+					if (Obj != null && !Obj.equals("")) {
+						String expt = Util.getJsonValue(Obj, "exception");
+						if (expt.equals("false")) {
+
+							count[0] = Util.getJsonValue(Obj, "newsFeedCount");
+							count[1] = Util.getJsonValue(Obj, "jobCount");
+							count[2] = Util.getJsonValue(Obj, "classCount");
+						}
+					}
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 }

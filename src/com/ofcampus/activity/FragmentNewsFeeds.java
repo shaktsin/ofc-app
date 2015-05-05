@@ -49,14 +49,12 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 	private NewsListAdapter mNewsListAdapter;
 	private String tocken = "";
 
-	/*** For Load more ****/
-	public String firsttJobID = "", lastJobID = "";
-	private int minimumofsets = 5, mLastFirstVisibleItem = 0;
-	private boolean loadingMore = false;
-
 	private SwipeRefreshLayout swipeLayout;
 
-	public ArrayList<JobDetails> notifyfeeds = null;
+	private int pageNo = 0;
+	private int pagecount = 8;
+	private int minimumofsets = 7, mLastFirstVisibleItem = 0;
+	private boolean loadingMore = false;
 
 	public static FragmentNewsFeeds newInstance(int position, Context mContext) {
 		FragmentNewsFeeds f = new FragmentNewsFeeds();
@@ -78,7 +76,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 		View view = inflater.inflate(R.layout.fragment_newsfeeds, null);
 		initilizView(view);
 		initilizeSwipeRefresh(view);
-		loadData();
+		firstCalling(true);
 		return view;
 	}
 
@@ -92,19 +90,18 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 	}
 
 	@Override
-	public void firstIDAndlastID(String fstID, String lstID) {
-		firsttJobID = fstID;
-		lastJobID = lstID;
-	}
-
-	@Override
 	public void replyClickEvent(JobDetails mJobDetails) {
 		new ReplyDialog(context, mJobDetails);
 	}
 
 	@Override
 	public void onRefresh() {
-		pulltorefreshcall();
+		String jobCount = ((ActivityHome) context).count[0];
+		if (jobCount != null && !jobCount.equals("") && !jobCount.equals("0")) {
+			firstCalling(false);
+		} else {
+			refreshComplete();
+		}
 	}
 
 	private void initilizView(View view) {
@@ -134,7 +131,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 						Log.i("SCROLLING DOWN", "TRUE");
 						footer_pg.setVisibility(View.VISIBLE);
 						loadingMore = true;
-						loadMore(lastJobID);
+						loadData(false, pageNo, pagecount);
 					}
 				}
 				mLastFirstVisibleItem = firstVisibleItem;
@@ -149,18 +146,22 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 		swipeLayout.setColorScheme(R.color.pull_blue_bright, R.color.pull_green_light, R.color.pull_orange_light, R.color.pull_red_light);
 	}
 
-	public int getAdapterCount() {
-		if (mNewsListAdapter == null) {
-			return 0;
-		} else {
-			return mNewsListAdapter.getCount();
-		}
+	public void firstCalling(boolean b) {
+		resetAllCond();
+		loadData(b, 0, 8);
+	}
+
+	private void resetAllCond() {
+		pageNo = 0;
+		pagecount = 8;
+		minimumofsets = 7;
+		mLastFirstVisibleItem = 0;
 	}
 
 	/**
 	 * Initial Load News Calling.
 	 */
-	public void loadData() {
+	public void loadData(boolean isShowingPG, final int pageNo_, int pagecount_) {
 		UserDetails mUserDetails = UserDetails.getLoggedInUser(context);
 		tocken = mUserDetails.getAuthtoken();
 
@@ -175,8 +176,24 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 			@Override
 			public void OnSuccess(ArrayList<JobDetails> newsList) {
 				if (newsList != null && newsList.size() >= 1) {
-					mNewsListAdapter.refreshData(newsList);
+					if (pageNo == 0) {
+						mNewsListAdapter.refreshData(newsList);
+						pageNo = pageNo_ + 1;
+					} else {
+						mNewsListAdapter.refreshloadmoreData(newsList);
+						pageNo = pageNo_ + 1;
+						minimumofsets = minimumofsets + pagecount;
+					}
 				}
+				try {
+					if (pageNo_ == 0 && newsList.size() == 0) {
+						// Util.ShowToast(context, "No more Jobs.");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				refreshComplete();
+
 			}
 
 			@Override
@@ -185,90 +202,6 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 			}
 		});
 		mFeedListParser.parse(context, mFeedListParser.getBody(), tocken);
-	}
-
-	/** News Sync Process 07 April 20015 **/
-	public boolean isNewsComming() {
-		if (!firsttJobID.equals("") && notifyfeeds == null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean isNewsCommingFstTime() {
-		if (firsttJobID.equals("") && lastJobID.equals("") && getAdapterCount() == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private NewsFeedListParser mNewsFeedListParser = null;
-
-	public String getUpdateNewsCount() {
-		String count = "";
-		try {
-			if (mNewsFeedListParser == null) {
-				mNewsFeedListParser = new NewsFeedListParser();
-			}
-			ArrayList<JobDetails> news = null;
-			if (isNewsCommingFstTime() || isNewsComming()) {
-				news = notifyfeeds = mNewsFeedListParser.bgSyncCalling(context, mNewsFeedListParser.getBody(firsttJobID, 1 + ""), tocken);
-			}
-			count = (news != null && news.size() >= 1) ? news.size() + "" : "";
-			mNewsFeedListParser = null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
-
-	/** News Sync Process **/
-
-	private void pulltorefreshcall() {
-		if (notifyfeeds != null && notifyfeeds.size() >= 1) {
-			mNewsListAdapter.refreshSwipeData(notifyfeeds);
-			notifyfeeds = null;
-			if (fragmentnewsinterface != null) {
-				fragmentnewsinterface.pullToRefreshCallCompleteForNews();
-			}
-		} else {
-			Util.ShowToast(context, "No more News updated.");
-		}
-		refreshComplete();
-	}
-
-	/**
-	 * Load more Refresh Load News Calling.
-	 */
-	private void loadMore(String JobID) {
-
-		if (!Util.hasConnection(context)) {
-			Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
-			return;
-		}
-
-		NewsFeedListParser mFeedListParser = new NewsFeedListParser();
-		mFeedListParser.setNewsfeedlistparserinterface(new NewsFeedListParserInterface() {
-
-			@Override
-			public void OnSuccess(ArrayList<JobDetails> newsList) {
-				if (newsList != null && newsList.size() >= 1) {
-					mNewsListAdapter.refreshloadmoreData(newsList);
-				} else {
-					Util.ShowToast(context, "No more News available.");
-				}
-				refreshComplete();
-			}
-
-			@Override
-			public void OnError() {
-				refreshComplete();
-			}
-		});
-		mFeedListParser.isShowingPG_ = false;
-		mFeedListParser.parse(context, mFeedListParser.getBody(JobID, 2 + ""), tocken);
 	}
 
 	/**
@@ -298,12 +231,12 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 	public void unimpClieckEvent(JobDetails mJobDetails) {
 		UnImptCalling(mJobDetails, 11);
 	}
-	
-	@Override 
-	public void likeCliekEvent(JobDetails mJobDetails){
-		HideCalling(mJobDetails,13);	
+
+	@Override
+	public void likeCliekEvent(JobDetails mJobDetails) {
+		HideCalling(mJobDetails, 13);
 	}
-	
+
 	private void HideCalling(final JobDetails mJobDetails, final int state) {
 		if (!Util.hasConnection(context)) {
 			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
@@ -318,6 +251,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 				if (state == 1 || state == 3) {
 					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mNewsListAdapter.hideNews(mJobDetails);
+					minimumofsets = minimumofsets - 1;
 				} else if (state == 2) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 1;
@@ -332,12 +266,12 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 					JOBListTable.getInstance(context).inserJobData(arr);
 					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 					mNewsListAdapter.unimportantNews(mJobDetails);
-				}else if (state==13 ) {
-//					ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
-//					mJobDetails.like=0;
-//					arr.add(mJobDetails);
-//					JOBListTable.getInstance(context).inserJobData(arr);
-//					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+				} else if (state == 13) {
+					// ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
+					// mJobDetails.like=0;
+					// arr.add(mJobDetails);
+					// JOBListTable.getInstance(context).inserJobData(arr);
+					// ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 					mNewsListAdapter.likRefreshJob(mJobDetails);
 				}
 			}

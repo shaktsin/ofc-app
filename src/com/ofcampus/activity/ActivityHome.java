@@ -144,13 +144,13 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		super.onResume();
 		try {
 			if (((OfCampusApplication) getApplication()).isHidePostModify || ((OfCampusApplication) getApplication()).editPostSuccessForHome) {
-				fragmentJobs.loadData(false);
+				fragmentJobs.firstCalling(false);
 				((OfCampusApplication) getApplication()).isHidePostModify = false;
 				((OfCampusApplication) getApplication()).editPostSuccessForHome = false;
 			}
 
 			if (((OfCampusApplication) getApplication()).editPostSuccessForNews) {
-				fragmentNewsFeeds.loadData();
+				fragmentNewsFeeds.firstCalling(false);
 				((OfCampusApplication) getApplication()).editPostSuccessForNews = false;
 			}
 
@@ -333,11 +333,11 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		if (requestCode == 1091 && resultCode == RESULT_OK && data != null) {
 			boolean isModify = data.getExtras().getBoolean("isDataModify");
 			if (isModify) {
-				fragmentJobs.loadData(false);
+				fragmentJobs.firstCalling(false);
 				new Handler().postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						fragmentNewsFeeds.loadData();
+						fragmentNewsFeeds.firstCalling(false);
 					}
 				}, 700);
 
@@ -568,7 +568,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 
 	private Timer timer;
 	private MyTask mTask;
-	private String[] count = { "", "", "" };// News,Jobs,MeetUp.
+	public String[] count = { "", "", "" };// News,Jobs,MeetUp.
 
 	public void stopservice() {
 		try {
@@ -619,17 +619,19 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-
+					
+					count = Util.getSyncCount(tocken);
+					
 					/*** For News Feed Sync **/
-					count[0] = (fragmentNewsFeeds != null) ? fragmentNewsFeeds.getUpdateNewsCount() : "";
+//					count[0] = (fragmentNewsFeeds != null) ? fragmentNewsFeeds.getUpdateNewsCount() : "";
 					/*** For News Feed Sync **/
 
 					/*** For Jobs Feed Sync **/
-					count[1] = (fragmentJobs != null) ? fragmentJobs.getUpdateJobsCount() : "";
+//					count[1] = (fragmentJobs != null) ? fragmentJobs.getUpdateJobsCount() : "";
 					/*** For Jobs Feed Sync **/
 
 					/*** For Classified Sync **/
-					count[2] = (mClassifiedsFragment != null) ? mClassifiedsFragment.getUpdateClassifiedCount() : "";
+//					count[2] = (mClassifiedsFragment != null) ? mClassifiedsFragment.getUpdateClassifiedCount() : "";
 					/*** For Classified Sync **/
 
 					handler.sendEmptyMessage(0);

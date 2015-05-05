@@ -57,7 +57,7 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 
 	public void refreshData(ArrayList<JobDetails> arrJobs) {
 		this.jobs = arrJobs;
-		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
+//		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
 		notifyDataSetChanged();
 	}
 
@@ -65,13 +65,13 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 		ArrayList<JobDetails> Jobs_ = new ArrayList<JobDetails>(arrJobs);
 		Jobs_.addAll(jobs);
 		this.jobs = Jobs_;
-		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
+//		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
 		notifyDataSetChanged();
 	}
 
 	public void refreshloadmoreData(ArrayList<JobDetails> arrJobs) {
 		jobs.addAll(arrJobs);
-		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
+//		setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
 		notifyDataSetChanged();
 	}
 
@@ -85,9 +85,9 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 		}
 		this.jobs = modifyJobList;
 		if (jobs.size() >= 1) {
-			setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
+//			setIDS(jobs.get(0).getPostid(), jobs.get(jobs.size() - 1).getPostid());
 		} else {
-			setIDS("", "");
+//			setIDS("", "");
 		}
 		notifyDataSetChanged();
 	}
@@ -355,11 +355,11 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 		CardView joblistview_img_post_rel, inflate_doc;
 	}
 
-	public void setIDS(String fstID, String lstID) {
-		if (classifiedlistinterface != null) {
-			classifiedlistinterface.firstIDAndlastID(fstID, lstID);
-		}
-	}
+//	public void setIDS(String fstID, String lstID) {
+//		if (classifiedlistinterface != null) {
+//			classifiedlistinterface.firstIDAndlastID(fstID, lstID);
+//		}
+//	}
 
 	private void showDoc(final String DocPath, final ImageView doc_dnd, ImageView doc_icon, TextView doc_name, CardView view) {
 
@@ -452,7 +452,7 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 
 	public interface ClassifiedListInterface {
 
-		public void firstIDAndlastID(String fstID, String lstID);
+//		public void firstIDAndlastID(String fstID, String lstID);
 
 		public void hideClieckEvent(JobDetails mJobDetails);
 
