@@ -216,6 +216,9 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 		if (swipeLayout.isRefreshing()) {
 			swipeLayout.setRefreshing(false);
 			// Util.ShowToast(context, "No more Jobs updated.");
+			if (fgclassifiedinterface!=null) {
+				fgclassifiedinterface.pullToRefreshCallCompleteForClass();
+			}
 		}
 		if (footer_pg.getVisibility() == View.VISIBLE) {
 			footer_pg.setVisibility(View.GONE);
@@ -259,7 +262,7 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 				if (state == 1 || state == 3) {
 					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mClassifiedListAdapter.hideNews(mJobDetails);
-					minimumofsets = minimumofsets - 1;
+					firstCalling(false);
 				} else if (state == 2) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 1;

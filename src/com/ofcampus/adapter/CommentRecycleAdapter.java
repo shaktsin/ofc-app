@@ -192,17 +192,9 @@ public class CommentRecycleAdapter extends BaseAdapter {
 				mHolder.img_like.setSelected((mJobDetails.like == 1) ? true : false);
 				mHolder.img_important.setSelected((mJobDetails.getImportant() == 1) ? true : false);
 
-				// String replycount = mJobDetails.getNumreplies();
 				String likecount = mJobDetails.getNumlikes();
-//				String commentcount = mJobDetails.getNumcomment();
-				String commentcount = ((arraJobComment.size() == 1) ? 0 : arraJobComment.size()) +"";
-				// if (replycount != null && replycount.length() >= 1 &&
-				// !replycount.equalsIgnoreCase("0")) {
-				// mHolder.txt_replycount.setVisibility(View.VISIBLE);
-				// mHolder.txt_replycount.setText(replycount + " replys");
-				// } else {
-				// mHolder.txt_replycount.setVisibility(View.GONE);
-				// }
+				String commentcount = ((arraJobComment.size() > 1) ? (arraJobComment.size() - 1) : 0) +"";
+
 
 				if (likecount != null && likecount.length() >= 1 && !likecount.equalsIgnoreCase("0")) {
 					mHolder.txt_likecount.setVisibility(View.VISIBLE);

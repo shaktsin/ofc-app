@@ -210,6 +210,9 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 	public void refreshComplete() {
 		if (swipeLayout.isRefreshing()) {
 			swipeLayout.setRefreshing(false);
+			if (fragmentnewsinterface!=null) {
+				fragmentnewsinterface.pullToRefreshCallCompleteForNews();
+			}
 		}
 		if (footer_pg.getVisibility() == View.VISIBLE) {
 			footer_pg.setVisibility(View.GONE);
@@ -251,7 +254,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 				if (state == 1 || state == 3) {
 					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mNewsListAdapter.hideNews(mJobDetails);
-					minimumofsets = minimumofsets - 1;
+					firstCalling(false);
 				} else if (state == 2) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 1;

@@ -958,23 +958,23 @@ public class Util {
 		return sdf.format(new Date());
 	}
 
-	public static JSONObject getBody() {
+	public static JSONObject getBody(String time) {
 		JSONObject jsObj = new JSONObject();
 		try {
 			jsObj.put("plateFormId", "0");
 			jsObj.put("appName", "ofCampus");
-			jsObj.put("postDate", getCurrentDateTime());
+			jsObj.put("postDate", time);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return jsObj;
 	}
 
-	public static String[] getSyncCount(String tocken) {
+	public static String[] getSyncCount(JSONObject Body,String tocken) {
 		String[] count = { "", "", "" };
 
 		try {
-			String[] responsedata = Util.POSTWithJSONAuth(Util.getSyncUrl(), Util.getBody(), tocken);
+			String[] responsedata = Util.POSTWithJSONAuth(Util.getSyncUrl(), Body, tocken);
 			String authenticationJson = responsedata[1];
 			if (authenticationJson != null && !authenticationJson.equals("")) {
 				JSONObject mObject = new JSONObject(authenticationJson);

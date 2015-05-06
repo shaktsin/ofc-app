@@ -230,6 +230,9 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 		if (swipeLayout.isRefreshing()) {
 			swipeLayout.setRefreshing(false);
 //			Util.ShowToast(context, "No more Jobs updated.");
+			if (jobsfrginterface!=null) {
+				jobsfrginterface.pullToRefreshCallCompleteForJob();
+			}
 		}
 		if (footer_pg.getVisibility() == View.VISIBLE) {
 			footer_pg.setVisibility(View.GONE);
@@ -237,6 +240,12 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 //			Util.ShowToast(context, "No more Jobs.");
 		}
 		
+		
+	}
+	
+	private void setMinOfSetLimit(){
+		minimumofsets = minimumofsets - 1;
+		pageNo = (minimumofsets/8);
 	}
 
 	private void HideCalling(final JobDetails mJobDetails, final int state) {
@@ -253,7 +262,7 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 				if (state == 1 || state == 3) {
 					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mJobListAdapter.hideJob(mJobDetails);
-					minimumofsets = minimumofsets - 1;
+					firstCalling(false);
 				} else if (state == 2) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 1;

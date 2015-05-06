@@ -117,6 +117,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		initilizActionBarDrawer();
 		initilizePagerview();
 		loadFilterData();
+		syncTime = Util.getCurrentDateTime();
 	}
 
 	@Override
@@ -607,6 +608,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		}
 	}
 
+	private String syncTime="";
 	private class MyTask extends TimerTask {
 		@Override
 		public void run() {
@@ -620,7 +622,10 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 						e.printStackTrace();
 					}
 					
-					count = Util.getSyncCount(tocken);
+					count = Util.getSyncCount(Util.getBody(syncTime),tocken);
+					if ((!count[0].equals("") && !count[0].equals("0")) || (!count[1].equals("") && !count[1].equals("0")) || (!count[2].equals("") && !count[2].equals("0"))) {
+						syncTime = Util.getCurrentDateTime();
+					}
 					
 					/*** For News Feed Sync **/
 //					count[0] = (fragmentNewsFeeds != null) ? fragmentNewsFeeds.getUpdateNewsCount() : "";
