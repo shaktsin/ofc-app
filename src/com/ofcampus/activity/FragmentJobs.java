@@ -110,8 +110,8 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 
 	@Override
 	public void onRefresh() {
-		String jobCount = ((ActivityHome) context).count[1];
-		if (jobCount != null && !jobCount.equals("") && !jobCount.equals("0")) {
+		int Count = ((ActivityHome) context).countOld[1];
+		if (Count != 0) {
 			firstCalling(false);
 		} else {
 			refreshComplete();
@@ -129,31 +129,31 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 		mJobListAdapter.setJoblistinterface(this);
 		joblist.setAdapter(mJobListAdapter);
 
-		joblist.setOnScrollListener(new OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-			}
-
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-				int lastInScreen = firstVisibleItem + visibleItemCount;
-				if (mJobListAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
-					if (mLastFirstVisibleItem < firstVisibleItem) {
-						if (!Util.hasConnection(context)) {
-							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
-							return;
-						}
-						Log.i("SCROLLING DOWN", "TRUE");
-						footer_pg.setVisibility(View.VISIBLE);
-						loadingMore = true;
-						loadData(false, pageNo, pagecount);
-					}
-				}
-				mLastFirstVisibleItem = firstVisibleItem;
-			}
-		});
+//		joblist.setOnScrollListener(new OnScrollListener() {
+//
+//			@Override
+//			public void onScrollStateChanged(AbsListView view, int scrollState) {
+//			}
+//
+//			@Override
+//			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//
+//				int lastInScreen = firstVisibleItem + visibleItemCount;
+//				if (mJobListAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
+//					if (mLastFirstVisibleItem < firstVisibleItem) {
+//						if (!Util.hasConnection(context)) {
+//							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
+//							return;
+//						}
+//						Log.i("SCROLLING DOWN", "TRUE");
+//						footer_pg.setVisibility(View.VISIBLE);
+//						loadingMore = true;
+//						loadData(false, pageNo, pagecount);
+//					}
+//				}
+//				mLastFirstVisibleItem = firstVisibleItem;
+//			}
+//		});
 
 	}
 
@@ -215,7 +215,7 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 			}
 		});
 		mParserNew.isShowingPG_ = isShowingPG;
-		mParserNew.parse(context, mParserNew.getBody(pageNo_, pagecount_), tocken);
+		mParserNew.parse(context, mParserNew.getBody(Util.getSyncData(context)), tocken);
 	}
 
 	public void refreshComplete() {
@@ -254,7 +254,7 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 				if (state == 1 || state == 3) {
 					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mJobListAdapter.hideJob(mJobDetails);
-					firstCalling(false);
+//					firstCalling(false);
 				} else if (state == 2) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 1;

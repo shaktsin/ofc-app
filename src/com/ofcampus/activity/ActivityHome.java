@@ -125,6 +125,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		super.onDestroy();
 		try {
 			stopservice();
+			Util.saveDate(mContext, Util.getCurrentDateTime());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -383,21 +384,21 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 
 	@Override
 	public void pullToRefreshCallCompleteForNews() {
-		count[0] = "";
+		countOld[0] = 0;
 		txt_countNews.setVisibility(View.GONE);
 		syncTime = Util.getCurrentDateTime();
 	}
 
 	@Override
 	public void pullToRefreshCallCompleteForJob() {
-		count[1] = "";
+		countOld[1] = 0;
 		txt_countJobs.setVisibility(View.GONE);
 		syncTime = Util.getCurrentDateTime();
 	}
 
 	@Override
 	public void pullToRefreshCallCompleteForClass() {
-		count[2] = "";
+		countOld[2] = 0;
 		txt_countclass.setVisibility(View.GONE); 
 		syncTime = Util.getCurrentDateTime();
 	}
@@ -572,7 +573,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 
 	private Timer timer;
 	private MyTask mTask;
-	public String[] count = { "", "", "" };// News,Jobs,MeetUp.
+	public int[] countOld = { 0, 0, 0 };// News,Jobs,MeetUp.
 
 	public void stopservice() {
 		try {
@@ -624,8 +625,18 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					String date = Util.getSyncData(mContext);
+					int[] count = {0,0,0};
+					if (date.equals("")) {
+						count = Util.getSyncCount(Util.getBody(Util.getCurrentDateTime()),tocken);
+					}else {
+						count = Util.getSyncCount(Util.getBody(date),tocken);
+					}
+					Util.saveDate(mContext, Util.getCurrentDateTime());
+					countOld[0] = countOld[0]+ count[0];
+					countOld[1] = countOld[1]+ count[1];
+					countOld[2] = countOld[2]+ count[2];
 					
-					count = Util.getSyncCount(Util.getBody(syncTime),tocken);
 //					if ((!count[0].equals("") && !count[0].equals("0")) || (!count[1].equals("") && !count[1].equals("0")) || (!count[2].equals("") && !count[2].equals("0"))) {
 //						syncTime = Util.getCurrentDateTime();
 //					}
@@ -656,28 +667,28 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			try {
-				if (count != null) {
-					String newsCount = count[0];
-					String jobCount = count[1];
-					String meetupcount = count[2];
+				if (countOld != null) {
+					int newsCount = countOld[0];
+					int jobCount = countOld[1];
+					int meetupcount = countOld[2];
 
-					if (newsCount != null && !newsCount.equals("") && !newsCount.equals("0")) {
+					if (newsCount!=0) {
 						txt_countNews.setVisibility(View.VISIBLE);
-						txt_countNews.setText(newsCount);
+						txt_countNews.setText(newsCount+"");
 					} else {
 						txt_countNews.setVisibility(View.GONE);
 					}
 
-					if (jobCount != null && !jobCount.equals("") && !jobCount.equals("0")) {
+					if (jobCount!=0) {
 						txt_countJobs.setVisibility(View.VISIBLE);
-						txt_countJobs.setText(jobCount);
+						txt_countJobs.setText(jobCount+"");
 					} else {
 						txt_countJobs.setVisibility(View.GONE);
 					}
 
-					if (meetupcount != null && !meetupcount.equals("") && !meetupcount.equals("0")) {
+					if (meetupcount != 0) {
 						txt_countclass.setVisibility(View.VISIBLE);
-						txt_countclass.setText(meetupcount);
+						txt_countclass.setText(meetupcount+"");
 					} else {
 						txt_countclass.setVisibility(View.GONE);
 					}

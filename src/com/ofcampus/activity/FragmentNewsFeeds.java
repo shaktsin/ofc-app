@@ -96,8 +96,8 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 
 	@Override
 	public void onRefresh() {
-		String jobCount = ((ActivityHome) context).count[0];
-		if (jobCount != null && !jobCount.equals("") && !jobCount.equals("0")) {
+		int Count = ((ActivityHome) context).countOld[0];
+		if (Count != 0) {
 			firstCalling(false);
 		} else {
 			refreshComplete();
@@ -112,31 +112,31 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 		mNewsListAdapter.setNewslistinterface(this);
 		newslist.setAdapter(mNewsListAdapter);
 
-		newslist.setOnScrollListener(new OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-			}
-
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-				int lastInScreen = firstVisibleItem + visibleItemCount;
-				if (mNewsListAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
-					if (mLastFirstVisibleItem < firstVisibleItem) {
-						if (!Util.hasConnection(context)) {
-							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
-							return;
-						}
-						Log.i("SCROLLING DOWN", "TRUE");
-						footer_pg.setVisibility(View.VISIBLE);
-						loadingMore = true;
-						loadData(false, pageNo, pagecount);
-					}
-				}
-				mLastFirstVisibleItem = firstVisibleItem;
-			}
-		});
+//		newslist.setOnScrollListener(new OnScrollListener() {
+//
+//			@Override
+//			public void onScrollStateChanged(AbsListView view, int scrollState) {
+//			}
+//
+//			@Override
+//			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//
+//				int lastInScreen = firstVisibleItem + visibleItemCount;
+//				if (mNewsListAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
+//					if (mLastFirstVisibleItem < firstVisibleItem) {
+//						if (!Util.hasConnection(context)) {
+//							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
+//							return;
+//						}
+//						Log.i("SCROLLING DOWN", "TRUE");
+//						footer_pg.setVisibility(View.VISIBLE);
+//						loadingMore = true;
+//						loadData(false, pageNo, pagecount);
+//					}
+//				}
+//				mLastFirstVisibleItem = firstVisibleItem;
+//			}
+//		});
 
 	}
 
@@ -192,7 +192,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 				refreshComplete();
 			}
 		});
-		mFeedListParser.parse(context, mFeedListParser.getBody(), tocken);
+		mFeedListParser.parse(context, mFeedListParser.getBody(Util.getSyncData(context)), tocken);
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 				if (state == 1 || state == 3) {
 					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mNewsListAdapter.hideNews(mJobDetails);
-					firstCalling(false);
+//					firstCalling(false);
 				} else if (state == 2) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 1;

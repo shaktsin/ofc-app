@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.text.TextUtils;
 
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
@@ -296,17 +297,20 @@ public class ClassifiedListParser {
 		return jsObj;
 	}
 
-	public JSONObject getBody() {
+	public JSONObject getBody(String time) {
 		JSONObject jsObj = new JSONObject();
 		try {
 			jsObj.put("plateFormId", "0");
 			jsObj.put("appName", "ofCampus");
+			if (!TextUtils.isEmpty(time)) {
+				jsObj.put("postDate", time);
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return jsObj;
 	}
-
+	
 	public ClassifiedListParserInterface classifiedlistparserinterface; 
 
 	public ClassifiedListParserInterface getNewsfeedlistparserinterface() {

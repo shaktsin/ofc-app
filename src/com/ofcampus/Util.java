@@ -970,8 +970,8 @@ public class Util {
 		return jsObj;
 	}
 
-	public static String[] getSyncCount(JSONObject Body, String tocken) {
-		String[] count = { "", "", "" };
+	public static int[] getSyncCount(JSONObject Body, String tocken) {
+		int[] count = { 0, 0, 0 };
 
 		try {
 			String[] responsedata = Util.POSTWithJSONAuth(Util.getSyncUrl(), Body, tocken);
@@ -985,9 +985,9 @@ public class Util {
 						String expt = Util.getJsonValue(Obj, "exception");
 						if (expt.equals("false")) {
 
-							count[0] = Util.getJsonValue(Obj, "newsFeedCount");
-							count[1] = Util.getJsonValue(Obj, "jobCount");
-							count[2] = Util.getJsonValue(Obj, "classCount");
+							count[0] = Integer.parseInt(Util.getJsonValue(Obj, "newsFeedCount"));
+							count[1] = Integer.parseInt(Util.getJsonValue(Obj, "jobCount"));
+							count[2] = Integer.parseInt(Util.getJsonValue(Obj, "classCount"));
 						}
 					}
 				}
@@ -1000,6 +1000,16 @@ public class Util {
 
 	public static void gotTo(Context context, JobDetails mJobDetails) {
 
+	}
+
+	public static void saveDate(Context context, String syncDate) {
+		SharedPreferences.Editor prefEditor = getPrefs(context).edit();
+		prefEditor.putString("syncDate", syncDate);
+		prefEditor.commit();
+	}
+
+	public static String getSyncData(Context context) {
+		return getPrefs(context).getString("syncDate", "");
 	}
 
 }
