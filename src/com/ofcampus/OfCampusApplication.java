@@ -7,6 +7,7 @@
 package com.ofcampus;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import android.app.Application;
 import android.content.Context;
@@ -45,6 +46,17 @@ public class OfCampusApplication extends Application {
 	public boolean profileEditSuccess = false;
 	public boolean isNewCircleCreated = false;
 	public boolean isUserCame = false;
+	
+//	public boolean isHidePostModify = false;
+//	public boolean isMyPostModify = false;
+//	public boolean isImportantPostModify = false;
+//	
+//	public boolean isNewsModify = false;
+//	public boolean isJobModify = false;
+//	public boolean isClassifiedModify = false;
+//	
+//	public boolean isCircleModify = false;
+	
 
 	/****** For Gallery ********/
 
@@ -141,5 +153,68 @@ public class OfCampusApplication extends Application {
 		} catch (Exception e) {
 		}
 	}
+	
+	
+	
+	
+	/* Do Not modify it*/
+	
+	private TreeMap<String, JobDetails> jobsList =new TreeMap<String, JobDetails>();
+	private TreeMap<String, JobDetails> newsList =new TreeMap<String, JobDetails>();
+	private TreeMap<String, JobDetails> classifiedList =new TreeMap<String, JobDetails>();
+	
+	private ArrayList<JobDetails> jobs_ = new ArrayList<JobDetails>(jobsList.values());
+	private ArrayList<JobDetails> news_ = new ArrayList<JobDetails>(newsList.values());
+	private ArrayList<JobDetails> classifieds_ = new ArrayList<JobDetails>(classifiedList.values());
+	
+	/*Get LIst Method*/
+	public ArrayList<JobDetails> getJobList(){
+		return jobs_;
+	}
+	
+	public ArrayList<JobDetails> getNewsList(){
+		return news_;
+	}
+	
+	public ArrayList<JobDetails> getclassifiedList(){
+		return classifieds_;
+	}
+	
+	/*Add List Method*/
+	public void addJobList(ArrayList<JobDetails> jobs){
+		for (JobDetails job : jobs) {
+			jobsList.put(job.getPostid(), job);
+		}
+	}
+	
+	public void addNewsList(ArrayList<JobDetails> News){
+		for (JobDetails New : News) {
+			jobsList.put(New.getPostid(), New);
+		}
+	}
+	
+	public void addclassifiedList(ArrayList<JobDetails> classifieds){
+		for (JobDetails classified : classifieds) {
+			jobsList.put(classified.getPostid(), classified);
+		}
+	}
+	
+	/* Modify Data*/
+	public void modifyJob(JobDetails job){
+		jobsList.put(job.getPostid(), job);
+	}
+	
+	public void modifyNews(JobDetails New){
+		jobsList.put(New.getPostid(), New);
+	}
+	
+	public void modifyclassified(JobDetails classified){
+		jobsList.put(classified.getPostid(), classified);
+	}
+	
+	
+	
+	
+	
 
 }

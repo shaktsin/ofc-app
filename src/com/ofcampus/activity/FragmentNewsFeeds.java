@@ -182,18 +182,9 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 					} else {
 						mNewsListAdapter.refreshloadmoreData(newsList);
 						pageNo = pageNo_ + 1;
-						minimumofsets = minimumofsets + pagecount;
 					}
-				}
-				try {
-					if (pageNo_ == 0 && newsList.size() == 0) {
-						// Util.ShowToast(context, "No more Jobs.");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 				refreshComplete();
-
 			}
 
 			@Override

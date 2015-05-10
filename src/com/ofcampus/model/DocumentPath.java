@@ -1,6 +1,6 @@
 package com.ofcampus.model;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,7 +10,7 @@ import com.ofcampus.Util;
 
 public class DocumentPath {
 
-	public HashMap<String, String> mapPath = new HashMap<String, String>();
+	public LinkedHashMap<String, String> mapPath = new LinkedHashMap<String, String>();
 
 	public void savePath(Context context) {
 		SharedPreferences.Editor prefsEditor = Util.getPrefs(context).edit();

@@ -26,7 +26,7 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.activity.ActivityClassifiedDetails;
-import com.ofcampus.activity.ActivityComment;
+import com.ofcampus.activity.ActivityJobDetails;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
 import com.ofcampus.activity.ActivityNewsDetails;
 import com.ofcampus.model.ImageDetails;
@@ -272,7 +272,7 @@ public class ImportantMailListAdapter extends BaseAdapter {
 			mIntent = new Intent(mContext, ActivityClassifiedDetails.class);
 		} else {
 			toolTitle = Util.TOOLTITLE[0];
-			mIntent = new Intent(mContext, ActivityComment.class);
+			mIntent = new Intent(mContext, ActivityJobDetails.class);
 		}
 		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
 		Bundle mBundle = new Bundle();

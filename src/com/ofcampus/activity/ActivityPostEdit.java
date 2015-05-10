@@ -1171,7 +1171,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 		ArrayList<String> paths = new ArrayList<String>();
 		if (picdatasets != null && picdatasets.size() >= 1) {
 			for (AttachmentDataSet pic : picdatasets) {
-				if (!pic.path.equals("")) {
+				if (!pic.path.equals("") && (!pic.path.contains("http://") || !pic.path.contains("https://")) && pic.ID.equals("")) {
 					paths.add(pic.path);
 				}
 
@@ -1186,7 +1186,7 @@ public class ActivityPostEdit extends ActionBarActivity implements OnClickListen
 				}
 			}
 		}
-
+		
 		if (newsObj != null) {
 			EditNewsParser mEditNewsParser = new EditNewsParser();
 			mEditNewsParser.setEditnewsparserinterface(new EditNewsParserInterface() {

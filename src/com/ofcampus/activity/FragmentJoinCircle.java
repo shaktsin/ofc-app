@@ -167,7 +167,7 @@ public class FragmentJoinCircle extends Fragment {
 					} else {
 						mJoinCircleListAdapter.addMoreData(circlerList);
 						pageNo = pageNo_ + 1;
-						minimumofsets = minimumofsets + pagecount;
+//						minimumofsets = minimumofsets + pagecount;
 					}
 					footer_pg.setVisibility(View.GONE);
 					loadingMore = false;

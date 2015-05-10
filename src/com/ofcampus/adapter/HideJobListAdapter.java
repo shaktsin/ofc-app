@@ -12,9 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -27,13 +25,12 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.activity.ActivityComment;
+import com.ofcampus.activity.ActivityJobDetails;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
 import com.ofcampus.activity.ActivityNewsDetails;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
-import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
 import com.ofcampus.ui.ReplyDialog;
 
@@ -283,7 +280,7 @@ public class HideJobListAdapter extends BaseAdapter{
 			mIntent = new Intent(mContext, ActivityNewsDetails.class);
 		} else {
 			toolTitle = Util.TOOLTITLE[0];
-			mIntent = new Intent(mContext, ActivityComment.class);
+			mIntent = new Intent(mContext, ActivityJobDetails.class);
 		}
 		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
 		Bundle mBundle = new Bundle();

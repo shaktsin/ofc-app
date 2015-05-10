@@ -385,18 +385,21 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	public void pullToRefreshCallCompleteForNews() {
 		count[0] = "";
 		txt_countNews.setVisibility(View.GONE);
+		syncTime = Util.getCurrentDateTime();
 	}
 
 	@Override
 	public void pullToRefreshCallCompleteForJob() {
 		count[1] = "";
 		txt_countJobs.setVisibility(View.GONE);
+		syncTime = Util.getCurrentDateTime();
 	}
 
 	@Override
 	public void pullToRefreshCallCompleteForClass() {
 		count[2] = "";
 		txt_countclass.setVisibility(View.GONE); 
+		syncTime = Util.getCurrentDateTime();
 	}
 
 	private void initilizActionBarDrawer() {
@@ -623,9 +626,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					}
 					
 					count = Util.getSyncCount(Util.getBody(syncTime),tocken);
-					if ((!count[0].equals("") && !count[0].equals("0")) || (!count[1].equals("") && !count[1].equals("0")) || (!count[2].equals("") && !count[2].equals("0"))) {
-						syncTime = Util.getCurrentDateTime();
-					}
+//					if ((!count[0].equals("") && !count[0].equals("0")) || (!count[1].equals("") && !count[1].equals("0")) || (!count[2].equals("") && !count[2].equals("0"))) {
+//						syncTime = Util.getCurrentDateTime();
+//					}
 					
 					/*** For News Feed Sync **/
 //					count[0] = (fragmentNewsFeeds != null) ? fragmentNewsFeeds.getUpdateNewsCount() : "";
@@ -864,7 +867,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 			jdetails.setPostid(mSearchData.getId());
 			if (mSearchData.getDatatype().equals("0")) {
 				((OfCampusApplication) mContext.getApplicationContext()).jobdetails = jdetails;
-				Intent mIntent = new Intent(mContext, ActivityComment.class);
+				Intent mIntent = new Intent(mContext, ActivityJobDetails.class);
 				Bundle mBundle = new Bundle();
 				mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
 				mIntent.putExtras(mBundle);

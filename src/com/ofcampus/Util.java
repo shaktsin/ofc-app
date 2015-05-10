@@ -17,7 +17,6 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -47,7 +46,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ofcampus.databasehelper.JOBListTable;
+import com.google.gson.Gson;
+import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.JobDetails;
 
 import android.app.Activity;
@@ -970,7 +970,7 @@ public class Util {
 		return jsObj;
 	}
 
-	public static String[] getSyncCount(JSONObject Body,String tocken) {
+	public static String[] getSyncCount(JSONObject Body, String tocken) {
 		String[] count = { "", "", "" };
 
 		try {
@@ -996,6 +996,10 @@ public class Util {
 			e.printStackTrace();
 		}
 		return count;
+	}
+
+	public static void gotTo(Context context, JobDetails mJobDetails) {
+
 	}
 
 }

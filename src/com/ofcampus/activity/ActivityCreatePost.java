@@ -964,7 +964,7 @@ public class ActivityCreatePost  extends ActionBarActivity  implements OnClickLi
 				public void OnSuccess(JobDetails mJobDetails) {
 					if (mJobDetails!=null) {
 						((OfCampusApplication)context.getApplicationContext()).jobdetails=mJobDetails;
-						Intent mIntent = new Intent(context,ActivityComment.class);
+						Intent mIntent = new Intent(context,ActivityJobDetails.class);
 						Bundle mBundle=new Bundle();
 						mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
 						mIntent.putExtras(mBundle);

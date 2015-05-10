@@ -26,7 +26,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.activity.ActivityComment;
+import com.ofcampus.activity.ActivityJobDetails;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.DocumentPath;
@@ -429,7 +429,7 @@ public class JobListBaseAdapter extends BaseAdapter {
 
 	public void viewOnClick(JobDetails mJobDetails) {
 		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
-		Intent mIntent = new Intent(mContext, ActivityComment.class);
+		Intent mIntent = new Intent(mContext, ActivityJobDetails.class);
 		Bundle mBundle = new Bundle();
 		mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
 		mIntent.putExtras(mBundle);

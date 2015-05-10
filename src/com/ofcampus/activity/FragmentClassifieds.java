@@ -186,18 +186,9 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 					} else {
 						mClassifiedListAdapter.refreshloadmoreData(classifiedsList);
 						pageNo = pageNo_ + 1;
-						minimumofsets = minimumofsets + pagecount;
 					}
-				}
-				try {
-					if (pageNo_ == 0 && classifiedsList.size() == 0) {
-						// Util.ShowToast(context, "No more Jobs.");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 				refreshComplete();
-
 			}
 
 			@Override

@@ -26,10 +26,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.activity.ActivityComment;
+import com.ofcampus.activity.ActivityJobDetails;
 import com.ofcampus.activity.ActivityJobPostedUserDetails;
 import com.ofcampus.activity.ActivityNewsDetails;
-import com.ofcampus.adapter.JobListBaseAdapter.jobListInterface;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.ImageDetails;
@@ -324,7 +323,7 @@ public class FilterJobsAdapter extends BaseAdapter {
 			mIntent = new Intent(mContext, ActivityNewsDetails.class);
 		} else {
 			toolTitle = Util.TOOLTITLE[0];
-			mIntent = new Intent(mContext, ActivityComment.class);
+			mIntent = new Intent(mContext, ActivityJobDetails.class);
 		}
 		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
 		Bundle mBundle = new Bundle();

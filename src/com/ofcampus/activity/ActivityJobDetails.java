@@ -36,7 +36,7 @@ import com.ofcampus.parser.CommentParser.CommentParserInterface;
 import com.ofcampus.parser.CommentPostParser;
 import com.ofcampus.parser.CommentPostParser.CommentPostParserInterface;
 
-public class ActivityComment extends ActionBarActivity implements OnClickListener, commentItemClickListner {
+public class ActivityJobDetails  extends ActionBarActivity implements OnClickListener, commentItemClickListner {
 
 	private ListView commentListView;
 	private CommentRecycleAdapter mCommentRecycleAdapter;
@@ -57,7 +57,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 		setContentView(R.layout.activity_comment);
 
 		loadBundleValue();
-		mContext = ActivityComment.this;
+		mContext = ActivityJobDetails.this;
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle(toolHeaderTitle);
 		setSupportActionBar(toolbar);
@@ -101,7 +101,7 @@ public class ActivityComment extends ActionBarActivity implements OnClickListene
 			return true;
 		case R.id.action_editpost:
 			((OfCampusApplication) getApplication()).jobdetails = mJobDetails;
-			Intent mIntent = new Intent(ActivityComment.this, ActivityPostEdit.class);
+			Intent mIntent = new Intent(ActivityJobDetails.this, ActivityPostEdit.class);
 			Bundle mBundle = new Bundle();
 			mBundle.putInt("createFor", 1);
 			mIntent.putExtras(mBundle);

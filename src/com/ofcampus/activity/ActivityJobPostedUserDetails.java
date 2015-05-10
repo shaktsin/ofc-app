@@ -483,7 +483,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 					mIntent = new Intent(mContext, ActivityNewsDetails.class);
 				} else {
 					toolTitle = Util.TOOLTITLE[0];
-					mIntent = new Intent(mContext, ActivityComment.class);
+					mIntent = new Intent(mContext, ActivityJobDetails.class);
 				}
 				((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
 				Bundle mBundle = new Bundle();

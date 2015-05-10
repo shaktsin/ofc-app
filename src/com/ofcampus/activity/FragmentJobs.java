@@ -204,15 +204,7 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 					} else {
 						mJobListAdapter.refreshloadmoreData(jobList);
 						pageNo = pageNo_ + 1;
-						minimumofsets = minimumofsets + pagecount;
 					}
-				}
-				try {
-					if (pageNo_==0 && jobList.size()==0) {
-//						Util.ShowToast(context, "No more Jobs.");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 				refreshComplete();
 			}
