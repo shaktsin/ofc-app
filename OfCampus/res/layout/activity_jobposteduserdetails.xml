@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        layout="@layout/actiontool_bar" >
+    </include>
+
+    <LinearLayout
+        android:id="@+id/jobposteduser_linearmain"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <include
+            android:id="@+id/color_line"
+            android:layout_width="fill_parent"
+            android:layout_height="8dp"
+            android:layout_alignParentTop="true"
+            layout="@layout/include_color_line" />
+
+        <RelativeLayout
+            android:id="@+id/profile_rel_imagedetails"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/color_line" >
+
+            <ImageView
+                android:id="@+id/profile_imageblur"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_alignBottom="@+id/slide_name"
+                android:alpha="120"
+                android:scaleType="centerCrop"
+                android:src="@android:color/white"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/slide_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp" >
+
+                <com.ofcampus.component.CircleImageView
+                    android:id="@+id/profile_circleView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_profilepic" />
+
+                <ProgressBar
+                    android:id="@+id/myprofile_view_pgbar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/shape_circle_bg"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/slide_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/slide_image"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical" >
+
+                <com.ofcampus.ui.CustomTextView
+                    android:id="@+id/profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:padding="4dp"
+                    android:text="Sushant Trivedi"
+                    android:textColor="@color/primary_dark"
+                    android:textSize="@dimen/joblitview_Subject"
+                    android:textStyle="bold"
+                    ofcampus:fontName="HelveticaBold.ttf" />
+
+                <com.ofcampus.ui.CustomTextView
+                    android:id="@+id/profile_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_name"
+                    android:layout_centerHorizontal="true"
+                    android:padding="4dp"
+                    android:text="Sushant.Trivedi@gmail.com"
+                    android:textColor="@color/job_contain"
+                    android:textSize="@dimen/joblitview_contain"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    ofcampus:fontName="Helvetica.otf" />
+
+                <com.ofcampus.ui.CustomTextView
+                    android:id="@+id/profile_class"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_email"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="Class 2014"
+                    android:textColor="@color/job_contain"
+                    android:textSize="@dimen/joblitview_contain"
+                    android:textStyle="normal"
+                    ofcampus:fontName="Helvetica.otf" />
+
+                <LinearLayout
+                    android:id="@+id/inflt_circlerow_linearselection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profile_class"
+                    android:background="@color/primary_dark"
+                    android:orientation="horizontal" >
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/inflt_circlerow_txt_postno"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/white"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:singleLine="false"
+                        android:text=""
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/joblitview_name"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/inflt_circlerow_txt_membno"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="1dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/white"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:singleLine="false"
+                        android:text=""
+                        android:textColor="@color/theme_color"
+                        android:textSize="@dimen/joblitview_name"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ListView
+                android:id="@+id/jobposteduser_post_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#d7eff2"
+                android:dividerHeight="1dp"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:visibility="gone" >
+            </ListView>
+
+            <ListView
+                android:id="@+id/jobposteduser_circle_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:divider="#d7eff2"
+                android:dividerHeight="1dp"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:visibility="gone" >
+            </ListView>
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/jobposteduser_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="false"
+                android:text="No Data Available"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_Subject"
+                android:textStyle="bold"
+                android:visibility="gone"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate
+                android:id="@+id/progressBarCircularIndetermininate"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:background="#18BC9A" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash" >
+
+    <com.ofcampus.ui.CustomTextView
+        android:id="@+id/login_textlogo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="@string/login_scr_logo_"
+        android:textColor="@color/join_blue_bright"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        ofcampus:fontName="Roboto-BoldCondensedItalic.ttf" />
+
+    <LinearLayout
+        android:id="@+id/LoginBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <com.ofcampus.ui.CustomEditText
+            android:id="@+id/login_edt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/joblist_row_rect"
+            android:drawableLeft="@drawable/email_icon"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:hint="@string/login_scr_hint_email"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/primary"
+            ofcampus:fontName="Helvetica.otf" />
+
+        <com.ofcampus.ui.CustomEditText
+            android:id="@+id/login_edt_passw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/joblist_row_rect"
+            android:drawableLeft="@drawable/key_icon"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:hint="@string/login_scr_hint_Pass"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/primary"
+            ofcampus:fontName="Helvetica.otf" />
+
+        <com.ofcampus.ui.CustomTextView
+            android:id="@+id/login_btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_rec"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/login_scr_btn_login"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            ofcampus:fontName="Helvetica.otf" />
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp" >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="2dp"
+                android:background="#ffffff" />
+
+            <TextView
+                android:id="@+id/loginTxtOr"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/login_or_txt"
+                android:textColor="#ffffff"
+                android:textStyle="bold|italic|normal" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="2dp"
+                android:background="#ffffff" />
+        </LinearLayout>
+        
+        <com.ofcampus.ui.CustomTextView
+            android:id="@+id/login_btn_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_rec"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/login_scr_txt_signup"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            ofcampus:fontName="Helvetica.otf" />
+
+        <com.ofcampus.ui.CustomTextView
+            android:id="@+id/login_txt_forgotpass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="@string/login_scr_txt_forgotpass"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white"
+            ofcampus:fontName="Helvetica.otf" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/inflt_inst_txtname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/listview_row"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/login_scr_btn_login"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/theme_color" />
+
+</RelativeLayout>

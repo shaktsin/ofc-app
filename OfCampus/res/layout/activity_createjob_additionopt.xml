@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_transparant"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="30dp"
+        android:background="@color/theme_color"
+        android:clickable="false" >
+
+        <RelativeLayout
+            android:id="@+id/rel_additional_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@android:color/white" >
+
+            <Spinner
+                android:id="@+id/activity_createjob_spn_industry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/activity_createjob_txt_industry"
+                android:background="@drawable/dropdown"
+                android:fadingEdge="none" />
+
+            <Spinner
+                android:id="@+id/activity_createjob_spn_role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_createjob_spn_industry"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/dropdown"
+                android:fadingEdge="none" />
+
+            <Spinner
+                android:id="@+id/activity_createjob_spn_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_createjob_spn_role"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/dropdown"
+                android:fadingEdge="none" />
+
+            <RelativeLayout
+                android:id="@+id/activity_createjob_rel_exp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_createjob_spn_location"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_exp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:hint="@string/craetejob_txt_jobheadline"
+                    android:singleLine="true"
+                    android:text="@string/craetejob_txt_experience"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/filter_text_size" />
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_valueexp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/activity_createjob_txt_exp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/activity_createjob_txt_exp"
+                    android:gravity="center_vertical|left"
+                    android:hint="@string/craetejob_txt_jobheadline"
+                    android:singleLine="true"
+                    android:text="@string/craetejob_txt_experience"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <com.ofcampus.customseekbar.RangeSeekBar
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:rsb="http://schemas.android.com/apk/res/com.ofcampus"
+                    android:id="@+id/activity_createjob_expseekbar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_createjob_txt_valueexp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/activity_createjob_rel_salary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_createjob_rel_exp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp" >
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|left"
+                    android:hint="@string/craetejob_txt_jobheadline"
+                    android:singleLine="true"
+                    android:text="@string/craetejob_txt_sal_range"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/filter_text_size" />
+
+                <TextView
+                    android:id="@+id/activity_createjob_txt_valuesalary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/activity_createjob_txt_salary"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/activity_createjob_txt_salary"
+                    android:gravity="center_vertical|left"
+                    android:hint="@string/craetejob_txt_sal_range"
+                    android:singleLine="true"
+                    android:text="@string/craetejob_txt_experience"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <com.ofcampus.customseekbar.RangeSeekBar
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:rsb="http://schemas.android.com/apk/res/com.ofcampus"
+                    android:id="@+id/activity_createjob_salaryseekbar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_createjob_txt_valuesalary"
+                    rsb:absoluteMaxValue="200000"
+                    rsb:absoluteMinValue="100" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_below="@+id/activity_createjob_rel_salary" >
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/actiontool_bar" >
+    </include>
+
+    <ScrollView
+        android:id="@+id/classified_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:fadingEdge="none"
+        android:scrollbars="none" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <RelativeLayout
+                android:id="@+id/classified_rel_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/activity_createjob_bottombarmenu"
+                    android:layout_marginLeft="@dimen/dp_twelve"
+                    android:layout_marginRight="@dimen/dp_twelve"
+                    android:layout_marginTop="@dimen/dp_eight"
+                    android:orientation="vertical" >
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/activity_classified_edit_circle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_four"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="@dimen/dp_four"
+                        android:drawableRight="@drawable/ic_down_arraow"
+                        android:gravity="center_vertical|left"
+                        android:hint="Send To"
+                        android:padding="@dimen/dp_four"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/primary_dark"
+                        android:textColorHint="@color/Edittext_hintcolor"
+                        android:textSize="@dimen/sp_sixthen"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <View
+                        android:id="@+id/view_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/activity_classified_edit_circle"
+                        android:background="@android:color/black" />
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/activity_classified_edit_catagory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_1"
+                        android:layout_marginTop="@dimen/dp_eight"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="@dimen/dp_four"
+                        android:drawableRight="@drawable/ic_down_arraow"
+                        android:gravity="center_vertical|left"
+                        android:hint="Primary Category  "
+                        android:padding="@dimen/dp_four"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/primary_dark"
+                        android:textColorHint="@color/Edittext_hintcolor"
+                        android:textSize="@dimen/sp_sixthen"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <View
+                        android:id="@+id/view_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/activity_classified_edit_catagory"
+                        android:background="@android:color/black" />
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/activity_classified_edit_subcatagory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_2"
+                        android:layout_marginTop="@dimen/dp_eight"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="@dimen/dp_four"
+                        android:drawableRight="@drawable/ic_down_arraow"
+                        android:gravity="center_vertical|left"
+                        android:hint="Seccondary Category "
+                        android:padding="@dimen/dp_four"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/primary_dark"
+                        android:textColorHint="@color/Edittext_hintcolor"
+                        android:textSize="@dimen/sp_sixthen"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <View
+                        android:id="@+id/view_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/activity_classified_edit_subcatagory"
+                        android:background="@android:color/black" />
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/activity_classified_edit_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_3"
+                        android:layout_marginTop="@dimen/dp_eight"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="@dimen/dp_four"
+                        android:drawableRight="@drawable/ic_down_arraow"
+                        android:gravity="center_vertical|left"
+                        android:hint="Location "
+                        android:padding="@dimen/dp_four"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/primary_dark"
+                        android:textColorHint="@color/Edittext_hintcolor"
+                        android:textSize="@dimen/sp_sixthen"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <View
+                        android:id="@+id/view_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/activity_classified_edit_location"
+                        android:background="@android:color/black" />
+
+                    <com.ofcampus.ui.CustomEditText
+                        android:id="@+id/activity_classified_edit_jobtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view_4"
+                        android:layout_marginTop="@dimen/dp_eight"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_vertical|left"
+                        android:hint="Subject"
+                        android:padding="@dimen/dp_four"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/primary_dark"
+                        android:textColorHint="@color/Edittext_hintcolor"
+                        android:textSize="@dimen/sp_sixthen"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+
+                    <View
+                        android:id="@+id/view_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/activity_classified_edit_jobtitle"
+                        android:background="@android:color/black" />
+
+                    <com.ofcampus.ui.CustomEditText
+                        android:id="@+id/activity_classified_edit_jobdescrip"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/view_5"
+                        android:layout_marginBottom="@dimen/dp_four"
+                        android:layout_marginTop="@dimen/dp_eight"
+                        android:background="@drawable/joblist_row_rect"
+                        android:gravity="top|left"
+                        android:hint="Description"
+                        android:padding="@dimen/dp_four"
+                        android:text=""
+                        android:textColor="@color/primary_dark"
+                        android:textColorHint="@color/Edittext_hintcolor"
+                        android:textSize="@dimen/sp_sixthen"
+                        android:textStyle="normal"
+                        ofcampus:fontName="Helvetica.otf" />
+                </RelativeLayout>
+
+                <include
+                    android:id="@+id/rel_reply"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/activity_createjob_bottombarmenu"
+                    layout="@layout/activity_createjob_replyview"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/activity_createjob_bottombarmenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/theme_color"
+                    android:visibility="visible" >
+
+                    <ImageView
+                        android:id="@+id/activity_createjob_attached"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/app_name"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_attached" />
+
+                    <ImageView
+                        android:id="@+id/activity_createjob_rply"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/activity_createjob_attached"
+                        android:contentDescription="@string/app_name"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_rploption" />
+
+                    <ImageView
+                        android:id="@+id/activity_createjob_docattached"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/activity_createjob_rply"
+                        android:contentDescription="@string/app_name"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_pdfordoc" />
+                </RelativeLayout>
+
+                <com.meetme.android.horizontallistview.HorizontalListView
+                    xmlns:tools="http://schemas.android.com/tools"
+                    xmlns:widget="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/hlvCustomList"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_above="@+id/activity_createjob_bottombarmenu"
+                    android:layout_margin="3dp"
+                    android:divider="@android:color/transparent"
+                    android:visibility="gone"
+                    widget:dividerWidth="3dp" />
+
+                <com.meetme.android.horizontallistview.HorizontalListView
+                    xmlns:tools="http://schemas.android.com/tools"
+                    xmlns:widget="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/pdfattached_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_above="@+id/activity_createjob_bottombarmenu"
+                    android:layout_margin="3dp"
+                    android:divider="@android:color/transparent"
+                    android:visibility="gone"
+                    widget:dividerWidth="3dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

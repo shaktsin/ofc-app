@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="registration_scn_image_bghit">150dp</dimen>
+
+    <!-- doc-pager -->
+    <dimen name="docpager">55dp</dimen>
+
+</resources>

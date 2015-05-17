@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray_transparant"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="30dp"
+        android:background="@color/theme_color"
+        android:clickable="false" >
+
+        <RelativeLayout
+            android:id="@+id/rel_rplview_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@android:color/white" >
+
+            <EditText
+                android:id="@+id/activity_create_edt_emailreply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/editbox_createjob_reply"
+                android:hint="Emial"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/theme_color"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/activity_create_edt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_create_edt_emailreply"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/editbox_createjob_reply"
+                android:hint="Phone"
+                android:inputType="phone"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/theme_color"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/activity_create_edt_whatsapp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_create_edt_phone"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/editbox_createjob_reply"
+                android:hint="SMS No"
+                android:inputType="phone"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/theme_color"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="15sp"
+                android:layout_below="@+id/activity_create_edt_whatsapp" >
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

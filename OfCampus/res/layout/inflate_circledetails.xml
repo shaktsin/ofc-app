@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/joblistview_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/white" >
+
+        <RelativeLayout
+            android:id="@+id/inflt_circlerow_rel_nameandopp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/inflt_circlerow_txt_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/join_circle"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_Subject"
+                android:textStyle="normal"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <TextView
+                android:id="@+id/post_and_members_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inflt_circlerow_txt_name"
+                android:paddingLeft="5dp"
+                android:text=""
+                android:textColor="#8899a6"
+                android:textSize="12sp" />
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/inflt_last_posts_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/post_and_members_info"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:singleLine="false"
+                android:text=""
+                android:textColor="@color/cirlce_post_color"
+                android:textSize="@dimen/circle_post_details"
+                android:textStyle="bold"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <Button
+                android:id="@+id/join_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_rectangular"
+                android:clickable="true"
+                android:text="@string/join_circle_normal_btn"
+                android:textColor="@drawable/btn_color_selector" />
+        </RelativeLayout>
+
+        <!--
+        <LinearLayout
+            android:id="@+id/inflt_circle_detail_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inflt_circlerow_rel_nameandopp"
+            android:background="#d7eff2"
+            android:orientation="horizontal"
+            >
+            
+            
+            
+        </LinearLayout>
+        -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/inflt_circlerow_rel_nameandopp"
+            android:background="#d7eff2" />
+    </RelativeLayout>
+
+</LinearLayout>

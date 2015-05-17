@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="registration_scn_image_bghit">170dp</dimen>
+    <dimen name="registration_scn_image_hight">80dp</dimen>
+
+    <!-- JOBLITVIEW -->
+    <dimen name="joblitview_picwd">50dp</dimen>
+    <dimen name="joblitview_name">16sp</dimen>
+    <dimen name="joblitview_postdate">14sp</dimen>
+    <dimen name="joblitview_Subject">20sp</dimen>
+    <dimen name="joblitview_contain">14sp</dimen>
+
+    <!-- Comment -->
+    <dimen name="Comment_username">14sp</dimen>
+    <dimen name="Comment_postdate">12sp</dimen>
+    <dimen name="Comment_Comment">12sp</dimen>
+    <dimen name="Comment_Header">24sp</dimen>
+
+    <!-- MY PROFILE -->
+    <dimen name="myprofile_view_graborder">65dp</dimen>
+
+    <!-- Comment Pager -->
+    <dimen name="comment_pager_hight">280dp</dimen>
+    <dimen name="comment_pager_Pading">40dp</dimen>
+
+    <!-- Filter Tab Text Size -->
+    <dimen name="filter_text_size">18sp</dimen>
+
+    <!-- doc-pager -->
+    <dimen name="docpager">53dp</dimen>
+
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/joblist_bg_color"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/activity_createjob_new_sendtolist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/comment_edtbox"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent" >
+    </ListView>
+
+</RelativeLayout>

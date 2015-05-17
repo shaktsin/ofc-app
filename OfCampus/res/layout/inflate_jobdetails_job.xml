@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:id="@+id/inflate_joblistview_rel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@android:color/transparent"
+    android:visibility="visible" >
+
+    <RelativeLayout
+        android:id="@+id/joblistview_relpicname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="6dp"
+        android:visibility="invisible" >
+
+        <ImageView
+            android:id="@+id/joblistview_img_pic"
+            android:layout_width="@dimen/joblitview_picwd"
+            android:layout_height="@dimen/joblitview_picwd"
+            android:layout_centerVertical="true"
+            android:layout_margin="3dp"
+            android:background="@drawable/joblist_row_rect"
+            android:contentDescription="@string/app_name"
+            android:padding="2dp"
+            android:src="@drawable/ic_profilepic" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
+            android:layout_toLeftOf="@+id/joblistview_img_imp"
+            android:layout_toRightOf="@+id/joblistview_img_pic" >
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/joblistview_txt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/job_contain"
+                android:textSize="@dimen/joblitview_name"
+                android:textStyle="normal"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/joblistview_txt_postdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/joblistview_txt_name"
+                android:layout_marginTop="5dp"
+                android:gravity="left"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/primary_dark"
+                android:textSize="@dimen/joblitview_postdate"
+                android:textStyle="normal"
+                ofcampus:fontName="Helvetica.otf" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/joblistview_img_imp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_toLeftOf="@+id/joblistview_img_arrow"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/important_selector"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/joblistview_img_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="2dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_downarrow" />
+    </RelativeLayout>
+
+    <com.ofcampus.ui.CustomTextView
+        android:id="@+id/proxyview_txt_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/joblistview_relpicname"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginTop="8dp"
+        android:gravity="left"
+        android:text=""
+        android:textColor="@color/primary_dark"
+        android:textSize="@dimen/joblitview_Subject"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        ofcampus:fontName="HelveticaBold.ttf" />
+
+    <com.ofcampus.ui.CustomTextView
+        android:id="@+id/proxyview_txt_contain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/proxyview_txt_subject"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginTop="3dp"
+        android:gravity="left"
+        android:text=""
+        android:textColor="@color/job_contain"
+        android:textSize="@dimen/joblitview_contain"
+        android:textStyle="normal"
+        android:visibility="invisible"
+        ofcampus:fontName="Helvetica.otf" />
+
+   
+
+    <LinearLayout
+        android:id="@+id/joblistview_linear_buttonsection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jobdetails_album_pager"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:visibility="invisible" >
+
+        <ImageView
+            android:id="@+id/joblistview_txt_reply"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#E84C3D"
+            android:contentDescription="@string/app_name"
+            android:padding="4dp"
+            android:src="@drawable/ic_reply" />
+
+        <ImageView
+            android:id="@+id/joblistview_txt_share"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#5498C7"
+            android:contentDescription="@string/app_name"
+            android:padding="4dp"
+            android:src="@drawable/ic_share" />
+
+        <ImageView
+            android:id="@+id/joblistview_txt_comment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#18BC9A"
+            android:contentDescription="@string/app_name"
+            android:padding="4dp"
+            android:src="@drawable/ic_comment" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/joblistview_linear_buttonsection" >
+
+        <RelativeLayout
+            android:id="@+id/rel_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" >
+
+            <com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate
+                android:id="@+id/reloaddata"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_margin="3dp"
+                android:background="#1E88E5" />
+
+            <com.ofcampus.ui.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/reloaddata"
+                android:text="@string/Job_List_loadmore_commentss"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_name"
+                android:textStyle="bold"
+                ofcampus:fontName="HelveticaBold.ttf" />
+        </RelativeLayout>
+
+        <com.ofcampus.ui.CustomTextView
+            android:id="@+id/joblistview_txt_loadAllComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp"
+            android:drawableLeft="@drawable/ic_loadall"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/Job_List_loadmore_comment"
+            android:textColor="@color/theme_color"
+            android:textSize="@dimen/joblitview_name"
+            android:textStyle="bold"
+            android:visibility="gone"
+            ofcampus:fontName="HelveticaBold.ttf" />
+    </RelativeLayout>
+
+</RelativeLayout>

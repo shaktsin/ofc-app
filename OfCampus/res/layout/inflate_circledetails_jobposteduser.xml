@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/joblistview_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/white" >
+
+        <com.ofcampus.ui.CustomTextView
+            android:id="@+id/inflt_circlerow_txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_circle"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical|left"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/theme_color"
+            android:textSize="@dimen/joblitview_Subject"
+            android:textStyle="normal"
+            ofcampus:fontName="Helvetica.otf" />
+
+        <LinearLayout
+            android:id="@+id/inflt_circlerow_linearselection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inflt_circlerow_txt_name"
+            android:background="#d7eff2"
+            android:orientation="horizontal" >
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/inflt_circlerow_txt_postno"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="false"
+                android:text=""
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_name"
+                android:textStyle="normal"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/inflt_circlerow_txt_membno"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="false"
+                android:text=""
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_name"
+                android:textStyle="normal"
+                ofcampus:fontName="Helvetica.otf" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/inflt_circlerow_linearselection"
+            android:background="#d7eff2" />
+    </RelativeLayout>
+
+</LinearLayout>

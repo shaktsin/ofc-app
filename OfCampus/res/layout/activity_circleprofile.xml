@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        layout="@layout/actiontool_bar" >
+    </include>
+
+    <LinearLayout
+        android:id="@+id/circleprf_linearmain"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#2D5D82" >
+
+            <include
+                android:id="@+id/color_line"
+                android:layout_width="fill_parent"
+                android:layout_height="8dp"
+                android:layout_alignParentTop="true"
+                layout="@layout/include_color_line" />
+
+            <LinearLayout
+                android:id="@+id/cricleprofile_rel_name"
+                android:layout_width="fill_parent"
+                android:layout_height="150dp"
+                android:layout_below="@+id/color_line"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="3" >
+
+                    <com.ofcampus.component.CircleImageView
+                        android:id="@+id/profile_circleView"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerInParent="true"
+                        android:padding="2dp"
+                        android:src="@drawable/ic_circleicon" />
+
+                    <Button
+                        android:id="@+id/status_circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/btn_rectangular"
+                        android:clickable="true"
+                        android:visibility="gone"
+                        android:text="@string/join_circle_normal_btn"
+                        android:textColor="@drawable/btn_color_selector" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="7"
+                    android:orientation="vertical" >
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/cricle_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:gravity="bottom|left"
+                        android:padding="4dp"
+                        android:text=""
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/joblitview_Subject"
+                        android:textStyle="normal"
+                        ofcampus:fontName="HelveticaBold.ttf" />
+
+                    <com.ofcampus.ui.CustomTextView
+                        android:id="@+id/cricle_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="7"
+                        android:padding="4dp"
+                        android:text=""
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/joblitview_contain"
+                        android:textStyle="bold"
+                        ofcampus:fontName="Helvetica.otf" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/inflt_circlerow_linearselection"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/circleprofile_postselection"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/tab_bar_background"
+                    android:padding="6dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_circlemypost" />
+
+                <com.ofcampus.ui.CustomTextView
+                    android:id="@+id/circleprofile_postcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="45"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/joblitview_Subject"
+                    android:textStyle="normal"
+                    ofcampus:fontName="Helvetica.otf" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/circleprofile_circleselection"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/tab_bar_background"
+                    android:padding="6dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_circleicon" />
+
+                <com.ofcampus.ui.CustomTextView
+                    android:id="@+id/circleprofile_memburcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="45"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/joblitview_Subject"
+                    android:textStyle="normal"
+                    ofcampus:fontName="Helvetica.otf" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/circleprofile_pendingreq"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/tab_bar_background"
+                android:padding="6dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_pendingreqsticon"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ListView
+                android:id="@+id/cricle_post_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:visibility="gone" >
+            </ListView>
+
+            <ListView
+                android:id="@+id/cricle_user_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:visibility="gone" >
+            </ListView>
+
+            <ListView
+                android:id="@+id/cricle_pendingreq_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:visibility="gone" >
+            </ListView>
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/jobposteduser_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="false"
+                android:text="No Data Available"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/joblitview_Subject"
+                android:textStyle="bold"
+                android:visibility="gone"
+                ofcampus:fontName="Helvetica.otf" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/jobposteduser_linear_pg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate
+            android:id="@+id/progressBarCircularIndetermininate"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="#18BC9A" />
+    </RelativeLayout>
+
+</LinearLayout>

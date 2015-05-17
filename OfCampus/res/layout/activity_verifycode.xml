@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/tool_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        layout="@layout/actiontool_bar" >
+    </include>
+
+    <RelativeLayout
+        android:id="@+id/act_registration_rel_veryfi"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/tool_bar" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/registration_txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Check your mailbox, a verification code sent to your mail. Paste that code here."
+                android:textColor="@color/theme_color"
+                android:textSize="18sp"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <com.ofcampus.ui.CustomEditText
+                android:id="@+id/registration_edt_verifyCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/registration_txt_title"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/joblist_row_rect"
+                android:drawableLeft="@drawable/confirm_password_icon"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:hint="Enter Verify Code"
+                android:inputType="textPassword"
+                android:padding="6dp"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/theme_color"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/registration_btn_Codesubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/registration_edt_verifyCode"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/joblist_row_rect"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/registration_txt_hint_submit"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/theme_color"
+                ofcampus:fontName="Helvetica.otf" />
+
+            <com.ofcampus.ui.CustomTextView
+                android:id="@+id/registration_btn_resend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/registration_btn_Codesubmit"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/joblist_row_rect"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/registration_txt_hint_resend"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/theme_color"
+                ofcampus:fontName="Helvetica.otf" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

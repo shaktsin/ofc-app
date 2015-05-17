@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="registration_scn_image_bghit">120dp</dimen>
+    <dimen name="registration_scn_image_hight">70dp</dimen>
+    <dimen name="tool_bar_top_padding">0dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="TextDimTop">16dp</dimen>
+
+    <!-- JOB Home -->
+    <dimen name="circle_rad">25dp</dimen>
+    <!-- Comment Pager -->
+    <dimen name="comment_pager_hight">250dp</dimen>
+    <dimen name="comment_pager_Pading">20dp</dimen>
+
+    <!-- Circluer -->
+    <dimen name="width">10dp</dimen>
+    <dimen name="textSize">70dp</dimen>
+    <dimen name="metricSize">14dp</dimen>
+    <dimen name="metricPaddingY">25dp</dimen>
+    <dimen name="first">10dp</dimen>
+    <dimen name="second">15dp</dimen>
+    <dimen name="third">20dp</dimen>
+
+    <!-- doc-pager -->
+    <dimen name="docpager">47dp</dimen>
+
+    <!-- DP -->
+    <dimen name="dp_four">4dp</dimen>
+    <dimen name="dp_five">5dp</dimen>
+    <dimen name="dp_six">6dp</dimen>
+    <dimen name="dp_eight">8dp</dimen>
+    <dimen name="dp_ten">10dp</dimen>
+    <dimen name="dp_twelve">12dp</dimen>
+    <dimen name="dp_forth">14dp</dimen>
+    <dimen name="dp_fifthen">15dp</dimen>
+    <dimen name="dp_sixthen">16dp</dimen>
+    <dimen name="dp_eigthen">18dp</dimen>
+    <dimen name="dp_tweenty">20dp</dimen>
+    <dimen name="dp_tweentyfive">25dp</dimen>
+    <dimen name="dp_thirthy">30dp</dimen>
+    <dimen name="dp_thirthyfive">35dp</dimen>
+
+    <!-- SP -->
+    <dimen name="sp_eight">8sp</dimen>
+    <dimen name="sp_ten">10sp</dimen>
+    <dimen name="sp_twelve">12sp</dimen>
+    <dimen name="sp_forth">14sp</dimen>
+    <dimen name="sp_fifthen">15sp</dimen>
+    <dimen name="sp_sixthen">16sp</dimen>
+    <dimen name="sp_eigthen">18sp</dimen>
+    <dimen name="sp_tweenty">20sp</dimen>
+    <dimen name="sp_tweentytwo">22sp</dimen>
+    <dimen name="sp_tweentyfour">24sp</dimen>
+    <dimen name="sp_tweentyfive">25sp</dimen>
+    <dimen name="sp_thirthy">30sp</dimen>
+
+</resources>
