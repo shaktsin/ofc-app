@@ -13,6 +13,7 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.ofcampus.R;
 import com.ofcampus.activity.ActivitySplash;
+import com.ofcampus.model.UserDetails;
 
 public class GcmIntentService extends IntentService {
 	public static String TAG = "GcmIntentService";
@@ -40,25 +41,26 @@ public class GcmIntentService extends IntentService {
 			 * don't recognize.
 			 */
 			if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-				sendNotification("Send error: " + extras.toString());
+				// sendNotification("Send error: " + extras.toString());
 			} else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
-				sendNotification("Deleted messages on server: " + extras.toString());
+				// sendNotification("Deleted messages on server: " +
+				// extras.toString());
 				// If it's a regular GCM message, do some work.
 			} else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-				// This loop represents the service doing some work.
-				// for (int i = 0; i < 5; i++) {
-				// Log.i(TAG, "Working... " + (i + 1) + "/5 @ " +
-				// SystemClock.elapsedRealtime());
-				// try {
-				// Thread.sleep(5000);
-				// } catch (InterruptedException e) {
-				// }
-				// }
-				// Log.i(TAG, "Completed work @ " +
-				// SystemClock.elapsedRealtime());
-				// Post notification of received message.
-				sendNotification("Received: " + extras.toString());
-				Log.i(TAG, "Received: " + extras.toString());
+				// Bundle[{postId=3, from=981282250109, title=shakti has
+				// commented on news test., message=dibakar daa jindabad!.,
+				// android.support.content.wakelockid=1,
+				// collapse_key=do_not_collapse, post_type=3}]
+				try {
+					UserDetails mUserDetails = UserDetails.getLoggedInUser(GcmIntentService.this);
+					if (mUserDetails != null) {
+						sendNotification("Received: " + extras.toString());
+						Log.i(TAG, "Received: " + extras.toString());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 			}
 		}
 		// Release the wake lock provided by the WakefulBroadcastReceiver.
@@ -69,20 +71,6 @@ public class GcmIntentService extends IntentService {
 	// This is just one simple example of what you might choose to do with
 	// a GCM message.
 	private void sendNotification(String msg) {
-		// mNotificationManager = (NotificationManager)
-		// this.getSystemService(Context.NOTIFICATION_SERVICE);
-		// PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new
-		// Intent(this, ActivitySplash.class), 0);
-		// contentIntent.
-		//
-		//
-		// NotificationCompat.Builder mBuilder = new
-		// NotificationCompat.Builder(this).setSmallIcon(R.drawable.ic_launcher).setContentTitle("GCM Notification")
-		// .setStyle(new
-		// NotificationCompat.BigTextStyle().bigText(msg)).setContentText(msg);
-		// mBuilder.setContentIntent(contentIntent);
-		// mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-
 		int icon = R.drawable.ic_launcher;
 		long when = System.currentTimeMillis();
 		NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);

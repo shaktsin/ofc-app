@@ -8,6 +8,9 @@ package com.ofcampus;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,9 +40,12 @@ import com.ofcampus.model.UserDetails;
 
 public class OfCampusApplication extends Application {
 
-	private static String gcmProjectKey = "417713273173";
-	private static String gcmSerevrKey = "AIzaSyAPo4ELrlJ852Df5jtzwjHsMJBx0ggZjMc";
+//	private static String gcmProjectKey = "417713273173";
+//	private static String gcmSerevrKey = "AIzaSyAPo4ELrlJ852Df5jtzwjHsMJBx0ggZjMc";
+	private static String gcmProjectKey = "981282250109";
+	private static String gcmSerevrKey = "AIzaSyDFChuYp5OMPLAjDMSdEQjCCQCWxyw8d8I";
 	// APA91bFeAvia1NW8enHYZhM_2dhNLoy3-FynM0c4P9UW0VIXrzbeOQVfGpJ7nCjg8hyhy-yMGj0-hWq1xNX4u2WysPJGUfkf0llt8jOy6XHwgsElDvRAYqPhge-snkETrjwVpX0sAxnZ
+	//APA91bHgkHKxKoBFwgFM3wAYqpIjFKF6uycaz31b2gijMliefcGpcoylRenYvgIWtpbQz8di9TcitVgkMxmtEJSPzcXZLoBJj_EU_9DVC3Rd-T--8aesJH4j0LJHI6nLyNMVthpzwYMl
 
 	private String TAG = "OfCampusApplication";
 	public OfCampusDBHelper DB_HELPER;
@@ -166,7 +172,7 @@ public class OfCampusApplication extends Application {
 	private static final String PROPERTY_APP_VERSION = "appVersion";
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
-	private void initPlayServices() {
+	public void initPlayServices() {
 		try {
 			if (checkPlayServices()) {
 				gcm = GoogleCloudMessaging.getInstance(this);
@@ -175,7 +181,7 @@ public class OfCampusApplication extends Application {
 				if (regid.length() == 0) {
 					registerInBackground();
 				} else {
-					sendRegistrationIdToBackend(false);
+					sendRegistrationIdToBackend();
 				}
 			} else {
 				Log.d("tmessages", "No valid Google Play Services APK found.");
@@ -240,7 +246,7 @@ public class OfCampusApplication extends Application {
 					try {
 						count++;
 						regid = gcm.register(gcmProjectKey);
-						sendRegistrationIdToBackend(true);
+						sendRegistrationIdToBackend();
 						storeRegistrationId(applicationContext, regid);
 						return true;
 					} catch (Exception e) {
@@ -267,10 +273,29 @@ public class OfCampusApplication extends Application {
 		}
 	}
 
-	private void sendRegistrationIdToBackend(final boolean isNew) {
+	private void sendRegistrationIdToBackend() {
 		AsyncTask<String, String, Boolean> task = new AsyncTask<String, String, Boolean>() {
 			@Override
 			protected Boolean doInBackground(String... objects) {
+				try {
+					UserDetails mDetails = UserDetails.getLoggedInUser(applicationContext);
+					if (mDetails != null) {
+						String[] responsedata = Util.ProfileUpdte(Util.getProfileUpdateUrl(), getJSONBody(regid), mDetails.getAuthtoken(), null);
+
+						String authenticationJson = responsedata[1];
+						boolean isTimeOut = (responsedata[0].equals("205")) ? true : false;
+
+						if (authenticationJson != null && !authenticationJson.equals("")) {
+							JSONObject mObject = new JSONObject(authenticationJson);
+							String responsecode = Util.getJsonValue(mObject, "status");
+							if (responsecode != null && responsecode.equals("200")) {
+
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
 				return false;
 			}
@@ -291,6 +316,18 @@ public class OfCampusApplication extends Application {
 		editor.putString(PROPERTY_REG_ID, regId);
 		editor.putInt(PROPERTY_APP_VERSION, appVersion);
 		editor.commit();
+	}
+
+	private JSONObject getJSONBody(String gcmid) {
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("gcmId", gcmid);
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
 	}
 
 }
