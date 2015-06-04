@@ -50,6 +50,8 @@ public class ActivityJobDetails extends ActionBarActivity implements OnClickList
 	private String toolHeaderTitle = "";
 	private boolean isFromDetails = false;
 	public boolean fromMYPost_ = false;
+	private boolean fromNotification = false;
+	private Toolbar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +60,8 @@ public class ActivityJobDetails extends ActionBarActivity implements OnClickList
 
 		loadBundleValue();
 		mContext = ActivityJobDetails.this;
-		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-		toolbar.setTitle(toolHeaderTitle);
+		toolbar = (Toolbar) findViewById(R.id.tool_bar);
+		toolbar.setTitle((toolHeaderTitle == null) ? "" : toolHeaderTitle);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -71,7 +73,11 @@ public class ActivityJobDetails extends ActionBarActivity implements OnClickList
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		((OfCampusApplication) mContext.getApplicationContext()).fromMYPost = false;
+		if (fromNotification) {
+			startActivity(new Intent(ActivityJobDetails.this, ActivityHome.class));
+		} else {
+			((OfCampusApplication) mContext.getApplicationContext()).fromMYPost = false;
+		}
 		overridePendingTransition(0, 0);
 		finish();
 	}
@@ -146,10 +152,13 @@ public class ActivityJobDetails extends ActionBarActivity implements OnClickList
 	private void loadBundleValue() {
 		try {
 			toolHeaderTitle = getIntent().getExtras().getString(Util.BUNDLE_KEY[0]);
+			if (toolHeaderTitle != null) {
+				isFromDetails = toolHeaderTitle.contains("Details") ? true : false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		isFromDetails = toolHeaderTitle.equals(Util.TOOLTITLE[1]) ? true : false;
+
 	}
 
 	private void initilize() {
@@ -165,8 +174,20 @@ public class ActivityJobDetails extends ActionBarActivity implements OnClickList
 	private void loadData() {
 
 		mUserDetails = UserDetails.getLoggedInUser(mContext);
-		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;
-		JObID = mJobDetails.getPostid();
+		mJobDetails = (mJobDetails == null) ? ((OfCampusApplication) getApplication()).jobdetails : mJobDetails;
+		Bundle mBundle = getIntent().getExtras();
+		if (mBundle != null && mJobDetails == null) {
+			String[] spl = mBundle.getString("postId").split(",");
+			JObID = spl[0];
+			fromNotification = true;
+			try {
+				toolbar.setTitle(spl[1]);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			JObID = mJobDetails.getPostid();
+		}
 
 		rel_comnt.setVisibility(isFromDetails ? View.GONE : View.VISIBLE);
 
