@@ -70,7 +70,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (((OfCampusApplication) context.getApplicationContext()).isNewCircleCreated) {
+		if (!isChapter && ((OfCampusApplication) context.getApplicationContext()).isNewCircleCreated) {
 			((OfCampusApplication) context.getApplicationContext()).isNewCircleCreated = false;
 			CircleJoin();
 		}
