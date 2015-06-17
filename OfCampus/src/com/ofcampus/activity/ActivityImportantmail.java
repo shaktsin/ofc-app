@@ -8,6 +8,7 @@ package com.ofcampus.activity;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -122,9 +123,16 @@ public class ActivityImportantmail extends ActionBarActivity implements Importan
 			@Override
 			public void OnSuccess() {
 				mJobDetails.important = 0;
+
+				if (mJobDetails.getPostType().equals("3")) {
+					((OfCampusApplication) getApplication()).isNewsDataModify = true;
+				} else if (mJobDetails.getPostType().equals("1")) {
+					((OfCampusApplication) getApplication()).isclassifiedDataModify = true;
+				} else {
+					((OfCampusApplication) getApplication()).isPostDataModify = true;
+				}
 				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 				mImportantMailListAdapter.unImportantJobRemove(mJobDetails, postion);
-				((OfCampusApplication) getApplication()).isHidePostModify = true;
 			}
 
 			@Override

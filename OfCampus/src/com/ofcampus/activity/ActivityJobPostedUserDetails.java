@@ -111,7 +111,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (((OfCampusApplication) context.getApplicationContext()).profileEditSuccess) {
+		if (((OfCampusApplication) context.getApplicationContext()).isPostDataModify) {
 			loadUserDetailsFromUserDeatils();
 			loadData();
 		}
@@ -220,7 +220,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		lin_main = (LinearLayout) findViewById(R.id.jobposteduser_linearmain);
 		indicator_pg = (ProgressBarCircularIndeterminate) findViewById(R.id.progressBarCircularIndetermininate);
 
-		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_profilepic).showImageForEmptyUri(R.drawable.ic_profilepic).showImageOnFail(R.drawable.ic_profilepic)
+		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.profile_bg).showImageForEmptyUri(R.drawable.profile_bg).showImageOnFail(R.drawable.profile_bg)
 				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		Selection(0);
@@ -301,7 +301,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		txt_name.setText(mDetails.getAccountname());
 		txt_email.setText(mDetails.getEmail());
 		txt_year.setText("Class of " + mDetails.getGradyear());
-		imageLoader.displayImage(mDetails.getProfileimagelink(), profilepic, options, new ImageLoadingListener() {
+		imageLoader.displayImage(mDetails.getProfileimagelink(), profile_imageblur, options, new ImageLoadingListener() {
 
 			@Override
 			public void onLoadingStarted(String arg0, View arg1) {
@@ -323,7 +323,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				pgbar.setVisibility(View.GONE);
 			}
 		});
-		profile_imageblur.setImageResource(R.drawable.profile_bg);
+//		profile_imageblur.setImageResource(R.drawable.profile_bg);
 	}
 
 	private void loadUserDetailsFromUserDeatils() {
@@ -346,7 +346,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		txt_name.setText(userDetails.getFstname() + " " + userDetails.getLstname());
 		txt_email.setText(userDetails.getEmail());
 		txt_year.setText("Class of " + userDetails.getYearPass());
-		imageLoader.displayImage(userDetails.getImage(), profilepic, options, new ImageLoadingListener() {
+		imageLoader.displayImage(userDetails.getImage(), profile_imageblur, options, new ImageLoadingListener() {
 
 			@Override
 			public void onLoadingStarted(String arg0, View arg1) {
@@ -368,7 +368,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				pgbar.setVisibility(View.GONE);
 			}
 		});
-		profile_imageblur.setImageResource(R.drawable.profile_bg);
+//		profile_imageblur.setImageResource(R.drawable.profile_bg);
 	}
 
 	private void loadPostAndCircle() {
@@ -455,6 +455,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 			if (url != null && !url.equals("") && !url.equals("null")) {
 				imageLoader.displayImage(url, mHolder.img_commentprfpic, options);
 			}
+			mHolder.img_commentprfpic.setVisibility(View.GONE);
 			mHolder.txt_commentname.setText(mJobDetails.getName());
 			mHolder.txt_commentdate.setText("Posted on " + mJobDetails.getPostedon());
 			mHolder.txt_commenteddetails.setText(mJobDetails.getContent());

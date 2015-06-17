@@ -35,7 +35,7 @@ public class JobDetails {
 	private String salaryTo = "";
 	private String salaryFrom = "";
 
-	private String postType = "";
+	public String postType = "";
 	private ArrayList<ImageDetails> images = new ArrayList<ImageDetails>();
 	private ArrayList<DocDetails> Doclist = new ArrayList<DocDetails>();
 

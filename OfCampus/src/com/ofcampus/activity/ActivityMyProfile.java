@@ -25,6 +25,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
+import com.ofcampus.Util;
 import com.ofcampus.component.CircleImageView;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.ui.CustomTextView;
@@ -62,9 +63,8 @@ public class ActivityMyProfile extends ActionBarActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (((OfCampusApplication) context.getApplicationContext()).profileEditSuccess) {
+		if (((OfCampusApplication) context.getApplicationContext()).isPostDataModify) {
 			loadProfileData();
-			// ((OfCampusApplication)context.getApplicationContext()).profileEditSuccess=false;
 		}
 
 	}
@@ -114,7 +114,8 @@ public class ActivityMyProfile extends ActionBarActivity {
 		mDetails = UserDetails.getLoggedInUser(context);
 		txt_name.setText(mDetails.getName());
 		txt_email.setText(mDetails.getEmail());
-		txt_year.setText("Class " + mDetails.getYearPass());
+		String year = mDetails.getYearPass();
+		txt_year.setText("Class " + ((year.equalsIgnoreCase("0")) ? Util.defaultYear : year));
 		imageLoader.displayImage(mDetails.getImage(), profilepic, options, new ImageLoadingListener() {
 
 			@Override

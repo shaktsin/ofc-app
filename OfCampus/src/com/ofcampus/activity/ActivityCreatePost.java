@@ -1185,8 +1185,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 				public void OnSuccess(JobDetails mJobDetails) {
 					if (mJobDetails != null) {
 						((OfCampusApplication) context.getApplicationContext()).jobdetails = mJobDetails;
-						((OfCampusApplication) context.getApplicationContext()).editPostSuccess = true;
-						((OfCampusApplication) context.getApplicationContext()).editPostSuccessForHome = true;
+						((OfCampusApplication) context.getApplicationContext()).isPostDataModify = true;
 						((Activity) context).overridePendingTransition(0, 0);
 						finish();
 					}

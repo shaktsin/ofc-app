@@ -3,6 +3,7 @@
     xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
     <include

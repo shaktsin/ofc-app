@@ -73,6 +73,7 @@ public class Util {
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
 
 	private static String SDCardPath = "OfCampus/Document";
+	public static String defaultYear = "2014";
 
 	// public static String TITLES[] = { "My Profile", "My Posts",
 	// "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };

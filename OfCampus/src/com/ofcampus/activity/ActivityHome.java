@@ -99,7 +99,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	private MyPagerAdapter adapter;
 	private FragmentNewsFeeds fragmentNewsFeeds;
 	private FragmentJobs fragmentJobs;
-	private FragmentClassifieds mClassifiedsFragment;
+	private FragmentClassifieds fragmentClassifieds;
 
 	private TextView txt_countJobs, txt_countNews, txt_countclass;
 
@@ -144,24 +144,38 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	protected void onResume() {
 		super.onResume();
 		try {
-			if (((OfCampusApplication) getApplication()).isHidePostModify || ((OfCampusApplication) getApplication()).editPostSuccessForHome) {
+			/**
+			 * If Post modify
+			 */
+			if (((OfCampusApplication) getApplication()).isPostDataModify) {
 				fragmentJobs.loadData(false);
-				((OfCampusApplication) getApplication()).isHidePostModify = false;
-				((OfCampusApplication) getApplication()).editPostSuccessForHome = false;
+				((OfCampusApplication) getApplication()).isPostDataModify = false;
 			}
 
-			if (((OfCampusApplication) getApplication()).editPostSuccessForNews) {
-				fragmentNewsFeeds.loadData();
-				((OfCampusApplication) getApplication()).editPostSuccessForNews = false;
+			/**
+			 * If News modify
+			 */
+
+			if (((OfCampusApplication) getApplication()).isNewsDataModify) {
+				fragmentNewsFeeds.loadData(false);
+				((OfCampusApplication) getApplication()).isNewsDataModify = false;
 			}
 
-			if (fragmentJobs.mJobListAdapter != null) {
-				fragmentJobs.mJobListAdapter.notifyDataSetChanged();
+			if (((OfCampusApplication) getApplication()).isclassifiedDataModify) {
+				fragmentClassifieds.loadData(false);
+				((OfCampusApplication) getApplication()).isclassifiedDataModify = false;
 			}
 
-			if (((OfCampusApplication) getApplication()).profileEditSuccess) {
+			// if (fragmentJobs.mJobListAdapter != null) {
+			// fragmentJobs.mJobListAdapter.notifyDataSetChanged();
+			// }
+
+			/**
+			 * If Profile Modify
+			 */
+			if (((OfCampusApplication) getApplication()).isProfileDataModify) {
 				updateProfileData();
-				((OfCampusApplication) getApplication()).profileEditSuccess = false;
+				((OfCampusApplication) getApplication()).isProfileDataModify = false;
 			}
 			stopservice();
 			startService();
@@ -352,7 +366,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 				new Handler().postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						fragmentNewsFeeds.loadData();
+						fragmentNewsFeeds.loadData(false);
 					}
 				}, 700);
 
@@ -571,9 +585,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 				fragmentJobs.setJobsfrginterface(ActivityHome.this);
 				return fragmentJobs;
 			case 2:
-				mClassifiedsFragment = FragmentClassifieds.newInstance(position, ActivityHome.this);
-				mClassifiedsFragment.setFgclassifiedinterface(ActivityHome.this);
-				return mClassifiedsFragment;
+				fragmentClassifieds = FragmentClassifieds.newInstance(position, ActivityHome.this);
+				fragmentClassifieds.setFgclassifiedinterface(ActivityHome.this);
+				return fragmentClassifieds;
 			}
 			return null;
 		}
@@ -644,7 +658,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					/*** For Jobs Feed Sync **/
 
 					/*** For Classified Sync **/
-					count[2] = (mClassifiedsFragment != null) ? mClassifiedsFragment.getUpdateClassifiedCount() : "";
+					count[2] = (fragmentClassifieds != null) ? fragmentClassifieds.getUpdateClassifiedCount() : "";
 					/*** For Classified Sync **/
 
 					handler.sendEmptyMessage(0);

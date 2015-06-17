@@ -78,7 +78,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 		View view = inflater.inflate(R.layout.fragment_newsfeeds, null);
 		initilizView(view);
 		initilizeSwipeRefresh(view);
-		loadData();
+		loadData(false);
 		return view;
 	}
 
@@ -159,8 +159,10 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 
 	/**
 	 * Initial Load News Calling.
+	 * 
+	 * @param isShowingPG
 	 */
-	public void loadData() {
+	public void loadData(boolean isShowingPG) {
 		UserDetails mUserDetails = UserDetails.getLoggedInUser(context);
 		tocken = mUserDetails.getAuthtoken();
 
@@ -184,6 +186,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 				refreshComplete();
 			}
 		});
+		mFeedListParser.isShowingPG_ = isShowingPG;
 		mFeedListParser.parse(context, mFeedListParser.getBody(), tocken);
 	}
 

@@ -147,7 +147,11 @@ public class ActivityProfileEdit extends ActionBarActivity implements OnClickLis
 			edtfstname.setText(mDetails.getFstname());
 			edtlstname.setText(mDetails.getLstname());
 			edtaccname.setText(mDetails.getName());
-			edteyearname.setText(mDetails.getYearPass());
+			// edteyearname.setText(mDetails.getYearPass());
+
+			String year = mDetails.getYearPass();
+			edteyearname.setText("Class " + ((year.equalsIgnoreCase("0")) ? Util.defaultYear : year));
+
 			String path = mDetails.getImage();
 			if (path != null && !path.equals("")) {
 				imageLoader.displayImage(path, pic, options);
@@ -192,7 +196,7 @@ public class ActivityProfileEdit extends ActionBarActivity implements OnClickLis
 
 			@Override
 			public void OnSuccess(UserDetails Details) {
-				((OfCampusApplication) context.getApplicationContext()).profileEditSuccess = true;
+				((OfCampusApplication) context.getApplicationContext()).isPostDataModify = true;
 				onBackPressed();
 			}
 

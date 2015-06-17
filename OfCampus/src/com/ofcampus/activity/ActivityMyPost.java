@@ -54,9 +54,9 @@ public class ActivityMyPost extends ActionBarActivity implements MyPostListAdapt
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (((OfCampusApplication) context.getApplicationContext()).editPostSuccess) {
+		if (((OfCampusApplication) context.getApplicationContext()).isPostDataModify) {
 			loadMyPostData(false);
-			((OfCampusApplication) context.getApplicationContext()).editPostSuccess = false;
+			((OfCampusApplication) context.getApplicationContext()).isPostDataModify = false;
 		}
 
 	}

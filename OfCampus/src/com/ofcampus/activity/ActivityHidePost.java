@@ -117,7 +117,13 @@ public class ActivityHidePost extends ActionBarActivity implements HideJobListIn
 			@Override
 			public void OnSuccess() {
 				mHideJobListAdapter.removepostion(position);
-				((OfCampusApplication) getApplication()).isHidePostModify = true;
+				if (mJobDetails.getPostType().equals("3")) {
+					((OfCampusApplication) getApplication()).isNewsDataModify = true;
+				} else if (mJobDetails.getPostType().equals("1")) {
+					((OfCampusApplication) getApplication()).isclassifiedDataModify = true;
+				} else {
+					((OfCampusApplication) getApplication()).isPostDataModify = true;
+				}
 			}
 
 			@Override

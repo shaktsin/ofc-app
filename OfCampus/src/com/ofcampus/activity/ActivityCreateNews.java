@@ -145,7 +145,7 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 				if (createFor == 0) {
 					createNewsEvent();
 				} else {
-					 editNewsEvent();
+					editNewsEvent();
 				}
 			}
 			return true;
@@ -878,8 +878,7 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 				public void OnSuccess(JobDetails mJobDetails) {
 					if (mJobDetails != null) {
 						((OfCampusApplication) context.getApplicationContext()).jobdetails = mJobDetails;
-						((OfCampusApplication) context.getApplicationContext()).editPostSuccess = true;
-						((OfCampusApplication) context.getApplicationContext()).editPostSuccessForNews = true;
+						((OfCampusApplication) context.getApplicationContext()).isNewsDataModify = true;
 						((Activity) context).overridePendingTransition(0, 0);
 						finish();
 					}

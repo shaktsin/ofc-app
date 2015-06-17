@@ -49,7 +49,7 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 		email = Email;
 		profile = Profile;
 
-		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_profilepic).showImageForEmptyUri(R.drawable.ic_profilepic).showImageOnFail(R.drawable.ic_profilepic)
+		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.profile_bg).showImageForEmptyUri(R.drawable.profile_bg).showImageOnFail(R.drawable.profile_bg)
 				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 	}
@@ -75,7 +75,8 @@ public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuAdapter.View
 			} else {
 				Name = (TextView) itemView.findViewById(R.id.name);
 				email = (TextView) itemView.findViewById(R.id.email);
-				profile = (ImageView) itemView.findViewById(R.id.circleView);
+				// profile = (ImageView) itemView.findViewById(R.id.circleView);
+				profile = (ImageView) itemView.findViewById(R.id.profile_imageblur);
 				Holderid = 0;
 			}
 		}

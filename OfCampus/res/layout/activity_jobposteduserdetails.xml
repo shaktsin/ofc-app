@@ -40,7 +40,7 @@
                 android:layout_alignBottom="@+id/slide_name"
                 android:alpha="120"
                 android:scaleType="centerCrop"
-                android:src="@android:color/white"
+                android:src="@drawable/profile_bg"
                 android:visibility="visible" />
 
             <RelativeLayout
@@ -48,7 +48,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp" >
+                android:layout_marginTop="15dp"
+                android:visibility="invisible" >
 
                 <com.ofcampus.component.CircleImageView
                     android:id="@+id/profile_circleView"
@@ -86,8 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:padding="4dp"
-                    android:text="Sushant Trivedi"
-                    android:textColor="@color/primary_dark"
+                    android:text=""
+                    android:textColor="@android:color/white"
                     android:textSize="@dimen/joblitview_Subject"
                     android:textStyle="bold"
                     ofcampus:fontName="HelveticaBold.ttf" />
@@ -99,8 +100,8 @@
                     android:layout_below="@+id/profile_name"
                     android:layout_centerHorizontal="true"
                     android:padding="4dp"
-                    android:text="Sushant.Trivedi@gmail.com"
-                    android:textColor="@color/job_contain"
+                    android:text=""
+                    android:textColor="@android:color/white"
                     android:textSize="@dimen/joblitview_contain"
                     android:textStyle="bold"
                     android:visibility="gone"
@@ -113,9 +114,9 @@
                     android:layout_below="@+id/profile_email"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
-                    android:padding="4dp"
-                    android:text="Class 2014"
-                    android:textColor="@color/job_contain"
+                    android:paddingBottom="4dp"
+                    android:text=""
+                    android:textColor="@android:color/white"
                     android:textSize="@dimen/joblitview_contain"
                     android:textStyle="normal"
                     ofcampus:fontName="Helvetica.otf" />
@@ -215,8 +216,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerInParent="true"
-                android:visibility="gone"
-                android:background="#18BC9A" />
+                android:background="#18BC9A"
+                android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -6,12 +6,24 @@
     android:orientation="vertical"
     android:weightSum="1" >
 
+    <ImageView
+        android:id="@+id/profile_imageblur"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/slide_line"
+        android:alpha="120"
+        android:layout_marginBottom="1dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_bg"
+        android:visibility="visible" />
+
     <RelativeLayout
         android:id="@+id/slide_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" >
+        android:layout_marginTop="15dp"
+        android:visibility="invisible" >
 
         <com.ofcampus.component.CircleImageView
             android:id="@+id/circleView"
@@ -31,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/slide_image"
+        android:layout_marginBottom="12dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="5dp"
@@ -42,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text=""
-            android:textColor="@color/job_name"
+            android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -53,8 +66,8 @@
             android:layout_below="@+id/name"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="3dp"
-            android:text="Class 2014"
-            android:textColor="@color/job_contain"
+            android:text=""
+            android:textColor="@android:color/white"
             android:textSize="12sp"
             android:textStyle="normal" />
     </RelativeLayout>
@@ -66,7 +79,6 @@
         android:layout_below="@+id/slide_name"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="12dp"
         android:background="@color/ColorPrimary" >
     </RelativeLayout>
 

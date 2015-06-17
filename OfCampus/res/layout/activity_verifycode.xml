@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
     android:layout_width="match_parent"
+    android:background="@android:color/white"
     android:layout_height="match_parent" >
 
     <include
@@ -60,36 +61,42 @@
 
             <com.ofcampus.ui.CustomTextView
                 android:id="@+id/registration_btn_Codesubmit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/registration_edt_verifyCode"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/joblist_row_rect"
+                android:background="@drawable/button_rec"
                 android:gravity="center"
-                android:padding="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
                 android:text="@string/registration_txt_hint_submit"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/theme_color"
+                android:textColor="@android:color/white"
                 ofcampus:fontName="Helvetica.otf" />
 
             <com.ofcampus.ui.CustomTextView
                 android:id="@+id/registration_btn_resend"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/registration_btn_Codesubmit"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/joblist_row_rect"
+                android:background="@drawable/button_rec"
                 android:gravity="center"
-                android:padding="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
                 android:text="@string/registration_txt_hint_resend"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/theme_color"
+                android:textColor="@android:color/white"
                 ofcampus:fontName="Helvetica.otf" />
         </RelativeLayout>
     </RelativeLayout>

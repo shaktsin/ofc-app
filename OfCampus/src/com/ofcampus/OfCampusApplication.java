@@ -57,13 +57,20 @@ public class OfCampusApplication extends Application {
 	public UserDetails mDetails;
 	public CircleDetails mCircleDetails_;
 
-	public boolean isHidePostModify = false;
-	public boolean editPostSuccess = false;
-	public boolean editPostSuccessForHome = false;
-	public boolean editPostSuccessForNews = false;
-	public boolean profileEditSuccess = false;
+//	public boolean isHidePostModify = false;
+//	public boolean editPostSuccess = false;
+//	public boolean editPostSuccessForHome = false;
+//	public boolean editPostSuccessForNews = false;
+//	public boolean profileEditSuccess = false;
+//	public boolean isNewCircleCreated = false;
+//	public boolean isUserCame = false;
+	
+	
+	public boolean isProfileDataModify = false;
+	public boolean isNewsDataModify = false;
+	public boolean isPostDataModify = false;
+	public boolean isclassifiedDataModify = false;
 	public boolean isNewCircleCreated = false;
-	public boolean isUserCame = false;
 
 	/****** For Gallery ********/
 

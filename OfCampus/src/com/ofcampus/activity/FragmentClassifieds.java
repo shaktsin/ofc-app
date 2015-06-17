@@ -78,7 +78,7 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 		View view = inflater.inflate(R.layout.fragment_classifieds, null);
 		initilizView(view);
 		initilizeSwipeRefresh(view);
-		loadData();
+		loadData(true);
 		return view;
 	}
 
@@ -159,8 +159,10 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 
 	/**
 	 * Initial Load News Calling.
+	 * 
+	 * @param b
 	 */
-	public void loadData() {
+	public void loadData(boolean b) {
 		UserDetails mUserDetails = UserDetails.getLoggedInUser(context);
 		tocken = mUserDetails.getAuthtoken();
 
@@ -184,6 +186,7 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 				refreshComplete();
 			}
 		});
+		mClassifiedListParser.isShowingPG_ = b;
 		mClassifiedListParser.parse(context, mClassifiedListParser.getBody(), tocken);
 	}
 
