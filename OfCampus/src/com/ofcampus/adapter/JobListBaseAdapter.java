@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -121,6 +122,7 @@ public class JobListBaseAdapter extends BaseAdapter {
 			if (postLiked.getPostid().equals(postDetails.getPostid())) {
 				// postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
 				postDetails.like = 1;
+				postDetails.numlikes = (Integer.parseInt(postDetails.getNumlikes()) + 1) + "";
 			}
 		}
 		notifyDataSetChanged();
@@ -165,6 +167,7 @@ public class JobListBaseAdapter extends BaseAdapter {
 			mHolder.txt_name = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_name);
 			mHolder.txt_postdate = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_postdate);
 			mHolder.txt_subject = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_subject);
+			mHolder.txt_locationandindusrole = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_locationandindusrole);
 			mHolder.txt_contain = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_contain);
 
 			mHolder.inflate_doc = (CardView) convertView.findViewById(R.id.inflate_docview);
@@ -195,6 +198,14 @@ public class JobListBaseAdapter extends BaseAdapter {
 
 			String postedOn = Util.getPostedOnText(mJobDetails.getPostedon());
 			mHolder.txt_postdate.setText(postedOn);
+
+			if (!TextUtils.isEmpty(mJobDetails.getLocationandinds())) {
+				mHolder.txt_locationandindusrole.setVisibility(View.VISIBLE);
+				mHolder.txt_locationandindusrole.setText(mJobDetails.getLocationandinds());
+			} else {
+				mHolder.txt_locationandindusrole.setVisibility(View.GONE);
+			}
+
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 			mHolder.txt_contain.setText(mJobDetails.getContent());
 
@@ -356,7 +367,7 @@ public class JobListBaseAdapter extends BaseAdapter {
 	private class ViewHolder {
 		ImageView profilepic, doc_icon, doc_dnd;
 		ImageView img_arrow, img_important, img_like;
-		CustomTextView txt_name, txt_postdate, txt_subject, txt_contain, doc_name;
+		CustomTextView txt_name, txt_postdate, txt_subject, txt_contain, doc_name, txt_locationandindusrole;
 		CustomTextView txt_replycount, txt_likecount, txt_commentcount;
 		ImageView btn_reply, btn_share, btn_comment;
 		ImageView img_post;

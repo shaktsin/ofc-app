@@ -45,7 +45,17 @@ public class JobDetails {
 	private String numhides = "";
 	private String numimportant = "";
 	private String numspam = "";
-	private String numlikes = "";
+	public String numlikes = "";
+	
+	private String locationandinds = "";
+
+	public String getLocationandinds() {
+		return locationandinds;
+	}
+
+	public void setLocationandinds(String locationandinds) {
+		this.locationandinds = locationandinds;
+	}
 
 	public String getNumlikes() {
 		return numlikes;

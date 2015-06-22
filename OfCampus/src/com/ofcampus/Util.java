@@ -71,6 +71,7 @@ public class Util {
 	public static long period = 30 * 1000;
 
 	private static String baseUrl = "http://205.147.110.176:8080/api/";
+	// private static String baseUrl = "http://ofcampus.com/api/";
 
 	private static String SDCardPath = "OfCampus/Document";
 	public static String defaultYear = "2014";
@@ -940,6 +941,13 @@ public class Util {
 			result = context.getResources().getDimensionPixelSize(resourceId);
 		}
 		return result;
+	}
+
+	public static String removeLastChr(String str) {
+		if (str.length() >= 1) {
+			str = str.substring(0, str.length() - 1);
+		}
+		return str;
 	}
 
 }
