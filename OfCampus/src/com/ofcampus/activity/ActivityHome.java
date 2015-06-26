@@ -53,6 +53,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.Animator.AnimatorListener;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
@@ -412,19 +416,19 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	@Override
 	public void pullToRefreshCallCompleteForNews() {
 		count[0] = "";
-		txt_countNews.setVisibility(View.GONE);
+		txt_countNews.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
 	public void pullToRefreshCallCompleteForJob() {
 		count[1] = "";
-		txt_countJobs.setVisibility(View.GONE);
+		txt_countJobs.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
 	public void pullToRefreshCallCompleteForClass() {
 		count[2] = "";
-		txt_countclass.setVisibility(View.GONE);
+		txt_countclass.setVisibility(View.INVISIBLE);
 	}
 
 	private void initilizActionBarDrawer() {
@@ -496,9 +500,9 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		bgShape = (GradientDrawable) txt_countclass.getBackground();
 		bgShape.setColor(Color.parseColor("#18BC9A"));
 
-		txt_countJobs.setVisibility(View.GONE);
-		txt_countNews.setVisibility(View.GONE);
-		txt_countclass.setVisibility(View.GONE);
+		txt_countJobs.setVisibility(View.INVISIBLE);
+		txt_countNews.setVisibility(View.INVISIBLE);
+		txt_countclass.setVisibility(View.INVISIBLE);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		pager = (ViewPager) findViewById(R.id.pager);
@@ -681,24 +685,27 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					String meetupcount = count[2];
 
 					if (newsCount != null && !newsCount.equals("") && !newsCount.equals("0")) {
-						txt_countNews.setVisibility(View.VISIBLE);
+						// txt_countNews.setVisibility(View.VISIBLE);
 						txt_countNews.setText(newsCount);
+						notificationAnimation(txt_countNews);
 					} else {
-						txt_countNews.setVisibility(View.GONE);
+						txt_countNews.setVisibility(View.INVISIBLE);
 					}
 
 					if (jobCount != null && !jobCount.equals("") && !jobCount.equals("0")) {
-						txt_countJobs.setVisibility(View.VISIBLE);
+						// txt_countJobs.setVisibility(View.VISIBLE);
 						txt_countJobs.setText(jobCount);
+						notificationAnimation(txt_countJobs);
 					} else {
-						txt_countJobs.setVisibility(View.GONE);
+						txt_countJobs.setVisibility(View.INVISIBLE);
 					}
 
 					if (meetupcount != null && !meetupcount.equals("") && !meetupcount.equals("0")) {
-						txt_countclass.setVisibility(View.VISIBLE);
+						// txt_countclass.setVisibility(View.VISIBLE);
 						txt_countclass.setText(meetupcount);
+						notificationAnimation(txt_countclass);
 					} else {
-						txt_countclass.setVisibility(View.GONE);
+						txt_countclass.setVisibility(View.INVISIBLE);
 					}
 				}
 			} catch (Exception e) {
@@ -910,8 +917,36 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		}
 	}
 
-	private void characterShort(String str) {
+	private void notificationAnimation(final View v) {
+		ObjectAnimator animatorX = ObjectAnimator.ofFloat(v, "scaleX", 0, 1.0f, 1.2f, 1.0f);
+		ObjectAnimator animatorY = ObjectAnimator.ofFloat(v, "scaleY", 0, 1.0f, 1.2f, 1.0f);
 
+		AnimatorSet aniSet = new AnimatorSet();
+		aniSet.playTogether(animatorX, animatorY);
+		aniSet.setDuration(700);
+		aniSet.addListener(new AnimatorListener() {
+
+			@Override
+			public void onAnimationStart(Animator arg0) {
+				v.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator arg0) {
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animator arg0) {
+
+			}
+
+			@Override
+			public void onAnimationCancel(Animator arg0) {
+
+			}
+		});
+		aniSet.start();
 	}
 
 }

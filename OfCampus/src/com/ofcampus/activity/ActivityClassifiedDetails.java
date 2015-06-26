@@ -27,14 +27,20 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.CommentRecycleAdapter;
 import com.ofcampus.adapter.CommentRecycleAdapter.commentItemClickListner;
+import com.ofcampus.databasehelper.ImportantJobTable;
+import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.ClassifiedDetailsParser;
+import com.ofcampus.parser.PostJobHideMarkedParser;
+import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.ClassifiedDetailsParser.ClassifiedDetailsParserInterface;
 import com.ofcampus.parser.CommentAllParser;
 import com.ofcampus.parser.CommentAllParser.CommentAllParserInterface;
 import com.ofcampus.parser.CommentPostParser;
 import com.ofcampus.parser.CommentPostParser.CommentPostParserInterface;
+import com.ofcampus.parser.PostJobHideMarkedParser.PostJobHideMarkedParserInterface;
+import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 
 public class ActivityClassifiedDetails extends ActionBarActivity implements OnClickListener, commentItemClickListner {
 
@@ -48,7 +54,7 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 	private String JObID = "";
 	private EditText edt_comment;
 	private RelativeLayout rel_comnt;
-	private Context mContext;
+	private Context context;
 
 	private String toolHeaderTitle = "";
 	private boolean isFromDetails = false;
@@ -63,7 +69,7 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 		setContentView(R.layout.activity_comment);
 
 		loadBundleValue();
-		mContext = ActivityClassifiedDetails.this;
+		context = ActivityClassifiedDetails.this;
 		toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle((toolHeaderTitle == null) ? "" : toolHeaderTitle);
 		setSupportActionBar(toolbar);
@@ -80,7 +86,7 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 		if (fromNotification) {
 			startActivity(new Intent(ActivityClassifiedDetails.this, ActivityHome.class));
 		} else {
-			((OfCampusApplication) mContext.getApplicationContext()).fromMYPost = false;
+			((OfCampusApplication) context.getApplicationContext()).fromMYPost = false;
 		}
 		overridePendingTransition(0, 0);
 		finish();
@@ -122,7 +128,7 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 		switch (v.getId()) {
 		case R.id.activity_comment_btnsend:
 			commentPostProcess();
-			Util.HideKeyBoard(mContext, v);
+			Util.HideKeyBoard(context, v);
 			break;
 
 		default:
@@ -175,14 +181,14 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 		rel_comnt = (RelativeLayout) findViewById(R.id.activity_comment_rel_comnt);
 		edt_comment = (EditText) findViewById(R.id.activity_comment_edt_cmnt);
 		commentListView = (ListView) findViewById(R.id.activity_comment_comntlist);
-		mCommentRecycleAdapter = new CommentRecycleAdapter(mContext, new ArrayList<JobDetails>());
+		mCommentRecycleAdapter = new CommentRecycleAdapter(context, new ArrayList<JobDetails>());
 		mCommentRecycleAdapter.setCommentitemclicklistner(this);
 		commentListView.setAdapter(mCommentRecycleAdapter);
 	}
 
 	private void loadData() {
 
-		mUserDetails = UserDetails.getLoggedInUser(mContext);
+		mUserDetails = UserDetails.getLoggedInUser(context);
 		mJobDetails = (mJobDetails == null) ? ((OfCampusApplication) getApplication()).jobdetails : mJobDetails;
 		Bundle mBundle = getIntent().getExtras();
 		if (mBundle != null && mJobDetails == null) {
@@ -206,8 +212,8 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 			mCommentRecycleAdapter.refreshView(arrayList, 0);
 		}
 
-		if (!Util.hasConnection(mContext)) {
-			Util.ShowToast(mContext, getResources().getString(R.string.internetconnection_msg));
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
 			// onBackPressed();
 			return;
 		}
@@ -228,7 +234,7 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 
 			}
 		});
-		mDetailsParser.parse(mContext, JObID, mUserDetails.getAuthtoken());
+		mDetailsParser.parse(context, JObID, mUserDetails.getAuthtoken());
 
 	}
 
@@ -236,12 +242,12 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 		String comment = edt_comment.getText().toString();
 
 		if (comment != null && comment.length() == 0) {
-			Util.ShowToast(mContext, "Enter comment and then click on send button.");
+			Util.ShowToast(context, "Enter comment and then click on send button.");
 			return;
 		}
 
-		if (!Util.hasConnection(mContext)) {
-			Util.ShowToast(mContext, getResources().getString(R.string.internetconnection_msg));
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
 			onBackPressed();
 			return;
 		}
@@ -254,7 +260,7 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 				if (mJobDetails != null) {
 					mCommentRecycleAdapter.refreshView(mJobDetails);
 					edt_comment.setText("");
-					Util.ShowToast(mContext, "Comment Posted successfully.");
+					Util.ShowToast(context, "Comment Posted successfully.");
 					commentListView.setSelection(commentListView.getAdapter().getCount() - 1);
 				}
 			}
@@ -265,7 +271,7 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 			}
 		});
 
-		mCommentPostParser.parse(mContext, mCommentPostParser.getBody("4", JObID, comment), mUserDetails.getAuthtoken());
+		mCommentPostParser.parse(context, mCommentPostParser.getBody("4", JObID, comment), mUserDetails.getAuthtoken());
 
 	}
 
@@ -275,8 +281,8 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 			return;
 		}
 
-		if (!Util.hasConnection(mContext)) {
-			Util.ShowToast(mContext, getResources().getString(R.string.internetconnection_msg));
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
 			onBackPressed();
 			return;
 		}
@@ -296,6 +302,79 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 				mCommentRecycleAdapter.loadOldCommentError();
 			}
 		});
-		mAllParser.parse(mContext, mAllParser.getBody("", JObID, commentID), mUserDetails.getAuthtoken());
+		mAllParser.parse(context, mAllParser.getBody("", JObID, commentID), mUserDetails.getAuthtoken());
 	}
+
+//	private void HideCalling(final JobDetails mJobDetails, final int state) {
+//		if (!Util.hasConnection(context)) {
+//			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
+//			return;
+//		}
+//
+//		PostJobHideMarkedParser markedParser = new PostJobHideMarkedParser();
+//		markedParser.setPostjobhidemarkedparserinterface(new PostJobHideMarkedParserInterface() {
+//
+//			@Override
+//			public void OnSuccess() {
+//				if (state == 1 || state == 3) {
+//					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
+//					mJobListAdapter.hideJob(mJobDetails);
+//				} else if (state == 2) {
+//					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
+//					mJobDetails.important = 1;
+//					arr.add(mJobDetails);
+//					JOBListTable.getInstance(context).inserJobData(arr);
+//					ImportantJobTable.getInstance(context).inserJobData(mJobDetails);
+//					mJobListAdapter.importantJob(mJobDetails);
+//				} else if (state == 11) {
+//					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
+//					mJobDetails.important = 0;
+//					arr.add(mJobDetails);
+//					JOBListTable.getInstance(context).inserJobData(arr);
+//					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+//					mJobListAdapter.unimportantJob(mJobDetails);
+//				} else if (state == 13) {
+//					// ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
+//					// mJobDetails.like=0;
+//					// arr.add(mJobDetails);
+//					// JOBListTable.getInstance(context).inserJobData(arr);
+//					// ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+//					mJobListAdapter.likRefreshJob(mJobDetails);
+//				}
+//			}
+//
+//			@Override
+//			public void OnError() {
+//
+//			}
+//		});
+//		markedParser.parse(context, markedParser.getBody(state + "", mJobDetails.getPostid()), tocken);
+//	}
+
+//	private void UnImptCalling(final JobDetails mJobDetails, final int state) {
+//		if (!Util.hasConnection(context)) {
+//			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
+//			return;
+//		}
+//
+//		PostUnHideUnImpParser PostUnHideUnImpParser = new PostUnHideUnImpParser();
+//		PostUnHideUnImpParser.setPostunhideunimpparserinterface(new PostUnHideUnImpParserInterface() {
+//
+//			@Override
+//			public void OnSuccess() {
+//				ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
+//				mJobDetails.important = 0;
+//				arr.add(mJobDetails);
+//				JOBListTable.getInstance(context).inserJobData(arr);
+//				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+//				mJobListAdapter.unimportantJob(mJobDetails);
+//			}
+//
+//			@Override
+//			public void OnError() {
+//
+//			}
+//		});
+//		PostUnHideUnImpParser.parse(context, PostUnHideUnImpParser.getBody(state + "", mJobDetails.getPostid()), tocken);
+//	}
 }

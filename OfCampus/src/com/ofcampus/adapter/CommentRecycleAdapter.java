@@ -259,6 +259,42 @@ public class CommentRecycleAdapter extends BaseAdapter {
 						new ReplyDialog(mContext, arraJobComment.get(position));
 					}
 				});
+
+//				mHolder.img_important.setOnClickListener(new OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						if (joblistinterface != null) {
+//							if (mJobDetails.getImportant() == 0) {
+//								joblistinterface.impClieckEvent(mJobDetails);
+//							} else {
+//								joblistinterface.unimpClieckEvent(mJobDetails);
+//							}
+//
+//						}
+//					}
+//				});
+//
+//				mHolder.img_like.setOnClickListener(new OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						if (joblistinterface != null && mJobDetails.getLike() == 0) {
+//							joblistinterface.likeCliekEvent(mJobDetails);
+//						}
+//					}
+//				});
+//
+//				mHolder.img_arrow.setOnClickListener(new OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//
+//						if (joblistinterface != null) {
+//							joblistinterface.arrowHideClieckEvent(mJobDetails);
+//						}
+//					}
+//				});
 			}
 
 			if (CommentCount > totalCommentCount) {

@@ -11,7 +11,7 @@
     <dimen name="TextDimTop">16dp</dimen>
 
     <!-- JOB Home -->
-    <dimen name="circle_rad">25dp</dimen>
+    <dimen name="circle_rad">20dp</dimen>
     <!-- Comment Pager -->
     <dimen name="comment_pager_hight">250dp</dimen>
     <dimen name="comment_pager_Pading">20dp</dimen>

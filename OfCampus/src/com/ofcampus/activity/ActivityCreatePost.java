@@ -80,6 +80,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 	private int createFor = 0;// Create JobPost=0 , Edit JobPost =1;
 	private CustomSpinner mCustomSpinner = null;
 	private ArrayList<String> deletedIDS = new ArrayList<String>();
+	private View parenScroll = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,18 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 
 		initialize();
 		loadData();
+
+		getWindow().getDecorView().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				int displayH = parenScroll.getHeight();
+				RelativeLayout.LayoutParams pram = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, displayH);
+				(findViewById(R.id.createpost_rel_main)).setLayoutParams(pram);
+				parenScroll.setVisibility(View.VISIBLE);
+			}
+		}, 200);
+
 		if (createFor == 1) {
 			loadJobData();
 		}
@@ -287,6 +300,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 
 	private void initialize() {
 
+		parenScroll = findViewById(R.id.classified_parent);
 		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_profilepic).showImageForEmptyUri(R.drawable.ic_profilepic).showImageOnFail(R.drawable.ic_profilepic)
 				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));

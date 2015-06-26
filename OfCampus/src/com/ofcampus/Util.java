@@ -15,12 +15,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -35,6 +37,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.joda.time.DateTime;
@@ -70,8 +73,8 @@ public class Util {
 	public static long delay = 5 * 1000;
 	public static long period = 30 * 1000;
 
-	 private static String baseUrl = "http://205.147.110.176:8080/api/";
-//	private static String baseUrl = "http://ofcampus.com/api/";
+	private static String baseUrl = "http://205.147.110.176:8080/api/";
+	// private static String baseUrl = "http://ofcampus.com/api/";
 
 	private static String SDCardPath = "OfCampus/Document";
 	public static String defaultYear = "2014";
@@ -110,7 +113,7 @@ public class Util {
 	}
 
 	public static enum PostType {
-		NEWS, POST
+		NEWS, POST, CLASSIFIEDS
 	}
 
 	public static enum ClassifSpinnerType {
@@ -615,7 +618,9 @@ public class Util {
 			httpPost.setHeader("Authorization", auth);
 			// httpPost.setHeader("Content-type", "application/json");
 
-			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, null, Charset.forName(HTTP.UTF_8));
+			httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+
 			File lfile = null;
 			reqEntity.addPart(JSONTAG, new StringBody(json));
 			if (paths != null && paths.size() >= 1) {
