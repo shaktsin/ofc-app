@@ -630,7 +630,7 @@ public class CommentRecycleAdapter extends BaseAdapter {
 					updateListUI(mJobDetails);
 					break;
 				case 13:
-					mJobDetails.like = 0;
+					mJobDetails.like = 1;
 					notifyDataSetChanged();
 					updateListUI(mJobDetails);
 					break;
