@@ -64,7 +64,7 @@ public class ClassifiedListParser {
 	private String NUMHIDES = "numHides";
 	private String NUMIMPORTANT = "numImportant";
 	private String NUMSPAM = "numSpam";
-	private String NUMLIKES = "numlikes";
+	private String NUMLIKES = "numLikes";
 
 	private String LOCATIONS = "locations";
 	private String LOCATIONNAME = "name";

@@ -68,7 +68,7 @@ public class NewsFeedListParser {
 	private String NUMHIDES = "numHides";
 	private String NUMIMPORTANT = "numImportant";
 	private String NUMSPAM = "numSpam";
-	private String NUMLIKES = "numlikes";
+	private String NUMLIKES = "numLikes";
 
 	/* Response JSON key value */
 	private String responsecode = "";
