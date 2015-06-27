@@ -950,7 +950,7 @@ public class Util {
 
 	public static String removeLastChr(String str) {
 		if (str.length() >= 1) {
-			str = str.substring(0, str.length() - 1);
+			str = str.substring(0, str.length() - 2);
 		}
 		return str;
 	}

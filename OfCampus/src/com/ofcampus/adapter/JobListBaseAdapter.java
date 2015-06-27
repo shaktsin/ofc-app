@@ -120,7 +120,6 @@ public class JobListBaseAdapter extends BaseAdapter {
 	public void likRefreshJob(JobDetails postLiked) {
 		for (JobDetails postDetails : jobs) {
 			if (postLiked.getPostid().equals(postDetails.getPostid())) {
-				// postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
 				postDetails.like = 1;
 				postDetails.numlikes = (Integer.parseInt(postDetails.getNumlikes()) + 1) + "";
 			}

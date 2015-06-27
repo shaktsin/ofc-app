@@ -114,8 +114,8 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 	public void likRefreshJob(JobDetails classifiedLiked) {
 		for (JobDetails newsDetails : jobs) {
 			if (classifiedLiked.getPostid().equals(newsDetails.getPostid())) {
-				// postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
 				newsDetails.like = 1;
+				newsDetails.numlikes = (Integer.parseInt(newsDetails.getNumlikes()) + 1) + "";
 			}
 		}
 		notifyDataSetChanged();

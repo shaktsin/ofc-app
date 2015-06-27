@@ -118,8 +118,8 @@ public class NewsListAdapter extends BaseAdapter {
 	public void likRefreshJob(JobDetails newsLiked) {
 		for (JobDetails newsDetails : jobs) {
 			if (newsLiked.getPostid().equals(newsDetails.getPostid())) {
-				// postDetails.like = (postDetails.getLike() == 0) ? 1 : 0;
 				newsDetails.like = 1;
+				newsDetails.numlikes = (Integer.parseInt(newsDetails.getNumlikes()) + 1) + "";
 			}
 		}
 		notifyDataSetChanged();

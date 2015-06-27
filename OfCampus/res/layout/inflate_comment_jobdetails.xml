@@ -150,10 +150,10 @@
                     android:gravity="left"
                     android:text=""
                     android:textColor="@color/primary_dark"
-                    android:textSize="@dimen/joblitview_contain"
-                    android:textStyle="bold"
+                    android:textSize="@dimen/joblitview_postdate"
+                    android:textStyle="normal"
                     android:visibility="gone"
-                    ofcampus:fontName="HelveticaBold.ttf" />
+                    ofcampus:fontName="HelveticaItalic.ttf" />
 
                 <com.ofcampus.ui.CustomTextView
                     android:id="@+id/joblistview_txt_contain"

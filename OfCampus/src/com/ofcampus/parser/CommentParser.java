@@ -272,7 +272,7 @@ public class CommentParser {
 				if (locationJSONArray != null && locationJSONArray.length() >= 1) {
 
 					for (int j = 0; j < locationJSONArray.length(); j++) {
-						location = location + Util.getJsonValue(locationJSONArray.getJSONObject(j), LOCATIONNAME) + ",";
+						location = location + Util.getJsonValue(locationJSONArray.getJSONObject(j), LOCATIONNAME) + ", ";
 					}
 				}
 
@@ -281,14 +281,14 @@ public class CommentParser {
 				if (industryJSONArray != null && industryJSONArray.length() >= 1) {
 
 					for (int j = 0; j < industryJSONArray.length(); j++) {
-						industry = industry + Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME) + ",";
-						role = role + Util.getJsonValue(industryJSONArray.getJSONObject(j), ROLE) + ",";
+						industry = industry + Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME) + ", ";
+						role = role + Util.getJsonValue(industryJSONArray.getJSONObject(j), ROLE) + ", ";
 					}
 				}
 
 				location = (TextUtils.isEmpty(location)) ? "" : ("#" + location);
-				industry = (TextUtils.isEmpty(industry)) ? "" : ("#" + industry);
-				role = (TextUtils.isEmpty(role)) ? "" : ("#" + role);
+				industry = (TextUtils.isEmpty(industry)) ? "" : (" #" + industry);
+				role = (TextUtils.isEmpty(role)) ? "" : (" #" + role);
 
 				String expandsal = "";
 				try {

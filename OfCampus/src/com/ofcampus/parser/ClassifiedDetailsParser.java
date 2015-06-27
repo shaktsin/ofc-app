@@ -267,7 +267,7 @@ public class ClassifiedDetailsParser {
 				if (locationJSONArray != null && locationJSONArray.length() >= 1) {
 
 					for (int j = 0; j < locationJSONArray.length(); j++) {
-						location = location + Util.getJsonValue(locationJSONArray.getJSONObject(j), LOCATIONNAME) + ",";
+						location = location + Util.getJsonValue(locationJSONArray.getJSONObject(j), LOCATIONNAME) + ", ";
 					}
 				}
 
@@ -276,14 +276,14 @@ public class ClassifiedDetailsParser {
 				if (secondarycategJSONArray != null && secondarycategJSONArray.length() >= 1) {
 
 					for (int j = 0; j < secondarycategJSONArray.length(); j++) {
-						primary = primary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME) + ",";
-						secondary = secondary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), SECONDARYCATEGORYNAME) + ",";
+						primary = primary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME) + ", ";
+						secondary = secondary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), SECONDARYCATEGORYNAME) + ", ";
 					}
 				}
 
 				location = (TextUtils.isEmpty(location)) ? "" : ("#" + location);
-				primary = (TextUtils.isEmpty(primary)) ? "" : ("#" + primary);
-				secondary = (TextUtils.isEmpty(secondary)) ? "" : ("#" + secondary);
+				primary = (TextUtils.isEmpty(primary)) ? "" : (" #" + primary);
+				secondary = (TextUtils.isEmpty(secondary)) ? "" : (" #" + secondary);
 
 				mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(primary) + Util.removeLastChr(secondary));
 			} catch (Exception e) {
