@@ -549,7 +549,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 			ViewHolder mHolder;
 			if (convertView == null) {
 				mHolder = new ViewHolder();
-				convertView = inflater.inflate(R.layout.inflate_circledetails, null);
+				convertView = inflater.inflate(R.layout.inflate_userprofile_circle, null);
 				mHolder.last_post = (CustomTextView) convertView.findViewById(R.id.inflt_last_posts_details);
 				mHolder.txt_post_and_members = (TextView) convertView.findViewById(R.id.post_and_members_info);
 				mHolder.txt_name = (CustomTextView) convertView.findViewById(R.id.inflt_circlerow_txt_name);
