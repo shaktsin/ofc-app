@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.internal.el;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -31,12 +33,19 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.databasehelper.ImportantJobTable;
+import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
+import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.PdfDocLoader;
+import com.ofcampus.parser.PostJobHideMarkedParser;
+import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.PdfDocLoader.LoadListner;
+import com.ofcampus.parser.PostJobHideMarkedParser.PostJobHideMarkedParserInterface;
+import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 import com.ofcampus.ui.AlbumPagerDialog;
 import com.ofcampus.ui.CustomTextView;
 import com.ofcampus.ui.ReplyDialog;
@@ -53,11 +62,13 @@ public class CommentRecycleAdapter extends BaseAdapter {
 	private int CommentCount = 0;
 	private int pager_Pading;
 	private float width = 0.0f;
+	private String tocken = "";
 
 	public CommentRecycleAdapter(Context context, ArrayList<JobDetails> arraJobComment_) {
 		this.mContext = context;
 		this.arraJobComment = arraJobComment_;
 		this.inflater = LayoutInflater.from(mContext);
+		this.tocken = UserDetails.getLoggedInUser(mContext).getAuthtoken();
 
 		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_profilepic).showImageForEmptyUri(R.drawable.ic_profilepic).showImageOnFail(R.drawable.ic_profilepic)
 				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
@@ -139,6 +150,9 @@ public class CommentRecycleAdapter extends BaseAdapter {
 			mHolder.txt_name = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_name);
 			mHolder.txt_date = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_postdate);
 			mHolder.txt_subject = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_subject);
+
+			mHolder.txt_locationandothers = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_locationandothers);
+
 			mHolder.txt_jobdetails = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_contain);
 
 			mHolder.txt_replycount = (CustomTextView) convertView.findViewById(R.id.joblistview_txt_reply_count);
@@ -186,12 +200,20 @@ public class CommentRecycleAdapter extends BaseAdapter {
 				mHolder.txt_subject.setText(mJobDetails.getSubject());
 				mHolder.txt_jobdetails.setText(mJobDetails.getContent());
 
+				if (!TextUtils.isEmpty(mJobDetails.getLocationandinds())) {
+					mHolder.txt_locationandothers.setVisibility(View.VISIBLE);
+					mHolder.txt_locationandothers.setText(mJobDetails.getLocationandinds());
+				} else {
+					mHolder.txt_locationandothers.setVisibility(View.GONE);
+				}
+
 				mHolder.img_important.setVisibility(View.VISIBLE);
 				mHolder.img_like.setVisibility(View.VISIBLE);
 				mHolder.img_arrow.setVisibility(View.VISIBLE);
 
 				mHolder.img_like.setSelected((mJobDetails.like == 1) ? true : false);
 				mHolder.img_important.setSelected((mJobDetails.getImportant() == 1) ? true : false);
+				mHolder.img_arrow.setVisibility(View.GONE);
 
 				String likecount = mJobDetails.getNumlikes();
 				String commentcount = ((arraJobComment.size() > 1) ? (arraJobComment.size() - 1) : 0) + "";
@@ -260,41 +282,41 @@ public class CommentRecycleAdapter extends BaseAdapter {
 					}
 				});
 
-//				mHolder.img_important.setOnClickListener(new OnClickListener() {
-//
-//					@Override
-//					public void onClick(View v) {
-//						if (joblistinterface != null) {
-//							if (mJobDetails.getImportant() == 0) {
-//								joblistinterface.impClieckEvent(mJobDetails);
-//							} else {
-//								joblistinterface.unimpClieckEvent(mJobDetails);
-//							}
-//
-//						}
-//					}
-//				});
-//
-//				mHolder.img_like.setOnClickListener(new OnClickListener() {
-//
-//					@Override
-//					public void onClick(View v) {
-//						if (joblistinterface != null && mJobDetails.getLike() == 0) {
-//							joblistinterface.likeCliekEvent(mJobDetails);
-//						}
-//					}
-//				});
-//
-//				mHolder.img_arrow.setOnClickListener(new OnClickListener() {
-//
-//					@Override
-//					public void onClick(View v) {
-//
-//						if (joblistinterface != null) {
-//							joblistinterface.arrowHideClieckEvent(mJobDetails);
-//						}
-//					}
-//				});
+				mHolder.img_important.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						if (mJobDetails.getImportant() == 0) {
+							HideCalling(mJobDetails, 2);// Unimportant
+						} else {
+							UnImptCalling(mJobDetails, 11);// Important
+						}
+					}
+				});
+
+				mHolder.img_like.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						if (mJobDetails.getLike() == 0) {
+							HideCalling(mJobDetails, 13);// Like
+						}
+					}
+				});
+
+				mHolder.img_arrow.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+
+						if (v.isSelected()) {
+							// HideCalling(mJobDetails, 12);// UnHide
+						} else {
+							// HideCalling(mJobDetails, 1);// Hide
+						}
+
+					}
+				});
 			}
 
 			if (CommentCount > totalCommentCount) {
@@ -341,7 +363,7 @@ public class CommentRecycleAdapter extends BaseAdapter {
 	private class ViewHolder {
 		public ImageView img_prfpic, img_commentprfpic;
 		ImageView img_arrow, img_important, img_like;
-		public CustomTextView txt_name, txt_date, txt_subject, txt_jobdetails, txt_commentname, txt_commentdate, txt_commenteddetails, txt_load;
+		public CustomTextView txt_name, txt_date, txt_subject, txt_jobdetails, txt_commentname, txt_commentdate, txt_commenteddetails, txt_load, txt_locationandothers;
 		CustomTextView txt_replycount, txt_likecount, txt_commentcount;
 		public ImageView txt_btn_comment, txt_btn_share, txt_btn_reply;
 		public RelativeLayout rel_jobdetails, rel_comment, rel_progress;
@@ -574,6 +596,78 @@ public class CommentRecycleAdapter extends BaseAdapter {
 		public Parcelable saveState() {
 			return null;
 		}
+	}
+
+	/**
+	 * Like,Important,Hide Calling event
+	 * 
+	 * @param mJobDetails
+	 * @param state
+	 */
+
+	private void HideCalling(final JobDetails mJobDetails, final int state) {
+		if (!Util.hasConnection(mContext)) {
+			Util.ShowToast(mContext, mContext.getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+
+		PostJobHideMarkedParser markedParser = new PostJobHideMarkedParser();
+		markedParser.setPostjobhidemarkedparserinterface(new PostJobHideMarkedParserInterface() {
+
+			@Override
+			public void OnSuccess() {
+				switch (state) {
+				case 1:
+					// mJobDetails. = 1;
+					// notifyDataSetChanged();
+					break;
+				case 2:
+					mJobDetails.important = 1;
+					notifyDataSetChanged();
+					break;
+				case 11:
+					mJobDetails.important = 0;
+					notifyDataSetChanged();
+					break;
+				case 13:
+					mJobDetails.like = 0;
+					notifyDataSetChanged();
+					break;
+
+				default:
+					break;
+				}
+			}
+
+			@Override
+			public void OnError() {
+
+			}
+		});
+		markedParser.parse(mContext, markedParser.getBody(state + "", mJobDetails.getPostid()), tocken);
+	}
+
+	private void UnImptCalling(final JobDetails mJobDetails, final int state) {
+		if (!Util.hasConnection(mContext)) {
+			Util.ShowToast(mContext, mContext.getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+
+		PostUnHideUnImpParser PostUnHideUnImpParser = new PostUnHideUnImpParser();
+		PostUnHideUnImpParser.setPostunhideunimpparserinterface(new PostUnHideUnImpParserInterface() {
+
+			@Override
+			public void OnSuccess() {
+				mJobDetails.important = 0;
+				notifyDataSetChanged();
+			}
+
+			@Override
+			public void OnError() {
+
+			}
+		});
+		PostUnHideUnImpParser.parse(mContext, PostUnHideUnImpParser.getBody(state + "", mJobDetails.getPostid()), tocken);
 	}
 
 }

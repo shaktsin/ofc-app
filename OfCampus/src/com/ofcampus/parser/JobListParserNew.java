@@ -300,6 +300,11 @@ public class JobListParserNew {
 							mJobDetails.setImages(images);
 						}
 
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					try {
 						String location = "";
 						String industry = "";
 						String role = "";
@@ -328,85 +333,16 @@ public class JobListParserNew {
 						role = (TextUtils.isEmpty(role)) ? "" : ("#" + role);
 
 						mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(industry) + Util.removeLastChr(role));
-
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					
 
 					jobarray.add(mJobDetails);
 					mJobDetails = null;
 				}
 				mJobList.setJobs(jobarray);
 			}
-
-			// if (cityjsonarray != null && cityjsonarray.length() >= 1) {
-			//
-			// ArrayList<CityDetails> cityarray = new ArrayList<CityDetails>();
-			//
-			// for (int i = 0; i < cityjsonarray.length(); i++) {
-			// CityDetails mCityDetails = new CityDetails();
-			// jsonobject = cityjsonarray.getJSONObject(i);
-			//
-			// mCityDetails.setCity_id(Util.getJsonValue(jsonobject, CITY_ID));
-			// mCityDetails.setCity_name(Util.getJsonValue(jsonobject,
-			// CITY_NAME));
-			// mCityDetails.setCity_selected(Util.getJsonValue(jsonobject,
-			// CITY_SELECTED));
-			// cityarray.add(mCityDetails);
-			// mCityDetails = null;
-			// }
-			// mJobList.setCitys(cityarray);
-			// }
-			//
-			// if (industryrolejsonarray != null &&
-			// industryrolejsonarray.length() >= 1) {
-			//
-			// ArrayList<IndustryRoleDetails> industryrolerray = new
-			// ArrayList<IndustryRoleDetails>();
-			//
-			// for (int i = 0; i < industryrolejsonarray.length(); i++) {
-			// IndustryRoleDetails mRoleDetails = new IndustryRoleDetails();
-			// jsonobject = industryrolejsonarray.getJSONObject(i);
-			//
-			// mRoleDetails.setIndustryroles_id(Util.getJsonValue(jsonobject,
-			// INDUSTRYROLES_ID));
-			// mRoleDetails.setIndustryroles_name(Util.getJsonValue(jsonobject,
-			// INDUSTRYROLES_NAME));
-			// mRoleDetails.setIndustryroles_industryid(Util.getJsonValue(jsonobject,
-			// INDUSTRYROLES_INDUSTRYID));
-			// mRoleDetails.setIndustryroles_industryname(Util.getJsonValue(jsonobject,
-			// INDUSTRYROLES_INDUSTRYNAME));
-			// mRoleDetails.setIndustryroles_selected(Util.getJsonValue(jsonobject,
-			// INDUSTRYROLES_SELECTED));
-			// industryrolerray.add(mRoleDetails);
-			// mRoleDetails = null;
-			// }
-			// mJobList.setIndustryRoles(industryrolerray);
-			//
-			// }
-			//
-			// if (industryjsonarray != null && industryjsonarray.length() >= 1)
-			// {
-			//
-			// ArrayList<IndustryDetails> industryarray = new
-			// ArrayList<IndustryDetails>();
-			//
-			// for (int i = 0; i < industryjsonarray.length(); i++) {
-			// IndustryDetails mIndustryDetails = new IndustryDetails();
-			// jsonobject = industryjsonarray.getJSONObject(i);
-			//
-			// mIndustryDetails.setIndustry_id(Util.getJsonValue(jsonobject,
-			// INDUSTRY_ID));
-			// mIndustryDetails.setIndustry_name(Util.getJsonValue(jsonobject,
-			// INDUSTRY_NAME));
-			// mIndustryDetails.setIndustry_selected(Util.getJsonValue(jsonobject,
-			// INDUSTRY_SELECTED));
-			// industryarray.add(mIndustryDetails);
-			// mIndustryDetails = null;
-			//
-			// }
-			// mJobList.setIndustrys(industryarray);
-			// }
 
 		} catch (JSONException e) {
 			e.printStackTrace();

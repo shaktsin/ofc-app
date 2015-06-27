@@ -13,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.text.TextUtils;
 
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
@@ -61,6 +62,13 @@ public class ClassifiedDetailsParser {
 	private String NUMIMPORTANT = "numImportant";
 	private String NUMSPAM = "numSpam";
 	private String NUMLIKES = "numLikes";
+
+	// private String LOCATIONS = "locations";
+	private String LOCATIONS = "cityDtoList";
+	private String LOCATIONNAME = "name";
+	private String SECONDARYCATEGORYDTOLIST = "secondaryCategoryDtoList";
+	private String PRIMARYCATNAME = "primaryCatName";
+	private String SECONDARYCATEGORYNAME = "name";
 
 	/** CommentList Key */
 	private String COMMENTLISTRESPONSE = "commentListResponse";
@@ -241,6 +249,39 @@ public class ClassifiedDetailsParser {
 					mJobDetails.setDoclist(docList);
 					mJobDetails.setImages(images);
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			try {
+				String location = "";
+				String primary = "";
+				String secondary = "";
+
+				JSONArray locationJSONArray = jsonobject.getJSONArray(LOCATIONS);
+
+				if (locationJSONArray != null && locationJSONArray.length() >= 1) {
+
+					for (int j = 0; j < locationJSONArray.length(); j++) {
+						location = location + Util.getJsonValue(locationJSONArray.getJSONObject(j), LOCATIONNAME) + ",";
+					}
+				}
+
+				JSONArray secondarycategJSONArray = jsonobject.getJSONArray(SECONDARYCATEGORYDTOLIST);
+
+				if (secondarycategJSONArray != null && secondarycategJSONArray.length() >= 1) {
+
+					for (int j = 0; j < secondarycategJSONArray.length(); j++) {
+						primary = primary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME) + ",";
+						secondary = secondary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), SECONDARYCATEGORYNAME) + ",";
+					}
+				}
+
+				location = (TextUtils.isEmpty(location)) ? "" : ("#" + location);
+				primary = (TextUtils.isEmpty(primary)) ? "" : ("#" + primary);
+				secondary = (TextUtils.isEmpty(secondary)) ? "" : ("#" + secondary);
+
+				mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(primary) + Util.removeLastChr(secondary));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

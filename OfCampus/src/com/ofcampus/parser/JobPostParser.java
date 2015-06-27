@@ -15,6 +15,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.text.TextUtils;
 
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
@@ -66,6 +67,17 @@ public class JobPostParser {
 	private String NUMIMPORTANT = "numImportant";
 	private String NUMSPAM = "numSpam";
 	private String NUMLIKES = "numLikes";
+
+	private String LOCATIONS = "locations";
+	private String LOCATIONNAME = "name";
+	private String INDUSTRYROLESDTOLIST = "industryRolesDtoList";
+	private String INDUSTRYNAME = "industryName";
+	private String ROLE = "name";
+
+	private String EXPTO = "to";
+	private String EXPFROM = "from";
+	private String SALARYTO = "salaryTo";
+	private String SALARYFROM = "salaryFrom";
 
 	/* Response JSON key value */
 	private String responsecode = "";
@@ -233,6 +245,52 @@ public class JobPostParser {
 					mJobDetails.setDoclist(docList);
 					mJobDetails.setImages(images);
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			try {
+				String location = "";
+				String industry = "";
+				String role = "";
+
+				JSONArray locationJSONArray = jsonobject.getJSONArray(LOCATIONS);
+
+				if (locationJSONArray != null && locationJSONArray.length() >= 1) {
+
+					for (int j = 0; j < locationJSONArray.length(); j++) {
+						location = location + Util.getJsonValue(locationJSONArray.getJSONObject(j), LOCATIONNAME) + ",";
+					}
+				}
+
+				JSONArray industryJSONArray = jsonobject.getJSONArray(INDUSTRYROLESDTOLIST);
+
+				if (industryJSONArray != null && industryJSONArray.length() >= 1) {
+
+					for (int j = 0; j < industryJSONArray.length(); j++) {
+						industry = industry + Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME) + ",";
+						role = role + Util.getJsonValue(industryJSONArray.getJSONObject(j), ROLE) + ",";
+					}
+				}
+
+				location = (TextUtils.isEmpty(location)) ? "" : ("#" + location);
+				industry = (TextUtils.isEmpty(industry)) ? "" : ("#" + industry);
+				role = (TextUtils.isEmpty(role)) ? "" : ("#" + role);
+
+				String expandsal = "";
+				try {
+					String expto = Util.getJsonValue(jsonobject, EXPTO) + "yr";
+					String expfrom = Util.getJsonValue(jsonobject, EXPFROM) + "yr";
+					String salto = Util.getJsonValue(jsonobject, SALARYTO) + "lc";
+					String salfrm = Util.getJsonValue(jsonobject, SALARYFROM) + "lc";
+
+					expandsal = (TextUtils.isEmpty(expto) && TextUtils.isEmpty(expfrom) && TextUtils.isEmpty(salto) && TextUtils.isEmpty(salfrm)) ? "" : ("#" + expto + "-" + expfrom + "," + salto
+							+ "-" + salfrm);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(industry) + Util.removeLastChr(role) + expandsal);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

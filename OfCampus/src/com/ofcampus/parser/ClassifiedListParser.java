@@ -256,7 +256,10 @@ public class ClassifiedListParser {
 							mJobDetails.setDoclist(docList);
 							mJobDetails.setImages(images);
 						}
-
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					try {
 						String location = "";
 						String primary = "";
 						String secondary = "";
