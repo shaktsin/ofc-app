@@ -179,11 +179,17 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 				if (newsList != null && newsList.size() >= 1) {
 					mNewsListAdapter.refreshData(newsList);
 				}
+				if (newsInterface != null) {
+					newsInterface.newsFirstCallingDone(true);
+				}
 			}
 
 			@Override
 			public void OnError() {
 				refreshComplete();
+				if (newsInterface != null) {
+					newsInterface.newsFirstCallingDone(true);
+				}
 			}
 		});
 		mFeedListParser.isShowingPG_ = isShowingPG;
@@ -192,7 +198,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 
 	/** News Sync Process 07 April 20015 **/
 	public boolean isNewsComming() {
-		if (!firsttJobID.equals("") && notifyfeeds == null) {
+		if (!firsttJobID.equals("") && notifyfeeds == null || notifyfeeds.size() == 0) {
 			return true;
 		} else {
 			return false;
@@ -209,17 +215,24 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 
 	private NewsFeedListParser mNewsFeedListParser = null;
 
-	public String getUpdateNewsCount() {
-		String count = "";
+	public int getUpdateNewsCount() {
+		int count = 0;
 		try {
 			if (mNewsFeedListParser == null) {
 				mNewsFeedListParser = new NewsFeedListParser();
 			}
-			ArrayList<JobDetails> news = null;
-			if (isNewsCommingFstTime() || isNewsComming()) {
-				news = notifyfeeds = mNewsFeedListParser.bgSyncCalling(context, mNewsFeedListParser.getBody(firsttJobID, 1 + ""), tocken);
-			}
-			count = (news != null && news.size() >= 1) ? news.size() + "" : "";
+			// if (isNewsCommingFstTime() || isNewsComming()) {
+			// notifyfeeds = mNewsFeedListParser.bgSyncCalling(context,
+			// mNewsFeedListParser.getBody(firsttJobID, 1 + ""), tocken);
+			// count = (notifyfeeds != null && notifyfeeds.size() >= 1) ?
+			// notifyfeeds.size() : 0;
+			// }else {
+			// count = (notifyfeeds != null && notifyfeeds.size() >= 1) ?
+			// notifyfeeds.size() : 0;
+			// }
+			notifyfeeds = mNewsFeedListParser.bgSyncCalling(context, mNewsFeedListParser.getBody(firsttJobID, 1 + ""), tocken);
+			count = (notifyfeeds != null && notifyfeeds.size() >= 1) ? notifyfeeds.size() : 0;
+
 			mNewsFeedListParser = null;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -233,8 +246,8 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 		if (notifyfeeds != null && notifyfeeds.size() >= 1) {
 			mNewsListAdapter.refreshSwipeData(notifyfeeds);
 			notifyfeeds = null;
-			if (fragmentnewsinterface != null) {
-				fragmentnewsinterface.pullToRefreshCallCompleteForNews();
+			if (newsInterface != null) {
+				newsInterface.pullToRefreshCallCompleteForNews();
 			}
 		} else {
 			Util.ShowToast(context, "No more News updated.");
@@ -383,20 +396,23 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 	/**
 	 * Interface for News Fragment.
 	 */
-	public FragmentNewsInterface fragmentnewsinterface;
+	public NewsInterface newsInterface;
 
-	public FragmentNewsInterface getFragmentnewsinterface() {
-		return fragmentnewsinterface;
+	public NewsInterface getNewsInterface() {
+		return newsInterface;
 	}
 
-	public void setFragmentnewsinterface(FragmentNewsInterface fragmentnewsinterface) {
-		this.fragmentnewsinterface = fragmentnewsinterface;
+	public void setNewsInterface(NewsInterface newsInterface) {
+		this.newsInterface = newsInterface;
 	}
 
-	public interface FragmentNewsInterface {
-		public void pullToRefreshCallCompleteForNews();// After pull to refresh
-														// complete remove the
-														// notification.
+	public interface NewsInterface {
+		/**
+		 * // After pull to refresh complete remove the notification.
+		 */
+		public void pullToRefreshCallCompleteForNews();
+
+		public void newsFirstCallingDone(boolean isDone);
 	}
 
 }

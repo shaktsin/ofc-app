@@ -56,7 +56,7 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 
 	private SwipeRefreshLayout swipeLayout;
 
-	public ArrayList<JobDetails> notifyfeeds = null;
+	public ArrayList<JobDetails> notifycclassifieds = null;
 
 	public static FragmentClassifieds newInstance(int position, Context mContext) {
 		FragmentClassifieds f = new FragmentClassifieds();
@@ -179,11 +179,17 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 				if (classifiedsList != null && classifiedsList.size() >= 1) {
 					mClassifiedListAdapter.refreshData(classifiedsList);
 				}
+				if (classifiedinterface != null) {
+					classifiedinterface.classifiedFirstCallingDone(true);
+				}
 			}
 
 			@Override
 			public void OnError() {
 				refreshComplete();
+				if (classifiedinterface != null) {
+					classifiedinterface.classifiedFirstCallingDone(true); 
+				}
 			}
 		});
 		mClassifiedListParser.isShowingPG_ = b;
@@ -191,8 +197,8 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 	}
 
 	/** News Sync Process 07 April 20015 **/
-	public boolean isNewsComming() {
-		if (!firsttID.equals("") && notifyfeeds == null) {
+	public boolean isClassifiedsComming() {
+		if (!firsttID.equals("") && notifycclassifieds == null || notifycclassifieds.size() == 0) {
 			return true;
 		} else {
 			return false;
@@ -209,17 +215,25 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 
 	private ClassifiedListParser mClassifiedListParser = null;
 
-	public String getUpdateClassifiedCount() {
-		String count = "";
+	public int getUpdateClassifiedCount() {
+		int count = 0;
 		try {
 			if (mClassifiedListParser == null) {
 				mClassifiedListParser = new ClassifiedListParser();
 			}
-			ArrayList<JobDetails> news = null;
-			if (isNewsCommingFstTime() || isNewsComming()) {
-				news = notifyfeeds = mClassifiedListParser.bgSyncCalling(context, mClassifiedListParser.getBody(firsttID, 1 + ""), tocken);
-			}
-			count = (news != null && news.size() >= 1) ? news.size() + "" : "";
+			// if (isNewsCommingFstTime() || isClassifiedsComming()) {
+			// notifycclassifieds = mClassifiedListParser.bgSyncCalling(context,
+			// mClassifiedListParser.getBody(firsttID, 1 + ""), tocken);
+			// count = (notifycclassifieds != null && notifycclassifieds.size()
+			// >= 1) ? notifycclassifieds.size() : 0;
+			// } else {
+			// count = (notifycclassifieds != null && notifycclassifieds.size()
+			// >= 1) ? notifycclassifieds.size() : 0;
+			// }
+
+			notifycclassifieds = mClassifiedListParser.bgSyncCalling(context, mClassifiedListParser.getBody(firsttID, 1 + ""), tocken);
+			count = (notifycclassifieds != null && notifycclassifieds.size() >= 1) ? notifycclassifieds.size() : 0;
+
 			mClassifiedListParser = null;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -230,11 +244,11 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 	/** News Sync Process **/
 
 	private void pulltorefreshcall() {
-		if (notifyfeeds != null && notifyfeeds.size() >= 1) {
-			mClassifiedListAdapter.refreshSwipeData(notifyfeeds);
-			notifyfeeds = null;
-			if (fgclassifiedinterface != null) {
-				fgclassifiedinterface.pullToRefreshCallCompleteForClass();
+		if (notifycclassifieds != null && notifycclassifieds.size() >= 1) {
+			mClassifiedListAdapter.refreshSwipeData(notifycclassifieds);
+			notifycclassifieds = null;
+			if (classifiedinterface != null) {
+				classifiedinterface.pullToRefreshCallCompleteForClass();
 			}
 		} else {
 			Util.ShowToast(context, "No more News updated.");
@@ -383,20 +397,23 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 	/**
 	 * Interface for News Fragment.
 	 */
-	public FgClassifiedInterface fgclassifiedinterface;
+	public ClassifiedInterface classifiedinterface;
 
-	public FgClassifiedInterface getFgclassifiedinterface() {
-		return fgclassifiedinterface;
+	public ClassifiedInterface getClassifiedinterface() {
+		return classifiedinterface;
 	}
 
-	public void setFgclassifiedinterface(FgClassifiedInterface fgclassifiedinterface) {
-		this.fgclassifiedinterface = fgclassifiedinterface;
+	public void setClassifiedinterface(ClassifiedInterface classifiedinterface) {
+		this.classifiedinterface = classifiedinterface;
 	}
 
-	public interface FgClassifiedInterface {
-		public void pullToRefreshCallCompleteForClass();// After pull to refresh
-														// complete remove the
-														// notification.
+	public interface ClassifiedInterface {
+		/**
+		 * After pull to refresh complete remove the notification.
+		 */
+		public void pullToRefreshCallCompleteForClass();
+
+		public void classifiedFirstCallingDone(boolean isDone);
 	}
 
 }

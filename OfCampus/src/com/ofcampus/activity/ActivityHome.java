@@ -61,9 +61,9 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.Util.SearchType;
-import com.ofcampus.activity.FragmentClassifieds.FgClassifiedInterface;
-import com.ofcampus.activity.FragmentJobs.JobsFrgInterface;
-import com.ofcampus.activity.FragmentNewsFeeds.FragmentNewsInterface;
+import com.ofcampus.activity.FragmentClassifieds.ClassifiedInterface;
+import com.ofcampus.activity.FragmentJobs.JobsInterface;
+import com.ofcampus.activity.FragmentNewsFeeds.NewsInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
@@ -76,7 +76,7 @@ import com.ofcampus.parser.FilterJobParser;
 import com.ofcampus.parser.SearchParser;
 import com.ofcampus.ui.FilterDialog;
 
-public class ActivityHome extends ActionBarActivity implements OnClickListener, viewCLickEvent, OnPageChangeListener, JobsFrgInterface, FragmentNewsInterface, FgClassifiedInterface {
+public class ActivityHome extends ActionBarActivity implements OnClickListener, viewCLickEvent, OnPageChangeListener, JobsInterface, NewsInterface, ClassifiedInterface {
 
 	private String NAME = "";
 	private String EMAIL = "";
@@ -165,14 +165,14 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 				((OfCampusApplication) getApplication()).isNewsDataModify = false;
 			}
 
+			/**
+			 * If Classifieds modify
+			 */
+
 			if (((OfCampusApplication) getApplication()).isclassifiedDataModify) {
 				fragmentClassifieds.loadData(false);
 				((OfCampusApplication) getApplication()).isclassifiedDataModify = false;
 			}
-
-			// if (fragmentJobs.mJobListAdapter != null) {
-			// fragmentJobs.mJobListAdapter.notifyDataSetChanged();
-			// }
 
 			/**
 			 * If Profile Modify
@@ -415,20 +415,39 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 
 	@Override
 	public void pullToRefreshCallCompleteForNews() {
-		count[0] = "";
+		count[0] = 0;
 		txt_countNews.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
 	public void pullToRefreshCallCompleteForJob() {
-		count[1] = "";
+		count[1] = 0;
 		txt_countJobs.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
 	public void pullToRefreshCallCompleteForClass() {
-		count[2] = "";
+		count[2] = 0;
 		txt_countclass.setVisibility(View.INVISIBLE);
+	}
+
+	private boolean jobFirstCallingDone = false;
+	private boolean classifiedFirstCallingDone = false;
+	private boolean newsFirstCallingDone = false;
+
+	@Override
+	public void classifiedFirstCallingDone(boolean isDone) {
+		classifiedFirstCallingDone = isDone;
+	}
+
+	@Override
+	public void newsFirstCallingDone(boolean isDone) {
+		newsFirstCallingDone = isDone;
+	}
+
+	@Override
+	public void jobFirstCallingDone(boolean isDone) {
+		jobFirstCallingDone = isDone;
 	}
 
 	private void initilizActionBarDrawer() {
@@ -582,15 +601,15 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 			switch (position) {
 			case 0:
 				fragmentNewsFeeds = FragmentNewsFeeds.newInstance(position, ActivityHome.this);
-				fragmentNewsFeeds.setFragmentnewsinterface(ActivityHome.this);
+				fragmentNewsFeeds.setNewsInterface(ActivityHome.this);
 				return fragmentNewsFeeds;
 			case 1:
 				fragmentJobs = FragmentJobs.newInstance(position, ActivityHome.this);
-				fragmentJobs.setJobsfrginterface(ActivityHome.this);
+				fragmentJobs.setJobsInterface(ActivityHome.this);
 				return fragmentJobs;
 			case 2:
 				fragmentClassifieds = FragmentClassifieds.newInstance(position, ActivityHome.this);
-				fragmentClassifieds.setFgclassifiedinterface(ActivityHome.this);
+				fragmentClassifieds.setClassifiedinterface(ActivityHome.this);
 				return fragmentClassifieds;
 			}
 			return null;
@@ -601,7 +620,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 
 	private Timer timer;
 	private MyTask mTask;
-	private String[] count = { "", "", "" };// News,Jobs,MeetUp.
+	private int[] count = { 0, 0, 0 };// News,Jobs,MeetUp.
 
 	public void stopservice() {
 		try {
@@ -654,15 +673,15 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					}
 
 					/*** For News Feed Sync **/
-					count[0] = (fragmentNewsFeeds != null) ? fragmentNewsFeeds.getUpdateNewsCount() : "";
+					count[0] = (fragmentNewsFeeds != null) ? fragmentNewsFeeds.getUpdateNewsCount() : 0;
 					/*** For News Feed Sync **/
 
 					/*** For Jobs Feed Sync **/
-					count[1] = (fragmentJobs != null) ? fragmentJobs.getUpdateJobsCount() : "";
+					count[1] = (fragmentJobs != null) ? fragmentJobs.getUpdateJobsCount() : 0;
 					/*** For Jobs Feed Sync **/
 
 					/*** For Classified Sync **/
-					count[2] = (fragmentClassifieds != null) ? fragmentClassifieds.getUpdateClassifiedCount() : "";
+					count[2] = (fragmentClassifieds != null) ? fragmentClassifieds.getUpdateClassifiedCount() : 0;
 					/*** For Classified Sync **/
 
 					handler.sendEmptyMessage(0);
@@ -680,29 +699,26 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 			super.handleMessage(msg);
 			try {
 				if (count != null) {
-					String newsCount = count[0];
-					String jobCount = count[1];
-					String meetupcount = count[2];
+					int newsCount = count[0];
+					int jobCount = count[1];
+					int meetupcount = count[2];
 
-					if (newsCount != null && !newsCount.equals("") && !newsCount.equals("0")) {
-						// txt_countNews.setVisibility(View.VISIBLE);
-						txt_countNews.setText(newsCount);
+					if (newsCount != 0) {
+						txt_countNews.setText(newsCount + "");
 						notificationAnimation(txt_countNews);
 					} else {
 						txt_countNews.setVisibility(View.INVISIBLE);
 					}
 
-					if (jobCount != null && !jobCount.equals("") && !jobCount.equals("0")) {
-						// txt_countJobs.setVisibility(View.VISIBLE);
-						txt_countJobs.setText(jobCount);
+					if (jobCount != 0) {
+						txt_countJobs.setText(jobCount + "");
 						notificationAnimation(txt_countJobs);
 					} else {
 						txt_countJobs.setVisibility(View.INVISIBLE);
 					}
 
-					if (meetupcount != null && !meetupcount.equals("") && !meetupcount.equals("0")) {
-						// txt_countclass.setVisibility(View.VISIBLE);
-						txt_countclass.setText(meetupcount);
+					if (meetupcount != 0) {
+						txt_countclass.setText(meetupcount + "");
 						notificationAnimation(txt_countclass);
 					} else {
 						txt_countclass.setVisibility(View.INVISIBLE);

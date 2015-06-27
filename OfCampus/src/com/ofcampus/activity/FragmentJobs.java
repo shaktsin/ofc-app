@@ -118,7 +118,7 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 
 	@Override
 	public void onRefresh() {
-		if (jobsfrginterface != null) {
+		if (jobsInterface != null) {
 			pulltorefreshcall();
 		}
 	}
@@ -190,11 +190,16 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 				if (jobList != null && jobList.size() >= 1) {
 					refreshDataInAdapter(jobList);
 				}
+				if (jobsInterface != null) {
+					jobsInterface.jobFirstCallingDone(true);
+				}
 			}
 
 			@Override
 			public void OnError() {
-
+				if (jobsInterface != null) {
+					jobsInterface.jobFirstCallingDone(true);
+				}
 			}
 		});
 		mParserNew.isShowingPG_ = isShowingPG;
@@ -229,8 +234,8 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 		if (notifyJObs != null && notifyJObs.size() >= 1) {
 			mJobListAdapter.refreshSwipeData(notifyJObs);
 			notifyJObs = null;
-			if (jobsfrginterface != null) {
-				jobsfrginterface.pullToRefreshCallCompleteForJob();
+			if (jobsInterface != null) {
+				jobsInterface.pullToRefreshCallCompleteForJob();
 			}
 		} else {
 			Util.ShowToast(context, "No more News updated.");
@@ -240,7 +245,7 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 
 	/** JOB SYNC PROCESS 7TH APRIL 2015 **/
 	public boolean isJobComming() {
-		if (!firsttJobID.equals("") && notifyJObs == null) {
+		if (!firsttJobID.equals("") && notifyJObs == null || notifyJObs.size() == 0) {
 			return true;
 		} else {
 			return false;
@@ -265,18 +270,25 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 
 	private JobListParserNew mJobListParserNew = null;
 
-	public String getUpdateJobsCount() {
-		String count = "";
+	public int getUpdateJobsCount() {
+		int count = 0;
 		try {
 			if (mJobListParserNew == null) {
 				mJobListParserNew = new JobListParserNew();
 			}
-			ArrayList<JobDetails> jobs = null;
-			if (isJobCommingFstTime() || isJobComming()) {
-				jobs = notifyJObs = mJobListParserNew.bgSyncCalling(context, mJobListParserNew.getBody(firsttJobID, 1 + ""), tocken);
-			}
-			count = (jobs != null && jobs.size() >= 1) ? jobs.size() + "" : "";
-			notifyJObs = (notifyJObs != null && notifyJObs.size() == 0) ? null : notifyJObs;
+			// if (isJobCommingFstTime() || isJobComming()) {
+			// notifyJObs = mJobListParserNew.bgSyncCalling(context,
+			// mJobListParserNew.getBody(firsttJobID, 1 + ""), tocken);
+			// count = (notifyJObs != null && notifyJObs.size() >= 1) ?
+			// notifyJObs.size() : 0;
+			// }else {
+			// count = (notifyJObs != null && notifyJObs.size() >= 1) ?
+			// notifyJObs.size() : 0;
+			// }
+
+			notifyJObs = mJobListParserNew.bgSyncCalling(context, mJobListParserNew.getBody(firsttJobID, 1 + ""), tocken);
+			count = (notifyJObs != null && notifyJObs.size() >= 1) ? notifyJObs.size() : 0;
+
 			mJobListParserNew = null;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -387,18 +399,20 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 		PostUnHideUnImpParser.parse(context, PostUnHideUnImpParser.getBody(state + "", mJobDetails.getPostid()), tocken);
 	}
 
-	public JobsFrgInterface jobsfrginterface;
+	public JobsInterface jobsInterface;
 
-	public JobsFrgInterface getJobsfrginterface() {
-		return jobsfrginterface;
+	public JobsInterface getJobsInterface() {
+		return jobsInterface;
 	}
 
-	public void setJobsfrginterface(JobsFrgInterface jobsfrginterface) {
-		this.jobsfrginterface = jobsfrginterface;
+	public void setJobsInterface(JobsInterface jobsInterface) {
+		this.jobsInterface = jobsInterface;
 	}
 
-	public interface JobsFrgInterface {
+	public interface JobsInterface {
 		public void pullToRefreshCallCompleteForJob();
+
+		public void jobFirstCallingDone(boolean isDone);
 
 	}
 
