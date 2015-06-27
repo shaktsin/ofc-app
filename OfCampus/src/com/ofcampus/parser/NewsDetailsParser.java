@@ -44,6 +44,8 @@ public class NewsDetailsParser {
 	private String REPLYDTO = "replyDto";
 	private String SHAREDTO = "shareDto";
 
+	private String POSTTYPE = "postType";
+
 	private String IMPORTANT = "important";
 	private String LIKED = "liked";
 
@@ -195,6 +197,8 @@ public class NewsDetailsParser {
 			mJobDetails.setIsb_jobs(Util.getJsonValue(jsonobject, ISB_JOBS));
 			mJobDetails.setContent(Util.getJsonValue(jsonobject, CONTENT));
 			mJobDetails.setPostedon(Util.getJsonValue(jsonobject, POSTEDON));
+
+			mJobDetails.setPostType(Util.getJsonValue(jsonobject, POSTTYPE));
 
 			mJobDetails.setImportant((Util.getJsonValue(jsonobject, IMPORTANT).equals("true")) ? 1 : 0);
 			mJobDetails.setLike((Util.getJsonValue(jsonobject, LIKED).equals("true")) ? 1 : 0);
