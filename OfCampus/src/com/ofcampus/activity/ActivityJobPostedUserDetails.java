@@ -220,8 +220,8 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		lin_main = (LinearLayout) findViewById(R.id.jobposteduser_linearmain);
 		indicator_pg = (ProgressBarCircularIndeterminate) findViewById(R.id.progressBarCircularIndetermininate);
 
-		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.profile_bg).showImageForEmptyUri(R.drawable.profile_bg).showImageOnFail(R.drawable.profile_bg)
-				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
+		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.profile_bg).showImageForEmptyUri(R.drawable.profile_bg).showImageOnFail(R.drawable.profile_bg).cacheInMemory(true)
+				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		Selection(0);
 
@@ -323,7 +323,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				pgbar.setVisibility(View.GONE);
 			}
 		});
-//		profile_imageblur.setImageResource(R.drawable.profile_bg);
+		// profile_imageblur.setImageResource(R.drawable.profile_bg);
 	}
 
 	private void loadUserDetailsFromUserDeatils() {
@@ -368,7 +368,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				pgbar.setVisibility(View.GONE);
 			}
 		});
-//		profile_imageblur.setImageResource(R.drawable.profile_bg);
+		// profile_imageblur.setImageResource(R.drawable.profile_bg);
 	}
 
 	private void loadPostAndCircle() {
@@ -484,6 +484,9 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				if (mJobDetails.getPostType().equals("3")) {
 					toolTitle = Util.TOOLTITLE[1];
 					mIntent = new Intent(mContext, ActivityNewsDetails.class);
+				} else if (mJobDetails.getPostType().equals("1")) {
+					toolTitle = Util.TOOLTITLE[1];
+					mIntent = new Intent(mContext, ActivityClassifiedDetails.class);
 				} else {
 					toolTitle = Util.TOOLTITLE[0];
 					mIntent = new Intent(mContext, ActivityJobDetails.class);

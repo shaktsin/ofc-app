@@ -8,6 +8,7 @@ package com.ofcampus.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -31,8 +32,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.ActivityClassifiedDetails;
+import com.ofcampus.activity.ActivityJobDetails;
+import com.ofcampus.activity.ActivityNewsDetails;
 import com.ofcampus.databasehelper.ImportantJobTable;
 import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.DocDetails;
@@ -624,14 +629,17 @@ public class CommentRecycleAdapter extends BaseAdapter {
 				case 2:
 					mJobDetails.important = 1;
 					notifyDataSetChanged();
+					updateListUI(mJobDetails);
 					break;
 				case 11:
 					mJobDetails.important = 0;
 					notifyDataSetChanged();
+					updateListUI(mJobDetails);
 					break;
 				case 13:
 					mJobDetails.like = 0;
 					notifyDataSetChanged();
+					updateListUI(mJobDetails);
 					break;
 
 				default:
@@ -660,6 +668,7 @@ public class CommentRecycleAdapter extends BaseAdapter {
 			public void OnSuccess() {
 				mJobDetails.important = 0;
 				notifyDataSetChanged();
+				updateListUI(mJobDetails);
 			}
 
 			@Override
@@ -668,6 +677,16 @@ public class CommentRecycleAdapter extends BaseAdapter {
 			}
 		});
 		PostUnHideUnImpParser.parse(mContext, PostUnHideUnImpParser.getBody(state + "", mJobDetails.getPostid()), tocken);
+	}
+
+	private void updateListUI(JobDetails mJobDetails) {
+		if (mJobDetails.getPostType().equals("3")) {
+			((OfCampusApplication) mContext.getApplicationContext()).isNewsDataModify = true;
+		} else if (mJobDetails.getPostType().equals("1")) {
+			((OfCampusApplication) mContext.getApplicationContext()).isclassifiedDataModify = true;
+		} else {
+			((OfCampusApplication) mContext.getApplicationContext()).isPostDataModify = true;
+		}
 	}
 
 }
