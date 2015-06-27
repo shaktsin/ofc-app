@@ -32,7 +32,7 @@
                 android:textColor="@color/theme_color"
                 android:textSize="@dimen/Comment_username"
                 android:textStyle="normal"
-                ofcampus:fontName="Helvetica.otf" />
+                ofcampus:fontName="HelveticaBold.ttf" />
 
             <TextView
                 android:id="@+id/post_and_members_info"
