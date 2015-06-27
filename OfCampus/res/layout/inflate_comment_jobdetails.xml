@@ -153,7 +153,7 @@
                     android:textSize="@dimen/joblitview_contain"
                     android:textStyle="bold"
                     android:visibility="gone"
-                    ofcampus:fontName="Helvetica.otf" />
+                    ofcampus:fontName="HelveticaBold.ttf" />
 
                 <com.ofcampus.ui.CustomTextView
                     android:id="@+id/joblistview_txt_contain"
