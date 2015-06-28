@@ -162,6 +162,8 @@ public class ActivitySearchList extends ActionBarActivity {
 			super.handleMessage(msg);
 			if (arrSearchData != null && arrSearchData.size() >= 1) {
 				mExampleAdapter.refresh(arrSearchData);
+			}else {
+				mExampleAdapter.refresh(new ArrayList<SearchData>());
 			}
 
 		}
@@ -202,7 +204,7 @@ public class ActivitySearchList extends ActionBarActivity {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 
 			ViewHolder mViewHolder;
 			if (convertView == null) {
@@ -244,7 +246,7 @@ public class ActivitySearchList extends ActionBarActivity {
 
 				@Override
 				public void onClick(View v) {
-					SearchData mSearchData = items.get(Integer.parseInt(v.getTag().toString()));
+					SearchData mSearchData = items.get(position);
 					if (mSearchData != null) {
 						gotToScreen(mSearchData);
 					}
