@@ -25,6 +25,7 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.JobListBaseAdapter;
 import com.ofcampus.adapter.JobListBaseAdapter.jobListInterface;
+import com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate;
 import com.ofcampus.databasehelper.ImportantJobTable;
 import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
@@ -43,6 +44,7 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 	private static Context context;
 	private ListView joblist;
 	private RelativeLayout footer_pg;
+	private ProgressBarCircularIndeterminate progressBar;
 	public JobListBaseAdapter mJobListAdapter;
 	private String tocken = "";
 
@@ -129,6 +131,8 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 	private void initilizView(View view) {
 		joblist = (ListView) view.findViewById(R.id.activity_home_joblist);
 		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
+		progressBar = (ProgressBarCircularIndeterminate) view.findViewById(R.id.firsttime_loading_progressBar);
+		progressBar.setRight(Util.progressRngwdth);
 
 		mJobListAdapter = new JobListBaseAdapter(context, new ArrayList<JobDetails>());
 		mJobListAdapter.setJoblistinterface(this);
@@ -193,6 +197,7 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 				if (jobsInterface != null) {
 					jobsInterface.jobFirstCallingDone(true);
 				}
+				progressShowing(false);
 			}
 
 			@Override
@@ -200,9 +205,11 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 				if (jobsInterface != null) {
 					jobsInterface.jobFirstCallingDone(true);
 				}
+				progressShowing(false);
 			}
 		});
-		mParserNew.isShowingPG_ = isShowingPG;
+		// mParserNew.isShowingPG_ = isShowingPG;
+		progressShowing(isShowingPG);
 		mParserNew.parse(context, mParserNew.getBody(), tocken);
 	}
 
@@ -414,6 +421,10 @@ public class FragmentJobs extends Fragment implements jobListInterface, OnRefres
 
 		public void jobFirstCallingDone(boolean isDone);
 
+	}
+
+	private void progressShowing(boolean isShowing) {
+		progressBar.setVisibility((isShowing) ? View.VISIBLE : View.GONE);
 	}
 
 }

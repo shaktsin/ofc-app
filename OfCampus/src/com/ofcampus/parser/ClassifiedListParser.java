@@ -93,7 +93,7 @@ public class ClassifiedListParser {
 	private String authenticationJson;
 	private JSONObject postData;
 	private boolean isTimeOut = false;
-	private ArrayList<JobDetails> newsList;
+	private ArrayList<JobDetails> classifiedsList;
 	private String authToken;
 
 	private class Async extends AsyncTask<Void, Void, Void> {
@@ -128,24 +128,34 @@ public class ClassifiedListParser {
 			}
 
 			if (isTimeOut) {
-				if (classifiedlistparserinterface != null) {
-					classifiedlistparserinterface.OnError();
-				}
+				error();
 			} else if (responsecode.equals("200")) {
-				if (classifiedlistparserinterface != null) {
-					classifiedlistparserinterface.OnSuccess(newsList);
+
+				try {
+					if (classifiedsList == null || classifiedsList.size() == 0) {
+						Util.ShowToast(mContext, "No more Classifieds");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
+
+				if (classifiedlistparserinterface != null) {
+					classifiedlistparserinterface.OnSuccess(classifiedsList);
+				}
+
 			} else if (responsecode.equals("500") || responsecode.equals("401")) {
 				Util.ShowToast(mContext, "No more Classifieds.");
-				if (classifiedlistparserinterface != null) {
-					classifiedlistparserinterface.OnError();
-				}
+				error();
 			} else {
 				Util.ShowToast(mContext, "Classified parse error.");
-				if (classifiedlistparserinterface != null) {
-					classifiedlistparserinterface.OnError();
-				}
+				error();
 			}
+		}
+	}
+
+	private void error() {
+		if (classifiedlistparserinterface != null) {
+			classifiedlistparserinterface.OnError();
 		}
 	}
 
@@ -154,7 +164,7 @@ public class ClassifiedListParser {
 		this.postData = postData_;
 		this.authToken = authToken_;
 		doingBGWork();
-		return newsList;
+		return classifiedsList;
 	}
 
 	public void doingBGWork() {
@@ -171,7 +181,7 @@ public class ClassifiedListParser {
 					if (Obj != null && !Obj.equals("")) {
 						String expt = Util.getJsonValue(Obj, EXCEPTION);
 						if (expt.equals("false")) {
-							newsList = parseJSONData(Obj);
+							classifiedsList = parseJSONData(Obj);
 						}
 					}
 				} else if (responsecode != null && (responsecode.equals("500") || responsecode.equals("401"))) {

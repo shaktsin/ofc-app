@@ -52,6 +52,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -59,6 +60,7 @@ import android.net.ParseException;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -69,6 +71,8 @@ public class Util {
 	public static int connectTimeout = 10000;
 	public static int socketTimeout = 30000;
 	public static int delaytime = 2000;
+
+	public static int progressRngwdth = 2;
 
 	public static long delay = 5 * 1000;
 	public static long period = 30 * 1000;
@@ -953,6 +957,14 @@ public class Util {
 			str = str.substring(0, str.length() - 2);
 		}
 		return str;
+	}
+
+	/**
+	 * Convert Dp to Pixel
+	 */
+	public static int dpToPx(float dp, Resources resources) {
+		float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.getDisplayMetrics());
+		return (int) px;
 	}
 
 }

@@ -159,9 +159,7 @@ public class JobListParserNew {
 			}
 
 			if (isTimeOut) {
-				if (joblistparsernewinterface != null) {
-					joblistparsernewinterface.OnError();
-				}
+				error();
 			} else if (responsecode.equals("200")) {
 				if (jobList != null) {
 					if (joblistparsernewinterface != null) {
@@ -169,12 +167,23 @@ public class JobListParserNew {
 					}
 				} else {
 					Util.ShowToast(mContext, "No more Job");
+					if (joblistparsernewinterface != null) {
+						joblistparsernewinterface.OnSuccess(null);
+					}
 				}
 			} else if (responsecode.equals("500") || responsecode.equals("401")) {
 				Util.ShowToast(mContext, responseDetails);
+				error();
 			} else {
 				Util.ShowToast(mContext, "Joblist parse error.");
+				error();
 			}
+		}
+	}
+
+	private void error() {
+		if (joblistparsernewinterface != null) {
+			joblistparsernewinterface.OnError();
 		}
 	}
 

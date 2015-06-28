@@ -26,6 +26,7 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.ClassifiedListBaseAdapter;
 import com.ofcampus.adapter.ClassifiedListBaseAdapter.ClassifiedListInterface;
+import com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate;
 import com.ofcampus.databasehelper.ImportantJobTable;
 import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
@@ -46,6 +47,7 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 
 	private ListView classifiedlist;
 	private RelativeLayout footer_pg;
+	private ProgressBarCircularIndeterminate progressBar;
 	private ClassifiedListBaseAdapter mClassifiedListAdapter;
 	private String tocken = "";
 
@@ -110,6 +112,8 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 	private void initilizView(View view) {
 		classifiedlist = (ListView) view.findViewById(R.id.activity_home_classifiedlist);
 		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
+		progressBar = (ProgressBarCircularIndeterminate) view.findViewById(R.id.firsttime_loading_progressBar);
+		progressBar.setRight(Util.progressRngwdth);
 
 		mClassifiedListAdapter = new ClassifiedListBaseAdapter(context, new ArrayList<JobDetails>());
 		mClassifiedListAdapter.setClassifiedlistinterface(this);
@@ -160,9 +164,9 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 	/**
 	 * Initial Load News Calling.
 	 * 
-	 * @param b
+	 * @param isShowingPG
 	 */
-	public void loadData(boolean b) {
+	public void loadData(boolean isShowingPG) {
 		UserDetails mUserDetails = UserDetails.getLoggedInUser(context);
 		tocken = mUserDetails.getAuthtoken();
 
@@ -182,17 +186,20 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 				if (classifiedinterface != null) {
 					classifiedinterface.classifiedFirstCallingDone(true);
 				}
+				progressShowing(false);
 			}
 
 			@Override
 			public void OnError() {
 				refreshComplete();
 				if (classifiedinterface != null) {
-					classifiedinterface.classifiedFirstCallingDone(true); 
+					classifiedinterface.classifiedFirstCallingDone(true);
 				}
+				progressShowing(false);
 			}
 		});
-		mClassifiedListParser.isShowingPG_ = b;
+		// mClassifiedListParser.isShowingPG_ = isShowingPG;
+		progressShowing(isShowingPG);
 		mClassifiedListParser.parse(context, mClassifiedListParser.getBody(), tocken);
 	}
 
@@ -414,6 +421,10 @@ public class FragmentClassifieds extends Fragment implements OnClickListener, Cl
 		public void pullToRefreshCallCompleteForClass();
 
 		public void classifiedFirstCallingDone(boolean isDone);
+	}
+
+	private void progressShowing(boolean isShowing) {
+		progressBar.setVisibility((isShowing) ? View.VISIBLE : View.GONE);
 	}
 
 }

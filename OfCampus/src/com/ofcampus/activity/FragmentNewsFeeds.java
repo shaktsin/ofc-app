@@ -26,6 +26,7 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.NewsListAdapter;
 import com.ofcampus.adapter.NewsListAdapter.NewsListInterface;
+import com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate;
 import com.ofcampus.databasehelper.ImportantJobTable;
 import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
@@ -46,6 +47,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 
 	private ListView newslist;
 	private RelativeLayout footer_pg;
+	private ProgressBarCircularIndeterminate progressBar;
 	private NewsListAdapter mNewsListAdapter;
 	private String tocken = "";
 
@@ -110,6 +112,8 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 	private void initilizView(View view) {
 		newslist = (ListView) view.findViewById(R.id.activity_home_newslist);
 		footer_pg = (RelativeLayout) view.findViewById(R.id.activity_home_footer_pg);
+		progressBar = (ProgressBarCircularIndeterminate) view.findViewById(R.id.firsttime_loading_progressBar);
+		progressBar.setRight(Util.progressRngwdth);
 
 		mNewsListAdapter = new NewsListAdapter(context, new ArrayList<JobDetails>());
 		mNewsListAdapter.setNewslistinterface(this);
@@ -182,6 +186,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 				if (newsInterface != null) {
 					newsInterface.newsFirstCallingDone(true);
 				}
+				progressShowing(false);
 			}
 
 			@Override
@@ -190,9 +195,11 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 				if (newsInterface != null) {
 					newsInterface.newsFirstCallingDone(true);
 				}
+				progressShowing(false);
 			}
 		});
-		mFeedListParser.isShowingPG_ = isShowingPG;
+		// mFeedListParser.isShowingPG_ = isShowingPG;
+		progressShowing(isShowingPG);
 		mFeedListParser.parse(context, mFeedListParser.getBody(), tocken);
 	}
 
@@ -415,4 +422,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 		public void newsFirstCallingDone(boolean isDone);
 	}
 
+	private void progressShowing(boolean isShowing) {
+		progressBar.setVisibility((isShowing) ? View.VISIBLE : View.GONE);
+	}
 }

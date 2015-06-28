@@ -50,6 +50,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,6 +58,7 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.Animator.AnimatorListener;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.view.ViewHelper;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
@@ -106,6 +108,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	private FragmentClassifieds fragmentClassifieds;
 
 	private TextView txt_countJobs, txt_countNews, txt_countclass;
+	private float showPosition, hidePosition;
 
 	/** Filter Data ***/
 	private FilterDataSets mFilterDataSets = null;
@@ -457,8 +460,25 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 
 		mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
 		mRecyclerView.setHasFixedSize(true);
+
+		/**
+		 * Floating Button Animation
+		 */
 		img_composejob = (ImageView) findViewById(R.id.activity_home_img_composejob);
 		img_composejob.setOnClickListener(this);
+		img_composejob.setVisibility(View.INVISIBLE);
+		getWindow().getDecorView().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				showPosition = ViewHelper.getY(img_composejob);
+				hidePosition = ViewHelper.getY(img_composejob) + img_composejob.getHeight() * 3;
+				ViewHelper.setY(img_composejob, hidePosition);
+				img_composejob.setVisibility(View.VISIBLE);
+				show();
+			}
+		}, 3000);
+		/*******/
 
 		mAdapter = new SlideMenuAdapter(ActivityHome.this, Util.TITLES, Util.ICONS, NAME, EMAIL, picUrl);
 		mAdapter.setViewclickevent(this);
@@ -965,4 +985,10 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		aniSet.start();
 	}
 
+	public void show() {
+		ObjectAnimator animator = ObjectAnimator.ofFloat(img_composejob, "y", showPosition);
+		animator.setInterpolator(new BounceInterpolator());
+		animator.setDuration(1500);
+		animator.start();
+	}
 }

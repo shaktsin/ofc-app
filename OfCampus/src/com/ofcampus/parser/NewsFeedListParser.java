@@ -126,24 +126,32 @@ public class NewsFeedListParser {
 			}
 
 			if (isTimeOut) {
-				if (newsfeedlistparserinterface != null) {
-					newsfeedlistparserinterface.OnError();
-				}
+				error();
 			} else if (responsecode.equals("200")) {
+				try {
+					if (newsList == null || newsList.size() == 0) {
+						Util.ShowToast(mContext, "No more News");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 				if (newsfeedlistparserinterface != null) {
 					newsfeedlistparserinterface.OnSuccess(newsList);
 				}
 			} else if (responsecode.equals("500") || responsecode.equals("401")) {
 				Util.ShowToast(mContext, "No more News.");
-				if (newsfeedlistparserinterface != null) {
-					newsfeedlistparserinterface.OnError();
-				}
+				error();
 			} else {
 				Util.ShowToast(mContext, "News parse error.");
-				if (newsfeedlistparserinterface != null) {
-					newsfeedlistparserinterface.OnError();
-				}
+				error();
 			}
+		}
+	}
+
+	private void error() {
+		if (newsfeedlistparserinterface != null) {
+			newsfeedlistparserinterface.OnError();
 		}
 	}
 
