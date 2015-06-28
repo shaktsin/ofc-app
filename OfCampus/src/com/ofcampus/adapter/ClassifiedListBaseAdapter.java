@@ -387,7 +387,7 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 
 		if (Util.isContainDocFile(DocPath)) {
 			DocumentPath mDocumentPath = DocumentPath.getPath(mContext);
-			if (mDocumentPath != null && mDocumentPath.mapPath.containsKey(DocPath)) {
+			if (mDocumentPath != null && mDocumentPath.mapPath.containsKey(DocPath) && Util.isFileExist(mDocumentPath.mapPath.get(DocPath))) {
 				doc_dnd.setImageResource(R.drawable.doc_green);
 				view.setOnClickListener(new OnClickListener() {
 
