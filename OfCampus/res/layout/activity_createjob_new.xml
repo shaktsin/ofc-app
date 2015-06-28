@@ -151,7 +151,8 @@
                         android:layout_below="@+id/view_4"
                         android:layout_marginTop="@dimen/dp_eight"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
 
                         <com.ofcampus.ui.CustomTextView
                             android:id="@+id/activity_createjob_txt_exp"
@@ -226,7 +227,8 @@
                         android:layout_below="@+id/activity_createjob_exp"
                         android:layout_marginTop="@dimen/dp_four"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
 
                         <com.ofcampus.ui.CustomTextView
                             android:id="@+id/activity_createjob_txt_salary"

@@ -32,6 +32,8 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.crittercism.app.Crittercism;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -46,13 +48,10 @@ import com.ofcampus.model.UserDetails;
 
 public class OfCampusApplication extends Application {
 
-	// private static String gcmProjectKey = "417713273173";
-	// private static String gcmSerevrKey =
-	// "AIzaSyAPo4ELrlJ852Df5jtzwjHsMJBx0ggZjMc";
+	public static GoogleAnalytics analytics;
+	public static Tracker tracker;
 	private static String gcmProjectKey = "981282250109";
 	private static String gcmSerevrKey = "AIzaSyDFChuYp5OMPLAjDMSdEQjCCQCWxyw8d8I";
-	// APA91bFeAvia1NW8enHYZhM_2dhNLoy3-FynM0c4P9UW0VIXrzbeOQVfGpJ7nCjg8hyhy-yMGj0-hWq1xNX4u2WysPJGUfkf0llt8jOy6XHwgsElDvRAYqPhge-snkETrjwVpX0sAxnZ
-	// APA91bHgkHKxKoBFwgFM3wAYqpIjFKF6uycaz31b2gijMliefcGpcoylRenYvgIWtpbQz8di9TcitVgkMxmtEJSPzcXZLoBJj_EU_9DVC3Rd-T--8aesJH4j0LJHI6nLyNMVthpzwYMl
 
 	private String TAG = "OfCampusApplication";
 	// public OfCampusDBHelper DB_HELPER;
@@ -63,14 +62,6 @@ public class OfCampusApplication extends Application {
 	public JobDetails jobdetails;
 	public UserDetails mDetails;
 	public CircleDetails mCircleDetails_;
-
-	// public boolean isHidePostModify = false;
-	// public boolean editPostSuccess = false;
-	// public boolean editPostSuccessForHome = false;
-	// public boolean editPostSuccessForNews = false;
-	// public boolean profileEditSuccess = false;
-	// public boolean isNewCircleCreated = false;
-	// public boolean isUserCame = false;
 
 	public boolean isProfileDataModify = false;
 	public boolean isNewsDataModify = false;
@@ -100,6 +91,14 @@ public class OfCampusApplication extends Application {
 
 		// GCM
 		initPlayServices();
+
+		// Google Analytics
+		analytics = GoogleAnalytics.getInstance(this);
+		analytics.setLocalDispatchPeriod(1800);
+		tracker = analytics.newTracker("UA-64571981-1");
+		tracker.enableExceptionReporting(true);
+		tracker.enableAdvertisingIdCollection(true);
+		tracker.enableAutoActivityTracking(true);
 	}
 
 	@Override
