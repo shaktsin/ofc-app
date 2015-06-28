@@ -66,7 +66,7 @@ public class ActivitySearchList extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		Util.HideKeyBoard(context, searchView); 
+		Util.HideKeyBoard(context, searchView);
 		overridePendingTransition(0, R.anim.slide_right);
 		finish();
 	}
@@ -131,6 +131,7 @@ public class ActivitySearchList extends ActionBarActivity {
 
 		if (searchString.length() == 0 || searchString.length() < 3) {
 			// Util.ShowToast(mContext, "Please enter minimum 3 character.");
+			mExampleAdapter.refresh(new ArrayList<SearchData>());
 			return;
 		}
 
@@ -162,7 +163,7 @@ public class ActivitySearchList extends ActionBarActivity {
 			super.handleMessage(msg);
 			if (arrSearchData != null && arrSearchData.size() >= 1) {
 				mExampleAdapter.refresh(arrSearchData);
-			}else {
+			} else {
 				mExampleAdapter.refresh(new ArrayList<SearchData>());
 			}
 
