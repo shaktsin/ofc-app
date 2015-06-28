@@ -188,7 +188,7 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		int id = item.getItemId();
 		if (id == R.id.action_search) {
 			startActivity(new Intent(ActivityHome.this, ActivitySearchList.class));
-			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_in_left);
+			overridePendingTransition(R.anim.slide_left, R.anim.slide_lefthome);
 			return true;
 		} else if (id == R.id.action_filter && (currentSelection == 0 || currentSelection == 1)) {
 			if (mFilterDataSets != null) {

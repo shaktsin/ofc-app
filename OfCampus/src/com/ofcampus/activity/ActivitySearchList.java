@@ -66,7 +66,8 @@ public class ActivitySearchList extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		overridePendingTransition(0, 0);
+		Util.HideKeyBoard(context, searchView); 
+		overridePendingTransition(0, R.anim.slide_right);
 		finish();
 	}
 
