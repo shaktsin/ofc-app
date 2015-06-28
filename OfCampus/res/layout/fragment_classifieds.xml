@@ -45,7 +45,7 @@
         android:layout_height="50dp"
         android:layout_centerInParent="true"
         android:layout_margin="6dp"
-        android:background="#1E88E5"
+        android:background="#18BC9A"
         android:visibility="gone" />
 
 </RelativeLayout>
