@@ -234,9 +234,7 @@
                         android:src="@drawable/ic_pdfordoc" />
                 </RelativeLayout>
 
-                <com.meetme.android.horizontallistview.HorizontalListView
-                    xmlns:tools="http://schemas.android.com/tools"
-                    xmlns:widget="http://schemas.android.com/apk/res-auto"
+                <com.ofcampus.component.HorizontalListView
                     android:id="@+id/hlvCustomList"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -244,11 +242,9 @@
                     android:layout_margin="3dp"
                     android:divider="@android:color/transparent"
                     android:visibility="gone"
-                    widget:dividerWidth="3dp" />
+                    ofcampus:dividerWidth="3dp" />
 
-                <com.meetme.android.horizontallistview.HorizontalListView
-                    xmlns:tools="http://schemas.android.com/tools"
-                    xmlns:widget="http://schemas.android.com/apk/res-auto"
+                <com.ofcampus.component.HorizontalListView
                     android:id="@+id/pdfattached_list"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -256,7 +252,7 @@
                     android:layout_margin="3dp"
                     android:divider="@android:color/transparent"
                     android:visibility="gone"
-                    widget:dividerWidth="3dp" />
+                    ofcampus:dividerWidth="3dp" />
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>

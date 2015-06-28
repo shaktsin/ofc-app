@@ -30,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.meetme.android.horizontallistview.HorizontalListView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -38,6 +37,7 @@ import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.Util.ClassifSpinnerType;
+import com.ofcampus.component.HorizontalListView;
 import com.ofcampus.model.CustomSpinnerDataSets;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;

@@ -93,12 +93,12 @@ public class OfCampusApplication extends Application {
 		initPlayServices();
 
 		// Google Analytics
-		analytics = GoogleAnalytics.getInstance(this);
-		analytics.setLocalDispatchPeriod(1800);
-		tracker = analytics.newTracker("UA-64571981-1");
-		tracker.enableExceptionReporting(true);
-		tracker.enableAdvertisingIdCollection(true);
-		tracker.enableAutoActivityTracking(true);
+//		analytics = GoogleAnalytics.getInstance(this);
+//		analytics.setLocalDispatchPeriod(1800);
+//		tracker = analytics.newTracker("UA-64571981-1");
+//		tracker.enableExceptionReporting(true);
+//		tracker.enableAdvertisingIdCollection(true);
+//		tracker.enableAutoActivityTracking(true);
 	}
 
 	@Override
