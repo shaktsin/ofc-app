@@ -314,7 +314,7 @@ public class Util {
 	}
 
 	public static String getVersionUpdate() {
-		return baseUrl + "update";
+		return baseUrl + "app/update";
 	}
 
 	/******************** URl List **********************/

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
@@ -357,36 +358,45 @@ public class OfCampusApplication extends Application {
 			int versionCode = pInfo.versionCode;
 			AsyncTask<String, String, Boolean> task = new AsyncTask<String, String, Boolean>() {
 
+				String appUpdateNeeded = "";
+				String updateTitle = "";
+				String updateMessage = "";
+
 				@Override
 				protected Boolean doInBackground(String... objects) {
 					try {
-						int count = 0;
-						while (count < 1000) {
-							try {
-								count++;
-								// regid = gcm.register(gcmProjectKey);
-								// sendRegistrationIdToBackend();
-								// storeRegistrationId(applicationContext,
-								// regid);
 
-								String[] response = Util.POSTWithJSONAuth(Util.getVersionUpdate(), getBody(versionName), tocken);
+						// String[] responsedata =
+						// Util.POSTWithJSONAuth(Util.getVersionUpdate(),
+						// getBody("1.0.2"), tocken);
+						String[] responsedata = Util.POSTWithJSONAuth(Util.getVersionUpdate(), getBody(versionName), tocken);
+						String authenticationJson = responsedata[1];
+						boolean isTimeOut = (responsedata[0].equals("205")) ? true : false;
+						if (authenticationJson != null && !authenticationJson.equals("")) {
+							JSONObject mObject = new JSONObject(authenticationJson);
+							String responsecode = Util.getJsonValue(mObject, "status");
+							if (responsecode != null && responsecode.equals("200")) {
+								JSONObject Obj = mObject.getJSONObject("results");
+								if (Obj != null && !Obj.equals("")) {
+									String expt = Util.getJsonValue(Obj, "exception");
+									if (expt.equals("false")) {
+										appUpdateNeeded = Util.getJsonValue(Obj, "appUpdate");
+										updateTitle = Util.getJsonValue(Obj, "updateTitle");
+										updateMessage = Util.getJsonValue(Obj, "updateMessage");
 
-								return true;
-							} catch (Exception e) {
-								Log.e("tmessages", e.toString());
-							}
-							try {
-								if (count % 20 == 0) {
-									Thread.sleep(60000 * 30);
-								} else {
-									Thread.sleep(5000);
+										if (appUpdateNeeded.equals("true")) {
+											return true;
+										}
+									}
 								}
-							} catch (InterruptedException e) {
-								Log.e("tmessages", e.toString());
+							} else if (responsecode != null && responsecode.equals("500")) {
+
 							}
+
 						}
+
 					} catch (Exception e) {
-						e.printStackTrace();
+						Log.e("tmessages", e.toString());
 					}
 
 					return false;
@@ -397,7 +407,7 @@ public class OfCampusApplication extends Application {
 					super.onPostExecute(result);
 
 					if (result) {
-						showUpgradeDialog(mContext, "OfCampus", "New version is coming");
+						showUpgradeDialog(mContext, updateTitle, updateMessage);
 					}
 
 				}
@@ -435,16 +445,19 @@ public class OfCampusApplication extends Application {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				final String appPackageName = getPackageName(); // getPackageName()
-																// from Context
-																// or Activity
-																// object
+				final String appPackageName = getPackageName();
 				try {
 					mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
 				} catch (android.content.ActivityNotFoundException anfe) {
 					mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
 				}
-				dialog.cancel();
+
+				try {
+					dialog.cancel();
+					((Activity) mContext).finish();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		mBuilder.setCancelable(false);

@@ -116,7 +116,8 @@ public class FilterDialog implements FilterBAdpInterface {
 			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_indus));
 			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_role));
 			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_location));
-			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_other));
+//			tab.add((TextView) mDialog.findViewById(R.id.filter_txt_other));//As per Shakti Daa
+			((TextView) mDialog.findViewById(R.id.filter_txt_other)).setVisibility(View.INVISIBLE);
 		}
 
 		for (TextView textView : tab) {

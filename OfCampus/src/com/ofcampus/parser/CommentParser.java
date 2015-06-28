@@ -304,8 +304,8 @@ public class CommentParser {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
-				mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(industry) + Util.removeLastChr(role) + expandsal);
+				mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(industry) + Util.removeLastChr(role) );
+//				mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(industry) + Util.removeLastChr(role) + expandsal);//Change As per Shakti Daa
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
