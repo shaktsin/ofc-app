@@ -150,7 +150,9 @@ public class ActivityProfileEdit extends ActionBarActivity implements OnClickLis
 			// edteyearname.setText(mDetails.getYearPass());
 
 			String year = mDetails.getYearPass();
-			edteyearname.setText("Class " + ((year.equalsIgnoreCase("0")) ? Util.defaultYear : year));
+			// edteyearname.setText("Class " + ((year.equalsIgnoreCase("0")) ?
+			// Util.defaultYear : year));
+			edteyearname.setText(((year.equalsIgnoreCase("0")) ? Util.defaultYear : year));
 
 			String path = mDetails.getImage();
 			if (path != null && !path.equals("")) {

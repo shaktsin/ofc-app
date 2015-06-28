@@ -8,6 +8,12 @@
     <string name="DataBaseName_Version">1</string>
     <string name="DataBaseName">OfCampus</string>
 
+    <!-- URL -->
+    <string name="production_url">http://ofcampus.com/api/</string>
+    <string name="developing_url">http://205.147.110.176:8080/api/</string>
+    <!-- Url for fatch Data -->
+
+
     <!-- Seek Bar -->
     <string name="demo_min_label">Min</string>
     <string name="demo_max_label">Max</string>
@@ -112,8 +118,8 @@
     <!-- Circle -->
     <string name="enter_circlename_title">Please enter a circle name to create your own circle.</string>
     <string name="enter_circlename">Name of circle</string>
-	<string name="enter_circledesc">Enter short description</string>
-	<string name="enter_circledesc_limit">Enter description(Max 200 characters)</string>
+    <string name="enter_circledesc">Enter short description</string>
+    <string name="enter_circledesc_limit">Enter description(Max 200 characters)</string>
     <string name="enter_msg_circlename">Please enter Circle Name.</string>
     <string name="createcircle_txtmodarator">Public</string>
     <string name="create_circlebtn">Create Circle</string>
@@ -125,7 +131,7 @@
     <string name="resetpassword_enterpassword">Enter Password</string>
     <string name="resetpassword_retypepassword">Retype Password</string>
     <string name="resetpassword_validation">Password and Retype Password not same.</string>
-    
+
     <!-- Circle Profile -->
     <string name="profile_posts">Posts</string>
     <string name="profile_members">Members</string>
