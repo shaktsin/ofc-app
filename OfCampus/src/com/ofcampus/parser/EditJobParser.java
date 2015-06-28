@@ -17,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
-import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
 import com.ofcampus.model.JobDetails;
@@ -127,16 +126,20 @@ public class EditJobParser {
 						JSONObject Obj = mObject.getJSONObject(RESULTS);
 						if (Obj != null) {
 							mJobDetails = getParseData(Obj);
-							try {
-								if (mJobDetails != null) {
-									ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
-									arr.add(mJobDetails);
-									JOBListTable.getInstance(mContext).deleteAllImagesRelatedtoJobID(mJobDetails.getPostid());
-									JOBListTable.getInstance(mContext).inserJobData(arr);
-								}
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+							/**
+							 * DB
+							 */
+							// try {
+							// if (mJobDetails != null) {
+							// ArrayList<JobDetails> arr = new
+							// ArrayList<JobDetails>();
+							// arr.add(mJobDetails);
+							// JOBListTable.getInstance(mContext).deleteAllImagesRelatedtoJobID(mJobDetails.getPostid());
+							// JOBListTable.getInstance(mContext).inserJobData(arr);
+							// }
+							// } catch (Exception e) {
+							// e.printStackTrace();
+							// }
 						}
 					} else if (responsecode != null && responsecode.equals("500")) {
 						JSONObject userObj = mObject.getJSONObject(RESULTS);

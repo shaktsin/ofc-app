@@ -18,13 +18,8 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.ofcampus.Util;
-import com.ofcampus.Util.JobDataReturnFor;
-import com.ofcampus.databasehelper.JOBListTable;
-import com.ofcampus.model.CityDetails;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
-import com.ofcampus.model.IndustryDetails;
-import com.ofcampus.model.IndustryRoleDetails;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.JobList;
 
@@ -210,15 +205,22 @@ public class JobListParserNew {
 						String expt = Util.getJsonValue(Obj, EXCEPTION);
 						if (expt.equals("false")) {
 							jobList = parseJSONData(Obj);
-							ArrayList<JobDetails> arrayJobInDB = JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.Normal);
-							if (arrayJobInDB == null) {
-								JOBListTable.getInstance(mContext).inserJobData(jobList);
-							} else if (arrayJobInDB != null && arrayJobInDB.size() < 12) {
-								int size = 12 - arrayJobInDB.size();
-								if (jobList != null && jobList.size() >= 1) {
-									JOBListTable.getInstance(mContext).inserJobData(jobList, size);
-								}
-							}
+
+							/**
+							 * DB
+							 */
+							// ArrayList<JobDetails> arrayJobInDB =
+							// JOBListTable.getInstance(mContext).fatchJobData(JobDataReturnFor.Normal);
+							// if (arrayJobInDB == null) {
+							// JOBListTable.getInstance(mContext).inserJobData(jobList);
+							// } else if (arrayJobInDB != null &&
+							// arrayJobInDB.size() < 12) {
+							// int size = 12 - arrayJobInDB.size();
+							// if (jobList != null && jobList.size() >= 1) {
+							// JOBListTable.getInstance(mContext).inserJobData(jobList,
+							// size);
+							// }
+							// }
 						}
 					}
 				} else if (responsecode != null && (responsecode.equals("500") || responsecode.equals("401"))) {

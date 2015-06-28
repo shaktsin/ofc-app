@@ -27,8 +27,6 @@ import com.ofcampus.Util;
 import com.ofcampus.adapter.NewsListAdapter;
 import com.ofcampus.adapter.NewsListAdapter.NewsListInterface;
 import com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate;
-import com.ofcampus.databasehelper.ImportantJobTable;
-import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.NewsFeedListParser;
@@ -339,21 +337,21 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 			@Override
 			public void OnSuccess() {
 				if (state == 1 || state == 3) {
-					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
+//					JOBListTable.getInstance(context).deleteSpamJOb(mJobDetails);
 					mNewsListAdapter.hideNews(mJobDetails);
 				} else if (state == 2) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 1;
 					arr.add(mJobDetails);
-					JOBListTable.getInstance(context).inserJobData(arr);
-					ImportantJobTable.getInstance(context).inserJobData(mJobDetails);
+//					JOBListTable.getInstance(context).inserJobData(arr);
+//					ImportantJobTable.getInstance(context).inserJobData(mJobDetails);
 					mNewsListAdapter.importantNews(mJobDetails);
 				} else if (state == 11) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 0;
 					arr.add(mJobDetails);
-					JOBListTable.getInstance(context).inserJobData(arr);
-					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+//					JOBListTable.getInstance(context).inserJobData(arr);
+//					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 					mNewsListAdapter.unimportantNews(mJobDetails);
 				} else if (state == 13) {
 					// ArrayList<JobDetails> arr=new ArrayList<JobDetails>();
@@ -387,8 +385,8 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 				ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 				mJobDetails.important = 0;
 				arr.add(mJobDetails);
-				JOBListTable.getInstance(context).inserJobData(arr);
-				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+//				JOBListTable.getInstance(context).inserJobData(arr);
+//				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 				mNewsListAdapter.unimportantNews(mJobDetails);
 			}
 

@@ -8,8 +8,6 @@ package com.ofcampus.activity;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,7 +19,6 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.ImportantMailListAdapter;
 import com.ofcampus.adapter.ImportantMailListAdapter.ImportantMailListAdapterInterface;
-import com.ofcampus.databasehelper.ImportantJobTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.ImportantMailParser;
@@ -107,7 +104,7 @@ public class ActivityImportantmail extends ActionBarActivity implements Importan
 			mImportantMailParser.parse(context, mImportantMailParser.getBody(), UserDetails.getLoggedInUser(context).getAuthtoken());
 		} else {
 			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
-			new loadOffLineData().execute();
+			// new loadOffLineData().execute();
 		}
 	}
 
@@ -131,7 +128,7 @@ public class ActivityImportantmail extends ActionBarActivity implements Importan
 				} else {
 					((OfCampusApplication) getApplication()).isPostDataModify = true;
 				}
-				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+				// ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 				mImportantMailListAdapter.unImportantJobRemove(mJobDetails, postion);
 			}
 
@@ -146,23 +143,23 @@ public class ActivityImportantmail extends ActionBarActivity implements Importan
 	/**
 	 * Offline Data from Data Base.
 	 */
-	private class loadOffLineData extends AsyncTask<Void, Void, Void> {
-		private ArrayList<JobDetails> arrayJob;
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			arrayJob = ImportantJobTable.getInstance(context).fatchImpJobData();
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-			if (arrayJob != null && arrayJob.size() >= 1) {
-				mImportantMailListAdapter.refreshData(arrayJob);
-			}
-		}
-
-	}
+	// private class loadOffLineData extends AsyncTask<Void, Void, Void> {
+	// private ArrayList<JobDetails> arrayJob;
+	//
+	// @Override
+	// protected Void doInBackground(Void... params) {
+	// arrayJob = ImportantJobTable.getInstance(context).fatchImpJobData();
+	// return null;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(Void result) {
+	// super.onPostExecute(result);
+	// if (arrayJob != null && arrayJob.size() >= 1) {
+	// mImportantMailListAdapter.refreshData(arrayJob);
+	// }
+	// }
+	//
+	// }
 
 }

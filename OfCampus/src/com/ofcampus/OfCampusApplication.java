@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.AsyncTask;
@@ -32,7 +33,6 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.ofcampus.databasehelper.OfCampusDBHelper;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.InstituteDetails;
 import com.ofcampus.model.JobDetails;
@@ -40,15 +40,16 @@ import com.ofcampus.model.UserDetails;
 
 public class OfCampusApplication extends Application {
 
-//	private static String gcmProjectKey = "417713273173";
-//	private static String gcmSerevrKey = "AIzaSyAPo4ELrlJ852Df5jtzwjHsMJBx0ggZjMc";
+	// private static String gcmProjectKey = "417713273173";
+	// private static String gcmSerevrKey =
+	// "AIzaSyAPo4ELrlJ852Df5jtzwjHsMJBx0ggZjMc";
 	private static String gcmProjectKey = "981282250109";
 	private static String gcmSerevrKey = "AIzaSyDFChuYp5OMPLAjDMSdEQjCCQCWxyw8d8I";
 	// APA91bFeAvia1NW8enHYZhM_2dhNLoy3-FynM0c4P9UW0VIXrzbeOQVfGpJ7nCjg8hyhy-yMGj0-hWq1xNX4u2WysPJGUfkf0llt8jOy6XHwgsElDvRAYqPhge-snkETrjwVpX0sAxnZ
-	//APA91bHgkHKxKoBFwgFM3wAYqpIjFKF6uycaz31b2gijMliefcGpcoylRenYvgIWtpbQz8di9TcitVgkMxmtEJSPzcXZLoBJj_EU_9DVC3Rd-T--8aesJH4j0LJHI6nLyNMVthpzwYMl
+	// APA91bHgkHKxKoBFwgFM3wAYqpIjFKF6uycaz31b2gijMliefcGpcoylRenYvgIWtpbQz8di9TcitVgkMxmtEJSPzcXZLoBJj_EU_9DVC3Rd-T--8aesJH4j0LJHI6nLyNMVthpzwYMl
 
 	private String TAG = "OfCampusApplication";
-	public OfCampusDBHelper DB_HELPER;
+	// public OfCampusDBHelper DB_HELPER;
 	public boolean fromMYPost = false;
 
 	public ArrayList<InstituteDetails> institutes_;
@@ -57,15 +58,14 @@ public class OfCampusApplication extends Application {
 	public UserDetails mDetails;
 	public CircleDetails mCircleDetails_;
 
-//	public boolean isHidePostModify = false;
-//	public boolean editPostSuccess = false;
-//	public boolean editPostSuccessForHome = false;
-//	public boolean editPostSuccessForNews = false;
-//	public boolean profileEditSuccess = false;
-//	public boolean isNewCircleCreated = false;
-//	public boolean isUserCame = false;
-	
-	
+	// public boolean isHidePostModify = false;
+	// public boolean editPostSuccess = false;
+	// public boolean editPostSuccessForHome = false;
+	// public boolean editPostSuccessForNews = false;
+	// public boolean profileEditSuccess = false;
+	// public boolean isNewCircleCreated = false;
+	// public boolean isUserCame = false;
+
 	public boolean isProfileDataModify = false;
 	public boolean isNewsDataModify = false;
 	public boolean isPostDataModify = false;
@@ -111,23 +111,23 @@ public class OfCampusApplication extends Application {
 	 * Related to Data Base.
 	 */
 	private void initilizeDB() {
-		if (DB_HELPER == null) {
-			DB_HELPER = new OfCampusDBHelper(OfCampusApplication.this);
-		}
-		try {
-			DB_HELPER.getWritableDatabase();
-			DB_HELPER.openDataBase();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// if (DB_HELPER == null) {
+		// DB_HELPER = new OfCampusDBHelper(OfCampusApplication.this);
+		// }
+		// try {
+		// DB_HELPER.getWritableDatabase();
+		// DB_HELPER.openDataBase();
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 	}
 
 	private void closeDB() {
-		try {
-			DB_HELPER.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// try {
+		// DB_HELPER.close();
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 	}
 
 	/**
@@ -335,6 +335,16 @@ public class OfCampusApplication extends Application {
 			e.printStackTrace();
 		}
 		return jsObj;
+	}
+
+	public void chackVersion() {
+		try {
+			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+			String versionName = pInfo.versionName;
+			int versionCode = pInfo.versionCode;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

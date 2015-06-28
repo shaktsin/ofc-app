@@ -20,13 +20,11 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.FilterJobsAdapter;
 import com.ofcampus.adapter.FilterJobsAdapter.filterListInterface;
-import com.ofcampus.databasehelper.ImportantJobTable;
-import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.PostJobHideMarkedParser;
-import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.PostJobHideMarkedParser.PostJobHideMarkedParserInterface;
+import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 
 public class ActivityFilterJobs extends ActionBarActivity implements filterListInterface {
@@ -117,15 +115,15 @@ public class ActivityFilterJobs extends ActionBarActivity implements filterListI
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 1;
 					arr.add(mJobDetails);
-					JOBListTable.getInstance(context).inserJobData(arr);
-					ImportantJobTable.getInstance(context).inserJobData(mJobDetails);
+//					JOBListTable.getInstance(context).inserJobData(arr);
+//					ImportantJobTable.getInstance(context).inserJobData(mJobDetails);
 					mFilterJobsAdapter.importantJob(mJobDetails);
 				} else if (state == 11) {
 					ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 					mJobDetails.important = 0;
 					arr.add(mJobDetails);
-					JOBListTable.getInstance(context).inserJobData(arr);
-					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+//					JOBListTable.getInstance(context).inserJobData(arr);
+//					ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 					mFilterJobsAdapter.unimportantJob(mJobDetails);
 				} else if (state == 13) {
 					mFilterJobsAdapter.likRefreshJob(mJobDetails);
@@ -155,8 +153,8 @@ public class ActivityFilterJobs extends ActionBarActivity implements filterListI
 				ArrayList<JobDetails> arr = new ArrayList<JobDetails>();
 				mJobDetails.important = 0;
 				arr.add(mJobDetails);
-				JOBListTable.getInstance(context).inserJobData(arr);
-				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
+//				JOBListTable.getInstance(context).inserJobData(arr);
+//				ImportantJobTable.getInstance(context).deleteUnimpJOb(mJobDetails);
 				mFilterJobsAdapter.unimportantJob(mJobDetails);
 				isDataModify = true;
 			}

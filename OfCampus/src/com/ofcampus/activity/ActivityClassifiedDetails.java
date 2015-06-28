@@ -27,20 +27,14 @@ import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.adapter.CommentRecycleAdapter;
 import com.ofcampus.adapter.CommentRecycleAdapter.commentItemClickListner;
-import com.ofcampus.databasehelper.ImportantJobTable;
-import com.ofcampus.databasehelper.JOBListTable;
 import com.ofcampus.model.JobDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.ClassifiedDetailsParser;
-import com.ofcampus.parser.PostJobHideMarkedParser;
-import com.ofcampus.parser.PostUnHideUnImpParser;
 import com.ofcampus.parser.ClassifiedDetailsParser.ClassifiedDetailsParserInterface;
 import com.ofcampus.parser.CommentAllParser;
 import com.ofcampus.parser.CommentAllParser.CommentAllParserInterface;
 import com.ofcampus.parser.CommentPostParser;
 import com.ofcampus.parser.CommentPostParser.CommentPostParserInterface;
-import com.ofcampus.parser.PostJobHideMarkedParser.PostJobHideMarkedParserInterface;
-import com.ofcampus.parser.PostUnHideUnImpParser.PostUnHideUnImpParserInterface;
 
 public class ActivityClassifiedDetails extends ActionBarActivity implements OnClickListener, commentItemClickListner {
 
