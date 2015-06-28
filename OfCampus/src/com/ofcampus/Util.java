@@ -313,6 +313,10 @@ public class Util {
 		return baseUrl + "classified/list";
 	}
 
+	public static String getVersionUpdate() {
+		return baseUrl + "update";
+	}
+
 	/******************** URl List **********************/
 
 	/**

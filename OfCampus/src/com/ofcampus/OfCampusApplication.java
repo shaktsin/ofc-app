@@ -11,14 +11,19 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
@@ -337,14 +342,113 @@ public class OfCampusApplication extends Application {
 		return jsObj;
 	}
 
-	public void chackVersion() {
+	/**
+	 * Update Alert
+	 * 
+	 * @param mContext
+	 * @param tocken
+	 */
+
+	public void chackVersion(final Context mContext, final String tocken) {
 		try {
+
 			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-			String versionName = pInfo.versionName;
+			final String versionName = pInfo.versionName;
 			int versionCode = pInfo.versionCode;
+			AsyncTask<String, String, Boolean> task = new AsyncTask<String, String, Boolean>() {
+
+				@Override
+				protected Boolean doInBackground(String... objects) {
+					try {
+						int count = 0;
+						while (count < 1000) {
+							try {
+								count++;
+								// regid = gcm.register(gcmProjectKey);
+								// sendRegistrationIdToBackend();
+								// storeRegistrationId(applicationContext,
+								// regid);
+
+								String[] response = Util.POSTWithJSONAuth(Util.getVersionUpdate(), getBody(versionName), tocken);
+
+								return true;
+							} catch (Exception e) {
+								Log.e("tmessages", e.toString());
+							}
+							try {
+								if (count % 20 == 0) {
+									Thread.sleep(60000 * 30);
+								} else {
+									Thread.sleep(5000);
+								}
+							} catch (InterruptedException e) {
+								Log.e("tmessages", e.toString());
+							}
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					return false;
+				}
+
+				@Override
+				protected void onPostExecute(Boolean result) {
+					super.onPostExecute(result);
+
+					if (result) {
+						showUpgradeDialog(mContext, "OfCampus", "New version is coming");
+					}
+
+				}
+
+			};
+
+			if (android.os.Build.VERSION.SDK_INT >= 11) {
+				task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null, null, null);
+			} else {
+				task.execute(null, null, null);
+			}
+
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public JSONObject getBody(String appVersion) {
+		JSONObject jsObj = new JSONObject();
+		try {
+			jsObj.put("appVersion", appVersion);
+			jsObj.put("plateFormId", "0");
+			jsObj.put("appName", "ofCampus");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsObj;
+	}
+
+	private void showUpgradeDialog(final Context mContext, String title, String message) {
+		AlertDialog.Builder mBuilder = new AlertDialog.Builder(mContext);
+		mBuilder.setTitle(title);
+		mBuilder.setMessage(message);
+		mBuilder.setNegativeButton("Update", new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				final String appPackageName = getPackageName(); // getPackageName()
+																// from Context
+																// or Activity
+																// object
+				try {
+					mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+				} catch (android.content.ActivityNotFoundException anfe) {
+					mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+				}
+				dialog.cancel();
+			}
+		});
+		mBuilder.setCancelable(false);
+		mBuilder.show();
 	}
 
 }

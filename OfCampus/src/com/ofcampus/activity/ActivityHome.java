@@ -125,6 +125,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		initilizePagerview();
 		loadFilterData();
 		((OfCampusApplication) getApplication()).initPlayServices();
+		((OfCampusApplication) getApplication()).chackVersion(mContext,tocken);
+		
 	}
 
 	@Override
