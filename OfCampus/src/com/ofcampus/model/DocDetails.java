@@ -5,6 +5,15 @@ public class DocDetails {
 	private int DocID = -1;
 	private String DocURL = "";
 	private String Docsize = "";
+	private String DocName = "";
+
+	public String getDocName() {
+		return DocName;
+	}
+
+	public void setDocName(String docName) {
+		DocName = docName;
+	}
 
 	public int getDocID() {
 		return DocID;

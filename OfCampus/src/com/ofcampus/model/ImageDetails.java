@@ -8,6 +8,15 @@ package com.ofcampus.model;
 public class ImageDetails {
 	private int ImageID = -1;
 	private String ImageURL = "";
+	private String ImageName = "";
+
+	public String getImageName() {
+		return ImageName;
+	}
+
+	public void setImageName(String imageName) {
+		ImageName = imageName;
+	}
 
 	public int getImageID() {
 		return ImageID;

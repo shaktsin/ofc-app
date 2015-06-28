@@ -246,7 +246,9 @@ public class JobListBaseAdapter extends BaseAdapter {
 
 			if (Docs != null && Docs.size() >= 1) {
 				mHolder.inflate_doc.setVisibility(View.VISIBLE);
-				showDoc(Docs.get(0).getDocURL(), mHolder.doc_dnd, mHolder.doc_icon, mHolder.doc_name, mHolder.inflate_doc);
+				showDoc(Docs.get(0).getDocURL(), mHolder.doc_dnd, mHolder.doc_icon, mHolder.inflate_doc);
+				mHolder.doc_name.setText(Docs.get(0).getDocName());
+
 			} else {
 				mHolder.inflate_doc.setVisibility(View.GONE);
 			}
@@ -373,11 +375,11 @@ public class JobListBaseAdapter extends BaseAdapter {
 		CardView joblistview_img_post_rel, inflate_doc;
 	}
 
-	private void showDoc(final String DocPath, final ImageView doc_dnd, ImageView doc_icon, TextView doc_name, CardView view) {
+	private void showDoc(final String DocPath, final ImageView doc_dnd, ImageView doc_icon, CardView view) {
 
 		String[] splt = DocPath.split("/");
 		final String fileNAme = splt[splt.length - 1];
-		doc_name.setText(fileNAme);
+		// doc_name.setText(fileNAme);
 
 		if (Util.isPdfFile(DocPath)) {
 			doc_icon.setImageResource(R.drawable.pdf);

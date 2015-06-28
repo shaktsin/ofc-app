@@ -51,6 +51,7 @@ public class CreateClassifiedParser {
 	private String ATTACHEDKEYDOC = "docs";
 	private String ATTACHMENT_ID = "id";
 	private String ATTACHMENT_URL = "url";
+	private String ATTACHMENT_NAME = "name";
 
 	private String POSTTYPE = "postType";
 
@@ -228,6 +229,7 @@ public class CreateClassifiedParser {
 							DocDetails mDetails = new DocDetails();
 							mDetails.setDocID(Integer.parseInt(Util.getJsonValue(attachmentObj, ATTACHMENT_ID)));
 							mDetails.setDocURL(Util.getJsonValue(attachmentObj, ATTACHMENT_URL));
+							mDetails.setDocName(Util.getJsonValue(attachmentObj, ATTACHMENT_NAME));
 							// mDetails.setDocsize(docsize);
 							docList.add(mDetails);
 						}

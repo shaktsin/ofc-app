@@ -523,7 +523,7 @@ public class CommentRecycleAdapter extends BaseAdapter {
 			final String DocPath = arrDocDetails_.get(position).getDocURL();
 			String[] splt = DocPath.split("/");
 			final String fileNAme = splt[splt.length - 1];
-			doc_name.setText(fileNAme);
+			doc_name.setText(arrDocDetails_.get(position).getDocName());
 
 			if (Util.isPdfFile(DocPath)) {
 				doc_icon.setImageResource(R.drawable.pdf);
