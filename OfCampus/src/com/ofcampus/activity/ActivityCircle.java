@@ -82,6 +82,8 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		if (!isChapter) {
 			MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.menu_circle, menu);
+			MenuItem item = menu.findItem(R.id.action_createcircle);
+			item.setVisible(false);
 		}
 		return super.onCreateOptionsMenu(menu);
 	}

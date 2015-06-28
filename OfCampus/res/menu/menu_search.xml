@@ -1,18 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity" >
+    tools:context=".ActivitySearchList" >
 
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/menu_action_search"
         android:icon="@drawable/ic_search"
-        android:title="search"
-        app:showAsAction="always">
-    </item>
-    <item
-        android:id="@+id/action_filter"
-        android:icon="@drawable/ic_filter"
-        android:title="filter"
+        android:title="Search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always">
     </item>
 

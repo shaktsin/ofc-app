@@ -5,18 +5,14 @@
  */
 package com.ofcampus.activity;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -27,29 +23,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnCloseListener;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,20 +50,15 @@ import com.nineoldandroids.view.ViewHelper;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.Util.SearchType;
 import com.ofcampus.activity.FragmentClassifieds.ClassifiedInterface;
 import com.ofcampus.activity.FragmentJobs.JobsInterface;
 import com.ofcampus.activity.FragmentNewsFeeds.NewsInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
-import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.FilterDataSets;
-import com.ofcampus.model.JobDetails;
-import com.ofcampus.model.SearchData;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.FilterJobParser;
-import com.ofcampus.parser.SearchParser;
 import com.ofcampus.ui.FilterDialog;
 
 public class ActivityHome extends ActionBarActivity implements OnClickListener, viewCLickEvent, OnPageChangeListener, JobsInterface, NewsInterface, ClassifiedInterface {
@@ -91,8 +74,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	private SlideMenuAdapter mAdapter;
 	private RecyclerView.LayoutManager mLayoutManager;
 	private DrawerLayout Drawer;
-	private SearchView searchView = null;
-	private SearchManager searchManager = null;
+	// private SearchView searchView = null;
+	// private SearchManager searchManager = null;
 	private ImageView img_composejob;
 
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -125,8 +108,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 		initilizePagerview();
 		loadFilterData();
 		((OfCampusApplication) getApplication()).initPlayServices();
-		((OfCampusApplication) getApplication()).chackVersion(mContext,tocken);
-		
+		((OfCampusApplication) getApplication()).chackVersion(mContext, tocken);
+
 	}
 
 	@Override
@@ -197,68 +180,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_main, menu);
-		searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		if (searchItem != null) {
-			searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-		}
-		initialcall();
-		if (searchView != null) {
-			searchView.setIconifiedByDefault(true);
-			searchView.setQueryHint("Search job,circle,user");
-			searchView.setOnQueryTextListener(new OnQueryTextListener() {
-
-				@Override
-				public boolean onQueryTextSubmit(String query) {
-					// searchView.clearFocus();
-					searchEvent(query);
-					return false;
-				}
-
-				@Override
-				public boolean onQueryTextChange(final String query) {
-					getWindow().getDecorView().postDelayed(new Runnable() {
-
-						@Override
-						public void run() {
-							searchEvent(query);
-						}
-					}, 200);
-					return false;
-				}
-			});
-
-			searchView.setOnSearchClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					closeDraware();
-					img_composejob.setVisibility(View.GONE);
-				}
-			});
-
-			MenuItemCompat.setOnActionExpandListener(searchItem, new OnActionExpandListener() {
-				@Override
-				public boolean onMenuItemActionCollapse(MenuItem item) {
-					img_composejob.setVisibility(View.VISIBLE);
-					return true;
-				}
-
-				@Override
-				public boolean onMenuItemActionExpand(MenuItem item) {
-					return true;
-				}
-			});
-
-			searchView.setOnCloseListener(new OnCloseListener() {
-
-				@Override
-				public boolean onClose() {
-					img_composejob.setVisibility(View.VISIBLE);
-					return false;
-				}
-			});
-		}
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -266,6 +187,8 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.action_search) {
+			startActivity(new Intent(ActivityHome.this, ActivitySearchList.class));
+			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_in_left);
 			return true;
 		} else if (id == R.id.action_filter && (currentSelection == 0 || currentSelection == 1)) {
 			if (mFilterDataSets != null) {
@@ -770,190 +693,208 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 	}
 
 	/**
-	 * Searche Event
+	 * Search Event
 	 */
-	private SearchParser mParser = null;
-	private ArrayList<SearchData> arrSearchData = new ArrayList<SearchData>();
+	// private SearchParser mParser = null;
+	// private ArrayList<SearchData> arrSearchData = new
+	// ArrayList<SearchData>();
+	//
+	// private void searchEvent(final String searchString) {
+	//
+	// if (searchString.length() == 0 || searchString.length() < 3) {
+	// // Util.ShowToast(mContext, "Please enter minimum 3 character.");
+	// return;
+	// }
+	//
+	// if (!Util.hasConnection(mContext)) {
+	// Util.ShowToast(mContext,
+	// getResources().getString(R.string.internetconnection_msg));
+	// return;
+	// }
+	//
+	// new Thread(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// // Thread.sleep(200);
+	// if (mParser == null) {
+	// mParser = new SearchParser();
+	// }
+	// mParser.doInBackground_(mParser.getBody(searchString), tocken);
+	// arrSearchData = mParser.SearchDataList;
+	// searchHandler.sendEmptyMessage(0);
+	//
+	// }
+	// }).start();
+	// }
 
-	private void searchEvent(final String searchString) {
+	// private ExampleAdapter mExampleAdapter = null;
+	// private String[] columns = new String[] { "_id", "_data", "_type",
+	// "_state" };
+	// private Object[] temp = new Object[] { 0, "", "", SearchType.CIRCLE };
+	// // private MatrixCursor cursor = new MatrixCursor(columns);
+	// private MatrixCursor cursor = null;
+	//
+	// private void initialcall() {
+	//
+	// }
 
-		if (searchString.length() == 0) {
-			// Util.ShowToast(mContext, "Please enter some character.");
-			return;
-		}
-
-		if (!Util.hasConnection(mContext)) {
-			Util.ShowToast(mContext, getResources().getString(R.string.internetconnection_msg));
-			return;
-		}
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				// Thread.sleep(200);
-				if (mParser == null) {
-					mParser = new SearchParser();
-				}
-				mParser.doInBackground_(mParser.getBody(searchString), tocken);
-				arrSearchData = mParser.SearchDataList;
-				searchHandler.sendEmptyMessage(0);
-
-			}
-		}).start();
-	}
-
-	private ExampleAdapter mExampleAdapter = null;
-	private String[] columns = new String[] { "_id", "_data", "_type", "_state" };
-	private Object[] temp = new Object[] { 0, "", "", SearchType.CIRCLE };
-	// private MatrixCursor cursor = new MatrixCursor(columns);
-	private MatrixCursor cursor = null;
-
-	private void initialcall() {
-
-	}
-
-	Handler searchHandler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			cursor = new MatrixCursor(columns);
-			if (arrSearchData != null && arrSearchData.size() >= 1) {
-				for (SearchData mSearchData : arrSearchData) {
-					cursor.addRow(new Object[] { mSearchData.getId(), mSearchData.getData(), mSearchData.getDatatype(), mSearchData.getmSearchType() });
-				}
-			}
-			searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-			mExampleAdapter = new ExampleAdapter(mContext, cursor, arrSearchData);
-			searchView.setSuggestionsAdapter(mExampleAdapter);
-
-		}
-	};
-
-	public class ExampleAdapter extends CursorAdapter {
-
-		private ArrayList<SearchData> items;
-		private LayoutInflater inflater;
-
-		public ExampleAdapter(Context context, Cursor cursor, ArrayList<SearchData> items) {
-
-			super(context, cursor, false);
-			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			this.items = items;
-
-		}
-
-		public void refresh(Cursor cursor, ArrayList<SearchData> items_) {
-			items = items_;
-			notifyDataSetChanged();
-		}
-
-		@Override
-		public void bindView(View view, Context context, Cursor cursor) {
-			SearchData mSearchData = items.get(Integer.parseInt(view.getTag().toString()));
-			switch (mSearchData.getmSearchType()) {
-			case USERS:
-				((TextView) view).setText(mSearchData.getData() + " in Users");
-				break;
-
-			case CIRCLE:
-				((TextView) view).setText(mSearchData.getData() + " in Clubs");
-				break;
-
-			case POSTS:
-				if (mSearchData.getDatatype().equals("3")) {
-					((TextView) view).setText(mSearchData.getData() + " in NewsFeed");
-				} else {
-					((TextView) view).setText(mSearchData.getData() + " in Post");
-				}
-				break;
-
-			default:
-				break;
-			}
-
-		}
-
-		@Override
-		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			View convertView = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
-			convertView.setBackgroundColor(Color.parseColor("#E5E5E5"));
-			TextView text = (TextView) convertView;
-			text.setTextColor(Color.parseColor("#737373"));
-			convertView.setTag(cursor.getPosition());
-			convertView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					SearchData mSearchData = items.get(Integer.parseInt(v.getTag().toString()));
-					if (mSearchData != null) {
-						gotToScreen(mSearchData);
-					}
-
-				}
-			});
-
-			return convertView;
-		}
-
-	}
-
-	private void gotToScreen(SearchData mSearchData) {
-
-		switch (mSearchData.getmSearchType()) {
-
-		case USERS:
-			JobDetails mJobDetails = new JobDetails();
-			mJobDetails.setId(mSearchData.getId());
-
-			Intent mIntent_ = new Intent(mContext, ActivityJobPostedUserDetails.class);
-			mIntent_.putExtra("isUserCame", (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
-			((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
-			mContext.startActivity(mIntent_);
-			((Activity) mContext).overridePendingTransition(0, 0);
-
-			searchView.clearFocus();
-			break;
-
-		case CIRCLE:
-			CircleDetails mCircleDetails = new CircleDetails();
-			mCircleDetails.setId(mSearchData.getId());
-			mCircleDetails.setAdmin("false");
-			((OfCampusApplication) mContext.getApplicationContext()).mCircleDetails_ = mCircleDetails;
-			mContext.startActivity(new Intent(mContext, ActivityCircleProfile.class));
-			overridePendingTransition(0, 0);
-			searchView.clearFocus();
-			break;
-
-		case POSTS:
-			JobDetails jdetails = new JobDetails();
-			jdetails.setPostid(mSearchData.getId());
-			if (mSearchData.getDatatype().equals("0")) {
-				((OfCampusApplication) mContext.getApplicationContext()).jobdetails = jdetails;
-				Intent mIntent = new Intent(mContext, ActivityJobDetails.class);
-				Bundle mBundle = new Bundle();
-				mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
-				mIntent.putExtras(mBundle);
-				startActivity(mIntent);
-				((Activity) mContext).overridePendingTransition(0, 0);
-			} else if (mSearchData.getDatatype().equals("3")) {
-				((OfCampusApplication) mContext.getApplicationContext()).jobdetails = jdetails;
-				Intent mIntent = new Intent(mContext, ActivityNewsDetails.class);
-				Bundle mBundle = new Bundle();
-				mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[1]);
-				mIntent.putExtras(mBundle);
-				startActivity(mIntent);
-				((Activity) mContext).overridePendingTransition(0, 0);
-			}
-			searchView.clearFocus();
-			break;
-
-		default:
-			break;
-
-		}
-	}
+	// Handler searchHandler = new Handler() {
+	//
+	// @Override
+	// public void handleMessage(Message msg) {
+	// super.handleMessage(msg);
+	// cursor = new MatrixCursor(columns);
+	// if (arrSearchData != null && arrSearchData.size() >= 1) {
+	// for (SearchData mSearchData : arrSearchData) {
+	// cursor.addRow(new Object[] { mSearchData.getId(), mSearchData.getData(),
+	// mSearchData.getDatatype(), mSearchData.getmSearchType() });
+	// }
+	// }
+	// searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+	// mExampleAdapter = new ExampleAdapter(mContext, cursor, arrSearchData);
+	// searchView.setSuggestionsAdapter(mExampleAdapter);
+	//
+	// }
+	// };
+	//
+	// public class ExampleAdapter extends CursorAdapter {
+	//
+	// private ArrayList<SearchData> items;
+	// private LayoutInflater inflater;
+	//
+	// public ExampleAdapter(Context context, Cursor cursor,
+	// ArrayList<SearchData> items) {
+	//
+	// super(context, cursor, false);
+	// inflater = (LayoutInflater)
+	// context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	// this.items = items;
+	//
+	// }
+	//
+	// public void refresh(Cursor cursor, ArrayList<SearchData> items_) {
+	// items = items_;
+	// notifyDataSetChanged();
+	// }
+	//
+	// @Override
+	// public void bindView(View view, Context context, Cursor cursor) {
+	// SearchData mSearchData =
+	// items.get(Integer.parseInt(view.getTag().toString()));
+	// switch (mSearchData.getmSearchType()) {
+	// case USERS:
+	// ((TextView) view).setText(mSearchData.getData() + " in Users");
+	// break;
+	//
+	// case CIRCLE:
+	// ((TextView) view).setText(mSearchData.getData() + " in Clubs");
+	// break;
+	//
+	// case POSTS:
+	// if (mSearchData.getDatatype().equals("3")) {
+	// ((TextView) view).setText(mSearchData.getData() + " in NewsFeed");
+	// } else {
+	// ((TextView) view).setText(mSearchData.getData() + " in Post");
+	// }
+	// break;
+	//
+	// default:
+	// break;
+	// }
+	//
+	// }
+	//
+	// @Override
+	// public View newView(Context context, Cursor cursor, ViewGroup parent) {
+	// View convertView =
+	// inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent,
+	// false);
+	// convertView.setBackgroundColor(Color.parseColor("#E5E5E5"));
+	// TextView text = (TextView) convertView;
+	// text.setTextColor(Color.parseColor("#737373"));
+	// convertView.setTag(cursor.getPosition());
+	// convertView.setOnClickListener(new OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	// SearchData mSearchData =
+	// items.get(Integer.parseInt(v.getTag().toString()));
+	// if (mSearchData != null) {
+	// gotToScreen(mSearchData);
+	// }
+	//
+	// }
+	// });
+	//
+	// return convertView;
+	// }
+	//
+	// }
+	//
+	// private void gotToScreen(SearchData mSearchData) {
+	//
+	// switch (mSearchData.getmSearchType()) {
+	//
+	// case USERS:
+	// JobDetails mJobDetails = new JobDetails();
+	// mJobDetails.setId(mSearchData.getId());
+	//
+	// Intent mIntent_ = new Intent(mContext,
+	// ActivityJobPostedUserDetails.class);
+	// mIntent_.putExtra("isUserCame",
+	// (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID()))
+	// ? true : false);
+	// ((OfCampusApplication) mContext.getApplicationContext()).jobdetails =
+	// mJobDetails;
+	// mContext.startActivity(mIntent_);
+	// ((Activity) mContext).overridePendingTransition(0, 0);
+	//
+	// searchView.clearFocus();
+	// break;
+	//
+	// case CIRCLE:
+	// CircleDetails mCircleDetails = new CircleDetails();
+	// mCircleDetails.setId(mSearchData.getId());
+	// mCircleDetails.setAdmin("false");
+	// ((OfCampusApplication) mContext.getApplicationContext()).mCircleDetails_
+	// = mCircleDetails;
+	// mContext.startActivity(new Intent(mContext,
+	// ActivityCircleProfile.class));
+	// overridePendingTransition(0, 0);
+	// searchView.clearFocus();
+	// break;
+	//
+	// case POSTS:
+	// JobDetails jdetails = new JobDetails();
+	// jdetails.setPostid(mSearchData.getId());
+	// if (mSearchData.getDatatype().equals("0")) {
+	// ((OfCampusApplication) mContext.getApplicationContext()).jobdetails =
+	// jdetails;
+	// Intent mIntent = new Intent(mContext, ActivityJobDetails.class);
+	// Bundle mBundle = new Bundle();
+	// mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
+	// mIntent.putExtras(mBundle);
+	// startActivity(mIntent);
+	// ((Activity) mContext).overridePendingTransition(0, 0);
+	// } else if (mSearchData.getDatatype().equals("3")) {
+	// ((OfCampusApplication) mContext.getApplicationContext()).jobdetails =
+	// jdetails;
+	// Intent mIntent = new Intent(mContext, ActivityNewsDetails.class);
+	// Bundle mBundle = new Bundle();
+	// mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[1]);
+	// mIntent.putExtras(mBundle);
+	// startActivity(mIntent);
+	// ((Activity) mContext).overridePendingTransition(0, 0);
+	// }
+	// searchView.clearFocus();
+	// break;
+	//
+	// default:
+	// break;
+	//
+	// }
+	// }
 
 	private void notificationAnimation(final View v) {
 		ObjectAnimator animatorX = ObjectAnimator.ofFloat(v, "scaleX", 0, 1.0f, 1.2f, 1.0f);
