@@ -749,10 +749,10 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		String ph_ = edt_phno.getText().toString().trim();
 		String whats_ = edt_whatsapp.getText().toString().trim();
 
-		String experiencto = edt_expmin.getText().toString();
-		String experiencfrom = edt_expmax.getText().toString();
-		String salaryto = edt_salmin.getText().toString();
-		String salaryfrom = edt_salmax.getText().toString();
+		 String experiencto = edt_expmin.getText().toString();
+		 String experiencfrom = edt_expmax.getText().toString();
+		 String salaryto = edt_salmin.getText().toString();
+		 String salaryfrom = edt_salmax.getText().toString();
 		String headline = postheadline.getText().toString();
 		String headlinedetails = postdetails.getText().toString();
 
@@ -842,36 +842,55 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		}
 
 		if (experiencto.equals("")) {
-			Util.ShowToast(context, "Please fill the Experience to.");
+			Util.ShowToast(context, "Please fill the Experience Min value.");
+			return;
+		}
+		
+		if (Integer.parseInt(experiencto)>100) {
+			Util.ShowToast(context, "Please fill the Experience Min value within 100.");
 			return;
 		}
 
 		if (experiencfrom.equals("")) {
-			Util.ShowToast(context, "Please fill the Experience from.");
+			Util.ShowToast(context, "Please fill the Experience Max value.");
+			return;
+		}
+		
+		if (Integer.parseInt(experiencfrom)>100) {
+			Util.ShowToast(context, "Please fill the Experience Max value within 100.");
 			return;
 		}
 
-		// if(!(Integer.parseInt(experiencfrom)>=Integer.parseInt(experiencto))){
-		// Util.ShowToast(context,
-		// "Experienc from value should be greater then the Experienc to value");
-		// return;
-		// }
+		if (Integer.parseInt(experiencfrom) <= Integer.parseInt(experiencto)) {
+			Util.ShowToast(context, "Experienc Max value should be greater then the Experienc Min value");
+			return;
+		}
 
 		if (salaryto.equals("")) {
-			Util.ShowToast(context, "Please fill the salary to.");
+			Util.ShowToast(context, "Please fill the salary Min value.");
 			return;
 		}
 
+		if (Integer.parseInt(salaryto)>100) {
+			Util.ShowToast(context, "Please fill the Salary Min value within 100.");
+			return;
+		}
+
+		
 		if (salaryfrom.equals("")) {
-			Util.ShowToast(context, "Please fill the salary from.");
+			Util.ShowToast(context, "Please fill the salary Max value.");
 			return;
 		}
 
-		// if(!(Integer.parseInt(salaryfrom)>=Integer.parseInt(salaryto))){
-		// Util.ShowToast(context,
-		// "From Salary value should be greater then the To Salary value");
-		// return;
-		// }
+		if (Integer.parseInt(salaryfrom)>100) {
+			Util.ShowToast(context, "Please fill the Salary Max value within 100.");
+			return;
+		}
+
+		if (Integer.parseInt(salaryfrom) <= Integer.parseInt(salaryto)) {
+			Util.ShowToast(context, "From Salary Max value should be greater then the Salary Min value.");
+			return;
+		}
 
 		if (headline.equals("")) {
 			Util.ShowToast(context, "Please fill Job Headline.");
@@ -1109,36 +1128,55 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		}
 
 		if (experiencto.equals("")) {
-			Util.ShowToast(context, "Please fill the Experience to.");
+			Util.ShowToast(context, "Please fill the Experience Min value.");
+			return;
+		}
+		
+		if (Integer.parseInt(experiencto)>100) {
+			Util.ShowToast(context, "Please fill the Experience Min value within 100.");
 			return;
 		}
 
 		if (experiencfrom.equals("")) {
-			Util.ShowToast(context, "Please fill the Experience from.");
+			Util.ShowToast(context, "Please fill the Experience Max value.");
+			return;
+		}
+		
+		if (Integer.parseInt(experiencfrom)>100) {
+			Util.ShowToast(context, "Please fill the Experience Max value within 100.");
 			return;
 		}
 
-		// if(!(Integer.parseInt(experiencfrom)>=Integer.parseInt(experiencto))){
-		// Util.ShowToast(context,
-		// "Experienc from value should be greater then the Experienc to value");
-		// return;
-		// }
+		if (Integer.parseInt(experiencfrom) <= Integer.parseInt(experiencto)) {
+			Util.ShowToast(context, "Experienc Max value should be greater then the Experienc Min value");
+			return;
+		}
 
 		if (salaryto.equals("")) {
-			Util.ShowToast(context, "Please fill the salary to.");
+			Util.ShowToast(context, "Please fill the salary Min value.");
 			return;
 		}
 
+		if (Integer.parseInt(salaryto)>100) {
+			Util.ShowToast(context, "Please fill the Salary Min value within 100.");
+			return;
+		}
+
+		
 		if (salaryfrom.equals("")) {
-			Util.ShowToast(context, "Please fill the salary from.");
+			Util.ShowToast(context, "Please fill the salary Max value.");
 			return;
 		}
 
-		// if(!(Integer.parseInt(salaryfrom)>=Integer.parseInt(salaryto))){
-		// Util.ShowToast(context,
-		// "From Salary value should be greater then the To Salary value");
-		// return;
-		// }
+		if (Integer.parseInt(salaryfrom)>100) {
+			Util.ShowToast(context, "Please fill the Salary Max value within 100.");
+			return;
+		}
+
+		if (Integer.parseInt(salaryfrom) <= Integer.parseInt(salaryto)) {
+			Util.ShowToast(context, "From Salary Max value should be greater then the Salary Min value.");
+			return;
+		}
 
 		if (headline.equals("")) {
 			Util.ShowToast(context, "Please fill Job Headline.");
