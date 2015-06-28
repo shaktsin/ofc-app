@@ -520,10 +520,12 @@ public class CommentRecycleAdapter extends BaseAdapter {
 			final ImageView doc_dnd = (ImageView) imageLayout.findViewById(R.id.doc_downloadIcon);
 			TextView doc_name = (TextView) imageLayout.findViewById(R.id.doc_name);
 
-			final String DocPath = arrDocDetails_.get(position).getDocURL();
+			
+			DocDetails mDocDetails = arrDocDetails_.get(position);
+			final String DocPath = mDocDetails.getDocURL();
 			String[] splt = DocPath.split("/");
-			final String fileNAme = splt[splt.length - 1];
-			doc_name.setText(arrDocDetails_.get(position).getDocName());
+			final String fileNAme =mDocDetails.getDocName();// splt[splt.length - 1];
+			doc_name.setText(fileNAme);
 
 			if (Util.isPdfFile(DocPath)) {
 				doc_icon.setImageResource(R.drawable.pdf);
