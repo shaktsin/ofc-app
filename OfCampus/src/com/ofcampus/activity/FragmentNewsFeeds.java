@@ -80,7 +80,7 @@ public class FragmentNewsFeeds extends Fragment implements OnClickListener, News
 		View view = inflater.inflate(R.layout.fragment_newsfeeds, null);
 		initilizView(view);
 		initilizeSwipeRefresh(view);
-		loadData(false);
+		loadData(true);
 		return view;
 	}
 
