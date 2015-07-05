@@ -218,14 +218,14 @@ public class CommentRecycleAdapter extends BaseAdapter {
 
 				if (likecount != null && likecount.length() >= 1 && !likecount.equalsIgnoreCase("0")) {
 					mHolder.txt_likecount.setVisibility(View.VISIBLE);
-					mHolder.txt_likecount.setText(likecount + " likes");
+					mHolder.txt_likecount.setText(likecount + ((Integer.parseInt(likecount) == 1) ? " like" : " likes"));
 				} else {
 					mHolder.txt_likecount.setVisibility(View.GONE);
 				}
 
 				if (commentcount != null && commentcount.length() >= 1 && !commentcount.equalsIgnoreCase("0")) {
 					mHolder.txt_commentcount.setVisibility(View.VISIBLE);
-					mHolder.txt_commentcount.setText(commentcount + " comments");
+					mHolder.txt_commentcount.setText(commentcount + ((Integer.parseInt(likecount) == 1) ? " comment" : " comments"));
 				} else {
 					mHolder.txt_commentcount.setVisibility(View.GONE);
 				}
@@ -520,11 +520,11 @@ public class CommentRecycleAdapter extends BaseAdapter {
 			final ImageView doc_dnd = (ImageView) imageLayout.findViewById(R.id.doc_downloadIcon);
 			TextView doc_name = (TextView) imageLayout.findViewById(R.id.doc_name);
 
-			
 			DocDetails mDocDetails = arrDocDetails_.get(position);
 			final String DocPath = mDocDetails.getDocURL();
 			String[] splt = DocPath.split("/");
-			final String fileNAme =mDocDetails.getDocName();// splt[splt.length - 1];
+			final String fileNAme = mDocDetails.getDocName();// splt[splt.length
+																// - 1];
 			doc_name.setText(fileNAme);
 
 			if (Util.isPdfFile(DocPath)) {

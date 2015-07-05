@@ -178,14 +178,14 @@ public class FilterJobsAdapter extends BaseAdapter {
 
 			if (likecount != null && likecount.length() >= 1 && !likecount.equalsIgnoreCase("0")) {
 				mHolder.txt_likecount.setVisibility(View.VISIBLE);
-				mHolder.txt_likecount.setText(likecount + " likes");
+				mHolder.txt_likecount.setText(likecount + ((Integer.parseInt(likecount) == 1) ? " like" : " likes"));
 			} else {
 				mHolder.txt_likecount.setVisibility(View.GONE);
 			}
 
 			if (commentcount != null && commentcount.length() >= 1 && !commentcount.equalsIgnoreCase("0")) {
 				mHolder.txt_commentcount.setVisibility(View.VISIBLE);
-				mHolder.txt_commentcount.setText(commentcount + " comments");
+				mHolder.txt_commentcount.setText(commentcount + ((Integer.parseInt(likecount) == 1) ? " comment" : " comments"));
 			} else {
 				mHolder.txt_commentcount.setVisibility(View.GONE);
 			}
@@ -196,7 +196,7 @@ public class FilterJobsAdapter extends BaseAdapter {
 			if (Docs != null && Docs.size() >= 1) {
 				mHolder.inflate_doc.setVisibility(View.VISIBLE);
 				DocDetails mDocDetails = Docs.get(0);
-				showDoc(mDocDetails.getDocURL(), mHolder.doc_dnd, mHolder.doc_icon, mHolder.inflate_doc,mDocDetails.getDocName());
+				showDoc(mDocDetails.getDocURL(), mHolder.doc_dnd, mHolder.doc_icon, mHolder.inflate_doc, mDocDetails.getDocName());
 				mHolder.doc_name.setText(mDocDetails.getDocName());
 			} else {
 				mHolder.inflate_doc.setVisibility(View.GONE);
@@ -337,7 +337,7 @@ public class FilterJobsAdapter extends BaseAdapter {
 		((Activity) mContext).overridePendingTransition(0, 0);
 	}
 
-	private void showDoc(final String DocPath, final ImageView doc_dnd, ImageView doc_icon, CardView view,String donName) {
+	private void showDoc(final String DocPath, final ImageView doc_dnd, ImageView doc_icon, CardView view, String donName) {
 
 		String[] splt = DocPath.split("/");
 		final String fileNAme = donName;// splt[splt.length - 1];

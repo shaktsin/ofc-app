@@ -221,14 +221,14 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 
 			if (likecount != null && likecount.length() >= 1 && !likecount.equalsIgnoreCase("0")) {
 				mHolder.txt_likecount.setVisibility(View.VISIBLE);
-				mHolder.txt_likecount.setText(likecount + " likes");
+				mHolder.txt_likecount.setText(likecount + ((Integer.parseInt(likecount) == 1) ? " like" : " likes"));
 			} else {
 				mHolder.txt_likecount.setVisibility(View.GONE);
 			}
 
 			if (commentcount != null && commentcount.length() >= 1 && !commentcount.equalsIgnoreCase("0")) {
 				mHolder.txt_commentcount.setVisibility(View.VISIBLE);
-				mHolder.txt_commentcount.setText(commentcount + " comments");
+				mHolder.txt_commentcount.setText(commentcount + ((Integer.parseInt(likecount) == 1) ? " comment" : " comments"));
 			} else {
 				mHolder.txt_commentcount.setVisibility(View.GONE);
 			}
