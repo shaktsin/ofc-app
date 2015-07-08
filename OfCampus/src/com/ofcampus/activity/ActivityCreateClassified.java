@@ -388,6 +388,11 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 	/* Pre Load Data */
 	private JobDetails mJobDetails;
 	private String JObID = "";
+	private String[] circleIDs = null;
+	private String[] primaryIds = null;
+	private String[] seconIds = null;
+	private String[] locationIDs = null;
+
 	private ArrayList<String> deletedAttachmentIDS = new ArrayList<String>();
 
 	private void loadClassifiedData() {
@@ -400,6 +405,11 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 		edt_email.setText(mJobDetails.getReplyEmail());
 		edt_phno.setText(mJobDetails.getReplyPhone());
 		edt_sms.setText(mJobDetails.getReplyWatsApp());
+
+		circleIDs = mJobDetails.getSelectedCircle();
+		primaryIds = mJobDetails.getSelectedPrimarycat();
+		seconIds = mJobDetails.getSelectedSecCatg();
+		locationIDs = mJobDetails.getSelectedCitys();
 
 		mCustomArrayAdapter.RefreshImage(getPicArray());
 		mDOCPDFArrayAdapter.RefreshDoc(getDocArray());
@@ -424,10 +434,47 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 	}
 
 	private void seekBarDataLoad(PrepareListForClassified mPrepareListForClassified) {
+		// circle_spn, catagory_spn, subcatagory_spn, location_spn;
+		circleList = mPrepareListForClassified.getCirclelist();
+		if (circleList != null && circleIDs != null && circleIDs.length >= 1) {
+			for (CustomSpinnerDataSets item : circleList) {
+				if (item.getId().equals(circleIDs[0])) {
+					item.isSelected = 1;
+					circle_spn.setText(item.getTitle());
+				}
+			}
+		}
+
 		categoryList = mPrepareListForClassified.getPrimarycatlist();
 		subCategoryList = (categoryList != null && categoryList.size() >= 1) ? categoryList.get(0).getList() : null;
+
+		if (categoryList != null && primaryIds != null && primaryIds.length >= 1) {
+			for (int i = 0; i < categoryList.size(); i++) {
+				CustomSpinnerDataSets industry = categoryList.get(i);
+				if (industry.getId().equals(primaryIds[0])) {
+					industry.isSelected = 1;
+					catagory_spn.setText(industry.getTitle());
+					subCategoryList = (categoryList != null && categoryList.size() >= 1) ? categoryList.get(i).getList() : null;
+					ArrayList<CustomSpinnerDataSets> roleIds = categoryList.get(i).getList();
+					for (CustomSpinnerDataSets role : roleIds) {
+						if (role.getId().equals(seconIds[0])) {
+							role.isSelected = 1;
+							subcatagory_spn.setText(role.getTitle());
+						}
+					}
+				}
+			}
+		}
+
 		locationList = mPrepareListForClassified.getCitys();
-		circleList = mPrepareListForClassified.getCirclelist();
+		if (locationList != null && locationIDs != null && locationIDs.length >= 1) {
+			for (CustomSpinnerDataSets city : locationList) {
+				if (city.getId().equals(locationIDs[0])) {
+					city.isSelected = 1;
+					location_spn.setText(city.getTitle());
+				}
+			}
+		}
 
 	}
 

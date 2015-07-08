@@ -5,31 +5,44 @@
  */
 package com.ofcampus.activity;
 
+import java.util.ArrayList;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
-import com.ofcampus.activity.FragmentJoinCircle.JoinCircleInterface;
-import com.ofcampus.activity.FragmentYourCircle.YourCircleInterface;
-import com.ofcampus.component.PagerSlidingTabStripForCircle;
+import com.ofcampus.Util;
+import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
+import com.ofcampus.parser.CircleListParser;
+import com.ofcampus.parser.JoinCircleParser;
+import com.ofcampus.parser.UnJoinCircleParser;
+import com.ofcampus.parser.CircleListParser.CircleListParserInterface;
+import com.ofcampus.parser.JoinCircleParser.JoinCircleParserInterface;
+import com.ofcampus.parser.UnJoinCircleParser.UnJoinCircleParserInterface;
+import com.ofcampus.ui.CustomTextView;
 
-public class ActivityCircle extends ActionBarActivity implements OnPageChangeListener, YourCircleInterface, JoinCircleInterface {
+public class ActivityCircle extends ActionBarActivity {
 
 	private Context context;
 	private static String Authtoken = "";
@@ -51,6 +64,7 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 			TITLES[0] = "Your Chapter";
 			TITLES[1] = "Join Chapter";
 			title = "Chapters";
+			isChapter_ = true;
 		}
 		Authtoken = UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -58,6 +72,8 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		initiliz();
+
+		getAllCircleList(true, pageNo, pagecount);
 	}
 
 	@Override
@@ -70,10 +86,12 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (!isChapter && ((OfCampusApplication) context.getApplicationContext()).isNewCircleCreated) {
-			((OfCampusApplication) context.getApplicationContext()).isNewCircleCreated = false;
-			CircleJoin();
-		}
+		// if (!isChapter && ((OfCampusApplication)
+		// context.getApplicationContext()).isNewCircleCreated) {
+		// ((OfCampusApplication)
+		// context.getApplicationContext()).isNewCircleCreated = false;
+		// CircleJoin();
+		// }
 
 	}
 
@@ -105,132 +123,273 @@ public class ActivityCircle extends ActionBarActivity implements OnPageChangeLis
 	/**
 	 * Pager Page Selected.
 	 */
-	@Override
-	public void onPageSelected(int position) {
-		switch (position) {
-		case 0:
-
-			break;
-		case 1:
-
-			break;
-
-		default:
-			break;
-		}
-	}
+	// @Override
+	// public void onPageSelected(int position) {
+	// switch (position) {
+	// case 0:
+	//
+	// break;
+	// case 1:
+	//
+	// break;
+	//
+	// default:
+	// break;
+	// }
+	// }
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == 91 && resultCode == RESULT_OK && data != null) {
 			boolean isModify = data.getExtras().getBoolean("isDataModify");
-			if (isModify) {
-				refreshView();
-			}
+			// if (isModify) {
+			// refreshView();
+			// }
 		}
 	}
 
-	@Override
-	public void onPageScrolled(int arg0, float arg1, int arg2) {
+	private ListView circle_list;
+	private YourCircleListAdapter mCircleListAdapter;
 
-	}
-
-	@Override
-	public void onPageScrollStateChanged(int arg0) {
-
-	}
+	/*** For Load more ****/
+	private int pageNo = 0;
+	private int pagecount = 8;
+	private int minimumofsets = 7, mLastFirstVisibleItem = 0;
+	private boolean loadingMore = false;
+	private RelativeLayout footer_pg;
 
 	private void initiliz() {
-		tabs = (PagerSlidingTabStripForCircle) findViewById(R.id.circle_tabs);
-		pager = (ViewPager) findViewById(R.id.circle_tabpager);
-		adapter = new SelectionPagerAdapter(getSupportFragmentManager());
-		pager.setAdapter(adapter);
-		final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
-		pager.setPageMargin(pageMargin);
-		tabs.setViewPager(pager);
-		pager.setOffscreenPageLimit(2);
-		tabs.setOnPageChangeListener(this);
+
+		circle_list = (ListView) findViewById(R.id.circle_list);
+		mCircleListAdapter = new YourCircleListAdapter(context, new ArrayList<CircleDetails>());
+		circle_list.setAdapter(mCircleListAdapter);
+
+		footer_pg = (RelativeLayout) findViewById(R.id.activity_home_footer_pg);
+		circle_list.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				if (mCircleListAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
+					if (mLastFirstVisibleItem < firstVisibleItem) {
+						if (!Util.hasConnection(context)) {
+							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
+							return;
+						}
+						Log.i("SCROLLING DOWN", "TRUE");
+						footer_pg.setVisibility(View.VISIBLE);
+						loadingMore = true;
+						getAllCircleList(false, pageNo, pagecount);
+					}
+				}
+				mLastFirstVisibleItem = firstVisibleItem;
+			}
+		});
 	}
 
-	/* Pager section */
-	private PagerSlidingTabStripForCircle tabs;
-	private ViewPager pager;
-	private SelectionPagerAdapter adapter;
-	private FragmentYourCircle mYourCircle;
-	private FragmentJoinCircle mJoinCircle;
+	private boolean isChapter_ = false;
 
-	public class SelectionPagerAdapter extends FragmentStatePagerAdapter {
-
-		public SelectionPagerAdapter(FragmentManager fm) {
-			super(fm);
+	private void getAllCircleList(boolean b, final int pageNo_, int pagecount_) {
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
+			return;
 		}
 
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return TITLES[position];
+		CircleListParser mCircleListParser = new CircleListParser();
+		mCircleListParser.setCirclelistparserinterface(new CircleListParserInterface() {
+
+			@Override
+			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
+				if (circlerList != null && circlerList.size() >= 1) {
+					if (pageNo == 0) {
+						mCircleListAdapter.refreshData(circlerList);
+						pageNo = pageNo_ + 1;
+					} else {
+						mCircleListAdapter.addMoreData(circlerList);
+						pageNo = pageNo_ + 1;
+						minimumofsets = minimumofsets + pagecount;
+					}
+					footer_pg.setVisibility(View.GONE);
+					loadingMore = false;
+				}
+			}
+
+			@Override
+			public void OnError() {
+				footer_pg.setVisibility(View.GONE);
+				loadingMore = false;
+			}
+		});
+		mCircleListParser.parse(context, mCircleListParser.getBody(pageNo_, pagecount_, isChapter_), Authtoken, b);
+	}
+
+	public class YourCircleListAdapter extends BaseAdapter {
+
+		private Context mContext;
+		private LayoutInflater inflater;
+		private ArrayList<CircleDetails> circles = null;
+
+		public YourCircleListAdapter(Context context, ArrayList<CircleDetails> arrcircle) {
+
+			this.mContext = context;
+			this.circles = arrcircle;
+			this.inflater = LayoutInflater.from(context);
+		}
+
+		public void refreshData(ArrayList<CircleDetails> arrCircle) {
+			this.circles = arrCircle;
+			notifyDataSetChanged();
+		}
+
+		public void addMoreData(ArrayList<CircleDetails> arrCircles) {
+			this.circles.addAll(arrCircles);
+			notifyDataSetChanged();
+		}
+
+		public void removepostion(int position) {
+			if (this.circles.size() >= 1) {
+				this.circles.remove(position);
+				notifyDataSetChanged();
+			}
+
 		}
 
 		@Override
 		public int getCount() {
-			return TITLES.length;
+			return circles.size();
 		}
 
 		@Override
-		public Parcelable saveState() {
+		public Object getItem(int position) {
 			return null;
 		}
 
 		@Override
-		public int getItemPosition(Object object) {
-			return POSITION_NONE;
+		public long getItemId(int position) {
+			return 0;
 		}
 
 		@Override
-		public Fragment getItem(int position) {
-			switch (position) {
-			case 0:
-				mYourCircle = FragmentYourCircle.newInstance(ActivityCircle.this, isChapter, position);
-				mYourCircle.setYourcircleinterface(ActivityCircle.this);
-				return mYourCircle;
-			case 1:
-				mJoinCircle = FragmentJoinCircle.newInstance(ActivityCircle.this,isChapter,position);
-				mJoinCircle.setJoincircleinterface(ActivityCircle.this);
-				return mJoinCircle;
-			}
-			return null;
+		public View getView(final int position, View convertView, ViewGroup parent) {
 
+			ViewHolder mHolder;
+			if (convertView == null) {
+				mHolder = new ViewHolder();
+				convertView = inflater.inflate(R.layout.inflate_circledetails, null);
+				mHolder.last_post = (CustomTextView) convertView.findViewById(R.id.inflt_last_posts_details);
+				mHolder.txt_post_and_members = (TextView) convertView.findViewById(R.id.post_and_members_info);
+				mHolder.txt_name = (CustomTextView) convertView.findViewById(R.id.inflt_circlerow_txt_name);
+				mHolder.join_btn = (Button) convertView.findViewById(R.id.join_circle);
+
+				convertView.setTag(mHolder);
+			} else {
+				mHolder = (ViewHolder) convertView.getTag();
+			}
+
+			CircleDetails mCircleDetails = circles.get(position);
+			final String circleID = mCircleDetails.getId();
+			final String joined = mCircleDetails.getJoined();
+
+			String circleName = mCircleDetails.getName();
+			String camelCaseName = Character.toString(Character.toUpperCase(circleName.charAt(0))) + circleName.substring(1).toLowerCase();
+
+			mHolder.txt_name.setText(camelCaseName);
+			String post_and_members_details = mCircleDetails.getMembers() + " members," + mCircleDetails.getPosts() + " posts";
+			mHolder.txt_post_and_members.setText(post_and_members_details);
+			mHolder.join_btn.setEnabled(true);
+			mHolder.join_btn.setText((joined.equals("false")) ? "Join" : "Unjoin");
+
+			mHolder.join_btn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (joined.equals("false")) {
+						joinCircleEvent(circleID, position);
+					} else {
+						unjoinCircleEvent(circleID, position);
+					}
+
+				}
+			});
+
+			mHolder.txt_name.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent mIntent = new Intent(mContext, ActivityCircleProfile.class);
+					if (isChapter_) {
+						mIntent.putExtra("isChapterEvent", true);
+					}
+					((OfCampusApplication) mContext.getApplicationContext()).mCircleDetails_ = circles.get(position);
+					((Activity) mContext).startActivityForResult(mIntent, 91);
+					((Activity) mContext).overridePendingTransition(0, 0);
+				}
+			});
+
+			return convertView;
 		}
+
+		private class ViewHolder {
+			CustomTextView txt_name, last_post, txt_joined;
+			TextView txt_post_and_members;
+			Button join_btn;
+		}
+
 	}
 
-	@Override
-	public void CircleJoin() {
-		new Handler().postDelayed(new Runnable() {
+	private void joinCircleEvent(String circleID, final int position_) {
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+
+		JoinCircleParser mJoinCircleParser = new JoinCircleParser();
+		mJoinCircleParser.setJoincircleparserinterface(new JoinCircleParserInterface() {
+
 			@Override
-			public void run() {
-				mYourCircle.firstCalling(false);
+			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
+				Util.ShowToast(context, "Successfully Joined " + (isChapter_ ? "chapter" : "club"));
+				mCircleListAdapter.refreshData(circlerList);
+				pageNo = 1;
 			}
-		}, postDelayTime);
-	}
 
-	@Override
-	public void CircleUnJoined() {
-		new Handler().postDelayed(new Runnable() {
 			@Override
-			public void run() {
-				mJoinCircle.firstCalling(false);
-			}
-		}, postDelayTime);
+			public void OnError() {
 
+			}
+		});
+		mJoinCircleParser.parse(context, mJoinCircleParser.getBody(circleID), Authtoken);
 	}
 
-	public void refreshView() {
-		CircleJoin();
-		new Handler().postDelayed(new Runnable() {
+	private void unjoinCircleEvent(String circleID, final int position_) {
+
+		if (!Util.hasConnection(context)) {
+			Util.ShowToast(context, getResources().getString(R.string.internetconnection_msg));
+			return;
+		}
+
+		UnJoinCircleParser mUnJoinCircleParser = new UnJoinCircleParser();
+		mUnJoinCircleParser.setUnjoincircleparserinterface(new UnJoinCircleParserInterface() {
+
 			@Override
-			public void run() {
-				CircleUnJoined();
+			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
+				Util.ShowToast(context, "Successfully unjoined " + (isChapter_ ? "chapter" : "club"));
+				mCircleListAdapter.refreshData(circlerList);
+				pageNo = 1;
 			}
-		}, postDelayTime);
+
+			@Override
+			public void OnError() {
+
+			}
+		});
+		mUnJoinCircleParser.parse(context, mUnJoinCircleParser.getBody(circleID), Authtoken);
 	}
+
 }

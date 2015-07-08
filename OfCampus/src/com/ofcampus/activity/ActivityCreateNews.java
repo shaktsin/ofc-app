@@ -301,6 +301,7 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 	/*** Post Job Details **/
 	private JobDetails mJobDetails;
 	private String JObID = "";
+	private String[] circleIDs = null;
 
 	private void loadJobData() {
 		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;
@@ -312,6 +313,8 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 		edt_email.setText(mJobDetails.getReplyEmail());
 		edt_phno.setText(mJobDetails.getReplyPhone());
 		edt_whatsapp.setText(mJobDetails.getReplyWatsApp());
+
+		circleIDs = mJobDetails.getSelectedCircle();
 
 		mCustomArrayAdapter.RefreshImage(getJobPicArray());
 		mDOCPDFArrayAdapter.RefreshDoc(getDocArray());
@@ -356,6 +359,14 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 		edt_whatsapp.setText((wthp != null && !wthp.equals("null") && !wthp.equals("")) ? wthp : "");
 
 		circleList = mPrepareListForNewsAndJob.getCirclelist();
+		if (circleList != null && circleIDs != null && circleIDs.length >= 1) {
+			for (CustomSpinnerDataSets item : circleList) {
+				if (item.getId().equals(circleIDs[0])) {
+					item.isSelected = 1;
+					edt_sendto.setText(item.getTitle());
+				}
+			}
+		}
 	}
 
 	private ArrayList<AttachmentDataSet> getJobPicArray() {

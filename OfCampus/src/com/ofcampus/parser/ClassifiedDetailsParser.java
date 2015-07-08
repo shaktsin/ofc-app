@@ -67,6 +67,7 @@ public class ClassifiedDetailsParser {
 	private String NUMLIKES = "numLikes";
 
 	// private String LOCATIONS = "locations";
+	private String CIRCLEDTOLIST = "circleDtoList";
 	private String LOCATIONS = "cityDtoList";
 	private String LOCATIONNAME = "name";
 	private String SECONDARYCATEGORYDTOLIST = "secondaryCategoryDtoList";
@@ -264,24 +265,48 @@ public class ClassifiedDetailsParser {
 				String primary = "";
 				String secondary = "";
 
+				String[] locationIds = null;
+				String[] primaryIds = null;
+				String[] secondIds = null;
+				String[] circleIds = null;
+
 				JSONArray locationJSONArray = jsonobject.getJSONArray(LOCATIONS);
 
 				if (locationJSONArray != null && locationJSONArray.length() >= 1) {
-
+					locationIds = new String[locationJSONArray.length()];
 					for (int j = 0; j < locationJSONArray.length(); j++) {
 						location = location + Util.getJsonValue(locationJSONArray.getJSONObject(j), LOCATIONNAME) + ", ";
+						locationIds[j] = Util.getJsonValue(locationJSONArray.getJSONObject(j), "id");
 					}
 				}
 
 				JSONArray secondarycategJSONArray = jsonobject.getJSONArray(SECONDARYCATEGORYDTOLIST);
 
 				if (secondarycategJSONArray != null && secondarycategJSONArray.length() >= 1) {
-
+					primaryIds = new String[secondarycategJSONArray.length()];
+					secondIds = new String[secondarycategJSONArray.length()];
 					for (int j = 0; j < secondarycategJSONArray.length(); j++) {
 						primary = primary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME) + ", ";
 						secondary = secondary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), SECONDARYCATEGORYNAME) + ", ";
+
+						primaryIds[j] = Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), "primaryCatId");
+						secondIds[j] = Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), "id");
 					}
 				}
+
+				JSONArray circledtolistJSONArray = jsonobject.getJSONArray(CIRCLEDTOLIST);
+
+				if (circledtolistJSONArray != null && circledtolistJSONArray.length() >= 1) {
+					circleIds = new String[circledtolistJSONArray.length()];
+					for (int j = 0; j < circledtolistJSONArray.length(); j++) {
+						circleIds[j] = Util.getJsonValue(circledtolistJSONArray.getJSONObject(j), "id");
+					}
+				}
+
+				mJobDetails.setSelectedCircle(circleIds);
+				mJobDetails.setSelectedCitys(locationIds);
+				mJobDetails.setSelectedPrimarycat(primaryIds);
+				mJobDetails.setSelectedSecCatg(secondIds);
 
 				location = (TextUtils.isEmpty(location)) ? "" : ("#" + location);
 				primary = (TextUtils.isEmpty(primary)) ? "" : (" #" + primary);

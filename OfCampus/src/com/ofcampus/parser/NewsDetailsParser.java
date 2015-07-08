@@ -70,6 +70,8 @@ public class NewsDetailsParser {
 	private String NUMSPAM = "numSpam";
 	private String NUMLIKES = "numLikes";
 
+	private String CIRCLEDTOLIST = "circleDtoList";
+
 	/** CommentList Key */
 	private String COMMENTLISTRESPONSE = "commentListResponse";
 	private String COMMENTRESPONSELIST = "commentResponseList";
@@ -254,6 +256,24 @@ public class NewsDetailsParser {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+
+			try {
+
+				String[] circleIds = null;
+				JSONArray circledtolistJSONArray = jsonobject.getJSONArray(CIRCLEDTOLIST);
+
+				if (circledtolistJSONArray != null && circledtolistJSONArray.length() >= 1) {
+					circleIds = new String[circledtolistJSONArray.length()];
+					for (int j = 0; j < circledtolistJSONArray.length(); j++) {
+						circleIds[j] = Util.getJsonValue(circledtolistJSONArray.getJSONObject(j), "id");
+					}
+				}
+
+				mJobDetails.setSelectedCircle(circleIds);
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
 			}
 
 			arrayJobsComment.add(mJobDetails);

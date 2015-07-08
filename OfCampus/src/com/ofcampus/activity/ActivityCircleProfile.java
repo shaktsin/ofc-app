@@ -668,7 +668,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		mJoinCircleParser.setJoincircleparserinterface(new JoinCircleParserInterface() {
 
 			@Override
-			public void OnSuccess() {
+			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
 				Util.ShowToast(context, "Successfully Joined Club");
 				isDataModify = true;
 				status_circle.setText("Unjoin");
@@ -694,7 +694,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		mUnJoinCircleParser.setUnjoincircleparserinterface(new UnJoinCircleParserInterface() {
 
 			@Override
-			public void OnSuccess() {
+			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
 				Util.ShowToast(context, "Successfully unjoined club");
 				isDataModify = true;
 				status_circle.setText("Join");

@@ -79,6 +79,7 @@ public class CommentParser {
 	private String NUMSPAM = "numSpam";
 	private String NUMLIKES = "numLikes";
 
+	private String CIRCLEDTOLIST = "circleDtoList";
 	private String LOCATIONS = "locations";
 	private String LOCATIONNAME = "name";
 	private String INDUSTRYROLESDTOLIST = "industryRolesDtoList";
@@ -271,22 +272,45 @@ public class CommentParser {
 
 				JSONArray locationJSONArray = jsonobject.getJSONArray(LOCATIONS);
 
-				if (locationJSONArray != null && locationJSONArray.length() >= 1) {
+				String[] locationIds = null;
+				String[] industryIds = null;
+				String[] rolesIds = null;
+				String[] circleIds = null;
 
+				if (locationJSONArray != null && locationJSONArray.length() >= 1) {
+					locationIds = new String[locationJSONArray.length()];
 					for (int j = 0; j < locationJSONArray.length(); j++) {
 						location = location + Util.getJsonValue(locationJSONArray.getJSONObject(j), LOCATIONNAME) + ", ";
+						locationIds[j] = Util.getJsonValue(locationJSONArray.getJSONObject(j), "id");
 					}
 				}
 
 				JSONArray industryJSONArray = jsonobject.getJSONArray(INDUSTRYROLESDTOLIST);
 
 				if (industryJSONArray != null && industryJSONArray.length() >= 1) {
-
+					industryIds = new String[industryJSONArray.length()];
+					rolesIds = new String[industryJSONArray.length()];
 					for (int j = 0; j < industryJSONArray.length(); j++) {
 						industry = industry + Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME) + ", ";
 						role = role + Util.getJsonValue(industryJSONArray.getJSONObject(j), ROLE) + ", ";
+						industryIds[j] = Util.getJsonValue(industryJSONArray.getJSONObject(j), "id");
+						rolesIds[j] = Util.getJsonValue(industryJSONArray.getJSONObject(j), "industryId");
 					}
 				}
+
+				JSONArray circledtolistJSONArray = jsonobject.getJSONArray(CIRCLEDTOLIST);
+
+				if (circledtolistJSONArray != null && circledtolistJSONArray.length() >= 1) {
+					circleIds = new String[circledtolistJSONArray.length()];
+					for (int j = 0; j < circledtolistJSONArray.length(); j++) {
+						circleIds[j] = Util.getJsonValue(circledtolistJSONArray.getJSONObject(j), "id");
+					}
+				}
+
+				mJobDetails.setSelectedCircle(circleIds);
+				mJobDetails.setSelectedCitys(locationIds);
+				mJobDetails.setSelectedIndustry(industryIds);
+				mJobDetails.setSelectedRole(rolesIds);
 
 				location = (TextUtils.isEmpty(location)) ? "" : ("#" + location);
 				industry = (TextUtils.isEmpty(industry)) ? "" : (" #" + industry);
@@ -304,8 +328,10 @@ public class CommentParser {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(industry) + Util.removeLastChr(role) );
-//				mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(industry) + Util.removeLastChr(role) + expandsal);//Change As per Shakti Daa
+				mJobDetails.setLocationandinds(Util.removeLastChr(location) + Util.removeLastChr(industry) + Util.removeLastChr(role));
+				// mJobDetails.setLocationandinds(Util.removeLastChr(location) +
+				// Util.removeLastChr(industry) + Util.removeLastChr(role) +
+				// expandsal);//Change As per Shakti Daa
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

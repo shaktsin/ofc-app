@@ -77,8 +77,8 @@ public class Util {
 	public static long delay = 5 * 1000;
 	public static long period = 30 * 1000;
 
-//	private static String baseUrl = "http://205.147.110.176:8080/api/";
-	 private static String baseUrl = "http://ofcampus.com/api/";
+	private static String baseUrl = "http://205.147.110.176:8080/api/";
+	// private static String baseUrl = "http://ofcampus.com/api/";
 
 	private static String SDCardPath = "OfCampus/Document";
 	public static String defaultYear = "2014";

@@ -7,6 +7,7 @@ package com.ofcampus.parser;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 
 import com.ofcampus.Util;
+import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.InstituteDetails;
 
 public class UnJoinCircleParser {
@@ -25,6 +27,15 @@ public class UnJoinCircleParser {
 	private String RESULTS = "results";
 	private String EXCEPTION = "exception";
 	private String MESSAGES = "messages";
+
+	private String ID = "id";
+	private String NAME = "name";
+	private String SELECTED = "selected";
+	private String MEMBERS = "members";
+	private String POSTS = "posts";
+	private String JOINED = "joined";
+	private String ADMIN = "admin";
+	private String MODERATE = "moderate";
 
 	private String SUCCESS = "success";
 
@@ -46,7 +57,7 @@ public class UnJoinCircleParser {
 		private Context context;
 		private String authenticationJson;
 		private boolean isTimeOut = false;
-		private ArrayList<InstituteDetails> Institutes;
+		private ArrayList<CircleDetails> circlerList;
 		private JSONObject postData;
 		private String authorization;
 		private ProgressDialog mDialog;
@@ -83,7 +94,7 @@ public class UnJoinCircleParser {
 						if (Obj != null && !Obj.equals("")) {
 							String expt = Util.getJsonValue(Obj, EXCEPTION);
 							if (expt.equals("false")) {
-								resSuccess = Util.getJsonValue(Obj, SUCCESS);
+								circlerList = parseData(Obj);
 							}
 						}
 					} else if (responsecode != null && responsecode.equals("500")) {
@@ -117,7 +128,7 @@ public class UnJoinCircleParser {
 			} else if (responsecode.equals("200")) {
 				if (resSuccess != null && resSuccess.equalsIgnoreCase("true")) {
 					if (unjoincircleparserinterface != null) {
-						unjoincircleparserinterface.OnSuccess();
+						unjoincircleparserinterface.OnSuccess(circlerList);
 					}
 				} else {
 					Util.ShowToast(mContext, "Error occured");
@@ -129,6 +140,33 @@ public class UnJoinCircleParser {
 			}
 
 		}
+	}
+
+	private ArrayList<CircleDetails> parseData(JSONObject obj) {
+		ArrayList<CircleDetails> circlerList = null;
+		try {
+			JSONArray circleJSONArray = obj.getJSONArray("circleDtoList");
+			if (circleJSONArray != null && circleJSONArray.length() >= 1) {
+				circlerList = new ArrayList<CircleDetails>();
+				for (int i = 0; i < circleJSONArray.length(); i++) {
+					JSONObject circlJSONObj = circleJSONArray.getJSONObject(i);
+					CircleDetails mCircleDetails = new CircleDetails();
+
+					mCircleDetails.setId(Util.getJsonValue(circlJSONObj, ID));
+					mCircleDetails.setName(Util.getJsonValue(circlJSONObj, NAME));
+					mCircleDetails.setSelected(Util.getJsonValue(circlJSONObj, SELECTED));
+					mCircleDetails.setMembers(Util.getJsonValue(circlJSONObj, MEMBERS));
+					mCircleDetails.setPosts(Util.getJsonValue(circlJSONObj, POSTS));
+					mCircleDetails.setJoined(Util.getJsonValue(circlJSONObj, JOINED));
+					mCircleDetails.setAdmin(Util.getJsonValue(circlJSONObj, ADMIN));
+					mCircleDetails.setModerate(Util.getJsonValue(circlJSONObj, MODERATE));
+					circlerList.add(mCircleDetails);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return circlerList;
 	}
 
 	public JSONObject getBody(String circleId) {
@@ -154,7 +192,7 @@ public class UnJoinCircleParser {
 	}
 
 	public interface UnJoinCircleParserInterface {
-		public void OnSuccess();
+		public void OnSuccess(ArrayList<CircleDetails> circlerList); 
 
 		public void OnError();
 	}

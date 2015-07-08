@@ -46,7 +46,62 @@ public class JobDetails {
 	private String numimportant = "";
 	private String numspam = "";
 	public String numlikes = "";
-	
+
+	private String[] selectedCitys;
+	private String[] selectedIndustry;
+	private String[] selectedRole;
+	private String[] selectedCircle;
+	private String[] selectedPrimarycat;
+	private String[] selectedSecCatg;
+
+	public String[] getSelectedRole() {
+		return selectedRole;
+	}
+
+	public void setSelectedRole(String[] selectedRole) {
+		this.selectedRole = selectedRole;
+	}
+
+	public String[] getSelectedSecCatg() {
+		return selectedSecCatg;
+	}
+
+	public void setSelectedSecCatg(String[] selectedSecCatg) {
+		this.selectedSecCatg = selectedSecCatg;
+	}
+
+	public String[] getSelectedCitys() {
+		return selectedCitys;
+	}
+
+	public void setSelectedCitys(String[] selectedCitys) {
+		this.selectedCitys = selectedCitys;
+	}
+
+	public String[] getSelectedIndustry() {
+		return selectedIndustry;
+	}
+
+	public void setSelectedIndustry(String[] selectedIndustry) {
+		this.selectedIndustry = selectedIndustry;
+	}
+
+	public String[] getSelectedCircle() {
+		return selectedCircle;
+	}
+
+	public void setSelectedCircle(String[] selectedCircle) {
+		this.selectedCircle = selectedCircle;
+	}
+
+	public String[] getSelectedPrimarycat() {
+		return selectedPrimarycat;
+	}
+
+	public void setSelectedPrimarycat(String[] selectedPrimarycat) {
+		this.selectedPrimarycat = selectedPrimarycat;
+	}
+
 	private String locationandinds = "";
 
 	public String getLocationandinds() {

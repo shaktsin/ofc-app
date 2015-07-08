@@ -1,5 +1,5 @@
 /*
-/////////////////////////////////////////////////// * This is the source code of OfCampus for Android v. 1.0.0.
+ * This is the source code of OfCampus for Android v. 1.0.0.
  * You should have received a copy of the license in this archive (see LICENSE).
  * Copyright @Dibakar_Mistry, 2015.
  */

@@ -425,14 +425,58 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		edt_whatsapp.setText((wthp != null && !wthp.equals("null") && !wthp.equals("")) ? wthp : "");
 
 		circleList = mPrepareListForNewsAndJob.getCirclelist();
+		if (circleList != null && circleIDs != null && circleIDs.length >= 1) {
+			for (CustomSpinnerDataSets item : circleList) {
+				if (item.getId().equals(circleIDs[0])) {
+					item.isSelected = 1;
+					
+					edt_sendto.setText(item.getTitle());
+					
+					
+				}
+			}
+		}
+
 		industrieslist = mPrepareListForNewsAndJob.getIndustrylist();
 		rolelist = (industrieslist != null && industrieslist.size() >= 1) ? industrieslist.get(0).getList() : null;
+
+		if (industrieslist != null && idustryIDs != null && idustryIDs.length >= 1) {
+			for (int i = 0; i < industrieslist.size(); i++) {
+				CustomSpinnerDataSets industry = industrieslist.get(i); 
+				if (industry.getId().equals(idustryIDs[0])) {
+					industry.isSelected = 1;
+					edt_idustry.setText(industry.getTitle());
+					rolelist = (industrieslist != null && industrieslist.size() >= 1) ? industrieslist.get(i).getList() : null;
+					ArrayList<CustomSpinnerDataSets> roleIds = industrieslist.get(i).getList();
+					for (CustomSpinnerDataSets role : roleIds) {
+						if (role.getId().equals(roles[0])) {
+							role.isSelected = 1;
+							 edt_role.setText(role.getTitle());
+						}
+					}
+				}
+			}
+		}
+
 		arrcity = mPrepareListForNewsAndJob.getCitys();
+		if (arrcity != null && locationIDs != null && locationIDs.length >= 1) {
+			for (CustomSpinnerDataSets city : arrcity) {
+				if (city.getId().equals(locationIDs[0])) {
+					city.isSelected = 1;
+					 edt_city.setText(city.getTitle());
+				}
+			}
+		}
+
 	}
 
 	/*** Post Job Details **/
 	private JobDetails mJobDetails;
 	private String JObID = "";
+	private String[] circleIDs = null;
+	private String[] idustryIDs = null;
+	private String[] roles = null;
+	private String[] locationIDs = null;
 
 	private void loadJobData() {
 		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;
@@ -444,6 +488,11 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		edt_email.setText(mJobDetails.getReplyEmail());
 		edt_phno.setText(mJobDetails.getReplyPhone());
 		edt_whatsapp.setText(mJobDetails.getReplyWatsApp());
+
+		circleIDs = mJobDetails.getSelectedCircle();
+		idustryIDs = mJobDetails.getSelectedIndustry();
+		locationIDs = mJobDetails.getSelectedCitys();
+		roles = mJobDetails.getSelectedRole();
 
 		mCustomArrayAdapter.RefreshImage(getJobPicArray());
 		mDOCPDFArrayAdapter.RefreshDoc(getDocArray());
@@ -749,10 +798,10 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		String ph_ = edt_phno.getText().toString().trim();
 		String whats_ = edt_whatsapp.getText().toString().trim();
 
-		 String experiencto = edt_expmin.getText().toString();
-		 String experiencfrom = edt_expmax.getText().toString();
-		 String salaryto = edt_salmin.getText().toString();
-		 String salaryfrom = edt_salmax.getText().toString();
+		String experiencto = edt_expmin.getText().toString();
+		String experiencfrom = edt_expmax.getText().toString();
+		String salaryto = edt_salmin.getText().toString();
+		String salaryfrom = edt_salmax.getText().toString();
 		String headline = postheadline.getText().toString();
 		String headlinedetails = postdetails.getText().toString();
 
@@ -841,56 +890,63 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 			return;
 		}
 
-//		if (experiencto.equals("")) {
-//			Util.ShowToast(context, "Please fill the Experience Min value.");
-//			return;
-//		}
-//		
-//		if (Integer.parseInt(experiencto)>100) {
-//			Util.ShowToast(context, "Please fill the Experience Min value within 100.");
-//			return;
-//		}
-//
-//		if (experiencfrom.equals("")) {
-//			Util.ShowToast(context, "Please fill the Experience Max value.");
-//			return;
-//		}
-//		
-//		if (Integer.parseInt(experiencfrom)>100) {
-//			Util.ShowToast(context, "Please fill the Experience Max value within 100.");
-//			return;
-//		}
-//
-//		if (Integer.parseInt(experiencfrom) <= Integer.parseInt(experiencto)) {
-//			Util.ShowToast(context, "Experienc Max value should be greater then the Experienc Min value");
-//			return;
-//		}
-//
-//		if (salaryto.equals("")) {
-//			Util.ShowToast(context, "Please fill the salary Min value.");
-//			return;
-//		}
-//
-//		if (Integer.parseInt(salaryto)>100) {
-//			Util.ShowToast(context, "Please fill the Salary Min value within 100.");
-//			return;
-//		}
-//
-//		
-//		if (salaryfrom.equals("")) {
-//			Util.ShowToast(context, "Please fill the salary Max value.");
-//			return;
-//		}
-//
-//		if (Integer.parseInt(salaryfrom)>100) {
-//			Util.ShowToast(context, "Please fill the Salary Max value within 100.");
-//			return;
-//		}
-//
-//		if (Integer.parseInt(salaryfrom) <= Integer.parseInt(salaryto)) {
-//			Util.ShowToast(context, "From Salary Max value should be greater then the Salary Min value.");
-//			return;
-//		}
+		// if (experiencto.equals("")) {
+		// Util.ShowToast(context, "Please fill the Experience Min value.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(experiencto)>100) {
+		// Util.ShowToast(context,
+		// "Please fill the Experience Min value within 100.");
+		// return;
+		// }
+		//
+		// if (experiencfrom.equals("")) {
+		// Util.ShowToast(context, "Please fill the Experience Max value.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(experiencfrom)>100) {
+		// Util.ShowToast(context,
+		// "Please fill the Experience Max value within 100.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(experiencfrom) <= Integer.parseInt(experiencto))
+		// {
+		// Util.ShowToast(context,
+		// "Experienc Max value should be greater then the Experienc Min value");
+		// return;
+		// }
+		//
+		// if (salaryto.equals("")) {
+		// Util.ShowToast(context, "Please fill the salary Min value.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(salaryto)>100) {
+		// Util.ShowToast(context,
+		// "Please fill the Salary Min value within 100.");
+		// return;
+		// }
+		//
+		//
+		// if (salaryfrom.equals("")) {
+		// Util.ShowToast(context, "Please fill the salary Max value.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(salaryfrom)>100) {
+		// Util.ShowToast(context,
+		// "Please fill the Salary Max value within 100.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(salaryfrom) <= Integer.parseInt(salaryto)) {
+		// Util.ShowToast(context,
+		// "From Salary Max value should be greater then the Salary Min value.");
+		// return;
+		// }
 
 		if (headline.equals("")) {
 			Util.ShowToast(context, "Please fill Job Headline.");
@@ -980,21 +1036,20 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		JSONObject jsObj = new JSONObject();
 		try {
 			jsObj.put("timeSpecified", "true");
-//			jsObj.put("to", experiencto);
-//			jsObj.put("from", experiencfrom);
-			
+			// jsObj.put("to", experiencto);
+			// jsObj.put("from", experiencfrom);
+
 			jsObj.put("to", "1");
 			jsObj.put("from", "2");
-			
+
 			jsObj.put("salarySpecified", "true");
 
-//			jsObj.put("salaryTo", salaryto);
-//			jsObj.put("salaryFrom", salaryfrom);
-			
+			// jsObj.put("salaryTo", salaryto);
+			// jsObj.put("salaryFrom", salaryfrom);
+
 			jsObj.put("salaryTo", "2");
 			jsObj.put("salaryFrom", "4");
-			
-			
+
 			jsObj.put("subject", headline);
 			jsObj.put("content", headlinedetails);
 
@@ -1136,56 +1191,63 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 			return;
 		}
 
-//		if (experiencto.equals("")) {
-//			Util.ShowToast(context, "Please fill the Experience Min value.");
-//			return;
-//		}
-//		
-//		if (Integer.parseInt(experiencto)>100) {
-//			Util.ShowToast(context, "Please fill the Experience Min value within 100.");
-//			return;
-//		}
-//
-//		if (experiencfrom.equals("")) {
-//			Util.ShowToast(context, "Please fill the Experience Max value.");
-//			return;
-//		}
-//		
-//		if (Integer.parseInt(experiencfrom)>100) {
-//			Util.ShowToast(context, "Please fill the Experience Max value within 100.");
-//			return;
-//		}
-//
-//		if (Integer.parseInt(experiencfrom) <= Integer.parseInt(experiencto)) {
-//			Util.ShowToast(context, "Experienc Max value should be greater then the Experienc Min value");
-//			return;
-//		}
-//
-//		if (salaryto.equals("")) {
-//			Util.ShowToast(context, "Please fill the salary Min value.");
-//			return;
-//		}
-//
-//		if (Integer.parseInt(salaryto)>100) {
-//			Util.ShowToast(context, "Please fill the Salary Min value within 100.");
-//			return;
-//		}
-//
-//		
-//		if (salaryfrom.equals("")) {
-//			Util.ShowToast(context, "Please fill the salary Max value.");
-//			return;
-//		}
-//
-//		if (Integer.parseInt(salaryfrom)>100) {
-//			Util.ShowToast(context, "Please fill the Salary Max value within 100.");
-//			return;
-//		}
-//
-//		if (Integer.parseInt(salaryfrom) <= Integer.parseInt(salaryto)) {
-//			Util.ShowToast(context, "From Salary Max value should be greater then the Salary Min value.");
-//			return;
-//		}
+		// if (experiencto.equals("")) {
+		// Util.ShowToast(context, "Please fill the Experience Min value.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(experiencto)>100) {
+		// Util.ShowToast(context,
+		// "Please fill the Experience Min value within 100.");
+		// return;
+		// }
+		//
+		// if (experiencfrom.equals("")) {
+		// Util.ShowToast(context, "Please fill the Experience Max value.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(experiencfrom)>100) {
+		// Util.ShowToast(context,
+		// "Please fill the Experience Max value within 100.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(experiencfrom) <= Integer.parseInt(experiencto))
+		// {
+		// Util.ShowToast(context,
+		// "Experienc Max value should be greater then the Experienc Min value");
+		// return;
+		// }
+		//
+		// if (salaryto.equals("")) {
+		// Util.ShowToast(context, "Please fill the salary Min value.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(salaryto)>100) {
+		// Util.ShowToast(context,
+		// "Please fill the Salary Min value within 100.");
+		// return;
+		// }
+		//
+		//
+		// if (salaryfrom.equals("")) {
+		// Util.ShowToast(context, "Please fill the salary Max value.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(salaryfrom)>100) {
+		// Util.ShowToast(context,
+		// "Please fill the Salary Max value within 100.");
+		// return;
+		// }
+		//
+		// if (Integer.parseInt(salaryfrom) <= Integer.parseInt(salaryto)) {
+		// Util.ShowToast(context,
+		// "From Salary Max value should be greater then the Salary Min value.");
+		// return;
+		// }
 
 		if (headline.equals("")) {
 			Util.ShowToast(context, "Please fill Job Headline.");
@@ -1271,20 +1333,20 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 
 			jsObj.put("postId", JObID);
 			jsObj.put("timeSpecified", "true");
-//			jsObj.put("to", experiencto);
-//			jsObj.put("from", experiencfrom);
-			
+			// jsObj.put("to", experiencto);
+			// jsObj.put("from", experiencfrom);
+
 			jsObj.put("to", "1");
 			jsObj.put("from", "2");
-			
+
 			jsObj.put("salarySpecified", "true");
 
-//			jsObj.put("salaryTo", salaryto);
-//			jsObj.put("salaryFrom", salaryfrom);
-			
+			// jsObj.put("salaryTo", salaryto);
+			// jsObj.put("salaryFrom", salaryfrom);
+
 			jsObj.put("salaryTo", "2");
 			jsObj.put("salaryFrom", "4");
-			
+
 			jsObj.put("subject", headline);
 			jsObj.put("content", headlinedetails);
 

@@ -17,48 +17,34 @@
         android:layout_height="match_parent"
         android:background="@color/joblist_bg_color" >
 
-        <LinearLayout
-            android:id="@+id/color_line"
-            android:layout_width="fill_parent"
-            android:layout_height="8dp"
-            android:layout_alignParentTop="true"
-            android:baselineAligned="false"
-            android:orientation="horizontal" >
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="#E84C3D" />
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="#5498C7" />
-        </LinearLayout>
-
-        <com.ofcampus.component.PagerSlidingTabStripForCircle
-            android:id="@+id/circle_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="48dip"
-            android:layout_below="@+id/color_line"
-            android:background="#F0F0F0" >
-        </com.ofcampus.component.PagerSlidingTabStripForCircle>
-
-        <RelativeLayout
-            android:id="@+id/activity_circle_tabbelowline"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/circle_tabs"
-            android:background="@android:color/darker_gray" >
-        </RelativeLayout>
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/circle_tabpager"
+        <ListView
+            android:id="@+id/circle_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/activity_circle_tabbelowline" />
+            android:layout_above="@+id/activity_home_footer_pg"
+            android:layout_marginTop="5dp"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent" >
+        </ListView>
+
+        <RelativeLayout
+            android:id="@+id/activity_home_footer_pg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent"
+            android:visibility="gone" >
+
+            <com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate
+                android:id="@+id/progressBarCircularIndetermininate"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true"
+                android:layout_margin="6dp"
+                android:background="#1E88E5" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>
