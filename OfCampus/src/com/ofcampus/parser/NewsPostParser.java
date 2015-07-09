@@ -16,6 +16,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
@@ -161,15 +162,15 @@ public class NewsPostParser {
 						Util.ShowToast(mContext, "News Posted successfully.");
 					}
 				} else {
-					Util.ShowToast(mContext, "News Post error.");
-					if (newspostparserinterface != null) {
-						newspostparserinterface.OnError();
-					}
+//					Util.ShowToast(mContext, "News Post error.");
+//					if (newspostparserinterface != null) {
+//						newspostparserinterface.OnError();
+//					}
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, "News Post error.");
+//				Util.ShowToast(mContext, "News Post error.");
 			} else {
-				Util.ShowToast(mContext, "News Post error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 		}
 	}

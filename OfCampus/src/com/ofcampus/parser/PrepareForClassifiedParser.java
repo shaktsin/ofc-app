@@ -19,6 +19,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.CustomSpinnerDataSets;
 import com.ofcampus.model.PrepareListForClassified;
@@ -147,18 +148,19 @@ public class PrepareForClassifiedParser {
 						prepareparserinterface.OnSuccess(mPrepareListForClassified);
 					}
 				} else {
-					Util.ShowToast(mContext, "Parse error.");
+//					Util.ShowToast(mContext, "Parse error.");
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, responseDetails);
-				if (prepareparserinterface != null) {
-					prepareparserinterface.OnError();
-				}
+//				Util.ShowToast(mContext, responseDetails);
+//				if (prepareparserinterface != null) {
+//					prepareparserinterface.OnError();
+//				}
 			} else {
-				Util.ShowToast(mContext, "Parse error.");
-				if (prepareparserinterface != null) {
-					prepareparserinterface.OnError();
-				}
+//				Util.ShowToast(mContext, "Parse error.");
+//				if (prepareparserinterface != null) {
+//					prepareparserinterface.OnError();
+//				}
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 
 		}

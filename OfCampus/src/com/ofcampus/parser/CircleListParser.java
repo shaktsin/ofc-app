@@ -16,6 +16,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
 
@@ -144,7 +145,7 @@ public class CircleListParser {
 //				Util.ShowToast(mContext, "No more Join circle available");
 				error();
 			} else {
-				Util.ShowToast(mContext, "Error occured");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 				error();
 			}
 

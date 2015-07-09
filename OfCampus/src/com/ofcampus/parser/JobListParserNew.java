@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
@@ -161,16 +162,16 @@ public class JobListParserNew {
 						joblistparsernewinterface.OnSuccess(jobList);
 					}
 				} else {
-					Util.ShowToast(mContext, "No more Job");
-					if (joblistparsernewinterface != null) {
-						joblistparsernewinterface.OnSuccess(null);
-					}
+//					Util.ShowToast(mContext, "No more Job");
+//					if (joblistparsernewinterface != null) {
+//						joblistparsernewinterface.OnSuccess(null);
+//					}
 				}
 			} else if (responsecode.equals("500") || responsecode.equals("401")) {
-				Util.ShowToast(mContext, responseDetails);
+//				Util.ShowToast(mContext, responseDetails);
 				error();
 			} else {
-				Util.ShowToast(mContext, "Joblist parse error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 				error();
 			}
 		}

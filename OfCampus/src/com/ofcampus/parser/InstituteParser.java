@@ -15,6 +15,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.InstituteDetails;
 
@@ -109,12 +110,12 @@ public class InstituteParser {
 						instituteparserinterface.OnSuccess(Institutes);
 					}
 				} else {
-					Util.ShowToast(mContext, "Login error.");
+//					Util.ShowToast(mContext, "Login error.");
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, "Please check your email and password.");
+//				Util.ShowToast(mContext, "Please check your email and password.");
 			} else {
-				Util.ShowToast(mContext, "Login error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 
 		}

@@ -16,6 +16,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
@@ -140,10 +141,10 @@ public class NewsFeedListParser {
 					newsfeedlistparserinterface.OnSuccess(newsList);
 				}
 			} else if (responsecode.equals("500") || responsecode.equals("401")) {
-				Util.ShowToast(mContext, "No more News.");
+				// Util.ShowToast(mContext, "No more News.");
 				error();
 			} else {
-				Util.ShowToast(mContext, "News parse error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 				error();
 			}
 		}

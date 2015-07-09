@@ -18,6 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.UserDetails;
 
@@ -134,12 +135,12 @@ public class LoginParser {
 						logininterface.OnSuccess(mDetails);
 					}
 				} else {
-					Util.ShowToast(mContext, "Login error.");
+//					Util.ShowToast(mContext, "Login error.");
 				}
 			} else if (responsecode.equals("500")) {
 				Util.ShowToast(mContext, "Invalid Credentials");
 			} else {
-				Util.ShowToast(mContext, "Login error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 		}
 	}

@@ -16,6 +16,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
@@ -175,15 +176,15 @@ public class EditJobParser {
 						Util.ShowToast(mContext, "Job edit successfully.");
 					}
 				} else {
-					Util.ShowToast(mContext, "Job edit error.");
-					if (editjobparserinterface != null) {
-						editjobparserinterface.OnError();
-					}
+//					Util.ShowToast(mContext, "Job edit error.");
+//					if (editjobparserinterface != null) {
+//						editjobparserinterface.OnError();
+//					}
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, responseDetails);
+//				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, "Job edit error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 		}
 	}

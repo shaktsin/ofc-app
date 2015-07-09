@@ -145,10 +145,10 @@ public class CommentAllParser {
 					}
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, responseDetails);
-				if (commentallparserinterface != null) {
-					commentallparserinterface.OnError();
-				}
+//				Util.ShowToast(mContext, responseDetails);
+//				if (commentallparserinterface != null) {
+//					commentallparserinterface.OnError();
+//				}
 			} else {
 				Util.ShowToast(mContext, "Load old Comment parser error.");
 				if (commentallparserinterface != null) {

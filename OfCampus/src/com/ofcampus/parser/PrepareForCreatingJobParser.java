@@ -19,13 +19,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
-import com.ofcampus.model.Circle;
-import com.ofcampus.model.CityDetails;
 import com.ofcampus.model.CustomSpinnerDataSets;
-import com.ofcampus.model.IndustryDetails;
-import com.ofcampus.model.IndustryRoleDetails;
-import com.ofcampus.model.PrepareListForNewsAndJob;
 import com.ofcampus.model.PrepareListForNewsAndJob;
 
 public class PrepareForCreatingJobParser {
@@ -156,18 +152,18 @@ public class PrepareForCreatingJobParser {
 						prepareparserinterface.OnSuccess(mPrepareListForNewsAndJob);
 					}
 				} else {
-					Util.ShowToast(mContext, "Parse error.");
+//					Util.ShowToast(mContext, "Parse error.");
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, responseDetails);
-				if (prepareparserinterface != null) {
-					prepareparserinterface.OnError();
-				}
+//				Util.ShowToast(mContext, responseDetails);
+//				if (prepareparserinterface != null) {
+//					prepareparserinterface.OnError();
+//				}
 			} else {
-				Util.ShowToast(mContext, "Parse error.");
-				if (prepareparserinterface != null) {
-					prepareparserinterface.OnError();
-				}
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+//				if (prepareparserinterface != null) {
+//					prepareparserinterface.OnError();
+//				}
 			}
 
 		}

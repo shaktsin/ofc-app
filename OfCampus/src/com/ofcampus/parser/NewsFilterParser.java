@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
@@ -159,12 +160,12 @@ public class NewsFilterParser {
 						newsfilterparserinterface.OnSuccess(JobList);
 					}
 				} else {
-					Util.ShowToast(mContext, "NO data availble.");
+//					Util.ShowToast(mContext, "NO data availble.");
 				}
 			} else if (responsecode.equals("500") || responsecode.equals("401")) {
-				Util.ShowToast(mContext, responseDetails);
+//				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, "Filter Error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 		}
 	}

@@ -16,6 +16,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.ImageDetails;
@@ -161,12 +162,12 @@ public class ImportantMailParser {
 						importantmailparserinterface.OnSuccess(mJobList);
 					}
 				} else {
-					Util.ShowToast(mContext, "No more Important Jobs.");
+//					Util.ShowToast(mContext, "No more Important Jobs.");
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, responseDetails);
+//				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, "Joblist parse error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 		}
 	}

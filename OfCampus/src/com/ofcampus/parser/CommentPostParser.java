@@ -13,6 +13,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.JobDetails;
 
@@ -125,15 +126,15 @@ public class CommentPostParser {
 						commentpostparserinterface.OnSuccess(mJobDetails);
 					}
 				} else {
-					Util.ShowToast(mContext, "Comment post parser error.");
-					if (commentpostparserinterface != null) {
-						commentpostparserinterface.OnError();
-					}
+//					Util.ShowToast(mContext, "Comment post parser error.");
+//					if (commentpostparserinterface != null) {
+//						commentpostparserinterface.OnError();
+//					}
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, responseDetails);
+//				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, "Comment post parser error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 		}
 	}

@@ -18,6 +18,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.Util.userType;
 import com.ofcampus.model.UserDetails;
@@ -135,12 +136,12 @@ public class RegistrationParser {
 						regstrationinterface.OnSuccess(mDetails);
 					}
 				} else {
-					Util.ShowToast(mContext, "Login error.");
+//					Util.ShowToast(mContext, "Login error.");
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, responseDetails);
+//				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, "Login error.");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 		}
 	}

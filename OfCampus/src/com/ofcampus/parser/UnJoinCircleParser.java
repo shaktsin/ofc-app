@@ -16,6 +16,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.InstituteDetails;
@@ -131,12 +132,12 @@ public class UnJoinCircleParser {
 						unjoincircleparserinterface.OnSuccess(circlerList);
 					}
 				} else {
-					Util.ShowToast(mContext, "Error occured");
+//					Util.ShowToast(mContext, "Error occured");
 				}
 			} else if (responsecode.equals("500")) {
-				Util.ShowToast(mContext, responseDetails);
+//				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, "Error occured");
+				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
 			}
 
 		}
