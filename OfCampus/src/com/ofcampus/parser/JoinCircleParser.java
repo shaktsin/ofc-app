@@ -29,15 +29,6 @@ public class JoinCircleParser {
 	private String EXCEPTION = "exception";
 	private String MESSAGES = "messages";
 
-	private String ID = "id";
-	private String NAME = "name";
-	private String SELECTED = "selected";
-	private String MEMBERS = "members";
-	private String POSTS = "posts";
-	private String JOINED = "joined";
-	private String ADMIN = "admin";
-	private String MODERATE = "moderate";
-
 	private String SUCCESS = "success";
 
 	/* Response JSON key value */
@@ -58,7 +49,6 @@ public class JoinCircleParser {
 		private Context context;
 		private String authenticationJson;
 		private boolean isTimeOut = false;
-		private ArrayList<CircleDetails> circlerList;
 		private JSONObject postData;
 		private String authorization;
 		private ProgressDialog mDialog;
@@ -95,7 +85,7 @@ public class JoinCircleParser {
 						if (Obj != null && !Obj.equals("")) {
 							String expt = Util.getJsonValue(Obj, EXCEPTION);
 							if (expt.equals("false")) {
-								circlerList = parseData(Obj);
+								resSuccess = Util.getJsonValue(Obj, SUCCESS);
 							}
 						}
 					} else if (responsecode != null && responsecode.equals("500")) {
@@ -128,52 +118,19 @@ public class JoinCircleParser {
 				}
 			} else if (responsecode.equals("200")) {
 				if (resSuccess != null && resSuccess.equalsIgnoreCase("true")) {
-					if (circlerList != null && circlerList.size() >= 1) {
-						if (joincircleparserinterface != null) {
-							joincircleparserinterface.OnSuccess(circlerList);
-						}
-					} else {
-						// Util.ShowToast(mContext,
-						// "No more Join circle available");
+					if (joincircleparserinterface != null) {
+						joincircleparserinterface.OnSuccess();
 					}
-
 				} else {
-//					Util.ShowToast(mContext, "Error occured.");
+					Util.ShowToast(mContext, "Error occured.");
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, responseDetails);
+				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(mContext, "Error occured.");
 			}
 
 		}
-	}
-
-	private ArrayList<CircleDetails> parseData(JSONObject obj) {
-		ArrayList<CircleDetails> circlerList = null;
-		try {
-			JSONArray circleJSONArray = obj.getJSONArray("circleDtoList");
-			if (circleJSONArray != null && circleJSONArray.length() >= 1) {
-				circlerList = new ArrayList<CircleDetails>();
-				for (int i = 0; i < circleJSONArray.length(); i++) {
-					JSONObject circlJSONObj = circleJSONArray.getJSONObject(i);
-					CircleDetails mCircleDetails = new CircleDetails();
-
-					mCircleDetails.setId(Util.getJsonValue(circlJSONObj, ID));
-					mCircleDetails.setName(Util.getJsonValue(circlJSONObj, NAME));
-					mCircleDetails.setSelected(Util.getJsonValue(circlJSONObj, SELECTED));
-					mCircleDetails.setMembers(Util.getJsonValue(circlJSONObj, MEMBERS));
-					mCircleDetails.setPosts(Util.getJsonValue(circlJSONObj, POSTS));
-					mCircleDetails.setJoined(Util.getJsonValue(circlJSONObj, JOINED));
-					mCircleDetails.setAdmin(Util.getJsonValue(circlJSONObj, ADMIN));
-					mCircleDetails.setModerate(Util.getJsonValue(circlJSONObj, MODERATE));
-					circlerList.add(mCircleDetails);
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return circlerList;
 	}
 
 	public JSONObject getBody(String circleId) {
@@ -199,7 +156,7 @@ public class JoinCircleParser {
 	}
 
 	public interface JoinCircleParserInterface {
-		public void OnSuccess(ArrayList<CircleDetails> circlerList);
+		public void OnSuccess();
 
 		public void OnError();
 	}

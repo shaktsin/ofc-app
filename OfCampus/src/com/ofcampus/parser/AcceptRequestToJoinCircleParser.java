@@ -124,9 +124,9 @@ public class AcceptRequestToJoinCircleParser {
 //					Util.ShowToast(mContext, "Error occured.");
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+//				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			} else {
-				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			}
 
 		}

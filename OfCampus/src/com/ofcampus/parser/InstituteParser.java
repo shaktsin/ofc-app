@@ -115,7 +115,7 @@ public class InstituteParser {
 			} else if (responsecode.equals("500")) {
 //				Util.ShowToast(mContext, "Please check your email and password.");
 			} else {
-				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			}
 
 		}

@@ -148,7 +148,7 @@ public class ClassifiedListParser {
 //				Util.ShowToast(mContext, "No more Classifieds.");
 				error();
 			} else {
-				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 				error();
 			}
 		}

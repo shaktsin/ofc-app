@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -120,32 +121,14 @@ public class ActivityCircle extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	/**
-	 * Pager Page Selected.
-	 */
-	// @Override
-	// public void onPageSelected(int position) {
-	// switch (position) {
-	// case 0:
-	//
-	// break;
-	// case 1:
-	//
-	// break;
-	//
-	// default:
-	// break;
-	// }
-	// }
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == 91 && resultCode == RESULT_OK && data != null) {
 			boolean isModify = data.getExtras().getBoolean("isDataModify");
-			// if (isModify) {
-			// refreshView();
-			// }
+			if (isModify) {
+				refresList();
+			}
 		}
 	}
 
@@ -257,7 +240,6 @@ public class ActivityCircle extends ActionBarActivity {
 				this.circles.remove(position);
 				notifyDataSetChanged();
 			}
-
 		}
 
 		@Override
@@ -353,10 +335,9 @@ public class ActivityCircle extends ActionBarActivity {
 		mJoinCircleParser.setJoincircleparserinterface(new JoinCircleParserInterface() {
 
 			@Override
-			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
+			public void OnSuccess() {
 				Util.ShowToast(context, "Successfully Joined " + (isChapter_ ? "chapter" : "club"));
-				mCircleListAdapter.refreshData(circlerList);
-				pageNo = 1;
+				refresList();
 			}
 
 			@Override
@@ -378,10 +359,9 @@ public class ActivityCircle extends ActionBarActivity {
 		mUnJoinCircleParser.setUnjoincircleparserinterface(new UnJoinCircleParserInterface() {
 
 			@Override
-			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
+			public void OnSuccess() {
 				Util.ShowToast(context, "Successfully unjoined " + (isChapter_ ? "chapter" : "club"));
-				mCircleListAdapter.refreshData(circlerList);
-				pageNo = 1;
+				refresList();
 			}
 
 			@Override
@@ -390,6 +370,19 @@ public class ActivityCircle extends ActionBarActivity {
 			}
 		});
 		mUnJoinCircleParser.parse(context, mUnJoinCircleParser.getBody(circleID), Authtoken);
+	}
+
+	private void refresList() {
+		new Handler().postAtTime(new Runnable() {
+
+			@Override
+			public void run() {
+				pageNo = 0;
+				pagecount = 8;
+				getAllCircleList(false, pageNo, pagecount);
+
+			}
+		}, 500);
 	}
 
 }

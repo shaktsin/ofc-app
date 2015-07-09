@@ -145,7 +145,7 @@ public class CircleListParser {
 //				Util.ShowToast(mContext, "No more Join circle available");
 				error();
 			} else {
-				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 				error();
 			}
 

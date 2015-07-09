@@ -144,7 +144,7 @@ public class NewsFeedListParser {
 				// Util.ShowToast(mContext, "No more News.");
 				error();
 			} else {
-				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 				error();
 			}
 		}

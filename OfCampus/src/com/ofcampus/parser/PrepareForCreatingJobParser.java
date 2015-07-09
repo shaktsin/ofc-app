@@ -160,7 +160,7 @@ public class PrepareForCreatingJobParser {
 //					prepareparserinterface.OnError();
 //				}
 			} else {
-				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 //				if (prepareparserinterface != null) {
 //					prepareparserinterface.OnError();
 //				}

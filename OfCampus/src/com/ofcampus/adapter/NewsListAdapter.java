@@ -223,7 +223,7 @@ public class NewsListAdapter extends BaseAdapter {
 
 			if (commentcount != null && commentcount.length() >= 1 && !commentcount.equalsIgnoreCase("0")) {
 				mHolder.txt_commentcount.setVisibility(View.VISIBLE);
-				mHolder.txt_commentcount.setText(commentcount + ((Integer.parseInt(likecount) == 1) ? " comment" : " comments"));
+				mHolder.txt_commentcount.setText(commentcount + ((Integer.parseInt(commentcount) == 1) ? " comment" : " comments"));
 			} else {
 				mHolder.txt_commentcount.setVisibility(View.GONE);
 			}

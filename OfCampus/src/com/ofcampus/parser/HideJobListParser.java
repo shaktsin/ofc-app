@@ -167,7 +167,7 @@ public class HideJobListParser {
 			} else if (responsecode.equals("500")) {
 //				Util.ShowToast(mContext, responseDetails);
 			} else {
-				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			}
 		}
 	}

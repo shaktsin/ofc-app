@@ -158,7 +158,7 @@ public class PrepareForCreatingNewsParser {
 				// newsprepareparserinterface.OnError();
 				// }
 			} else {
-				Util.ShowToast(mContext, mContext.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 				// if (newsprepareparserinterface != null) {
 				// newsprepareparserinterface.OnError();
 				// }

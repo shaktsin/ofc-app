@@ -164,7 +164,7 @@ public class ActivityLogin extends Activity implements OnClickListener {
 
 			@Override
 			public void OnError() {
-				Util.ShowToast(context, context.getResources().getString(R.id.serever_error_msg));
+				Util.ShowToast(context, context.getResources().getString(R.string.serever_error_msg));
 			}
 		});
 		mLoginParser.parse(context, email, Pass);
