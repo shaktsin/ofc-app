@@ -373,6 +373,8 @@ public class ActivityCircle extends ActionBarActivity {
 		mUnJoinCircleParser.parse(context, mUnJoinCircleParser.getBody(circleID), Authtoken);
 	}
 
+	int count = 0;
+
 	private void refresList() {
 		new Handler().postAtTime(new Runnable() {
 
@@ -381,9 +383,15 @@ public class ActivityCircle extends ActionBarActivity {
 				pageNo = 0;
 				pagecount = 8;
 				getAllCircleList(false, pageNo, pagecount);
+				if (count == 1) {
+					count = 0;
+				} else {
+					refresList();
+					count++;
+				}
 
 			}
-		}, 800);
+		}, 500);
 	}
 
 }
