@@ -86,7 +86,10 @@ public class CommentRecycleAdapter extends BaseAdapter {
 	public void refreshView(JobDetails mJobDetails) {
 		this.arraJobComment.add(mJobDetails);
 		notifyDataSetChanged();
-		updateListUI(mJobDetails);
+		if (arraJobComment != null && arraJobComment.size() >= 1) {
+			updateListUI(arraJobComment.get(0));
+		}
+
 	}
 
 	public void loadOldCommentView(ArrayList<JobDetails> arraJobComment_) {
