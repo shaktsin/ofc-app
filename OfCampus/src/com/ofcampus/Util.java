@@ -60,6 +60,7 @@ import android.net.ParseException;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -624,13 +625,15 @@ public class Util {
 			json = jsonObject.toString();
 
 			httpPost.setHeader("Authorization", auth);
-			// httpPost.setHeader("Content-type", "application/json");
+//			httpPost.setHeader("Content-type", "application/json");
+
+			Log.d("POST_BODY", jsonObject.toString());
 
 			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE, null, Charset.forName(HTTP.UTF_8));
 			httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 
 			File lfile = null;
-			reqEntity.addPart(JSONTAG, new StringBody(json));
+			reqEntity.addPart(JSONTAG, new StringBody(json,Charset.forName(HTTP.UTF_8)));
 			if (paths != null && paths.size() >= 1) {
 				for (String path : paths) {
 					if (path != null) {
@@ -660,6 +663,8 @@ public class Util {
 				result = "Did not work!";
 			responData[0] = "200";
 			responData[1] = result;
+
+			Log.d("RESPONSE_BODY", result);
 
 		} catch (UnsupportedEncodingException e) {
 			responData[0] = "205";
@@ -702,7 +707,7 @@ public class Util {
 			httpPost.setHeader("Authorization", auth);
 			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 			File lfile = null;
-			reqEntity.addPart("prof", new StringBody(json));
+			reqEntity.addPart("prof", new StringBody(json,Charset.forName(HTTP.UTF_8)));
 			if (path != null && !path.equals("")) {
 				lfile = new File(path);
 				FileBody lFileBody_ = new FileBody(lfile);

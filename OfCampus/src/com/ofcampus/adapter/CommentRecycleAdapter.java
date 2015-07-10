@@ -86,6 +86,7 @@ public class CommentRecycleAdapter extends BaseAdapter {
 	public void refreshView(JobDetails mJobDetails) {
 		this.arraJobComment.add(mJobDetails);
 		notifyDataSetChanged();
+		updateListUI(mJobDetails);
 	}
 
 	public void loadOldCommentView(ArrayList<JobDetails> arraJobComment_) {
@@ -633,6 +634,8 @@ public class CommentRecycleAdapter extends BaseAdapter {
 					break;
 				case 13:
 					mJobDetails.like = 1;
+					int count = (TextUtils.isEmpty(mJobDetails.numlikes)) ? 0 : Integer.parseInt(mJobDetails.numlikes);
+					mJobDetails.numlikes = String.valueOf((count + 1));
 					notifyDataSetChanged();
 					updateListUI(mJobDetails);
 					break;
@@ -675,12 +678,16 @@ public class CommentRecycleAdapter extends BaseAdapter {
 	}
 
 	private void updateListUI(JobDetails mJobDetails) {
-		if (mJobDetails.getPostType().equals("3")) {
-			((OfCampusApplication) mContext.getApplicationContext()).isNewsDataModify = true;
-		} else if (mJobDetails.getPostType().equals("1")) {
-			((OfCampusApplication) mContext.getApplicationContext()).isclassifiedDataModify = true;
-		} else {
-			((OfCampusApplication) mContext.getApplicationContext()).isPostDataModify = true;
+		try {
+			if (mJobDetails.getPostType().equals("3")) {
+				((OfCampusApplication) mContext.getApplicationContext()).isNewsDataModify = true;
+			} else if (mJobDetails.getPostType().equals("1")) {
+				((OfCampusApplication) mContext.getApplicationContext()).isclassifiedDataModify = true;
+			} else {
+				((OfCampusApplication) mContext.getApplicationContext()).isPostDataModify = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -226,7 +226,8 @@ public class ActivityCircle extends ActionBarActivity {
 		}
 
 		public void refreshData(ArrayList<CircleDetails> arrCircle) {
-			this.circles = arrCircle;
+			this.circles.clear();
+			this.circles.addAll(arrCircle);
 			notifyDataSetChanged();
 		}
 
@@ -382,7 +383,7 @@ public class ActivityCircle extends ActionBarActivity {
 				getAllCircleList(false, pageNo, pagecount);
 
 			}
-		}, 500);
+		}, 800);
 	}
 
 }
