@@ -198,7 +198,8 @@ public class ActivityClassifiedDetails extends ActionBarActivity implements OnCl
 			JObID = mJobDetails.getPostid();
 		}
 
-		rel_comnt.setVisibility(isFromDetails ? View.GONE : View.VISIBLE);
+		// rel_comnt.setVisibility(isFromDetails ? View.GONE : View.VISIBLE);
+		rel_comnt.setVisibility(View.VISIBLE);
 
 		ArrayList<JobDetails> arrayList = new ArrayList<JobDetails>();
 		if (mJobDetails != null) {

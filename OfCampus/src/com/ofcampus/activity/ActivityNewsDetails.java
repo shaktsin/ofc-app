@@ -188,7 +188,8 @@ public class ActivityNewsDetails extends ActionBarActivity implements OnClickLis
 			JObID = mJobDetails.getPostid();
 		}
 
-		rel_comnt.setVisibility(isFromDetails ? View.GONE : View.VISIBLE);
+//		rel_comnt.setVisibility(isFromDetails ? View.GONE : View.VISIBLE);
+		rel_comnt.setVisibility(View.VISIBLE);
 
 		ArrayList<JobDetails> arrayList = new ArrayList<JobDetails>();
 		if (mJobDetails != null) {
