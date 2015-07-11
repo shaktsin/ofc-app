@@ -245,7 +245,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 				case 0:
 					Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
 					mIntent.putExtra("isUserCame", true);
-					((OfCampusApplication) mContext.getApplicationContext()).jobdetails = null;
 					mContext.startActivity(mIntent);
 					((Activity) mContext).overridePendingTransition(0, 0);
 					break;

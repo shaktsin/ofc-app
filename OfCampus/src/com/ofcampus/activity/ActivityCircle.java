@@ -133,20 +133,20 @@ public class ActivityCircle extends ActionBarActivity {
 	}
 
 	private ListView circle_list;
-	private YourCircleListAdapter mCircleListAdapter;
+	private ClubAndChapterListAdapter mClubAndChapterListAdapter;
 
 	/*** For Load more ****/
 	private int pageNo = 0;
-	private int pagecount = 8;
-	private int minimumofsets = 7, mLastFirstVisibleItem = 0;
+	private int pagecount = 10;
+	private int minimumofsets = 9, mLastFirstVisibleItem = 0;
 	private boolean loadingMore = false;
 	private RelativeLayout footer_pg;
 
 	private void initiliz() {
 
 		circle_list = (ListView) findViewById(R.id.circle_list);
-		mCircleListAdapter = new YourCircleListAdapter(context, new ArrayList<CircleDetails>());
-		circle_list.setAdapter(mCircleListAdapter);
+		mClubAndChapterListAdapter = new ClubAndChapterListAdapter(context, new ArrayList<CircleDetails>());
+		circle_list.setAdapter(mClubAndChapterListAdapter);
 
 		footer_pg = (RelativeLayout) findViewById(R.id.activity_home_footer_pg);
 		circle_list.setOnScrollListener(new OnScrollListener() {
@@ -159,7 +159,7 @@ public class ActivityCircle extends ActionBarActivity {
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
 				int lastInScreen = firstVisibleItem + visibleItemCount;
-				if (mCircleListAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
+				if (mClubAndChapterListAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
 					if (mLastFirstVisibleItem < firstVisibleItem) {
 						if (!Util.hasConnection(context)) {
 							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
@@ -191,10 +191,10 @@ public class ActivityCircle extends ActionBarActivity {
 			public void OnSuccess(ArrayList<CircleDetails> circlerList) {
 				if (circlerList != null && circlerList.size() >= 1) {
 					if (pageNo == 0) {
-						mCircleListAdapter.refreshData(circlerList);
+						mClubAndChapterListAdapter.refreshData(circlerList);
 						pageNo = pageNo_ + 1;
 					} else {
-						mCircleListAdapter.addMoreData(circlerList);
+						mClubAndChapterListAdapter.addMoreData(circlerList);
 						pageNo = pageNo_ + 1;
 						minimumofsets = minimumofsets + pagecount;
 					}
@@ -212,13 +212,13 @@ public class ActivityCircle extends ActionBarActivity {
 		mCircleListParser.parse(context, mCircleListParser.getBody(pageNo_, pagecount_, isChapter_), Authtoken, b);
 	}
 
-	public class YourCircleListAdapter extends BaseAdapter {
+	public class ClubAndChapterListAdapter extends BaseAdapter {
 
 		private Context mContext;
 		private LayoutInflater inflater;
 		private ArrayList<CircleDetails> circles = null;
 
-		public YourCircleListAdapter(Context context, ArrayList<CircleDetails> arrcircle) {
+		public ClubAndChapterListAdapter(Context context, ArrayList<CircleDetails> arrcircle) {
 
 			this.mContext = context;
 			this.circles = arrcircle;
@@ -229,6 +229,38 @@ public class ActivityCircle extends ActionBarActivity {
 			this.circles.clear();
 			this.circles.addAll(arrCircle);
 			notifyDataSetChanged();
+		}
+
+		public void joinRefresh(int position) {
+			if (this.circles != null && this.circles.size() >= 1) {
+				CircleDetails mCircleDetails = this.circles.get(position);
+				mCircleDetails.joined = "true";
+				try {
+					int mbCount = Integer.parseInt(mCircleDetails.getMembers());
+					mbCount = mbCount + 1;
+					mCircleDetails.members = String.valueOf(mbCount);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				notifyDataSetChanged();
+			}
+		}
+
+		public void unjoinRefresh(int position) {
+			if (this.circles != null && this.circles.size() >= 1) {
+				CircleDetails mCircleDetails = this.circles.get(position);
+				mCircleDetails.joined = "false";
+				try {
+					int mbCount = Integer.parseInt(mCircleDetails.getMembers());
+					mbCount = mbCount - 1;
+					mCircleDetails.members = String.valueOf(mbCount);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				notifyDataSetChanged();
+			}
 		}
 
 		public void addMoreData(ArrayList<CircleDetails> arrCircles) {
@@ -280,10 +312,12 @@ public class ActivityCircle extends ActionBarActivity {
 			final String joined = mCircleDetails.getJoined();
 
 			String circleName = mCircleDetails.getName();
-			String camelCaseName = Character.toString(Character.toUpperCase(circleName.charAt(0))) + circleName.substring(1).toLowerCase();
+			// String camelCaseName =
+			// Character.toString(Character.toUpperCase(circleName.charAt(0))) +
+			// circleName.substring(1).toLowerCase();
 
-			mHolder.txt_name.setText(camelCaseName);
-			String post_and_members_details = mCircleDetails.getMembers() + " members," + mCircleDetails.getPosts() + " posts";
+			mHolder.txt_name.setText(circleName);
+			String post_and_members_details = mCircleDetails.getMembers() + " members, " + mCircleDetails.getPosts() + " posts";
 			mHolder.txt_post_and_members.setText(post_and_members_details);
 			mHolder.join_btn.setEnabled(true);
 			mHolder.join_btn.setText((joined.equals("false")) ? "Join" : "Unjoin");
@@ -338,7 +372,7 @@ public class ActivityCircle extends ActionBarActivity {
 			@Override
 			public void OnSuccess() {
 				Util.ShowToast(context, "Successfully Joined " + (isChapter_ ? "chapter" : "club"));
-				refresList();
+				mClubAndChapterListAdapter.joinRefresh(position_);
 			}
 
 			@Override
@@ -362,7 +396,7 @@ public class ActivityCircle extends ActionBarActivity {
 			@Override
 			public void OnSuccess() {
 				Util.ShowToast(context, "Successfully unjoined " + (isChapter_ ? "chapter" : "club"));
-				refresList();
+				mClubAndChapterListAdapter.unjoinRefresh(position_);
 			}
 
 			@Override
@@ -381,7 +415,6 @@ public class ActivityCircle extends ActionBarActivity {
 			@Override
 			public void run() {
 				pageNo = 0;
-				pagecount = 8;
 				getAllCircleList(false, pageNo, pagecount);
 				if (count == 1) {
 					count = 0;

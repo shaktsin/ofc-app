@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -191,7 +192,22 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 			String postedOnText = Util.getPostedOnText(mJobDetails.getPostedon());
 			mHolder.txt_postdate.setText(postedOnText);
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
-			mHolder.txt_contain.setText(mJobDetails.getContent());
+			// mHolder.txt_contain.setText(mJobDetails.getContent()+"continue reading");
+			/**
+			 * For the purpose of Continue reading
+			 */
+			String first = mJobDetails.getContent();
+			if (first.length() >= 8) {
+				String lastCharacters = (first.subSequence(first.length() - 3, first.length())).toString();
+				if (lastCharacters.contains("...")) {
+					String next = "<b><font color='#35475D'>continue reading</font></b>";
+					mHolder.txt_contain.setText(Html.fromHtml(first + next));
+				} else {
+					mHolder.txt_contain.setText(first);
+				}
+			} else {
+				mHolder.txt_contain.setText(first);
+			}
 
 			if (!TextUtils.isEmpty(mJobDetails.getLocationandinds())) {
 				mHolder.txt_locationandsecprimactg.setVisibility(View.VISIBLE);
@@ -447,7 +463,7 @@ public class ClassifiedListBaseAdapter extends BaseAdapter {
 	public void userProfile(JobDetails mJobDetails) {
 		Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
 		mIntent.putExtra("isUserCame", (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
-		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
+		mIntent.putExtra("userID", mJobDetails.getId());
 		mContext.startActivity(mIntent);
 		((Activity) mContext).overridePendingTransition(0, 0);
 	}

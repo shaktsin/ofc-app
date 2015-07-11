@@ -48,6 +48,8 @@ public class CircleProfileParser {
 	private String SHAREEMAIL = "shareEmail";
 	private String SHAREPHONE = "sharePhone";
 	private String SHAREWATSAPP = "shareWatsApp";
+	
+	private String POSTTYPE = "postType";
 
 	private String USERDTO = "userDto";
 	private String ID = "id";
@@ -201,13 +203,14 @@ public class CircleProfileParser {
 					JSONObject postObj = jsonarrayPOSTA.getJSONObject(i);
 
 					JobDetails mJobDetails = new JobDetails();
-					mJobDetails.setId(Util.getJsonValue(postObj, POSTID));
+					mJobDetails.setPostid(Util.getJsonValue(postObj, POSTID));
 					mJobDetails.setSubject(Util.getJsonValue(postObj, SUBJECT));
 					mJobDetails.setContent(Util.getJsonValue(postObj, CONTENT));
 					mJobDetails.setPostedon(Util.getJsonValue(postObj, POSTEDON));
 					mJobDetails.setReplyEmail(Util.getJsonValue(postObj, REPLYEMAIL));
 					mJobDetails.setReplyPhone(Util.getJsonValue(postObj, REPLYPHONE));
 					mJobDetails.setReplyWatsApp(Util.getJsonValue(postObj, REPLYWATSAPP));
+					mJobDetails.setPostType(Util.getJsonValue(postObj, POSTTYPE));
 
 					JSONObject userJSONobj = postObj.getJSONObject(USERDTO);
 					mJobDetails.setId(Util.getJsonValue(userJSONobj, ID));

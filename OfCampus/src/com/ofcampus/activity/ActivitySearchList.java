@@ -277,7 +277,7 @@ public class ActivitySearchList extends ActionBarActivity {
 
 			Intent mIntent_ = new Intent(context, ActivityJobPostedUserDetails.class);
 			mIntent_.putExtra("isUserCame", (mJobDetails.getId().equals(UserDetails.getLoggedInUser(context).getUserID())) ? true : false);
-			((OfCampusApplication) context.getApplicationContext()).jobdetails = mJobDetails;
+			mIntent_.putExtra("userID", mJobDetails.getId());
 			context.startActivity(mIntent_);
 			((Activity) context).overridePendingTransition(0, 0);
 

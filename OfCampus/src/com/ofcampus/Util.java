@@ -625,7 +625,7 @@ public class Util {
 			json = jsonObject.toString();
 
 			httpPost.setHeader("Authorization", auth);
-//			httpPost.setHeader("Content-type", "application/json");
+			// httpPost.setHeader("Content-type", "application/json");
 
 			Log.d("POST_BODY", jsonObject.toString());
 
@@ -633,7 +633,7 @@ public class Util {
 			httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 
 			File lfile = null;
-			reqEntity.addPart(JSONTAG, new StringBody(json,Charset.forName(HTTP.UTF_8)));
+			reqEntity.addPart(JSONTAG, new StringBody(json, Charset.forName(HTTP.UTF_8)));
 			if (paths != null && paths.size() >= 1) {
 				for (String path : paths) {
 					if (path != null) {
@@ -707,7 +707,7 @@ public class Util {
 			httpPost.setHeader("Authorization", auth);
 			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 			File lfile = null;
-			reqEntity.addPart("prof", new StringBody(json,Charset.forName(HTTP.UTF_8)));
+			reqEntity.addPart("prof", new StringBody(json, Charset.forName(HTTP.UTF_8)));
 			if (path != null && !path.equals("")) {
 				lfile = new File(path);
 				FileBody lFileBody_ = new FileBody(lfile);

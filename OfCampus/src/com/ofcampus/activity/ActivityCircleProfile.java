@@ -7,6 +7,7 @@ package com.ofcampus.activity;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -178,11 +179,12 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		textselection = new ArrayList<ImageView>();
 		textselection.add((ImageView) findViewById(R.id.circleprofile_postselection));
 		textselection.add((ImageView) findViewById(R.id.circleprofile_circleselection));
-		if (mCircleDetails.getAdmin().equals("true")) {
-			ImageView pendingreq = (ImageView) findViewById(R.id.circleprofile_pendingreq);
-			pendingreq.setVisibility(View.VISIBLE);
-			textselection.add(pendingreq);
-		}
+		// if (mCircleDetails.getAdmin().equals("true")) {
+		// ImageView pendingreq = (ImageView)
+		// findViewById(R.id.circleprofile_pendingreq);
+		// pendingreq.setVisibility(View.VISIBLE);
+		// textselection.add(pendingreq);
+		// }
 
 		post_list = (ListView) findViewById(R.id.cricle_post_list);
 		user_list = (ListView) findViewById(R.id.cricle_user_list);
@@ -454,6 +456,14 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			mHolder.txt_commenteddetails.setText(mJobDetails.getContent());
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
 
+			convertView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					gotToPostDetails(mJobDetails);
+				}
+			});
+
 			return convertView;
 		}
 
@@ -462,6 +472,32 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			public CustomTextView txt_commentname, txt_commentdate, txt_commenteddetails, txt_subject;
 		}
 
+	}
+
+	private void gotToPostDetails(JobDetails mJobDetails) {
+		try {
+			String toolTitle = "";
+			Intent mIntent = null;
+			if (mJobDetails.getPostType().equals("3")) {
+				toolTitle = Util.TOOLTITLE[1];
+				mIntent = new Intent(context, ActivityNewsDetails.class);
+			} else if (mJobDetails.getPostType().equals("1")) {
+				toolTitle = Util.TOOLTITLE[2];
+				mIntent = new Intent(context, ActivityClassifiedDetails.class);
+			} else {
+				toolTitle = Util.TOOLTITLE[0];
+				mIntent = new Intent(context, ActivityJobDetails.class);
+			}
+			((OfCampusApplication) context.getApplicationContext()).jobdetails = mJobDetails;
+			((OfCampusApplication) context.getApplicationContext()).fromMYPost = true;
+			Bundle mBundle = new Bundle();
+			mBundle.putString(Util.BUNDLE_KEY[0], toolTitle);
+			mIntent.putExtras(mBundle);
+			context.startActivity(mIntent);
+			((Activity) context).overridePendingTransition(0, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private class UsersAdapter extends BaseAdapter {
@@ -529,7 +565,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 				mHolder = (ViewHolder) convertView.getTag();
 			}
 
-			CircleUserDetails mCircleUserDetails = circles.get(position);
+			final CircleUserDetails mCircleUserDetails = circles.get(position);
 
 			String url = mCircleUserDetails.getUserimage();
 			if (url != null && !url.equals("") && !url.equals("null")) {
@@ -544,6 +580,18 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			if (Integer.parseInt(mCircleUserDetails.getUseryearofgrad()) > 0) {
 				mHolder.txt_grdyear.setText(mCircleUserDetails.getUseryearofgrad());
 			}
+
+			convertView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
+					mIntent.putExtra("isUserCame", (mCircleUserDetails.getUserid().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
+					mIntent.putExtra("userID", mCircleUserDetails.getUserid());
+					mContext.startActivity(mIntent);
+					((Activity) mContext).overridePendingTransition(0, 0);
+				}
+			});
 
 			return convertView;
 		}

@@ -314,7 +314,7 @@ public class FilterJobsAdapter extends BaseAdapter {
 	private void gotToUserDetails(JobDetails mJobDetails) {
 		Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
 		mIntent.putExtra("isUserCame", (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
-		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
+		mIntent.putExtra("userID", mJobDetails.getId());
 		mContext.startActivity(mIntent);
 		((Activity) mContext).overridePendingTransition(0, 0);
 	}

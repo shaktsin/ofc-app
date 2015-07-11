@@ -10,9 +10,9 @@ public class CircleDetails {
 	private String id = "";
 	private String name = "";
 	private String selected = "";
-	private String members = "";
+	public String members = "";
 	private String posts = "";
-	private String joined = "";
+	public String joined = "";
 	private String admin = "";
 	private String moderate = "";
 

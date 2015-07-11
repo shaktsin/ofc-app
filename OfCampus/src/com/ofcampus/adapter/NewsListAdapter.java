@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -193,7 +194,22 @@ public class NewsListAdapter extends BaseAdapter {
 			String postedOnText = Util.getPostedOnText(mJobDetails.getPostedon());
 			mHolder.txt_postdate.setText(postedOnText);
 			mHolder.txt_subject.setText(mJobDetails.getSubject());
-			mHolder.txt_contain.setText(mJobDetails.getContent());
+			// mHolder.txt_contain.setText(mJobDetails.getContent()+"continue reading");
+			/**
+			 * For the purpose of Continue reading
+			 */
+			String first = mJobDetails.getContent();
+			if (first.length() >= 8) {
+				String lastCharacters = (first.subSequence(first.length() - 3, first.length())).toString();
+				if (lastCharacters.contains("...")) {
+					String next = "<b><font color='#35475D'>continue reading</font></b>";
+					mHolder.txt_contain.setText(Html.fromHtml(first + next));
+				} else {
+					mHolder.txt_contain.setText(first);
+				}
+			} else {
+				mHolder.txt_contain.setText(first);
+			}
 
 			mHolder.img_important.setVisibility(View.VISIBLE);
 			mHolder.img_like.setVisibility(View.VISIBLE);
@@ -234,7 +250,7 @@ public class NewsListAdapter extends BaseAdapter {
 			if (Docs != null && Docs.size() >= 1) {
 				mHolder.inflate_doc.setVisibility(View.VISIBLE);
 				DocDetails mDocDetails = Docs.get(0);
-				showDoc(mDocDetails.getDocURL(), mHolder.doc_dnd, mHolder.doc_icon, mHolder.inflate_doc,mDocDetails.getDocName());
+				showDoc(mDocDetails.getDocURL(), mHolder.doc_dnd, mHolder.doc_icon, mHolder.inflate_doc, mDocDetails.getDocName());
 				mHolder.doc_name.setText(mDocDetails.getDocName());
 			} else {
 				mHolder.inflate_doc.setVisibility(View.GONE);
@@ -368,7 +384,7 @@ public class NewsListAdapter extends BaseAdapter {
 		}
 	}
 
-	private void showDoc(final String DocPath, final ImageView doc_dnd, ImageView doc_icon, CardView view,String donName) {
+	private void showDoc(final String DocPath, final ImageView doc_dnd, ImageView doc_icon, CardView view, String donName) {
 
 		String[] splt = DocPath.split("/");
 		final String fileNAme = donName;// splt[splt.length - 1];
@@ -442,7 +458,7 @@ public class NewsListAdapter extends BaseAdapter {
 	public void userProfile(JobDetails mJobDetails) {
 		Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
 		mIntent.putExtra("isUserCame", (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
-		((OfCampusApplication) mContext.getApplicationContext()).jobdetails = mJobDetails;
+		mIntent.putExtra("userID", mJobDetails.getId());
 		mContext.startActivity(mIntent);
 		((Activity) mContext).overridePendingTransition(0, 0);
 	}

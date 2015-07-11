@@ -62,9 +62,8 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 
 	private Context context;
 	private JobPostedUserDetails mDetails;
-	private JobDetails mJobDetails;
 	private String Authtoken;
-
+	private String userID = "";
 	private PostAdapter mpostAdapter;
 	private CircleAdapter mCircleAdapter;
 	private ArrayList<CustomTextView> textselection = new ArrayList<CustomTextView>();
@@ -84,10 +83,10 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		setContentView(R.layout.activity_jobposteduserdetails);
 
 		context = ActivityJobPostedUserDetails.this;
-		mJobDetails = ((OfCampusApplication) getApplication()).jobdetails;
 		mUserDetails = UserDetails.getLoggedInUser(context);
 		Authtoken = mUserDetails.getAuthtoken();
 		try {
+			userID = getIntent().getExtras().getString("userID");
 			isUserCame = getIntent().getExtras().getBoolean("isUserCame");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -280,7 +279,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 			}
 
 		});
-		mParser.parse(context, mParser.getBody((isUserCame) ? mUserDetails.getUserID() : mJobDetails.getId(), "0", "8"), Authtoken, false);
+		mParser.parse(context, mParser.getBody((isUserCame) ? mUserDetails.getUserID() : userID, "0", "8"), Authtoken, false);
 	}
 
 	private void loadUserDetailsFromJob() {
