@@ -62,6 +62,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -1015,10 +1016,14 @@ public class Util {
 		int actualHeight = options.outHeight;
 		int actualWidth = options.outWidth;
 
+		Point displaysize = OfCampusApplication.displaySize;
+
 		// max Height and width values of the compressed image is taken as
 		// 816x612
-		float maxHeight = 816.0f;
-		float maxWidth = 612.0f;
+//		float maxHeight = 816.0f;
+//		float maxWidth = 612.0f;
+		float maxHeight = displaysize.y;
+		float maxWidth = displaysize.x;
 		float imgRatio = actualWidth / actualHeight;
 		float maxRatio = maxWidth / maxHeight;
 

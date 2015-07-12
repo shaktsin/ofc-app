@@ -199,6 +199,7 @@ public class ActivityProfileEdit extends ActionBarActivity implements OnClickLis
 			@Override
 			public void OnSuccess(UserDetails Details) {
 				((OfCampusApplication) context.getApplicationContext()).isPostDataModify = true;
+				((OfCampusApplication) context.getApplicationContext()).isProfileDataModify = true;
 				onBackPressed();
 			}
 
