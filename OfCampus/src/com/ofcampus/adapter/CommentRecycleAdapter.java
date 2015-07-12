@@ -7,7 +7,9 @@ package com.ofcampus.adapter;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -33,6 +35,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
+import com.ofcampus.activity.ActivityJobPostedUserDetails;
 import com.ofcampus.model.DocDetails;
 import com.ofcampus.model.DocumentPath;
 import com.ofcampus.model.ImageDetails;
@@ -357,6 +360,24 @@ public class CommentRecycleAdapter extends BaseAdapter {
 			mHolder.txt_commentname.setText(mJobDetails.getName());
 			mHolder.txt_commentdate.setText("Commented on " + mJobDetails.getPostedon());
 			mHolder.txt_commenteddetails.setText(mJobDetails.getContent());
+			
+			
+			mHolder.img_commentprfpic.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					userProfile(mJobDetails);
+				}
+			});
+
+			mHolder.txt_commentname.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					userProfile(mJobDetails);
+				}
+			});
+			
 		}
 
 		return convertView;
@@ -693,5 +714,14 @@ public class CommentRecycleAdapter extends BaseAdapter {
 			e.printStackTrace();
 		}
 	}
+	
+	public void userProfile(JobDetails mJobDetails) {
+		Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
+		mIntent.putExtra("isUserCame", (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
+		mIntent.putExtra("userID", mJobDetails.getId());
+		mContext.startActivity(mIntent);
+		((Activity) mContext).overridePendingTransition(0, 0);
+	}
+
 
 }
