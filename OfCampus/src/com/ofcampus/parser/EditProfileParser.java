@@ -75,8 +75,16 @@ public class EditProfileParser {
 		protected Void doInBackground(Void... params) {
 
 			try {
+				String returnpath = "";
 
-				String[] responsedata = Util.ProfileUpdte(Util.getProfileUpdateUrl(), obj_, auth, paths);
+				try {
+					returnpath = Util.compressImage(mContext, paths);
+				} catch (Exception e) {
+					returnpath = paths;
+					e.printStackTrace();
+				}
+
+				String[] responsedata = Util.ProfileUpdte(Util.getProfileUpdateUrl(), obj_, auth, returnpath);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
 
@@ -129,13 +137,13 @@ public class EditProfileParser {
 						Util.ShowToast(mContext, "Profile Updated successfully.");
 					}
 				} else {
-//					Util.ShowToast(mContext, "Edit profile error.");
-//					if (meditprofileparserinterface != null) {
-//						meditprofileparserinterface.OnError();
-//					}
+					// Util.ShowToast(mContext, "Edit profile error.");
+					// if (meditprofileparserinterface != null) {
+					// meditprofileparserinterface.OnError();
+					// }
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, responseDetails);
+				// Util.ShowToast(mContext, responseDetails);
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			}

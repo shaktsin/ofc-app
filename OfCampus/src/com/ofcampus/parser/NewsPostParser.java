@@ -116,6 +116,19 @@ public class NewsPostParser {
 
 			try {
 
+				ArrayList<String> newFilePaths = new ArrayList<String>();
+				if (paths != null && paths.size() >= 1) {
+					for (String path : paths) {
+						try {
+							String returnpath = Util.compressImage(mContext, path);
+							newFilePaths.add(returnpath);
+						} catch (Exception e) {
+							newFilePaths.add(path);
+							e.printStackTrace();
+						}
+					}
+				}
+
 				String[] responsedata = Util.POSTWithAuthJSONFile(Util.getCreateNewsUrl(), obj_, auth, paths, "feed", docpdfPaths);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
@@ -162,13 +175,13 @@ public class NewsPostParser {
 						Util.ShowToast(mContext, "News Posted successfully.");
 					}
 				} else {
-//					Util.ShowToast(mContext, "News Post error.");
-//					if (newspostparserinterface != null) {
-//						newspostparserinterface.OnError();
-//					}
+					// Util.ShowToast(mContext, "News Post error.");
+					// if (newspostparserinterface != null) {
+					// newspostparserinterface.OnError();
+					// }
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, "News Post error.");
+				// Util.ShowToast(mContext, "News Post error.");
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			}

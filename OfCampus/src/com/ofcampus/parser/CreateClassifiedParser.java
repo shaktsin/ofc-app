@@ -118,6 +118,19 @@ public class CreateClassifiedParser {
 
 			try {
 
+				ArrayList<String> newFilePaths = new ArrayList<String>();
+				if (paths != null && paths.size() >= 1) {
+					for (String path : paths) {
+						try {
+							String returnpath = Util.compressImage(mContext, path);
+							newFilePaths.add(returnpath);
+						} catch (Exception e) {
+							newFilePaths.add(path);
+							e.printStackTrace();
+						}
+					}
+				}
+
 				String[] responsedata = Util.POSTWithAuthJSONFile(Util.getCreateClassifiedeUrl(), obj_, auth, paths, "classified", docpdfPaths);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
@@ -164,13 +177,13 @@ public class CreateClassifiedParser {
 						Util.ShowToast(mContext, "Classified Posted successfully.");
 					}
 				} else {
-//					Util.ShowToast(mContext, "Classified Post error.");
-//					if (createclassifiedinterface != null) {
-//						createclassifiedinterface.OnError();
-//					}
+					// Util.ShowToast(mContext, "Classified Post error.");
+					// if (createclassifiedinterface != null) {
+					// createclassifiedinterface.OnError();
+					// }
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, responseDetails);
+				// Util.ShowToast(mContext, responseDetails);
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			}

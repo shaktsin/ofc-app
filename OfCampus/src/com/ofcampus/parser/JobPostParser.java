@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.google.android.gms.analytics.i;
 import com.ofcampus.R;
 import com.ofcampus.Util;
 import com.ofcampus.model.DocDetails;
@@ -128,7 +129,20 @@ public class JobPostParser {
 
 			try {
 
-				String[] responsedata = Util.POSTWithAuthJSONFile(Util.getcreateJobUrl(), obj_, auth, paths, "jobs", docpdfPaths);
+				ArrayList<String> newFilePaths = new ArrayList<String>();
+				if (paths != null && paths.size() >= 1) {
+					for (String path : paths) {
+						try {
+							String returnpath = Util.compressImage(mContext, path);
+							newFilePaths.add(returnpath);
+						} catch (Exception e) {
+							newFilePaths.add(path);
+							e.printStackTrace();
+						}
+					}
+				}
+
+				String[] responsedata = Util.POSTWithAuthJSONFile(Util.getcreateJobUrl(), obj_, auth, newFilePaths, "jobs", docpdfPaths);
 				authenticationJson = responsedata[1];
 				isTimeOut = (responsedata[0].equals("205")) ? true : false;
 
@@ -174,13 +188,13 @@ public class JobPostParser {
 						Util.ShowToast(mContext, "Job Posted successfully.");
 					}
 				} else {
-//					Util.ShowToast(mContext, "Job Post error.");
-//					if (jobpostparserinterface != null) {
-//						jobpostparserinterface.OnError();
-//					}
+					// Util.ShowToast(mContext, "Job Post error.");
+					// if (jobpostparserinterface != null) {
+					// jobpostparserinterface.OnError();
+					// }
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, responseDetails);
+				// Util.ShowToast(mContext, responseDetails);
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			}
