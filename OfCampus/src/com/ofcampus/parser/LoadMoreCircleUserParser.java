@@ -136,8 +136,7 @@ public class LoadMoreCircleUserParser {
 		}
 	}
 
-	// {"circleId":22,"pageNo":0, "perPage":8, "appName":"ofCampus",
-	// "plateFormId":0}
+
 	public JSONObject getBody(String circleId, String pageNo, String perPage) {
 		JSONObject jsObj = new JSONObject();
 		try {

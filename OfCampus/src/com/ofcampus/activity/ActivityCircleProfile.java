@@ -50,6 +50,8 @@ import com.ofcampus.parser.JoinCircleParser;
 import com.ofcampus.parser.JoinCircleParser.JoinCircleParserInterface;
 import com.ofcampus.parser.LoadMoreCirclePostParser;
 import com.ofcampus.parser.LoadMoreCirclePostParser.LoadMoreCirclePostParserInterface;
+import com.ofcampus.parser.LoadMoreCircleUserParser;
+import com.ofcampus.parser.LoadMoreCircleUserParser.LoadMoreCircleUserParserInterface;
 import com.ofcampus.parser.RejectRequestToJoinCircleParser;
 import com.ofcampus.parser.RejectRequestToJoinCircleParser.RejectRequestParserInterface;
 import com.ofcampus.parser.UnJoinCircleParser;
@@ -66,7 +68,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	private boolean isAlreadyJoined = false;
 
 	private ProgressBar pgbar;
-	private CustomTextView txt_name, txt_postno, txt_circleno, nodata, txt_description;
+	private CustomTextView txt_name, txt_postno, txt_users, nodata, txt_description;
 	private Button status_circle;
 	private ListView post_list, user_list, pendingrqs_list;
 	private LinearLayout lin_main;
@@ -176,7 +178,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		txt_name = (CustomTextView) findViewById(R.id.cricle_name);
 		txt_description = (CustomTextView) findViewById(R.id.cricle_description);
 		txt_postno = (CustomTextView) findViewById(R.id.circleprofile_postcount);
-		txt_circleno = (CustomTextView) findViewById(R.id.circleprofile_memburcount);
+		txt_users = (CustomTextView) findViewById(R.id.circleprofile_memburcount);
 		status_circle.setOnClickListener(this);
 
 		pgbar = (ProgressBar) findViewById(R.id.myprofile_view_pgbar);
@@ -236,6 +238,32 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 						footer_pg.setVisibility(View.VISIBLE);
 						loadingMore = true;
 						loadMorePost();
+					}
+				}
+				mLastFirstVisibleItem = firstVisibleItem;
+
+			}
+		});
+
+		user_list.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				if (mUsersAdapter != null && totalItemCount > minimumofsetsUser && (lastInScreen == totalItemCount) && !(loadingMore)) {
+					if (mLastFirstVisibleItemUser < firstVisibleItem) {
+						if (!Util.hasConnection(context)) {
+							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
+							return;
+						}
+						Log.i("SCROLLING DOWN", "TRUE");
+						footer_pg.setVisibility(View.VISIBLE);
+						loadingMore = true;
+						loadMoreUsers();
 					}
 				}
 				mLastFirstVisibleItem = firstVisibleItem;
@@ -403,10 +431,10 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			txt_name.setText(mCircleProfile.getCirclename());
 			txt_description.setText(mCircleProfile.getCircledesc());
 			txt_postno.setText("" + arraypost.size());
-			txt_circleno.setText("" + arraycircle.size());
+			txt_users.setText("" + arraycircle.size());
 
 			pageNoPost = pageNoPost + 1;
-			pageNoCircle = pageNoCircle + 1;
+			pageNoUser = pageNoUser + 1;
 
 			mpostAdapter.refreshView(mCircleProfile.getArrayPost());
 			mUsersAdapter.refreshData(mCircleProfile.getArrayCircle());
@@ -562,6 +590,11 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			notifyDataSetChanged();
 		}
 
+		public void loadMore(ArrayList<CircleUserDetails> userList) {
+			this.circles.addAll(userList);
+			notifyDataSetChanged();
+		}
+
 		public void removepostion(int position) {
 			if (this.circles.size() >= 1) {
 				this.circles.remove(position);
@@ -640,6 +673,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			public ImageView img_commentprfpic;
 			public CustomTextView txt_name, txt_email, txt_member_since, txt_grdyear;
 		}
+
 	}
 
 	private class PendingUsersAdapter extends BaseAdapter {
@@ -857,48 +891,37 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	}
 
 	/*** For Load more ****/
-	private int pageNoCircle = 0;
-	private int pageCountCircle = 8;
-	private int minimumofsetsCircle = pageNoCircle - 1, mLastFirstVisibleItemCircle = 0;
-	//
-	// private void loadMoreCircle() {
-	//
-	// LoadMoreCircleParser moreCircleParser = new LoadMoreCircleParser();
-	// moreCircleParser.setLoadMoreCircleParserInterface(new
-	// LoadMoreCircleParserInterface() {
-	//
-	// @Override
-	// public void OnSuccess(ArrayList<CircleDetails> circleList) {
-	// if (circleList != null && circleList.size() >= 1) {
-	// mCircleAdapter.loadMore(circleList);
-	// pageNoCircle = pageNoCircle + 1;
-	//
-	// try {
-	// String postCount = textselection.get(1).getText().toString();
-	// postCount = postCount.replace(" Circles", "");
-	// textselection.get(0).setText(String.valueOf(circleList.size() +
-	// Integer.parseInt(postCount)) + " Circles");
-	// } catch (NumberFormatException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// }
-	// }
-	//
-	// @Override
-	// public void OnError() {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public void NoData() {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	// });
-	// moreCircleParser.parse(context, moreCircleParser.getBody(userID, "" +
-	// pageNoCircle, "" + pageCountCircle), authorization, false);
-	// }
+	private int pageNoUser = 0;
+	private int pageCountUser = 8;
+	private int minimumofsetsUser = pageNoUser - 1, mLastFirstVisibleItemUser = 0;
+
+	private void loadMoreUsers() {
+
+		LoadMoreCircleUserParser mLoadMoreCircleUserParser = new LoadMoreCircleUserParser();
+		mLoadMoreCircleUserParser.setLoadMoreCircleUserParserInterface(new LoadMoreCircleUserParserInterface() {
+
+			@Override
+			public void OnSuccess(ArrayList<CircleUserDetails> userList) {
+				if (userList != null && userList.size() >= 1) {
+					mUsersAdapter.loadMore(userList);
+					pageNoUser = pageNoUser + 1;
+
+					try {
+						String postCount = txt_postno.getText().toString();
+						txt_users.setText(String.valueOf(userList.size() + Integer.parseInt(postCount)));
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+
+				}
+			}
+
+			@Override
+			public void OnError() {
+
+			}
+		});
+		mLoadMoreCircleUserParser.parse(context, mLoadMoreCircleUserParser.getBody(circleId, "" + pageNoUser, "" + pageCountUser), authorization);
+	}
 
 }
