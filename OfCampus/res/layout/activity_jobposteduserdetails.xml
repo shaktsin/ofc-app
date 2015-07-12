@@ -218,6 +218,23 @@
                 android:layout_centerInParent="true"
                 android:background="#18BC9A"
                 android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/activity_home_footer_pg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/transparent"
+                android:visibility="gone" >
+
+                <com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate
+                    android:id="@+id/loadmore_pg"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="6dp"
+                    android:background="#1E88E5" />
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
 

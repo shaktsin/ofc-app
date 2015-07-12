@@ -330,6 +330,19 @@ public class Util {
 		return baseUrl + "app/update";
 	}
 
+	public static String getUserPost() {
+		return baseUrl + "post/user/posts";
+	}
+	
+	public static String getCirclePosts() {
+		return baseUrl + "post/circle/posts";
+	}
+	
+	public static String getCircleUsers() {
+		return baseUrl + "api/circle/users";
+	}
+
+
 	/******************** URl List **********************/
 
 	/**
@@ -1020,8 +1033,8 @@ public class Util {
 
 		// max Height and width values of the compressed image is taken as
 		// 816x612
-//		float maxHeight = 816.0f;
-//		float maxWidth = 612.0f;
+		// float maxHeight = 816.0f;
+		// float maxWidth = 612.0f;
 		float maxHeight = displaysize.y;
 		float maxWidth = displaysize.x;
 		float imgRatio = actualWidth / actualHeight;

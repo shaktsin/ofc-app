@@ -57,13 +57,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="5dp"
                         android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="5dp"
                         android:background="@drawable/btn_rectangular"
                         android:clickable="true"
-                        android:visibility="gone"
                         android:text="@string/join_circle_normal_btn"
-                        android:textColor="@drawable/btn_color_selector" />
+                        android:textColor="@drawable/btn_color_selector"
+                        android:visibility="gone" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -75,10 +75,9 @@
                     <com.ofcampus.ui.CustomTextView
                         android:id="@+id/cricle_name"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
                         android:gravity="bottom|left"
-                        android:padding="4dp"
+                        android:padding="7dp"
                         android:text=""
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/joblitview_Subject"
@@ -88,8 +87,7 @@
                     <com.ofcampus.ui.CustomTextView
                         android:id="@+id/cricle_description"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="7"
+                        android:layout_height="match_parent"
                         android:padding="4dp"
                         android:text=""
                         android:textColor="@android:color/white"
@@ -228,6 +226,23 @@
                 android:textStyle="bold"
                 android:visibility="gone"
                 ofcampus:fontName="Helvetica.otf" />
+
+            <RelativeLayout
+                android:id="@+id/activity_home_footer_pg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/transparent"
+                android:visibility="gone" >
+
+                <com.ofcampus.custprogressbar.ProgressBarCircularIndeterminate
+                    android:id="@+id/loadmore_pg"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="6dp"
+                    android:background="#1E88E5" />
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
 

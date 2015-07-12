@@ -13,11 +13,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -45,6 +48,8 @@ import com.ofcampus.parser.GetAllPendingRequestList;
 import com.ofcampus.parser.GetAllPendingRequestList.PendingRequestParserInterface;
 import com.ofcampus.parser.JoinCircleParser;
 import com.ofcampus.parser.JoinCircleParser.JoinCircleParserInterface;
+import com.ofcampus.parser.LoadMoreCirclePostParser;
+import com.ofcampus.parser.LoadMoreCirclePostParser.LoadMoreCirclePostParserInterface;
 import com.ofcampus.parser.RejectRequestToJoinCircleParser;
 import com.ofcampus.parser.RejectRequestToJoinCircleParser.RejectRequestParserInterface;
 import com.ofcampus.parser.UnJoinCircleParser;
@@ -211,6 +216,33 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		Selection(0);
 		lin_main.setVisibility(View.GONE);
 
+		footer_pg = (RelativeLayout) findViewById(R.id.loadmore_pg);
+		post_list.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				int lastInScreen = firstVisibleItem + visibleItemCount;
+				if (mpostAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
+					if (mLastFirstVisibleItem < firstVisibleItem) {
+						if (!Util.hasConnection(context)) {
+							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
+							return;
+						}
+						Log.i("SCROLLING DOWN", "TRUE");
+						footer_pg.setVisibility(View.VISIBLE);
+						loadingMore = true;
+						loadMorePost();
+					}
+				}
+				mLastFirstVisibleItem = firstVisibleItem;
+
+			}
+		});
+
 	}
 
 	private void selectTab(SelectionTab tab) {
@@ -373,6 +405,9 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			txt_postno.setText("" + arraypost.size());
 			txt_circleno.setText("" + arraycircle.size());
 
+			pageNoPost = pageNoPost + 1;
+			pageNoCircle = pageNoCircle + 1;
+
 			mpostAdapter.refreshView(mCircleProfile.getArrayPost());
 			mUsersAdapter.refreshData(mCircleProfile.getArrayCircle());
 			status_circle.setVisibility(View.VISIBLE);
@@ -406,6 +441,11 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 
 		public void refreshView(ArrayList<JobDetails> arrayList_) {
 			this.arrayList = arrayList_;
+			notifyDataSetChanged();
+		}
+
+		public void loadMore(ArrayList<JobDetails> posts) {
+			this.arrayList.addAll(posts);
 			notifyDataSetChanged();
 		}
 
@@ -770,4 +810,95 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * load More call for post
+	 */
+
+	/*** For Load more ****/
+	private int pageNoPost = 0;
+	private int pageCountPost = 8;
+	private int minimumofsets = pageCountPost - 1, mLastFirstVisibleItem = 0;
+	private boolean loadingMore = false;
+	private RelativeLayout footer_pg;
+
+	private void loadMorePost() {
+		LoadMoreCirclePostParser morePostParser = new LoadMoreCirclePostParser();
+		morePostParser.setLoadMoreCirclePostParserInterface(new LoadMoreCirclePostParserInterface() {
+
+			@Override
+			public void OnSuccess(ArrayList<JobDetails> posts) {
+				if (posts != null && posts.size() >= 1) {
+					mpostAdapter.loadMore(posts);
+					pageNoPost = pageNoPost + 1;
+
+					try {
+						String postCount = txt_postno.getText().toString();
+						txt_postno.setText(String.valueOf(posts.size() + Integer.parseInt(postCount)));
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+
+				}
+
+			}
+
+			@Override
+			public void OnError() {
+
+			}
+
+			@Override
+			public void NoData() {
+
+			}
+		});
+		morePostParser.parse(context, morePostParser.getBody(circleId, "" + pageNoPost, "" + pageCountPost), authorization, false);
+	}
+
+	/*** For Load more ****/
+	private int pageNoCircle = 0;
+	private int pageCountCircle = 8;
+	private int minimumofsetsCircle = pageNoCircle - 1, mLastFirstVisibleItemCircle = 0;
+	//
+	// private void loadMoreCircle() {
+	//
+	// LoadMoreCircleParser moreCircleParser = new LoadMoreCircleParser();
+	// moreCircleParser.setLoadMoreCircleParserInterface(new
+	// LoadMoreCircleParserInterface() {
+	//
+	// @Override
+	// public void OnSuccess(ArrayList<CircleDetails> circleList) {
+	// if (circleList != null && circleList.size() >= 1) {
+	// mCircleAdapter.loadMore(circleList);
+	// pageNoCircle = pageNoCircle + 1;
+	//
+	// try {
+	// String postCount = textselection.get(1).getText().toString();
+	// postCount = postCount.replace(" Circles", "");
+	// textselection.get(0).setText(String.valueOf(circleList.size() +
+	// Integer.parseInt(postCount)) + " Circles");
+	// } catch (NumberFormatException e) {
+	// e.printStackTrace();
+	// }
+	//
+	// }
+	// }
+	//
+	// @Override
+	// public void OnError() {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void NoData() {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	// });
+	// moreCircleParser.parse(context, moreCircleParser.getBody(userID, "" +
+	// pageNoCircle, "" + pageCountCircle), authorization, false);
+	// }
+
 }
