@@ -746,7 +746,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 					try {
 						String postCount = textselection.get(1).getText().toString();
 						postCount = postCount.replace(" Circles", "");
-						textselection.get(0).setText(String.valueOf(circleList.size() + Integer.parseInt(postCount)) + " Circles");
+						textselection.get(1).setText(String.valueOf(circleList.size() + Integer.parseInt(postCount)) + " Circles");
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
