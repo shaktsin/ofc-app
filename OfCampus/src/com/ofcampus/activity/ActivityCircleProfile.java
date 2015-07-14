@@ -440,6 +440,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			mUsersAdapter.refreshData(mCircleProfile.getArrayCircle());
 			status_circle.setVisibility(View.VISIBLE);
 			status_circle.setText((mCircleProfile.getCirclejoined().equalsIgnoreCase("true")) ? "Unjoin" : "Join");
+			status_circle.setVisibility((mCircleProfile.getHide().equalsIgnoreCase("true")) ? View.INVISIBLE : View.VISIBLE);
 
 		} catch (Exception e) {
 			e.printStackTrace();

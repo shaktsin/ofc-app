@@ -13,6 +13,15 @@ public class CircleProfile {
 	private String circlemembers = "";
 	public String circlejoined = "";
 	private String circledesc = "";
+	private String hide = "";
+
+	public String getHide() {
+		return hide;
+	}
+
+	public void setHide(String hide) {
+		this.hide = hide;
+	}
 
 	public String getCircledesc() {
 		return circledesc;

@@ -48,7 +48,7 @@ public class CircleProfileParser {
 	private String SHAREEMAIL = "shareEmail";
 	private String SHAREPHONE = "sharePhone";
 	private String SHAREWATSAPP = "shareWatsApp";
-	
+
 	private String POSTTYPE = "postType";
 
 	private String USERDTO = "userDto";
@@ -60,6 +60,7 @@ public class CircleProfileParser {
 	private String CIRCLEDESC = "desc";
 	private String CIRCLEMEMBERS = "members";
 	private String CIRCLEJOINED = "joined";
+	private String HIDE = "hide";
 
 	private String USERDTOLIST = "userDtoList";
 	private String USERID = "id";
@@ -195,6 +196,7 @@ public class CircleProfileParser {
 			mCircleProfile.setCirclename(Util.getJsonValue(jsObj, CIRCLENAME));
 			mCircleProfile.setCircledesc(Util.getJsonValue(jsObj, CIRCLEDESC));
 			mCircleProfile.setCirclemembers(Util.getJsonValue(jsObj, CIRCLEMEMBERS));
+			mCircleProfile.setHide(Util.getJsonValue(jsObj, HIDE));
 
 			if (jsonarrayPOSTA != null && jsonarrayPOSTA.length() >= 1) {
 				ArrayList<JobDetails> posts = new ArrayList<JobDetails>();

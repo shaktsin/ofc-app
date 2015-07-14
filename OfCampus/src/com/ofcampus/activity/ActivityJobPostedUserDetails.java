@@ -711,17 +711,17 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 					}
 
 				}
-
+				loadingMore = false;
 			}
 
 			@Override
 			public void OnError() {
-
+				loadingMore = false;
 			}
 
 			@Override
 			public void NoData() {
-
+				loadingMore = false;
 			}
 		});
 		morePostParser.parse(context, morePostParser.getBody(userID, "" + pageNoPost, "" + pageCountPost), Authtoken, false);
@@ -730,7 +730,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 	/*** For Load more ****/
 	private int pageNoCircle = 0;
 	private int pageCountCircle = 8;
-	private int minimumofsetsCircle = pageNoCircle - 1, mLastFirstVisibleItemCircle = 0;
+	private int minimumofsetsCircle = pageCountCircle - 1, mLastFirstVisibleItemCircle = 0;
 
 	private void loadMoreCircle() {
 
@@ -750,19 +750,19 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
-
 				}
+				loadingMore = false;
 			}
 
 			@Override
 			public void OnError() {
-				// TODO Auto-generated method stub
+				loadingMore = false;
 
 			}
 
 			@Override
 			public void NoData() {
-				// TODO Auto-generated method stub
+				loadingMore = false;
 
 			}
 		});
