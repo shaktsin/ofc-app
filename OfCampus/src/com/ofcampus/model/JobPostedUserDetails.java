@@ -9,12 +9,31 @@ import java.util.ArrayList;
 
 public class JobPostedUserDetails {
 
-	private String accountname = "name";
-	private String profileimagelink = "image";
-	private String firstname = "firstName";
-	private String lastname = "lastName";
-	private String email = "email";
-	private String gradyear = "yearOfGrad";
+	private String accountname = "";
+	private String profileimagelink = "";
+	private String firstname = "";
+	private String lastname = "";
+	private String email = "";
+	private String gradyear = "";
+	private String totalPosts = "0";
+	private String totalCircle = "0";
+
+	public String getTotalPosts() {
+		return totalPosts;
+	}
+
+	public void setTotalPosts(String totalPosts) {
+		this.totalPosts = totalPosts;
+	}
+
+	public String getTotalCircle() {
+		return totalCircle;
+	}
+
+	public void setTotalCircle(String totalCircle) {
+		this.totalCircle = totalCircle;
+	}
+
 	private ArrayList<JobDetails> arrayPost = new ArrayList<JobDetails>();
 	private ArrayList<CircleDetails> arrayCircle = new ArrayList<CircleDetails>();
 

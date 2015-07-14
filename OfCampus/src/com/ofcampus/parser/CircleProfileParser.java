@@ -60,7 +60,9 @@ public class CircleProfileParser {
 	private String CIRCLEDESC = "desc";
 	private String CIRCLEMEMBERS = "members";
 	private String CIRCLEJOINED = "joined";
-	private String HIDE = "hide";
+	private String CIRCLEHIDE = "hide";
+	private String CIRCLETOTALPOSTS = "totalPosts";
+	private String MEMBERS = "members";
 
 	private String USERDTOLIST = "userDtoList";
 	private String USERID = "id";
@@ -196,7 +198,10 @@ public class CircleProfileParser {
 			mCircleProfile.setCirclename(Util.getJsonValue(jsObj, CIRCLENAME));
 			mCircleProfile.setCircledesc(Util.getJsonValue(jsObj, CIRCLEDESC));
 			mCircleProfile.setCirclemembers(Util.getJsonValue(jsObj, CIRCLEMEMBERS));
-			mCircleProfile.setHide(Util.getJsonValue(jsObj, HIDE));
+			mCircleProfile.setHide(Util.getJsonValue(jsObj, CIRCLEHIDE));
+
+			mCircleProfile.setTotalPosts(Util.getJsonValue(jsObj, CIRCLETOTALPOSTS));
+			mCircleProfile.setMembers(Util.getJsonValue(jsObj, MEMBERS));
 
 			if (jsonarrayPOSTA != null && jsonarrayPOSTA.length() >= 1) {
 				ArrayList<JobDetails> posts = new ArrayList<JobDetails>();

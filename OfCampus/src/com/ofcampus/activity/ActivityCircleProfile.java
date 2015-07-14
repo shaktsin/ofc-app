@@ -430,8 +430,8 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 
 			txt_name.setText(mCircleProfile.getCirclename());
 			txt_description.setText(mCircleProfile.getCircledesc());
-			txt_postno.setText("" + arraypost.size());
-			txt_users.setText("" + arraycircle.size());
+			txt_postno.setText("" + mCircleProfile.getTotalPosts());
+			txt_users.setText("" + mCircleProfile.getMembers());
 
 			pageNoPost = pageNoPost + 1;
 			pageNoUser = pageNoUser + 1;
@@ -868,8 +868,9 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 					pageNoPost = pageNoPost + 1;
 
 					try {
-						String postCount = txt_postno.getText().toString();
-						txt_postno.setText(String.valueOf(posts.size() + Integer.parseInt(postCount)));
+						// String postCount = txt_postno.getText().toString();
+						// txt_postno.setText(String.valueOf(posts.size() +
+						// Integer.parseInt(postCount)));
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
@@ -908,8 +909,9 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 					pageNoUser = pageNoUser + 1;
 
 					try {
-						String postCount = txt_postno.getText().toString();
-						txt_users.setText(String.valueOf(userList.size() + Integer.parseInt(postCount)));
+						// String postCount = txt_postno.getText().toString();
+						// txt_users.setText(String.valueOf(userList.size() +
+						// Integer.parseInt(postCount)));
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}

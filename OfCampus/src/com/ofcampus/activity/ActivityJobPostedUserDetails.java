@@ -332,7 +332,13 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				if (!isUserCame) {
 					loadUserDetailsFromJob();
 				}
-
+				try {
+					textselection.get(0).setText(mDetails.getTotalPosts() + " Posts");
+					textselection.get(1).setText(mDetails.getTotalCircle() + " Circles");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 				loadPostAndCircle();
 			}
 
@@ -368,6 +374,10 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		txt_name.setText(mDetails.getAccountname());
 		txt_email.setText(mDetails.getEmail());
 		txt_year.setText("Class of " + mDetails.getGradyear());
+
+		textselection.get(0).setText(mDetails.getTotalPosts() + " Posts");
+		textselection.get(1).setText(mDetails.getTotalCircle() + " Circles");
+
 		imageLoader.displayImage(mDetails.getProfileimagelink(), profile_imageblur, options, new ImageLoadingListener() {
 
 			@Override
@@ -444,7 +454,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		arraypost = mDetails.getArrayPost();
 
 		if (arraypost != null && arraypost.size() >= 1) {
-			textselection.get(0).setText(arraypost.size() + " Posts");
+			// textselection.get(0).setText(arraypost.size() + " Posts");
 			mpostAdapter.refreshView(arraypost);
 			post_list.setVisibility(View.VISIBLE);
 			circle_list.setVisibility(View.GONE);
@@ -454,7 +464,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		}
 
 		if (arraycircle != null && arraycircle.size() >= 1) {
-			textselection.get(1).setText(arraycircle.size() + " Circles");
+			// textselection.get(1).setText(arraycircle.size() + " Circles");
 			mCircleAdapter.refreshData(arraycircle);
 			pageNoCircle = pageNoCircle + 1;
 		}
@@ -703,9 +713,11 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 					pageNoPost = pageNoPost + 1;
 
 					try {
-						String postCount = textselection.get(0).getText().toString();
-						postCount = postCount.replace(" Posts", "");
-						textselection.get(0).setText(String.valueOf(posts.size() + Integer.parseInt(postCount)) + " Posts");
+						// String postCount =
+						// textselection.get(0).getText().toString();
+						// postCount = postCount.replace(" Posts", "");
+						// textselection.get(0).setText(String.valueOf(posts.size()
+						// + Integer.parseInt(postCount)) + " Posts");
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
@@ -744,9 +756,11 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 					pageNoCircle = pageNoCircle + 1;
 
 					try {
-						String postCount = textselection.get(1).getText().toString();
-						postCount = postCount.replace(" Circles", "");
-						textselection.get(1).setText(String.valueOf(circleList.size() + Integer.parseInt(postCount)) + " Circles");
+						// String postCount =
+						// textselection.get(1).getText().toString();
+						// postCount = postCount.replace(" Circles", "");
+						// textselection.get(1).setText(String.valueOf(circleList.size()
+						// + Integer.parseInt(postCount)) + " Circles");
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}

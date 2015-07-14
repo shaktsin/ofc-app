@@ -39,6 +39,8 @@ public class GetJobPostedUserProfileParser {
 	private String LASTNAME = "lastName";
 	private String EMAIL = "email";
 	private String GRADYEAR = "yearOfGrad";
+	private String TOTALPOSTS = "totalPosts";
+	private String TOTALCIRCLE = "totalCircle";
 
 	private String POSTS = "posts";
 	private String POSTID = "postId";
@@ -182,7 +184,7 @@ public class GetJobPostedUserProfileParser {
 					getjobposteduserprofileparserinterface.NoData();
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, responseDetails);
+				// Util.ShowToast(mContext, responseDetails);
 				error();
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
@@ -211,6 +213,8 @@ public class GetJobPostedUserProfileParser {
 			mJobPostedUserDetails.setProfileimagelink(Util.getJsonValue(jsObj, PROFILEIMAGELINK));
 			mJobPostedUserDetails.setEmail(Util.getJsonValue(jsObj, EMAIL));
 			mJobPostedUserDetails.setGradyear(Util.getJsonValue(jsObj, GRADYEAR));
+			mJobPostedUserDetails.setTotalPosts(Util.getJsonValue(jsObj, TOTALPOSTS));
+			mJobPostedUserDetails.setTotalCircle(Util.getJsonValue(jsObj, TOTALCIRCLE));
 
 			if (jsonarrayPOSTA != null && jsonarrayPOSTA.length() >= 1) {
 				ArrayList<JobDetails> posts = new ArrayList<JobDetails>();

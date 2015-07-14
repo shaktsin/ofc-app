@@ -15,6 +15,25 @@ public class CircleProfile {
 	private String circledesc = "";
 	private String hide = "";
 
+	private String totalPosts = "";
+	private String members = "";
+
+	public String getTotalPosts() {
+		return totalPosts;
+	}
+
+	public void setTotalPosts(String totalPosts) {
+		this.totalPosts = totalPosts;
+	}
+
+	public String getMembers() {
+		return members;
+	}
+
+	public void setMembers(String members) {
+		this.members = members;
+	}
+
 	public String getHide() {
 		return hide;
 	}
