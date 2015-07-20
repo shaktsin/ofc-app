@@ -1,18 +1,13 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/joblist_bg_color" >
-
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/actiontool_bar" />
+    android:orientation="vertical" >
 
     <GridView
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tool_bar"
         android:layout_gravity="top"
         android:clipToPadding="false"
         android:drawSelectorOnTop="true"
@@ -28,13 +23,4 @@
         android:stretchMode="columnWidth"
         android:verticalSpacing="4dp" />
 
-    <RelativeLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tool_bar"
-        android:background="@android:color/white"
-        android:visibility="gone" >
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>

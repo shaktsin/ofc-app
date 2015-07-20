@@ -211,7 +211,7 @@
                         android:layout_centerVertical="true"
                         android:contentDescription="@string/app_name"
                         android:padding="8dp"
-                        android:src="@drawable/ic_attached" />
+                        android:src="@drawable/ic_camera" />
 
                     <ImageView
                         android:id="@+id/activity_createjob_rply"
@@ -231,7 +231,7 @@
                         android:layout_toRightOf="@+id/activity_createjob_rply"
                         android:contentDescription="@string/app_name"
                         android:padding="8dp"
-                        android:src="@drawable/ic_pdfordoc" />
+                        android:src="@drawable/ic_attached" />
                 </RelativeLayout>
 
                 <com.ofcampus.component.HorizontalListView
