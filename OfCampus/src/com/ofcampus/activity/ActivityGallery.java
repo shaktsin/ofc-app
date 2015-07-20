@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -36,11 +35,11 @@ import com.ofcampus.mediacontroll.PhoneMediaControl.loadAlbumPhoto;
 
 public class ActivityGallery extends ActionBarActivity {
 
+	public static int ALBUMDEATILCODE = 255;
 	private Context context;
 	public static final String PACKAGE = "org.ece.owngallery";
 	private Toolbar toolbar;
 	private GridView mView;
-	private RelativeLayout fragmentContainer;
 
 	public static ArrayList<PhoneMediaControl.AlbumEntry> albumsSorted = null;
 	public static ArrayList<PhotoEntry> photos = new ArrayList<PhotoEntry>();
@@ -59,15 +58,10 @@ public class ActivityGallery extends ActionBarActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (fragmentContainer != null && fragmentContainer.getChildCount() >= 1) {
-			fragmentContainer.removeViewAt(0);
-			fragmentContainer.setVisibility(View.GONE);
-			toolbar.setTitle("Gallery");
-		} else {
-			super.onBackPressed();
-			overridePendingTransition(0, 0);
-			finish();
-		}
+
+		super.onBackPressed();
+		overridePendingTransition(0, 0);
+		finish();
 
 	}
 
@@ -92,6 +86,25 @@ public class ActivityGallery extends ActionBarActivity {
 
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == ALBUMDEATILCODE && resultCode == RESULT_OK && null != data) {
+			Bundle mbBundle = data.getExtras();
+			String lpicturePath = mbBundle.getString("contents");
+
+			Intent intent = new Intent();
+			Bundle mBundle = new Bundle();
+			mBundle.putString("contents", lpicturePath);
+			intent.putExtras(mBundle);
+			setResult(RESULT_OK, intent);
+			overridePendingTransition(0, 0);
+			finish();
+		}
+
+	}
+
 	private void initializeView() {
 
 		toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -101,7 +114,6 @@ public class ActivityGallery extends ActionBarActivity {
 
 		mView = (GridView) findViewById(R.id.grid_view);
 		mView.setAdapter(listAdapter = new ListAdapter(ActivityGallery.this));
-		fragmentContainer = (RelativeLayout) findViewById(R.id.fragment_container);
 
 		int position = mView.getFirstVisiblePosition();
 		int columnsCount = 2;
@@ -115,7 +127,12 @@ public class ActivityGallery extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-				loadAlbum(position);
+				Intent mIntent = new Intent(context, ActivityAlbumDetails.class);
+				Bundle mBundle = new Bundle();
+				mBundle.putString("Key_ID", position + "");
+				mBundle.putString("Key_Name", albumsSorted.get(position).bucketName + "");
+				mIntent.putExtras(mBundle);
+				startActivityForResult(mIntent, ALBUMDEATILCODE);
 			}
 		});
 
@@ -210,151 +227,6 @@ public class ActivityGallery extends ActionBarActivity {
 
 			textView = (TextView) view.findViewById(R.id.album_count);
 			textView.setText("" + albumEntry.photos.size());
-
-			return view;
-		}
-
-		@Override
-		public int getItemViewType(int i) {
-			return 0;
-		}
-
-		@Override
-		public int getViewTypeCount() {
-			return 2;
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return albumsSorted == null || albumsSorted.isEmpty();
-		}
-
-		class viewHolder {
-			public ImageView imageView;
-		}
-
-	}
-
-	/**
-	 * AlbumDetail Fragment
-	 */
-
-	private static final String ARG_POSITION = "position";
-	private GridView gridImages;
-	private AlbumImagesAdapter mAlbumImagesAdapter;
-	private int itemWidthAlbum = 100;
-
-	private void loadAlbum(int position) {
-		String name = albumsSorted.get(position).bucketName;
-		photos = albumsSorted.get(position).photos;
-		toolbar.setTitle(name);
-
-		View parent = LayoutInflater.from(context).inflate(R.layout.fragment_albumdetails, null);
-		initializeViews(parent);
-		fragmentContainer.addView(parent, 0);
-		fragmentContainer.setVisibility(View.VISIBLE);
-
-	}
-
-	private void initializeViews(View parent) {
-		gridImages = (GridView) parent.findViewById(R.id.grid_view);
-		gridImages.setAdapter(mAlbumImagesAdapter = new AlbumImagesAdapter(ActivityGallery.this));
-
-		int position = gridImages.getFirstVisiblePosition();
-		int columnsCount = 3;
-		gridImages.setNumColumns(columnsCount);
-		itemWidthAlbum = (OfCampusApplication.displaySize.x - ((columnsCount + 1) * OfCampusApplication.dp(4))) / columnsCount;
-		gridImages.setColumnWidth(itemWidthAlbum);
-
-		mAlbumImagesAdapter.notifyDataSetChanged();
-		gridImages.setSelection(position);
-		gridImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-				String path = photos.get(position).path.toString();
-				path = path.replace("file://", "");
-
-				Intent intent = new Intent();
-				Bundle mBundle = new Bundle();
-				mBundle.putString("contents", path);
-				intent.putExtras(mBundle);
-				setResult(RESULT_OK, intent);
-				overridePendingTransition(0, 0);
-				finish();
-
-			}
-		});
-	}
-
-	private class AlbumImagesAdapter extends BaseFragmentAdapter {
-		private Context mContext;
-		private LayoutInflater layoutInflater;
-		private DisplayImageOptions options;
-		private ImageLoader imageLoader = ImageLoader.getInstance();
-
-		public AlbumImagesAdapter(Context context) {
-			this.mContext = context;
-			this.layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-			options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.nophotos).showImageForEmptyUri(R.drawable.nophotos).showImageOnFail(R.drawable.nophotos).cacheInMemory(true)
-					.cacheOnDisc(true).considerExifParams(true).build();
-			imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-
-		}
-
-		@Override
-		public boolean areAllItemsEnabled() {
-			return true;
-		}
-
-		@Override
-		public boolean isEnabled(int i) {
-			return true;
-		}
-
-		@Override
-		public int getCount() {
-			return photos != null ? photos.size() : 0;
-		}
-
-		@Override
-		public Object getItem(int i) {
-			return null;
-		}
-
-		@Override
-		public long getItemId(int i) {
-			return i;
-		}
-
-		@Override
-		public boolean hasStableIds() {
-			return true;
-		}
-
-		@Override
-		public View getView(int i, View view, ViewGroup viewGroup) {
-			viewHolder mHolder;
-			if (view == null) {
-				mHolder = new viewHolder();
-				view = layoutInflater.inflate(R.layout.album_image, viewGroup, false);
-				mHolder.imageView = (ImageView) view.findViewById(R.id.album_image);
-				ViewGroup.LayoutParams params = view.getLayoutParams();
-				params.width = itemWidthAlbum;
-				params.height = itemWidthAlbum;
-				view.setLayoutParams(params);
-				mHolder.imageView.setTag(i);
-
-				view.setTag(mHolder);
-			} else {
-				mHolder = (viewHolder) view.getTag();
-			}
-			PhotoEntry mPhotoEntry = photos.get(i);
-			String path = mPhotoEntry.path;
-			if (path != null && !path.equals("")) {
-				imageLoader.displayImage("file://" + path, mHolder.imageView, options);
-			}
 
 			return view;
 		}
