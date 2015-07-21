@@ -30,7 +30,7 @@ public class ActivityAlbumDetails extends ActionBarActivity implements AlbumRecy
 
 	public ArrayList<PhotoEntry> photos = new ArrayList<PhotoEntry>();
 	private AlbumRecyclerAdapter adapter;
-	private int colmSize = 3;
+	private int colmSize = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

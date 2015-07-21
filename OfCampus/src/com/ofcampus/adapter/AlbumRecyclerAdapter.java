@@ -33,7 +33,7 @@ public class AlbumRecyclerAdapter extends RecyclerView.Adapter<AlbumRecyclerAdap
 		this.clickListener = clickListener;
 		this.photos_ = photos;
 		this.context = context_;
-		this.hight = context.getResources().getDisplayMetrics().heightPixels / 4;
+		this.hight = context.getResources().getDisplayMetrics().heightPixels / 3;
 		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.nophotos).showImageForEmptyUri(R.drawable.nophotos).showImageOnFail(R.drawable.nophotos).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader.init(ImageLoaderConfiguration.createDefault(context_));
