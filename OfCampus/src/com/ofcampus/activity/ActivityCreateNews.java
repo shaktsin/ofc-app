@@ -503,6 +503,15 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 				});
 			} else {
 				imageLoader.displayImage("file://" + path, holder.pic, options);
+				holder.pic_cross.setVisibility(View.VISIBLE);
+				holder.pic_cross.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						PicDataSets.remove(position);
+						notifyDataSetChanged();
+					}
+				});
 			}
 
 			return convertView;
@@ -600,7 +609,15 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 				} else {
 					holder.pic.setImageResource(R.drawable.pdf);
 				}
+				holder.pic_cross.setVisibility(View.VISIBLE);
+				holder.pic_cross.setOnClickListener(new OnClickListener() {
 
+					@Override
+					public void onClick(View v) {
+						DOCPDFDataSets.remove(position);
+						notifyDataSetChanged();
+					}
+				});
 			}
 
 			return convertView;

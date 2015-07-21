@@ -650,6 +650,15 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 				});
 			} else {
 				imageLoader.displayImage("file://" + path, holder.pic, options);
+				holder.pic_cross.setVisibility(View.VISIBLE);
+				holder.pic_cross.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						ImageAttachemtnS.remove(position);
+						notifyDataSetChanged();
+					}
+				});
 			}
 
 			return convertView;
@@ -745,7 +754,15 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 				} else {
 					holder.pic.setImageResource(R.drawable.pdf);
 				}
+				holder.pic_cross.setVisibility(View.VISIBLE);
+				holder.pic_cross.setOnClickListener(new OnClickListener() {
 
+					@Override
+					public void onClick(View v) {
+						DOCPDFDataSets.remove(position);
+						notifyDataSetChanged();
+					}
+				});
 			}
 
 			return convertView;

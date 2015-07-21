@@ -429,10 +429,9 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 			for (CustomSpinnerDataSets item : circleList) {
 				if (item.getId().equals(circleIDs[0])) {
 					item.isSelected = 1;
-					
+
 					edt_sendto.setText(item.getTitle());
-					
-					
+
 				}
 			}
 		}
@@ -442,7 +441,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 
 		if (industrieslist != null && idustryIDs != null && idustryIDs.length >= 1) {
 			for (int i = 0; i < industrieslist.size(); i++) {
-				CustomSpinnerDataSets industry = industrieslist.get(i); 
+				CustomSpinnerDataSets industry = industrieslist.get(i);
 				if (industry.getId().equals(idustryIDs[0])) {
 					industry.isSelected = 1;
 					edt_idustry.setText(industry.getTitle());
@@ -451,7 +450,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 					for (CustomSpinnerDataSets role : roleIds) {
 						if (role.getId().equals(roles[0])) {
 							role.isSelected = 1;
-							 edt_role.setText(role.getTitle());
+							edt_role.setText(role.getTitle());
 						}
 					}
 				}
@@ -463,7 +462,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 			for (CustomSpinnerDataSets city : arrcity) {
 				if (city.getId().equals(locationIDs[0])) {
 					city.isSelected = 1;
-					 edt_city.setText(city.getTitle());
+					edt_city.setText(city.getTitle());
 				}
 			}
 		}
@@ -633,6 +632,15 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 				});
 			} else {
 				imageLoader.displayImage("file://" + path, holder.pic, options);
+				holder.pic_cross.setVisibility(View.VISIBLE);
+				holder.pic_cross.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						PicDataSets.remove(position);
+						notifyDataSetChanged();
+					}
+				});
 			}
 
 			return convertView;
@@ -730,7 +738,15 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 				} else {
 					holder.pic.setImageResource(R.drawable.pdf);
 				}
+				holder.pic_cross.setVisibility(View.VISIBLE);
+				holder.pic_cross.setOnClickListener(new OnClickListener() {
 
+					@Override
+					public void onClick(View v) {
+						DOCPDFDataSets.remove(position);
+						notifyDataSetChanged();
+					}
+				});
 			}
 
 			return convertView;
