@@ -31,15 +31,16 @@
     <color name="job_name">#858585</color>
     <color name="job_Date">#35475D</color>
     <color name="job_contain">#6F6D6E</color>
-    
+
     <!-- buttons default color -->
     <color name="join_blue_bright">#4099FF</color>
     <color name="join_white_bright">#FFFFFF</color>
-    
+
     <!-- circle title color -->
     <color name="cirlce_post_color">#66757f</color>
-    
+
     <!-- Edit text hint color -->
     <color name="Edittext_hintcolor">#817b7b</color>
+    <color name="selected_overlay">#88673AB7</color>
 
 </resources>

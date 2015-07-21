@@ -11,34 +11,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
-import com.ofcampus.adapter.BaseFragmentAdapter;
+import com.ofcampus.adapter.AlbumRecyclerAdapter;
 import com.ofcampus.mediacontroll.PhoneMediaControl.PhotoEntry;
 
-public class ActivityAlbumDetails extends ActionBarActivity {
+public class ActivityAlbumDetails extends ActionBarActivity implements AlbumRecyclerAdapter.ViewHolder.ClickListener {
 
 	private Context context;
 	public static final String PACKAGE = "org.ece.owngallery";
 	private Toolbar toolbar;
 
-	public static ArrayList<PhotoEntry> photos = new ArrayList<PhotoEntry>();
-	private GridView gridImages;
-	private AlbumImagesAdapter mAlbumImagesAdapter;
-	private int itemWidthAlbum = 100;
+	public ArrayList<PhotoEntry> photos = new ArrayList<PhotoEntry>();
+	private AlbumRecyclerAdapter adapter;
+	private int colmSize = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +71,6 @@ public class ActivityAlbumDetails extends ActionBarActivity {
 	}
 
 	private void initializeViews() {
-
 		toolbar = (Toolbar) findViewById(R.id.tool_bar);
 		toolbar.setTitle("Gallery");
 		setSupportActionBar(toolbar);
@@ -96,127 +87,30 @@ public class ActivityAlbumDetails extends ActionBarActivity {
 			toolbar.setTitle(title + "(" + photos.size() + ")");
 		}
 
-		gridImages = (GridView) findViewById(R.id.grid_view);
-		gridImages.setAdapter(mAlbumImagesAdapter = new AlbumImagesAdapter(ActivityAlbumDetails.this));
-
-		int position = gridImages.getFirstVisiblePosition();
-		int columnsCount = 3;
-		gridImages.setNumColumns(columnsCount);
-		itemWidthAlbum = (OfCampusApplication.displaySize.x - ((columnsCount + 1) * OfCampusApplication.dp(4))) / columnsCount;
-		gridImages.setColumnWidth(itemWidthAlbum);
-
-		mAlbumImagesAdapter.notifyDataSetChanged();
-		gridImages.setSelection(position);
-		gridImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-				String path = photos.get(position).path.toString();
-				path = path.replace("file://", "");
-
-				Intent intent = new Intent();
-				Bundle mBundle = new Bundle();
-				mBundle.putString("contents", path);
-				intent.putExtras(mBundle);
-				setResult(RESULT_OK, intent);
-				overridePendingTransition(0, 0);
-				finish();
-
-			}
-		});
+		adapter = new AlbumRecyclerAdapter(context, ActivityAlbumDetails.this, photos);
+		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+		recyclerView.setAdapter(adapter);
+		recyclerView.setItemAnimator(new DefaultItemAnimator());
+		recyclerView.setLayoutManager(new GridLayoutManager(context, colmSize, GridLayoutManager.VERTICAL, false));
 	}
 
-	private class AlbumImagesAdapter extends BaseFragmentAdapter {
-		private Context mContext;
-		private LayoutInflater layoutInflater;
-		private DisplayImageOptions options;
-		private ImageLoader imageLoader = ImageLoader.getInstance();
+	@Override
+	public void onItemClicked(int position) {
+		String path = photos.get(position).path.toString();
+		path = path.replace("file://", "");
 
-		public AlbumImagesAdapter(Context context) {
-			this.mContext = context;
-			this.layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		Intent intent = new Intent();
+		Bundle mBundle = new Bundle();
+		mBundle.putString("contents", path);
+		intent.putExtras(mBundle);
+		setResult(RESULT_OK, intent);
+		overridePendingTransition(0, 0);
+		finish();
+	}
 
-			options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.nophotos).showImageForEmptyUri(R.drawable.nophotos).showImageOnFail(R.drawable.nophotos).cacheInMemory(true)
-					.cacheOnDisc(true).considerExifParams(true).build();
-			imageLoader.init(ImageLoaderConfiguration.createDefault(context));
-
-		}
-
-		@Override
-		public boolean areAllItemsEnabled() {
-			return true;
-		}
-
-		@Override
-		public boolean isEnabled(int i) {
-			return true;
-		}
-
-		@Override
-		public int getCount() {
-			return photos != null ? photos.size() : 0;
-		}
-
-		@Override
-		public Object getItem(int i) {
-			return null;
-		}
-
-		@Override
-		public long getItemId(int i) {
-			return i;
-		}
-
-		@Override
-		public boolean hasStableIds() {
-			return true;
-		}
-
-		@Override
-		public View getView(int i, View view, ViewGroup viewGroup) {
-			viewHolder mHolder;
-			if (view == null) {
-				mHolder = new viewHolder();
-				view = layoutInflater.inflate(R.layout.album_image, viewGroup, false);
-				mHolder.imageView = (ImageView) view.findViewById(R.id.album_image);
-				ViewGroup.LayoutParams params = view.getLayoutParams();
-				params.width = itemWidthAlbum;
-				params.height = itemWidthAlbum;
-				view.setLayoutParams(params);
-				mHolder.imageView.setTag(i);
-
-				view.setTag(mHolder);
-			} else {
-				mHolder = (viewHolder) view.getTag();
-			}
-			PhotoEntry mPhotoEntry = photos.get(i);
-			String path = mPhotoEntry.path;
-			if (path != null && !path.equals("")) {
-				imageLoader.displayImage("file://" + path, mHolder.imageView, options);
-			}
-
-			return view;
-		}
-
-		@Override
-		public int getItemViewType(int i) {
-			return 0;
-		}
-
-		@Override
-		public int getViewTypeCount() {
-			return 2;
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return ActivityGallery.albumsSorted == null || ActivityGallery.albumsSorted.isEmpty();
-		}
-
-		class viewHolder {
-			public ImageView imageView;
-		}
-
+	@Override
+	public boolean onItemLongClicked(int position) {
+		return false;
 	}
 
 }
