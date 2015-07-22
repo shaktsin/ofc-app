@@ -173,13 +173,13 @@ public class ClassifiedDetailsParser {
 						classifieddetailsparserinterface.OnSuccess(arrayJobsComment, totalCommentCount);
 					}
 				} else {
-//					Util.ShowToast(mContext, "News Details parser error.");
+					// Util.ShowToast(mContext, "News Details parser error.");
 					if (classifieddetailsparserinterface != null) {
 						classifieddetailsparserinterface.OnError();
 					}
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, responseDetails);
+				// Util.ShowToast(mContext, responseDetails);
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			}
@@ -287,7 +287,8 @@ public class ClassifiedDetailsParser {
 					primaryIds = new String[secondarycategJSONArray.length()];
 					secondIds = new String[secondarycategJSONArray.length()];
 					for (int j = 0; j < secondarycategJSONArray.length(); j++) {
-						primary = primary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME) + ", ";
+						String prim = Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME);
+						primary = primary + ((primary.contains(prim)) ? "" : (prim + ","));
 						secondary = secondary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), SECONDARYCATEGORYNAME) + ", ";
 
 						primaryIds[j] = Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), "primaryCatId");

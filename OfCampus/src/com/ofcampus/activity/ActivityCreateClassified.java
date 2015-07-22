@@ -436,13 +436,19 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 	private void seekBarDataLoad(PrepareListForClassified mPrepareListForClassified) {
 		// circle_spn, catagory_spn, subcatagory_spn, location_spn;
 		circleList = mPrepareListForClassified.getCirclelist();
+		String txt = "";
+
 		if (circleList != null && circleIDs != null && circleIDs.length >= 1) {
 			for (CustomSpinnerDataSets item : circleList) {
-				if (item.getId().equals(circleIDs[0])) {
-					item.isSelected = 1;
-					circle_spn.setText(item.getTitle());
+				for (int i = 0; i < circleIDs.length; i++) {
+					if (item.getId().equals(circleIDs[i])) {
+						item.isSelected = 1;
+						txt = txt + "," + item.getTitle();
+					}
 				}
 			}
+			txt = (txt.length() >= 1) ? txt.substring(1) : "";
+			circle_spn.setText(txt);
 		}
 
 		categoryList = mPrepareListForClassified.getPrimarycatlist();
@@ -468,12 +474,19 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 
 		locationList = mPrepareListForClassified.getCitys();
 		if (locationList != null && locationIDs != null && locationIDs.length >= 1) {
+			txt = "";
 			for (CustomSpinnerDataSets city : locationList) {
-				if (city.getId().equals(locationIDs[0])) {
-					city.isSelected = 1;
-					location_spn.setText(city.getTitle());
+				for (int i = 0; i < locationIDs.length; i++) {
+					if (city.getId().equals(locationIDs[i])) {
+						city.isSelected = 1;
+
+						txt = txt + "," + city.getTitle();
+					}
 				}
+
 			}
+			txt = (txt.length() >= 1) ? txt.substring(1) : "";
+			location_spn.setText(txt);
 		}
 
 	}
@@ -932,21 +945,21 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 			String[] circle = Circle_id.split(",");
 			JSONArray circleArray = new JSONArray();
 			for (int i = 0; i < circle.length; i++) {
-				circleArray.put(i, circle[i]);
+				circleArray.put(i, Integer.parseInt(circle[i]));
 			}
 			jsObj.put("circleList", circleArray);
 
 			String[] secondary = secondary_id.split(",");
 			JSONArray secondaryArray = new JSONArray();
 			for (int i = 0; i < secondary.length; i++) {
-				secondaryArray.put(i, secondary[i]);
+				secondaryArray.put(i, Integer.parseInt(secondary[i]));
 			}
 			jsObj.put("secondaryCatList", secondaryArray);
 
 			String[] location = location_id.split(",");
 			JSONArray locationArray = new JSONArray();
 			for (int i = 0; i < location.length; i++) {
-				locationArray.put(i, location[i]);
+				locationArray.put(i, Integer.parseInt(location[i]));
 			}
 			jsObj.put("locationIdList", locationArray);
 
@@ -1115,22 +1128,23 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 			String[] circle = Circle_id.split(",");
 			JSONArray circleArray = new JSONArray();
 			for (int i = 0; i < circle.length; i++) {
-				circleArray.put(i, circle[i]);
+				circleArray.put(i, Integer.parseInt(circle[i]));
 			}
 			jsObj.put("circleList", circleArray);
 
 			String[] secondary = secondary_id.split(",");
 			JSONArray secondaryArray = new JSONArray();
 			for (int i = 0; i < secondary.length; i++) {
-				secondaryArray.put(i, secondary[i]);
+				secondaryArray.put(i, Integer.parseInt(secondary[i]));
 			}
 			jsObj.put("secondaryCatList", secondaryArray);
 
 			String[] location = location_id.split(",");
 			JSONArray locationArray = new JSONArray();
 			for (int i = 0; i < location.length; i++) {
-				locationArray.put(i, location[i]);
+				locationArray.put(i, Integer.parseInt(location[i]));
 			}
+			jsObj.put("locationIdList", locationArray);
 
 			if (deletedAttachmentIDS != null && deletedAttachmentIDS.size() >= 1) {
 				JSONArray deletedAttachmentArray = new JSONArray();
@@ -1139,8 +1153,6 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 				}
 				jsObj.put("deletedAttachment", deletedAttachmentArray);
 			}
-
-			jsObj.put("locationIdList", locationArray);
 
 		} catch (JSONException e) {
 			e.printStackTrace();

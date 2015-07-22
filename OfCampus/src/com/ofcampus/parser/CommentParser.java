@@ -184,13 +184,13 @@ public class CommentParser {
 						commentparserinterface.OnSuccess(arrayJobsComment, totalCommentCount);
 					}
 				} else {
-//					Util.ShowToast(mContext, "Job details parser error.");
-//					if (commentparserinterface != null) {
-//						commentparserinterface.OnError();
-//					}
+					// Util.ShowToast(mContext, "Job details parser error.");
+					// if (commentparserinterface != null) {
+					// commentparserinterface.OnError();
+					// }
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, responseDetails);
+				// Util.ShowToast(mContext, responseDetails);
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
 			}
@@ -292,7 +292,8 @@ public class CommentParser {
 					industryIds = new String[industryJSONArray.length()];
 					rolesIds = new String[industryJSONArray.length()];
 					for (int j = 0; j < industryJSONArray.length(); j++) {
-						industry = industry + Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME) + ", ";
+						String inds = Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME);
+						industry = industry + ((industry.contains(inds)) ? "" : (inds + ","));
 						role = role + Util.getJsonValue(industryJSONArray.getJSONObject(j), ROLE) + ", ";
 						industryIds[j] = Util.getJsonValue(industryJSONArray.getJSONObject(j), "id");
 						rolesIds[j] = Util.getJsonValue(industryJSONArray.getJSONObject(j), "industryId");

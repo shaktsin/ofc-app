@@ -274,7 +274,8 @@ public class CreateClassifiedParser {
 				if (secondarycategJSONArray != null && secondarycategJSONArray.length() >= 1) {
 
 					for (int j = 0; j < secondarycategJSONArray.length(); j++) {
-						primary = primary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME) + ",";
+						String prim = Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME);
+						primary = primary + ((primary.contains(prim)) ? "" : (prim + ","));
 						secondary = secondary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), SECONDARYCATEGORYNAME) + ",";
 					}
 				}

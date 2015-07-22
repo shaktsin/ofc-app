@@ -285,7 +285,8 @@ public class JobPostParser {
 				if (industryJSONArray != null && industryJSONArray.length() >= 1) {
 
 					for (int j = 0; j < industryJSONArray.length(); j++) {
-						industry = industry + Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME) + ",";
+						String inds = Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME);
+						industry = industry + ((industry.contains(inds)) ? "" : (inds + ","));
 						role = role + Util.getJsonValue(industryJSONArray.getJSONObject(j), ROLE) + ",";
 					}
 				}

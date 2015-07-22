@@ -424,16 +424,18 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		String wthp = mPrepareListForNewsAndJob.getReplyWatsApp();
 		edt_whatsapp.setText((wthp != null && !wthp.equals("null") && !wthp.equals("")) ? wthp : "");
 
-		circleList = mPrepareListForNewsAndJob.getCirclelist();
+		String txt = "";
 		if (circleList != null && circleIDs != null && circleIDs.length >= 1) {
 			for (CustomSpinnerDataSets item : circleList) {
-				if (item.getId().equals(circleIDs[0])) {
-					item.isSelected = 1;
-
-					edt_sendto.setText(item.getTitle());
-
+				for (int i = 0; i < circleIDs.length; i++) {
+					if (item.getId().equals(circleIDs[i])) {
+						item.isSelected = 1;
+						txt = txt + "," + item.getTitle();
+					}
 				}
 			}
+			txt = (txt.length() >= 1) ? txt.substring(1) : "";
+			edt_sendto.setText(txt);
 		}
 
 		industrieslist = mPrepareListForNewsAndJob.getIndustrylist();
@@ -459,12 +461,18 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 
 		arrcity = mPrepareListForNewsAndJob.getCitys();
 		if (arrcity != null && locationIDs != null && locationIDs.length >= 1) {
+			txt = "";
 			for (CustomSpinnerDataSets city : arrcity) {
-				if (city.getId().equals(locationIDs[0])) {
-					city.isSelected = 1;
-					edt_city.setText(city.getTitle());
+				for (int i = 0; i < locationIDs.length; i++) {
+					if (city.getId().equals(locationIDs[i])) {
+						city.isSelected = 1;
+						txt = txt + "," + city.getTitle();
+
+					}
 				}
 			}
+			txt = (txt.length() >= 1) ? txt.substring(1) : "";
+			edt_city.setText(txt);
 		}
 
 	}
@@ -1085,17 +1093,18 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 			String[] circle = Circle_id.split(",");
 			JSONArray circleArray = new JSONArray();
 			for (int i = 0; i < circle.length; i++) {
-				circleArray.put(i, circle[i]);
+				circleArray.put(i, Integer.parseInt(circle[i]));
 			}
 
+			String[] role = industryrole.split(",");
 			JSONArray RolesArray = new JSONArray();
-			for (int i = 0; i < 1; i++) {
-				RolesArray.put(i, industryrole);
+			for (int i = 0; i < role.length; i++) {
+				RolesArray.put(i, Integer.parseInt(role[i]));
 			}
-
+			String[] loca = industryrole.split(",");
 			JSONArray locaArray = new JSONArray();
-			for (int i = 0; i < 1; i++) {
-				locaArray.put(i, location);
+			for (int i = 0; i < loca.length; i++) {
+				locaArray.put(i, Integer.parseInt(loca[i]));
 			}
 
 			jsObj.put("circleList", circleArray);
@@ -1295,7 +1304,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 			return;
 		}
 
-		JSONObject jsObj = getBodyForEWditJob(industries_id, rols_id, location_id, experiencto, experiencfrom, salaryto, salaryfrom, headline, headlinedetails, email_, ph_, whats_, circle_id + ",");
+		JSONObject jsObj = getBodyForEditJob(industries_id, rols_id, location_id, experiencto, experiencfrom, salaryto, salaryfrom, headline, headlinedetails, email_, ph_, whats_, circle_id + ",");
 
 		ArrayList<String> paths = new ArrayList<String>();
 		if (picdatasets != null && picdatasets.size() >= 1) {
@@ -1341,7 +1350,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 
 	}
 
-	private JSONObject getBodyForEWditJob(String industry, String industryrole, String location, String experiencto, String experiencfrom, String salaryto, String salaryfrom, String headline,
+	private JSONObject getBodyForEditJob(String industry, String industryrole, String location, String experiencto, String experiencfrom, String salaryto, String salaryfrom, String headline,
 			String headlinedetails, String email_, String ph_, String whats_, String Circle_id) {
 
 		JSONObject jsObj = new JSONObject();
@@ -1382,17 +1391,18 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 			String[] circle = Circle_id.split(",");
 			JSONArray circleArray = new JSONArray();
 			for (int i = 0; i < circle.length; i++) {
-				circleArray.put(i, circle[i]);
+				circleArray.put(i, Integer.parseInt(circle[i]));
 			}
 
+			String[] role = industryrole.split(",");
 			JSONArray RolesArray = new JSONArray();
-			for (int i = 0; i < 1; i++) {
-				RolesArray.put(i, industryrole);
+			for (int i = 0; i < role.length; i++) {
+				RolesArray.put(i, Integer.parseInt(role[i]));
 			}
-
+			String[] loca = industryrole.split(",");
 			JSONArray locaArray = new JSONArray();
-			for (int i = 0; i < 1; i++) {
-				locaArray.put(i, location);
+			for (int i = 0; i < loca.length; i++) {
+				locaArray.put(i, Integer.parseInt(loca[i]));
 			}
 
 			if (deletedIDS != null && deletedIDS.size() >= 1) {

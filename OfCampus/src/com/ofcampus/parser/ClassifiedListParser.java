@@ -145,7 +145,7 @@ public class ClassifiedListParser {
 				}
 
 			} else if (responsecode.equals("500") || responsecode.equals("401")) {
-//				Util.ShowToast(mContext, "No more Classifieds.");
+				// Util.ShowToast(mContext, "No more Classifieds.");
 				error();
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
@@ -291,7 +291,8 @@ public class ClassifiedListParser {
 						if (secondarycategJSONArray != null && secondarycategJSONArray.length() >= 1) {
 
 							for (int j = 0; j < secondarycategJSONArray.length(); j++) {
-								primary = primary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME) + ", ";
+								String prim = Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), PRIMARYCATNAME);
+								primary = primary + ((primary.contains(prim)) ? "" : (prim + ","));
 								secondary = secondary + Util.getJsonValue(secondarycategJSONArray.getJSONObject(j), SECONDARYCATEGORYNAME) + ", ";
 							}
 						}

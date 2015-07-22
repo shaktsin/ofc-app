@@ -162,13 +162,13 @@ public class JobListParserNew {
 						joblistparsernewinterface.OnSuccess(jobList);
 					}
 				} else {
-//					Util.ShowToast(mContext, "No more Job");
-//					if (joblistparsernewinterface != null) {
-//						joblistparsernewinterface.OnSuccess(null);
-//					}
+					// Util.ShowToast(mContext, "No more Job");
+					// if (joblistparsernewinterface != null) {
+					// joblistparsernewinterface.OnSuccess(null);
+					// }
 				}
 			} else if (responsecode.equals("500") || responsecode.equals("401")) {
-//				Util.ShowToast(mContext, responseDetails);
+				// Util.ShowToast(mContext, responseDetails);
 				error();
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
@@ -337,7 +337,8 @@ public class JobListParserNew {
 						if (industryJSONArray != null && industryJSONArray.length() >= 1) {
 
 							for (int j = 0; j < industryJSONArray.length(); j++) {
-								industry = industry + Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME) + ", ";
+								String inds = Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME);
+								industry = industry + ((industry.contains(inds)) ? "" : (inds + ","));
 								role = role + Util.getJsonValue(industryJSONArray.getJSONObject(j), ROLE) + ", ";
 							}
 						}

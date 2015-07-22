@@ -809,7 +809,7 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 			String[] circle = Circle_id.split(",");
 			JSONArray circleArray = new JSONArray();
 			for (int i = 0; i < circle.length; i++) {
-				circleArray.put(i, circle[i]);
+				circleArray.put(i, Integer.parseInt(circle[i]));
 			}
 			jsObj.put("circleList", circleArray);
 
@@ -954,7 +954,7 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 			String[] circle = Circle_id.split(",");
 			JSONArray circleArray = new JSONArray();
 			for (int i = 0; i < circle.length; i++) {
-				circleArray.put(i, circle[i]);
+				circleArray.put(i, Integer.parseInt(circle[i]));
 			}
 			jsObj.put("circleList", circleArray);
 
