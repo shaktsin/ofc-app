@@ -358,14 +358,19 @@ public class ActivityCreateNews extends ActionBarActivity implements OnClickList
 		String wthp = mPrepareListForNewsAndJob.getReplyWatsApp();
 		edt_whatsapp.setText((wthp != null && !wthp.equals("null") && !wthp.equals("")) ? wthp : "");
 
+		String txt = "";
 		circleList = mPrepareListForNewsAndJob.getCirclelist();
 		if (circleList != null && circleIDs != null && circleIDs.length >= 1) {
 			for (CustomSpinnerDataSets item : circleList) {
-				if (item.getId().equals(circleIDs[0])) {
-					item.isSelected = 1;
-					edt_sendto.setText(item.getTitle());
+				for (int i = 0; i < circleIDs.length; i++) {
+					if (item.getId().equals(circleIDs[i])) {
+						item.isSelected = 1;
+						txt = txt + "," + item.getTitle();
+					}
 				}
 			}
+			txt = (txt.length() >= 1) ? txt.substring(1) : "";
+			edt_sendto.setText(txt);
 		}
 	}
 

@@ -425,6 +425,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		edt_whatsapp.setText((wthp != null && !wthp.equals("null") && !wthp.equals("")) ? wthp : "");
 
 		String txt = "";
+		circleList = mPrepareListForNewsAndJob.getCirclelist();
 		if (circleList != null && circleIDs != null && circleIDs.length >= 1) {
 			for (CustomSpinnerDataSets item : circleList) {
 				for (int i = 0; i < circleIDs.length; i++) {
@@ -442,21 +443,32 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 		rolelist = (industrieslist != null && industrieslist.size() >= 1) ? industrieslist.get(0).getList() : null;
 
 		if (industrieslist != null && idustryIDs != null && idustryIDs.length >= 1) {
-			for (int i = 0; i < industrieslist.size(); i++) {
-				CustomSpinnerDataSets industry = industrieslist.get(i);
+
+			for (CustomSpinnerDataSets industry : industrieslist) {
 				if (industry.getId().equals(idustryIDs[0])) {
 					industry.isSelected = 1;
 					edt_idustry.setText(industry.getTitle());
-					rolelist = (industrieslist != null && industrieslist.size() >= 1) ? industrieslist.get(i).getList() : null;
-					ArrayList<CustomSpinnerDataSets> roleIds = industrieslist.get(i).getList();
-					for (CustomSpinnerDataSets role : roleIds) {
-						if (role.getId().equals(roles[0])) {
-							role.isSelected = 1;
-							edt_role.setText(role.getTitle());
+
+					rolelist = (industry.getList() != null && industry.getList().size() >= 1) ? industry.getList() : null;
+
+					if (rolelist != null && rolelist.size() >= 1) {
+						String roleNames = "";
+						for (CustomSpinnerDataSets role : rolelist) {
+
+							for (int i = 0; i < roles.length; i++) {
+								if (role.getId().equals(roles[i])) {
+									role.isSelected = 1;
+									roleNames = roleNames + "," + role.getTitle();
+								}
+							}
 						}
+						roleNames = (roleNames.length() >= 1) ? roleNames.substring(1) : "";
+						edt_role.setText(roleNames);
+
 					}
 				}
 			}
+
 		}
 
 		arrcity = mPrepareListForNewsAndJob.getCitys();
@@ -467,7 +479,6 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 					if (city.getId().equals(locationIDs[i])) {
 						city.isSelected = 1;
 						txt = txt + "," + city.getTitle();
-
 					}
 				}
 			}
@@ -1101,7 +1112,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 			for (int i = 0; i < role.length; i++) {
 				RolesArray.put(i, Integer.parseInt(role[i]));
 			}
-			String[] loca = industryrole.split(",");
+			String[] loca = location.split(",");
 			JSONArray locaArray = new JSONArray();
 			for (int i = 0; i < loca.length; i++) {
 				locaArray.put(i, Integer.parseInt(loca[i]));
@@ -1399,7 +1410,7 @@ public class ActivityCreatePost extends ActionBarActivity implements OnClickList
 			for (int i = 0; i < role.length; i++) {
 				RolesArray.put(i, Integer.parseInt(role[i]));
 			}
-			String[] loca = industryrole.split(",");
+			String[] loca = location.split(",");
 			JSONArray locaArray = new JSONArray();
 			for (int i = 0; i < loca.length; i++) {
 				locaArray.put(i, Integer.parseInt(loca[i]));

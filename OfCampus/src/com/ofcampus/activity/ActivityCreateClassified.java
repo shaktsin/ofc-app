@@ -438,6 +438,7 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 		circleList = mPrepareListForClassified.getCirclelist();
 		String txt = "";
 
+		circleList = mPrepareListForClassified.getCirclelist();
 		if (circleList != null && circleIDs != null && circleIDs.length >= 1) {
 			for (CustomSpinnerDataSets item : circleList) {
 				for (int i = 0; i < circleIDs.length; i++) {
@@ -455,18 +456,45 @@ public class ActivityCreateClassified extends ActionBarActivity implements OnCli
 		subCategoryList = (categoryList != null && categoryList.size() >= 1) ? categoryList.get(0).getList() : null;
 
 		if (categoryList != null && primaryIds != null && primaryIds.length >= 1) {
-			for (int i = 0; i < categoryList.size(); i++) {
-				CustomSpinnerDataSets industry = categoryList.get(i);
+			// for (int i = 0; i < categoryList.size(); i++) {
+			// CustomSpinnerDataSets industry = categoryList.get(i);
+			// if (industry.getId().equals(primaryIds[0])) {
+			// industry.isSelected = 1;
+			// catagory_spn.setText(industry.getTitle());
+			// subCategoryList = (categoryList != null && categoryList.size() >=
+			// 1) ? categoryList.get(i).getList() : null;
+			// ArrayList<CustomSpinnerDataSets> roleIds =
+			// categoryList.get(i).getList();
+			// for (CustomSpinnerDataSets role : roleIds) {
+			// if (role.getId().equals(seconIds[0])) {
+			// role.isSelected = 1;
+			// subcatagory_spn.setText(role.getTitle());
+			// }
+			// }
+			// }
+			// }
+
+			for (CustomSpinnerDataSets industry : categoryList) {
 				if (industry.getId().equals(primaryIds[0])) {
 					industry.isSelected = 1;
 					catagory_spn.setText(industry.getTitle());
-					subCategoryList = (categoryList != null && categoryList.size() >= 1) ? categoryList.get(i).getList() : null;
-					ArrayList<CustomSpinnerDataSets> roleIds = categoryList.get(i).getList();
-					for (CustomSpinnerDataSets role : roleIds) {
-						if (role.getId().equals(seconIds[0])) {
-							role.isSelected = 1;
-							subcatagory_spn.setText(role.getTitle());
+
+					subCategoryList = (industry.getList() != null && industry.getList().size() >= 1) ? industry.getList() : null;
+
+					if (subCategoryList != null && subCategoryList.size() >= 1) {
+						String categoryNames = "";
+						for (CustomSpinnerDataSets secCategory : subCategoryList) {
+
+							for (int i = 0; i < seconIds.length; i++) {
+								if (secCategory.getId().equals(seconIds[i])) {
+									secCategory.isSelected = 1;
+									categoryNames = categoryNames + "," + secCategory.getTitle();
+								}
+							}
 						}
+						categoryNames = (categoryNames.length() >= 1) ? categoryNames.substring(1) : "";
+						subcatagory_spn.setText(categoryNames);
+
 					}
 				}
 			}

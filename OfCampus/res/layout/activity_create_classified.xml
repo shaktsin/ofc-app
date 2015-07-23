@@ -100,7 +100,7 @@
                         android:drawablePadding="@dimen/dp_four"
                         android:drawableRight="@drawable/ic_down_arraow"
                         android:gravity="center_vertical|left"
-                        android:hint="Seccondary Category "
+                        android:hint="Secondary Category "
                         android:padding="@dimen/dp_four"
                         android:singleLine="true"
                         android:text=""

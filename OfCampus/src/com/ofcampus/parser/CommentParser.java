@@ -295,8 +295,8 @@ public class CommentParser {
 						String inds = Util.getJsonValue(industryJSONArray.getJSONObject(j), INDUSTRYNAME);
 						industry = industry + ((industry.contains(inds)) ? "" : (inds + ","));
 						role = role + Util.getJsonValue(industryJSONArray.getJSONObject(j), ROLE) + ", ";
-						industryIds[j] = Util.getJsonValue(industryJSONArray.getJSONObject(j), "id");
-						rolesIds[j] = Util.getJsonValue(industryJSONArray.getJSONObject(j), "industryId");
+						industryIds[0] = Util.getJsonValue(industryJSONArray.getJSONObject(j), "industryId");
+						rolesIds[j] = Util.getJsonValue(industryJSONArray.getJSONObject(j), "id");
 					}
 				}
 
