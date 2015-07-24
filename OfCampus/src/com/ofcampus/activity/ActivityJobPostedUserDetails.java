@@ -6,6 +6,9 @@
 package com.ofcampus.activity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +30,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,13 +39,14 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
@@ -338,7 +344,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 				loadPostAndCircle();
 			}
 
@@ -477,6 +483,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 		private ArrayList<JobDetails> arrayList;
 		private LayoutInflater inflater;
 		private ImageLoader imageLoader = ImageLoader.getInstance();
+		private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 		private DisplayImageOptions options;
 
 		public PostAdapter(Context context, ArrayList<JobDetails> arrayList_) {
@@ -536,8 +543,10 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 			final JobDetails mJobDetails = arrayList.get(position);
 
 			String url = mJobDetails.getImage();
-			if (url != null && !url.equals("") && !url.equals("null")) {
-				imageLoader.displayImage(url, mHolder.img_commentprfpic, options);
+			if (!TextUtils.isEmpty(url) && !url.equals("null")) {
+				imageLoader.displayImage(url, mHolder.img_commentprfpic, options, animateFirstListener);
+			} else {
+				mHolder.img_commentprfpic.setImageResource(R.drawable.ic_profilepic);
 			}
 			mHolder.img_commentprfpic.setVisibility(View.GONE);
 			mHolder.txt_commentname.setText(mJobDetails.getName());
@@ -583,6 +592,23 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				((Activity) mContext).overridePendingTransition(0, 0);
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+		}
+	}
+
+	private class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
+
+		final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
+
+		@Override
+		public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+			if (loadedImage != null) {
+				ImageView imageView = (ImageView) view;
+				boolean firstDisplay = !displayedImages.contains(imageUri);
+				if (firstDisplay) {
+					FadeInBitmapDisplayer.animate(imageView, 500);
+					displayedImages.add(imageUri);
+				}
 			}
 		}
 	}

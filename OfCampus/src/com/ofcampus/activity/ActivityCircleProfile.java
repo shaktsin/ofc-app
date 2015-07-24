@@ -6,13 +6,18 @@
 package com.ofcampus.activity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,11 +33,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.ofcampus.OfCampusApplication;
 import com.ofcampus.R;
 import com.ofcampus.Util;
@@ -83,9 +91,6 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	private ArrayList<CircleUserDetails> arraycircle = null;
 	private ArrayList<JobDetails> arraypost = null;
 	private ArrayList<CircleUserDetails> pendingUser = null;
-
-	private ImageLoader imageLoader = ImageLoader.getInstance();
-	private DisplayImageOptions options;
 
 	private enum SelectionTab {
 		POST, USER, PENDINGREQ
@@ -212,9 +217,6 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		lin_main = (LinearLayout) findViewById(R.id.circleprf_linearmain);
 		rel_pg = (RelativeLayout) findViewById(R.id.jobposteduser_linear_pg);
 
-		options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_profilepic).showImageForEmptyUri(R.drawable.ic_profilepic).showImageOnFail(R.drawable.ic_profilepic)
-				.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
-		imageLoader.init(ImageLoaderConfiguration.createDefault(context));
 		Selection(0);
 		lin_main.setVisibility(View.GONE);
 
@@ -228,7 +230,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				int lastInScreen = firstVisibleItem + visibleItemCount;
-				if (mpostAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMore)) {
+				if (mpostAdapter != null && totalItemCount > minimumofsets && (lastInScreen == totalItemCount) && !(loadingMorePost)) {
 					if (mLastFirstVisibleItem < firstVisibleItem) {
 						if (!Util.hasConnection(context)) {
 							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
@@ -236,7 +238,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 						}
 						Log.i("SCROLLING DOWN", "TRUE");
 						footer_pg.setVisibility(View.VISIBLE);
-						loadingMore = true;
+						loadingMorePost = true;
 						loadMorePost();
 					}
 				}
@@ -254,7 +256,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 				int lastInScreen = firstVisibleItem + visibleItemCount;
-				if (mUsersAdapter != null && totalItemCount > minimumofsetsUser && (lastInScreen == totalItemCount) && !(loadingMore)) {
+				if (mUsersAdapter != null && totalItemCount > minimumofsetsUser && (lastInScreen == totalItemCount) && !(loadingMoreCircle)) {
 					if (mLastFirstVisibleItemUser < firstVisibleItem) {
 						if (!Util.hasConnection(context)) {
 							Util.ShowToast(context, context.getResources().getString(R.string.internetconnection_msg));
@@ -262,7 +264,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 						}
 						Log.i("SCROLLING DOWN", "TRUE");
 						footer_pg.setVisibility(View.VISIBLE);
-						loadingMore = true;
+						loadingMoreCircle = true;
 						loadMoreUsers();
 					}
 				}
@@ -455,6 +457,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		private ArrayList<JobDetails> arrayList;
 		private LayoutInflater inflater;
 		private ImageLoader imageLoader = ImageLoader.getInstance();
+		private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 		private DisplayImageOptions options;
 
 		public PostAdapter(Context context, ArrayList<JobDetails> arrayList_) {
@@ -494,7 +497,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			ViewHolder mHolder;
 			if (convertView == null) {
 				mHolder = new ViewHolder();
@@ -513,12 +516,15 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 				mHolder = (ViewHolder) convertView.getTag();
 			}
 
-			final JobDetails mJobDetails = arrayList.get(position);
+			JobDetails mJobDetails = arrayList.get(position);
 
 			String url = mJobDetails.getImage();
-			if (url != null && !url.equals("") && !url.equals("null")) {
-				imageLoader.displayImage(url, mHolder.img_commentprfpic, options);
+			if (!TextUtils.isEmpty(url) && !url.equals("null")) {
+				imageLoader.displayImage(url, mHolder.img_commentprfpic, options, animateFirstListener);
+			} else {
+				mHolder.img_commentprfpic.setImageResource(R.drawable.ic_profilepic);
 			}
+
 			mHolder.txt_commentname.setText(Util.capitalize(mJobDetails.getName()));
 			String postedOn = Util.getPostedOnText(mJobDetails.getPostedon());
 			mHolder.txt_commentdate.setText(postedOn);
@@ -529,7 +535,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 
 				@Override
 				public void onClick(View v) {
-					gotToPostDetails(mJobDetails);
+					gotToPostDetails(arrayList.get(position));
 				}
 			});
 
@@ -541,6 +547,23 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			public CustomTextView txt_commentname, txt_commentdate, txt_commenteddetails, txt_subject;
 		}
 
+	}
+
+	private class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
+
+		final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
+
+		@Override
+		public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+			if (loadedImage != null) {
+				ImageView imageView = (ImageView) view;
+				boolean firstDisplay = !displayedImages.contains(imageUri);
+				if (firstDisplay) {
+					FadeInBitmapDisplayer.animate(imageView, 500);
+					displayedImages.add(imageUri);
+				}
+			}
+		}
 	}
 
 	private void gotToPostDetails(JobDetails mJobDetails) {
@@ -574,6 +597,9 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		private Context mContext;
 		private LayoutInflater inflater;
 		private ArrayList<CircleUserDetails> circles = null;
+		private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+		private ImageLoader imageLoader = ImageLoader.getInstance();
+		private DisplayImageOptions options;
 
 		public UsersAdapter(Context context, ArrayList<CircleUserDetails> arrcircle) {
 
@@ -639,11 +665,13 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 				mHolder = (ViewHolder) convertView.getTag();
 			}
 
-			final CircleUserDetails mCircleUserDetails = circles.get(position);
+			CircleUserDetails mCircleUserDetails = circles.get(position);
 
 			String url = mCircleUserDetails.getUserimage();
-			if (url != null && !url.equals("") && !url.equals("null")) {
-				imageLoader.displayImage(url, mHolder.img_commentprfpic, options);
+			if (!TextUtils.isEmpty(url) && !url.equals("null")) {
+				imageLoader.displayImage(url, mHolder.img_commentprfpic, options, animateFirstListener);
+			} else {
+				mHolder.img_commentprfpic.setImageResource(R.drawable.ic_profilepic);
 			}
 
 			mHolder.txt_name.setText(Util.capitalize(mCircleUserDetails.getUsername()));
@@ -660,8 +688,8 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 				@Override
 				public void onClick(View v) {
 					Intent mIntent = new Intent(mContext, ActivityJobPostedUserDetails.class);
-					mIntent.putExtra("isUserCame", (mCircleUserDetails.getUserid().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
-					mIntent.putExtra("userID", mCircleUserDetails.getUserid());
+					mIntent.putExtra("isUserCame", (circles.get(position).getUserid().equals(UserDetails.getLoggedInUser(mContext).getUserID())) ? true : false);
+					mIntent.putExtra("userID", circles.get(position).getUserid());
 					mContext.startActivity(mIntent);
 					((Activity) mContext).overridePendingTransition(0, 0);
 				}
@@ -682,6 +710,9 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		private Context mContext;
 		private LayoutInflater inflater;
 		private ArrayList<CircleUserDetails> circles = null;
+		private ImageLoader imageLoader = ImageLoader.getInstance();
+		private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
+		private DisplayImageOptions options;
 
 		public PendingUsersAdapter(Context context, ArrayList<CircleUserDetails> arrcircle) {
 
@@ -747,8 +778,10 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 			final String Userid = mCircleUserDetails.getUserid();
 
 			String url = mCircleUserDetails.getUserimage();
-			if (url != null && !url.equals("") && !url.equals("null")) {
-				imageLoader.displayImage(url, mHolder.img_commentprfpic, options);
+			if (!TextUtils.isEmpty(url) && !url.equals("null")) {
+				imageLoader.displayImage(url, mHolder.img_commentprfpic, options, animateFirstListener);
+			} else {
+				mHolder.img_commentprfpic.setImageResource(R.drawable.ic_profilepic);
 			}
 
 			mHolder.txt_name.setText(mCircleUserDetails.getUsername());
@@ -854,7 +887,8 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	private int pageNoPost = 0;
 	private int pageCountPost = 8;
 	private int minimumofsets = pageCountPost - 1, mLastFirstVisibleItem = 0;
-	private boolean loadingMore = false;
+	private boolean loadingMoreCircle = false;
+	private boolean loadingMorePost = false;
 	private RelativeLayout footer_pg;
 
 	private void loadMorePost() {
@@ -876,17 +910,17 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 					}
 
 				}
-
+				loadingMorePost = false;
 			}
 
 			@Override
 			public void OnError() {
-
+				loadingMorePost = false;
 			}
 
 			@Override
 			public void NoData() {
-
+				loadingMorePost = false;
 			}
 		});
 		morePostParser.parse(context, morePostParser.getBody(circleId, "" + pageNoPost, "" + pageCountPost), authorization, false);
@@ -895,7 +929,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	/*** For Load more ****/
 	private int pageNoUser = 0;
 	private int pageCountUser = 8;
-	private int minimumofsetsUser = pageNoUser - 1, mLastFirstVisibleItemUser = 0;
+	private int minimumofsetsUser = pageCountUser - 1, mLastFirstVisibleItemUser = 0;
 
 	private void loadMoreUsers() {
 
@@ -917,11 +951,12 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 					}
 
 				}
+				loadingMoreCircle = false;
 			}
 
 			@Override
 			public void OnError() {
-
+				loadingMoreCircle = false;
 			}
 		});
 		mLoadMoreCircleUserParser.parse(context, mLoadMoreCircleUserParser.getBody(circleId, "" + pageNoUser, "" + pageCountUser), authorization);
