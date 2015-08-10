@@ -56,6 +56,7 @@ import com.ofcampus.activity.FragmentNewsFeeds.NewsInterface;
 import com.ofcampus.adapter.SlideMenuAdapter;
 import com.ofcampus.adapter.SlideMenuAdapter.viewCLickEvent;
 import com.ofcampus.component.PagerSlidingTabStrip;
+import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.FilterDataSets;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.FilterJobParser;
@@ -283,7 +284,13 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					break;
 
 				case 7:
-
+					CircleDetails mCircleDetails = new CircleDetails();
+					mCircleDetails.setId("92");
+					((OfCampusApplication) mContext.getApplicationContext()).mCircleDetails_ = mCircleDetails;
+					Intent mIntentCircle = new Intent(mContext, ActivityCircleProfile.class);
+					mIntentCircle.putExtra("CircleType", Util.CircleType.CLUBS.ordinal());
+					startActivity(mIntentCircle);
+					overridePendingTransition(0, 0);
 					break;
 
 				case 8:
