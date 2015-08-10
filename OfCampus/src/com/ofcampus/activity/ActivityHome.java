@@ -260,23 +260,38 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 					startActivity(new Intent(ActivityHome.this, ActivityHidePost.class));
 					overridePendingTransition(0, 0);
 					break;
+
 				case 4:
-					startActivity(new Intent(ActivityHome.this, ActivityCircle.class));
+					Intent mIntentOrganization = new Intent(ActivityHome.this, ActivityCircle.class);
+					mIntentOrganization.putExtra("CircleType", Util.CircleType.ORGANIZATION.ordinal());
+					startActivity(mIntentOrganization);
 					overridePendingTransition(0, 0);
 					break;
 
 				case 5:
-					Intent mIntentChapter = new Intent(ActivityHome.this, ActivityCircle.class);
-					mIntentChapter.putExtra("isChapterEvent", true);
-					startActivity(mIntentChapter);
+					Intent mIntentClubs = new Intent(ActivityHome.this, ActivityCircle.class);
+					mIntentClubs.putExtra("CircleType", Util.CircleType.CLUBS.ordinal());
+					startActivity(mIntentClubs);
 					overridePendingTransition(0, 0);
 					break;
 
 				case 6:
+					Intent mIntentChapters = new Intent(ActivityHome.this, ActivityCircle.class);
+					mIntentChapters.putExtra("CircleType", Util.CircleType.CHAPTERS.ordinal());
+					startActivity(mIntentChapters);
+					overridePendingTransition(0, 0);
+					break;
+
+				case 7:
+
+					break;
+
+				case 8:
 					startActivity(new Intent(ActivityHome.this, ActivityResetPassword.class));
 					overridePendingTransition(0, 0);
 					break;
-				case 7:
+
+				case 9:
 					showLogutDialog();
 					break;
 
@@ -690,210 +705,6 @@ public class ActivityHome extends ActionBarActivity implements OnClickListener, 
 			}).start();
 		}
 	}
-
-	/**
-	 * Search Event
-	 */
-	// private SearchParser mParser = null;
-	// private ArrayList<SearchData> arrSearchData = new
-	// ArrayList<SearchData>();
-	//
-	// private void searchEvent(final String searchString) {
-	//
-	// if (searchString.length() == 0 || searchString.length() < 3) {
-	// // Util.ShowToast(mContext, "Please enter minimum 3 character.");
-	// return;
-	// }
-	//
-	// if (!Util.hasConnection(mContext)) {
-	// Util.ShowToast(mContext,
-	// getResources().getString(R.string.internetconnection_msg));
-	// return;
-	// }
-	//
-	// new Thread(new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	// // Thread.sleep(200);
-	// if (mParser == null) {
-	// mParser = new SearchParser();
-	// }
-	// mParser.doInBackground_(mParser.getBody(searchString), tocken);
-	// arrSearchData = mParser.SearchDataList;
-	// searchHandler.sendEmptyMessage(0);
-	//
-	// }
-	// }).start();
-	// }
-
-	// private ExampleAdapter mExampleAdapter = null;
-	// private String[] columns = new String[] { "_id", "_data", "_type",
-	// "_state" };
-	// private Object[] temp = new Object[] { 0, "", "", SearchType.CIRCLE };
-	// // private MatrixCursor cursor = new MatrixCursor(columns);
-	// private MatrixCursor cursor = null;
-	//
-	// private void initialcall() {
-	//
-	// }
-
-	// Handler searchHandler = new Handler() {
-	//
-	// @Override
-	// public void handleMessage(Message msg) {
-	// super.handleMessage(msg);
-	// cursor = new MatrixCursor(columns);
-	// if (arrSearchData != null && arrSearchData.size() >= 1) {
-	// for (SearchData mSearchData : arrSearchData) {
-	// cursor.addRow(new Object[] { mSearchData.getId(), mSearchData.getData(),
-	// mSearchData.getDatatype(), mSearchData.getmSearchType() });
-	// }
-	// }
-	// searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-	// mExampleAdapter = new ExampleAdapter(mContext, cursor, arrSearchData);
-	// searchView.setSuggestionsAdapter(mExampleAdapter);
-	//
-	// }
-	// };
-	//
-	// public class ExampleAdapter extends CursorAdapter {
-	//
-	// private ArrayList<SearchData> items;
-	// private LayoutInflater inflater;
-	//
-	// public ExampleAdapter(Context context, Cursor cursor,
-	// ArrayList<SearchData> items) {
-	//
-	// super(context, cursor, false);
-	// inflater = (LayoutInflater)
-	// context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	// this.items = items;
-	//
-	// }
-	//
-	// public void refresh(Cursor cursor, ArrayList<SearchData> items_) {
-	// items = items_;
-	// notifyDataSetChanged();
-	// }
-	//
-	// @Override
-	// public void bindView(View view, Context context, Cursor cursor) {
-	// SearchData mSearchData =
-	// items.get(Integer.parseInt(view.getTag().toString()));
-	// switch (mSearchData.getmSearchType()) {
-	// case USERS:
-	// ((TextView) view).setText(mSearchData.getData() + " in Users");
-	// break;
-	//
-	// case CIRCLE:
-	// ((TextView) view).setText(mSearchData.getData() + " in Clubs");
-	// break;
-	//
-	// case POSTS:
-	// if (mSearchData.getDatatype().equals("3")) {
-	// ((TextView) view).setText(mSearchData.getData() + " in NewsFeed");
-	// } else {
-	// ((TextView) view).setText(mSearchData.getData() + " in Post");
-	// }
-	// break;
-	//
-	// default:
-	// break;
-	// }
-	//
-	// }
-	//
-	// @Override
-	// public View newView(Context context, Cursor cursor, ViewGroup parent) {
-	// View convertView =
-	// inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent,
-	// false);
-	// convertView.setBackgroundColor(Color.parseColor("#E5E5E5"));
-	// TextView text = (TextView) convertView;
-	// text.setTextColor(Color.parseColor("#737373"));
-	// convertView.setTag(cursor.getPosition());
-	// convertView.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// SearchData mSearchData =
-	// items.get(Integer.parseInt(v.getTag().toString()));
-	// if (mSearchData != null) {
-	// gotToScreen(mSearchData);
-	// }
-	//
-	// }
-	// });
-	//
-	// return convertView;
-	// }
-	//
-	// }
-	//
-	// private void gotToScreen(SearchData mSearchData) {
-	//
-	// switch (mSearchData.getmSearchType()) {
-	//
-	// case USERS:
-	// JobDetails mJobDetails = new JobDetails();
-	// mJobDetails.setId(mSearchData.getId());
-	//
-	// Intent mIntent_ = new Intent(mContext,
-	// ActivityJobPostedUserDetails.class);
-	// mIntent_.putExtra("isUserCame",
-	// (mJobDetails.getId().equals(UserDetails.getLoggedInUser(mContext).getUserID()))
-	// ? true : false);
-	// ((OfCampusApplication) mContext.getApplicationContext()).jobdetails =
-	// mJobDetails;
-	// mContext.startActivity(mIntent_);
-	// ((Activity) mContext).overridePendingTransition(0, 0);
-	//
-	// searchView.clearFocus();
-	// break;
-	//
-	// case CIRCLE:
-	// CircleDetails mCircleDetails = new CircleDetails();
-	// mCircleDetails.setId(mSearchData.getId());
-	// mCircleDetails.setAdmin("false");
-	// ((OfCampusApplication) mContext.getApplicationContext()).mCircleDetails_
-	// = mCircleDetails;
-	// mContext.startActivity(new Intent(mContext,
-	// ActivityCircleProfile.class));
-	// overridePendingTransition(0, 0);
-	// searchView.clearFocus();
-	// break;
-	//
-	// case POSTS:
-	// JobDetails jdetails = new JobDetails();
-	// jdetails.setPostid(mSearchData.getId());
-	// if (mSearchData.getDatatype().equals("0")) {
-	// ((OfCampusApplication) mContext.getApplicationContext()).jobdetails =
-	// jdetails;
-	// Intent mIntent = new Intent(mContext, ActivityJobDetails.class);
-	// Bundle mBundle = new Bundle();
-	// mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[0]);
-	// mIntent.putExtras(mBundle);
-	// startActivity(mIntent);
-	// ((Activity) mContext).overridePendingTransition(0, 0);
-	// } else if (mSearchData.getDatatype().equals("3")) {
-	// ((OfCampusApplication) mContext.getApplicationContext()).jobdetails =
-	// jdetails;
-	// Intent mIntent = new Intent(mContext, ActivityNewsDetails.class);
-	// Bundle mBundle = new Bundle();
-	// mBundle.putString(Util.BUNDLE_KEY[0], Util.TOOLTITLE[1]);
-	// mIntent.putExtras(mBundle);
-	// startActivity(mIntent);
-	// ((Activity) mContext).overridePendingTransition(0, 0);
-	// }
-	// searchView.clearFocus();
-	// break;
-	//
-	// default:
-	// break;
-	//
-	// }
-	// }
 
 	private void notificationAnimation(final View v) {
 		ObjectAnimator animatorX = ObjectAnimator.ofFloat(v, "scaleX", 0, 1.0f, 1.2f, 1.0f);

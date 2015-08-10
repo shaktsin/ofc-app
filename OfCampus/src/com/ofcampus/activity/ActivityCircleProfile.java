@@ -97,7 +97,7 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 	}
 
 	private String title = "Club Profile";
-	private boolean isChapter = false;
+	private int circleType = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +107,23 @@ public class ActivityCircleProfile extends ActionBarActivity implements OnClickL
 		context = ActivityCircleProfile.this;
 		Bundle mBundle = getIntent().getExtras();
 		if (mBundle != null) {
-			isChapter = mBundle.getBoolean("isChapterEvent");
-			title = "Chapter Profile";
+			if (mBundle != null) {
+				circleType = mBundle.getInt("CircleType");
+				switch (circleType) {
+				case 0:
+					title = "Organization Profile";
+					break;
+				case 1:
+					title = "Clubs Profile";
+					break;
+				case 2:
+					title = "Chapters Profile";
+					break;
+
+				default:
+					break;
+				}
+			}
 		}
 
 		initilize();

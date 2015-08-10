@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    xmlns:ofcampus="http://schemas.android.com/apk/res/com.ofcampus"
     android:id="@+id/slideritem_row"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/slidelist_item_selector" >
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp" >
+        android:gravity="center_vertical"
+        android:padding="@dimen/dp_twelve" >
 
         <ImageView
             android:id="@+id/rowIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:src="@drawable/ic_launcher" />
+            android:paddingLeft="@dimen/dp_four"
+            android:paddingRight="@dimen/dp_four"
+            android:src="@drawable/ic_directory" />
 
-        <TextView
+        <com.ofcampus.ui.CustomTextView
             android:id="@+id/rowText"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical|left"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/dp_tweentytwo"
             android:layout_toRightOf="@+id/rowIcon"
-            android:text=""
+            android:text="Hello Android"
             android:textColor="#4c4c4c"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="normal"
+            ofcampus:fontName="Helvetica.otf" />
     </LinearLayout>
 
 </RelativeLayout>

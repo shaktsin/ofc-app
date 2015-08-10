@@ -40,6 +40,7 @@
     <dimen name="dp_sixthen">16dp</dimen>
     <dimen name="dp_eigthen">18dp</dimen>
     <dimen name="dp_tweenty">20dp</dimen>
+    <dimen name="dp_tweentytwo">22dp</dimen>
     <dimen name="dp_tweentyfive">25dp</dimen>
     <dimen name="dp_thirthy">30dp</dimen>
     <dimen name="dp_thirthyfive">35dp</dimen>

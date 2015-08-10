@@ -289,7 +289,9 @@ public class ActivitySearchList extends ActionBarActivity {
 			mCircleDetails.setId(mSearchData.getId());
 			mCircleDetails.setAdmin("false");
 			((OfCampusApplication) context.getApplicationContext()).mCircleDetails_ = mCircleDetails;
-			context.startActivity(new Intent(context, ActivityCircleProfile.class));
+			Intent mIntentClubs = new Intent(context, ActivityCircleProfile.class);
+			mIntentClubs.putExtra("CircleType", Util.CircleType.CLUBS.ordinal());
+			context.startActivity(mIntentClubs);
 			overridePendingTransition(0, 0);
 			searchView.clearFocus();
 			break;

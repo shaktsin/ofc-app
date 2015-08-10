@@ -63,7 +63,6 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
@@ -89,29 +88,32 @@ public class Util {
 	public static long delay = 5 * 1000;
 	public static long period = 30 * 1000;
 
-	// private static String baseUrl = "http://205.147.110.176:8080/api/";
-	private static String baseUrl = "http://ofcampus.com/api/";
+	private static String baseUrl = "http://205.147.110.176:8080/api/";
+	// private static String baseUrl = "http://ofcampus.com/api/";
 
 	private static String SDCardPath = "OfCampus/Document";
 	private static String SDCardPathForImage = "OfCampus/Images";
 	public static String defaultYear = "2014";
 
-	// public static String TITLES[] = { "My Profile", "My Posts",
-	// "Bookmarked Posts", "Hidden Posts", "Clubs", "Settings", "Logout" };
-	public static String TITLES[] = { "My Posts", "Bookmarked Posts", "Hidden Posts", "Clubs", "Chapters", "Settings", "Logout" };
+	public static String TITLES[] = { "My Posts", "Bookmarked Posts", "Hidden Posts", "Organization", "Clubs", "Chapters", "Directory", "Settings", "Logout" };
+	public static int ICONS[] = { R.drawable.ic_mypost, R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_organisation, R.drawable.ic_circle, R.drawable.ic_circle, R.drawable.ic_directory,
+			R.drawable.ic_settings, R.drawable.ic_logout };
+
+	public static enum SlideMenuOption {
+		MYPOSTS, BOOKMARKEDPOSTS, HIDDENPOSTS, ORGANIZATION, CLUBS, CHAPTERS, DIRECTORY, SETTINGS, LOGOUT
+	}
+
 	public static String sendto[] = { "Everyone", "Class of 2014", "General Management Club", "Finance Club", "Hyderabad Chapter" };
 
 	public static String TOOLTITLE[] = { "Post Details", "News Details", "Classified Details" };
 	public static String TOOLTITLE_FILTER[] = { "Filter Posts", "Filter News" };
 	public static String BUNDLE_KEY[] = { "CAMEFROM", "COMMENTORDETAILS" };
 
-	// public static int ICONS[] = { R.drawable.ic_profile,
-	// R.drawable.ic_mypost,
-	// R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle,
-	// R.drawable.ic_settings, R.drawable.ic_logout };
-	public static int ICONS[] = { R.drawable.ic_mypost, R.drawable.ic_impmail, R.drawable.ic_recycle, R.drawable.ic_circle, R.drawable.ic_circle, R.drawable.ic_settings, R.drawable.ic_logout };
-
 	public static String shareVia = "\nShared via ofCampus";
+
+	public static enum CircleType {
+		ORGANIZATION, CLUBS, CHAPTERS
+	}
 
 	public static enum userType {
 		Normal, Gmail, Facebook

@@ -702,6 +702,7 @@ public class ActivityJobPostedUserDetails extends ActionBarActivity implements O
 				public void onClick(View v) {
 					Intent mIntent = new Intent(mContext, ActivityCircleProfile.class);
 					((OfCampusApplication) mContext.getApplicationContext()).mCircleDetails_ = circles.get(position);
+					mIntent.putExtra("CircleType", Util.CircleType.CLUBS.ordinal());
 					((Activity) mContext).startActivityForResult(mIntent, 91);
 					((Activity) mContext).overridePendingTransition(0, 0);
 				}

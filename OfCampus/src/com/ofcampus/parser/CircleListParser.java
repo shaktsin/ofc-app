@@ -139,10 +139,11 @@ public class CircleListParser {
 						circlelistparserinterface.OnSuccess(circlerList);
 					}
 				} else {
-//					Util.ShowToast(mContext, "No more Join circle available");
+					// Util.ShowToast(mContext,
+					// "No more Join circle available");
 				}
 			} else if (responsecode.equals("500")) {
-//				Util.ShowToast(mContext, "No more Join circle available");
+				// Util.ShowToast(mContext, "No more Join circle available");
 				error();
 			} else {
 				Util.ShowToast(mContext, mContext.getResources().getString(R.string.serever_error_msg));
@@ -185,16 +186,35 @@ public class CircleListParser {
 		return circlerList;
 	}
 
-	public JSONObject getBody(int pageNo_, int pagecount_, boolean isChapter) {
+	public JSONObject getBody(int pageNo_, int pagecount_, int circleType) {
 		JSONObject jsObj = new JSONObject();
 		try {
 			jsObj.put("pageNo", pageNo_ + "");
 			jsObj.put("perPage", pagecount_ + "");
-			jsObj.put("circleId", isChapter ? "2" : "3");
+			jsObj.put("circleId", getCircleID(circleType));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return jsObj;
+	}
+
+	// ORGANIZATION, CLUBS, CHAPTERS
+	public String getCircleID(int position) {
+
+		switch (position) {
+		case 0:
+			return "4";
+		case 1:
+			return "3";
+		case 2:
+			return "2";
+
+		default:
+			break;
+		}
+
+		return "2";
+
 	}
 
 	public CircleListParserInterface circlelistparserinterface;

@@ -36,10 +36,10 @@ import com.ofcampus.Util;
 import com.ofcampus.model.CircleDetails;
 import com.ofcampus.model.UserDetails;
 import com.ofcampus.parser.CircleListParser;
-import com.ofcampus.parser.JoinCircleParser;
-import com.ofcampus.parser.UnJoinCircleParser;
 import com.ofcampus.parser.CircleListParser.CircleListParserInterface;
+import com.ofcampus.parser.JoinCircleParser;
 import com.ofcampus.parser.JoinCircleParser.JoinCircleParserInterface;
+import com.ofcampus.parser.UnJoinCircleParser;
 import com.ofcampus.parser.UnJoinCircleParser.UnJoinCircleParserInterface;
 import com.ofcampus.ui.CustomTextView;
 
@@ -49,7 +49,7 @@ public class ActivityCircle extends ActionBarActivity {
 	private static String Authtoken = "";
 	private int postDelayTime = 700;
 
-	private boolean isChapter = false;
+	private int circleType = 0;
 	private final String[] TITLES = { "Your Clubs", "Join Clubs" };
 	private String title = "Clubs";
 
@@ -61,11 +61,27 @@ public class ActivityCircle extends ActionBarActivity {
 		context = ActivityCircle.this;
 		Bundle mBundle = getIntent().getExtras();
 		if (mBundle != null) {
-			isChapter = mBundle.getBoolean("isChapterEvent");
-			TITLES[0] = "Your Chapter";
-			TITLES[1] = "Join Chapter";
-			title = "Chapters";
-			isChapter_ = true;
+			circleType = mBundle.getInt("CircleType");
+			switch (circleType) {
+			case 0:
+				TITLES[0] = "Your Organization";
+				TITLES[1] = "Join Organization";
+				title = "Organization";
+				break;
+			case 1:
+				TITLES[0] = "Your Clubs";
+				TITLES[1] = "Join Clubs";
+				title = "Clubs";
+				break;
+			case 2:
+				TITLES[0] = "Your Chapter";
+				TITLES[1] = "Join Chapter";
+				title = "Chapters";
+				break;
+
+			default:
+				break;
+			}
 		}
 		Authtoken = UserDetails.getLoggedInUser(context).getAuthtoken();
 		Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
@@ -98,7 +114,7 @@ public class ActivityCircle extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if (!isChapter) {
+		if (circleType != Util.CircleType.CHAPTERS.ordinal()) {
 			MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.menu_circle, menu);
 			MenuItem item = menu.findItem(R.id.action_createcircle);
@@ -176,7 +192,7 @@ public class ActivityCircle extends ActionBarActivity {
 		});
 	}
 
-	private boolean isChapter_ = false;
+	// private boolean isChapter_ = false;
 
 	private void getAllCircleList(boolean b, final int pageNo_, int pagecount_) {
 		if (!Util.hasConnection(context)) {
@@ -209,7 +225,7 @@ public class ActivityCircle extends ActionBarActivity {
 				loadingMore = false;
 			}
 		});
-		mCircleListParser.parse(context, mCircleListParser.getBody(pageNo_, pagecount_, isChapter_), Authtoken, b);
+		mCircleListParser.parse(context, mCircleListParser.getBody(pageNo_, pagecount_, circleType), Authtoken, b);
 	}
 
 	public class ClubAndChapterListAdapter extends BaseAdapter {
@@ -340,9 +356,7 @@ public class ActivityCircle extends ActionBarActivity {
 				@Override
 				public void onClick(View v) {
 					Intent mIntent = new Intent(mContext, ActivityCircleProfile.class);
-					if (isChapter_) {
-						mIntent.putExtra("isChapterEvent", true);
-					}
+					mIntent.putExtra("CircleType", circleType);
 					((OfCampusApplication) mContext.getApplicationContext()).mCircleDetails_ = circles.get(position);
 					((Activity) mContext).startActivityForResult(mIntent, 91);
 					((Activity) mContext).overridePendingTransition(0, 0);
@@ -371,7 +385,7 @@ public class ActivityCircle extends ActionBarActivity {
 
 			@Override
 			public void OnSuccess() {
-				Util.ShowToast(context, "Successfully Joined " + (isChapter_ ? "chapter" : "club"));
+				Util.ShowToast(context, "Successfully Joined " + getCircleID(circleType));
 				mClubAndChapterListAdapter.joinRefresh(position_);
 			}
 
@@ -381,6 +395,24 @@ public class ActivityCircle extends ActionBarActivity {
 			}
 		});
 		mJoinCircleParser.parse(context, mJoinCircleParser.getBody(circleID), Authtoken);
+	}
+
+	public String getCircleID(int position) {
+
+		switch (position) {
+		case 0:
+			return "Organization";
+		case 1:
+			return "club";
+		case 2:
+			return "chapter";
+
+		default:
+			break;
+		}
+
+		return "2";
+
 	}
 
 	private void unjoinCircleEvent(String circleID, final int position_) {
@@ -395,7 +427,7 @@ public class ActivityCircle extends ActionBarActivity {
 
 			@Override
 			public void OnSuccess() {
-				Util.ShowToast(context, "Successfully unjoined " + (isChapter_ ? "chapter" : "club"));
+				Util.ShowToast(context, "Successfully unjoined " + getCircleID(circleType));
 				mClubAndChapterListAdapter.unjoinRefresh(position_);
 			}
 
